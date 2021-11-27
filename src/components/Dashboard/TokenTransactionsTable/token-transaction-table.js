@@ -25,102 +25,14 @@ const TokenTransactionTableWrapper = styled.div`
     grid-template-rows: 1fr 8fr 1fr;
   }
 
-  // Responsive || Width => Height
+  // Responsive || Height
 
   @media only screen and (max-width: 1880px) {
-    height 40vw !important;
-  }
-
-  @media only screen and (max-width: 1400px) {
-    height: 40vw !important;
+    height 40vw;
   }
 
   @media only screen and (max-width: 900px) {
-    height: 45vw !important;
-  }
-
-  // Responsive || Height
-
-  @media screen and (min-height: 1710px) and (max-height: 2110px) {
-    height: 37vh;
-  }
-  @media screen and (min-height: 1610px) and (max-height: 1710px) {
-    height: 38vh;
-  }
-  @media screen and (min-height: 1510px) and (max-height: 1610px) {
-    height: 46vh;
-  }
-
-  @media screen and (min-height: 1340px) and (max-height: 1510px) {
-    height: 48vh;
-  }
-
-  @media screen and (min-height: 1120px) and (max-height: 1340px) {
-    height: 55vh;
-  }
-
-  @media screen and (min-height: 1080px) and (max-height: 1120px) {
-    height: 63vh;
-  }
-
-  @media screen and (min-height: 992px) and (max-height: 1080px) {
-    height: 65vh;
-  }
-
-  @media screen and (min-height: 850px) and (max-height: 992px) {
-    height: 74vh;
-  }
-
-  @media screen and (min-height: 800px) and (max-height: 850px) {
-    height: 80vh;
-  }
-
-  @media screen and (min-height: 690px) and (max-height: 800px) {
-    height: 87vh;
-  }
-
-  @media screen and (min-height: 590px) and (max-height: 690px) {
-    height: 105vh;
-  }
-
-  @media screen and (min-height: 550px) and (max-height: 590px) {
-    height: 124vh;
-  }
-
-  @media screen and (min-height: 500px) and (max-height: 550px) {
-    height: 130vh;
-  }
-
-  @media screen and (min-height: 450px) and (max-height: 500px) {
-    height: 140vh;
-  }
-
-  @media screen and (min-height: 450px) and (max-height: 500px) {
-    height: 160vh;
-  }
-
-  @media screen and (min-height: 400px) and (max-height: 450px) {
-    height: 185vh;
-  }
-
-  @media screen and (min-height: 350px) and (max-height: 400px) {
-    height: 180vh;
-  }
-
-  @media screen and (min-height: 300px) and (max-height: 350px) {
-    height: 235vh;
-  }
-
-  @media screen and (min-height: 250px) and (max-height: 300px) {
-    height: 295vh;
-  }
-
-  @media screen and (min-height: 200px) and (max-height: 250px) {
-    height: 380vh;
-  }
-
-  @media screen and (min-height: 50px) and (max-height: 200px) {
-    height: 395vh;
+    height: 45vw;
   }
 
   .transactions-heading {

@@ -23,108 +23,14 @@ const TVLChartWrapper = styled.div`
     padding-top: 19px;
   }
 
-  // Responsive || Width => Height
+  // Responsive || Height
 
   @media only screen and (max-width: 1880px) {
-    height: ${props => props.mobile ? "100%" : "30vw"} !important;
-  }
-
-  @media only screen and (max-width: 1780px) {
-    height: ${props => props.mobile ? "100%" : "31vw"} !important;
+    height: ${props => props.mobile ? "100%" : "30vw"};
   }
 
   @media only screen and (max-width: 1680px) {
-    height: ${props => props.mobile ? "100%" : "28vw"} !important;
-  }
-
-  // Responsive || HEIGHT
-
-  @media screen and (min-height: 1710px) and (max-height: 2110px) {
-    height: ${props => props.mobile ? "100%" : "29vh"};
-  }
-  
-  @media screen and (min-height: 1610px) and (max-height: 1710px) {
-    height: ${props => props.mobile ? "100%" : "30vh"};
-  }
-  
-  @media screen and (min-height: 1510px) and (max-height: 1610px) {
-    height: ${props => props.mobile ? "100%" : "32vh"};
-  }
-
-  @media screen and (min-height: 1340px) and (max-height: 1510px) {
-    height: ${props => props.mobile ? "100%" : "35vh"};
-  }
-
-  @media screen and (min-height: 1120px) and (max-height: 1340px) {
-    height: ${props => props.mobile ? "100%" : "40vh"};
-  }
-
-  @media screen and (min-height: 1120px) and (max-height: 1340px) {
-    height: ${props => props.mobile ? "100%" : "40vh"};
-  }
-
-  @media screen and (min-height: 1080px) and (max-height: 1120px) {
-    height: ${props => props.mobile ? "100%" : "45vh"};
-  }
-
-  @media screen and (min-height: 992px) and (max-height: 1080px) {
-    height: ${props => props.mobile ? "100%" : "50vh"};
-  }
-
-  @media screen and (min-height: 850px) and (max-height: 992px) {
-    height: ${props => props.mobile ? "100%" : "55vh"};
-  }
-
-  @media screen and (min-height: 800px) and (max-height: 850px) {
-    height: ${props => props.mobile ? "100%" : "60vh"};
-  }
-
-  @media screen and (min-height: 690px) and (max-height: 800px) {
-    height: ${props => props.mobile ? "100%" : "70vh"};
-  }
-
-  @media screen and (min-height: 500px) and (max-height: 690px) {
-    height: ${props => props.mobile ? "100%" : "80vh"};
-  }
-
-  @media screen and (min-height: 500px) and (max-height: 590px) {
-    height: ${props => props.mobile ? "100%" : "90vh"};
-  }
-
-  @media screen and (min-height: 500px) and (max-height: 550px) {
-    height: ${props => props.mobile ? "100%" : "100vh"};
-  }
-
-  @media screen and (min-height: 450px) and (max-height: 500px) {
-    height: ${props => props.mobile ? "100%" : "110vh"};
-  }
-
-  @media screen and (min-height: 450px) and (max-height: 500px) {
-    height: ${props => props.mobile ? "100%" : "110vh"};
-  }
-
-  @media screen and (min-height: 400px) and (max-height: 450px) {
-    height: ${props => props.mobile ? "100%" : "120vh"};
-  }
-
-  @media screen and (min-height: 350px) and (max-height: 400px) {
-    height: ${props => props.mobile ? "100%" : "130vh"};
-  }
-
-  @media screen and (min-height: 300px) and (max-height: 350px) {
-    height: ${props => props.mobile ? "100%" : "150vh"};
-  }
-
-  @media screen and (min-height: 250px) and (max-height: 300px) {
-    height: ${props => props.mobile ? "100%" : "200vh"};
-  }
-
-  @media screen and (min-height: 200px) and (max-height: 250px) {
-    height: ${props => props.mobile ? "100%" : "220vh"};
-  }
-
-  @media screen and (min-height: 50px) and (max-height: 200px) {
-    height: ${props => props.mobile ? "100%" : "280vh"};
+    height: ${props => props.mobile ? "100%" : "28vw"};
   }
 
   // Responsive || Width
