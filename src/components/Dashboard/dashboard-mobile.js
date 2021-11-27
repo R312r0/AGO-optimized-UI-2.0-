@@ -31,8 +31,7 @@ const SwitchButton = styled.button`
 const InfoButtonsArea = styled.div`
   display: grid;
   margin-bottom: 30px;
-  height: 115px;
-  grid-template-rows: 2fr 1fr;
+  grid-template-rows: 3fr 2fr;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   align-items: center;
@@ -52,7 +51,8 @@ const InfoButton = styled.button`
   border-radius: 20px;
   width: 100%;
   height: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
+  padding: 8% 0;
 `
 
 const InfoLabel = styled.span`

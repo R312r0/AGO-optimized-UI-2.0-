@@ -17,6 +17,7 @@ const TokenPricesWrapper = styled.div`
     display: grid;
     grid-template-rows: 0.5fr 0.5fr 0.5fr 3fr;
     h1 {
+        margin-right: 0 !important;
         font-size: 18px;
         place-self: center;
     }
@@ -40,11 +41,18 @@ const TokenSwitcher = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     box-sizing: border-box;
+
+    padding: 2% 0 5%;
+    
     button {
-        height: 75%;
+        height: 100%;
         border-radius: 15px;
         border: 0;
+
         font-size: 14px;
+        padding: 5px 5px;
+        margin: 0 5px;
+
         &:first-child {
             font-weight: ${props => props.currency === "AGOUSD" ? "600" : "500"};
             color: ${props => props.currency === "AGOUSD" ? "white" : "#B0B0B0"};

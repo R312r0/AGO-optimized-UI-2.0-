@@ -39,17 +39,15 @@ const Content = styled.div`
   flex-direction: column;
 
   padding-bottom: 100px;
-
   overflow-y: auto;
-  grid-template-rows: ${props => props.mobile ? "none" : "10% auto"};
   
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    grid-template-rows: ${props => props.mobile ? "none" : "2% auto"};
+  @media only screen and (max-width: 768px) {
+    padding-bottom: 0;
   }
 
   h1 {
     text-align: left;
-    margin-right: auto !important;
+    margin-right: auto;
   }
 
   &::-webkit-scrollbar {

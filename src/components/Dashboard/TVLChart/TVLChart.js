@@ -39,6 +39,13 @@ const TVLChartWrapper = styled.div`
     height: ${props => props.mobile ? "80%" : "23vh"};
   }
 
+  @media only screen and (max-width: 768px) {
+    .tvl-chart {
+      width: 100vw;
+      padding: 0 5%;
+    }
+  }
+
   .tvl-info {
     display: grid;
     padding: ${props => props.mobile ? "0 7.5%" : "0"};
@@ -59,12 +66,6 @@ const TVLChartWrapper = styled.div`
 
     @media screen and (max-width: 480px) {
       margin-bottom: 24px;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .responsive-container-chart {
-      height: 80% !important;
     }
   }
 `

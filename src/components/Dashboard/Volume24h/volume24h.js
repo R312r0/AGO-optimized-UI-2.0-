@@ -31,6 +31,13 @@ const Volume24hChartWrapper = styled.div`
     height: ${props => props.mobile ? "100%" : "28vw"};
   }
 
+  @media only screen and (max-width: 768px) {
+    .volume24-chart {
+        width: 100vw;
+        padding: 0 5%;
+    }
+  }
+
   .volume24-info {
     display: grid;
     padding: ${props => props.mobile ? "0 7.5%" : "0"};

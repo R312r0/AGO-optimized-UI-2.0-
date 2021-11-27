@@ -20,6 +20,7 @@ const TransactionsWrapper = styled.div`
     padding: 0px 22px 0px 22px;
     box-sizing: border-box;
     h1 {
+        margin-right: 0 !important;
         font-size: 18px;
         justify-self: center;
     }
