@@ -19,7 +19,7 @@ export const TokenIcon = ({iconName}) => {
         { name: "AGOBTC", icon: agoBtc },
         { name: "CNUSD", icon: cnUsd },
         { name: "CNBTC", icon: cnBtc },
-        { name: "MATIC", icon: matic },
+        { name: "WMATIC", icon: matic },
         { name: "USDT", icon: usdt },
         { name: "WBTC", icon: wbtc },
     ]

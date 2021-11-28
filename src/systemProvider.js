@@ -8,6 +8,7 @@ import STABLE_ABI from './abi/STABLE.json';
 import SHARE_ABI from './abi/SHARE.json';
 import STABLE_POOL_ABI from './abi/STABLE_POOL.json';
 import TOKEN_ORACLE_ABI from './abi/TOKEN_ORACLE.json';
+import ROUTER_ABI from './abi/ROUTER.json';
 import { CONTRACT_ADRESESS, MOCK_PRICE_ADDRESS, USD_PRICE_ENDPOINT } from './constants';
 import { formatFromDecimal } from './utils/helpers';
 import { message } from 'antd';
@@ -154,7 +155,8 @@ export const SystemProvider = ({children}) => {
         const TREASURY_AGOUSD = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOUSD);
         const POOL_AGOBTC = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOBTC);
         const TREASURY_AGOBTC = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOBTC);
-        setContracts({POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC});
+        const DEX_ROUTER = new library.eth.Contract(ROUTER_ABI, CONTRACT_ADRESESS.DEX_ROUTER);
+        setContracts({POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, DEX_ROUTER});
     }
 
     const connectWallet = (wallet) => {
