@@ -22,8 +22,8 @@ const DashboardWrapper = styled.div`
     display: none;
   }
 
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    grid-row-gap: 0;
+  @media only screen and (max-width: 1024px){
+    grid-row-gap: 2%;
   }
 
   .tvl-volume {
@@ -31,7 +31,12 @@ const DashboardWrapper = styled.div`
     width: 100%;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 5%;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    
+    @media only screen and (max-width: 1024px){
+      grid-column-gap: 2%;
+    }
+
+    @media only screen and(max-width: 768px) {
       grid-column-gap: 2%;
       width: 95%;
       margin-bottom: 15px;
@@ -42,7 +47,7 @@ const DashboardWrapper = styled.div`
 export const Dashboard = () => {
 
     const {theme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 767px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 768px)'})
 
 
     return (

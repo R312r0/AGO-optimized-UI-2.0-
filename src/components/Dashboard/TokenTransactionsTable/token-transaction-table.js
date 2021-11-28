@@ -19,7 +19,13 @@ const TokenTransactionTableWrapper = styled.div`
 
   margin-bottom: 70px;
 
-  @media screen and (min-width: 500px) and (max-width: 768px) {
+  // Responsive || Width
+
+  @media only screen and (max-width: 1024px){
+    padding: 2% 2.5% 1%;
+  }
+
+  @media only screen and (max-width: 768px) {
     height: 49vh;
     width: 95%;
     grid-template-rows: 1fr 8fr 1fr;
@@ -33,6 +39,44 @@ const TokenTransactionTableWrapper = styled.div`
 
   @media only screen and (max-width: 900px) {
     height: 45vw;
+  }
+
+  .transanction-tabs-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-bottom: 2vw;
+
+    @media only screen and (max-width: 1024px) {
+      padding-bottom: 1.3vw;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      button {
+        font-size: 0.9vw;
+        font-weight: 300;
+
+        padding: 0.3vw 1.5vw;
+
+        background: transparent;
+        border-radius: 15px;
+        color: #B0B0B0;
+
+        border: none;
+        cursor: pointer;
+      }
+    }
+
+    .transanction-tabs-wrapper-active {
+      color: white;
+      background: #40BA93;
+      font-weight: 700;
+    }
   }
 
   .transactions-heading {
@@ -205,7 +249,15 @@ export const TokenTransactionTable = () => {
 
     return (
         <TokenTransactionTableWrapper>
-            <h2 className={'transactions-heading'}>Transactions</h2>
+            <div className="transanction-tabs-wrapper">
+              <h2 className={'transactions-heading'}>Transactions</h2>
+              <div>
+                <button className="transanction-tabs-wrapper-active">All</button>
+                <button>Swaps</button>
+                <button>Adds</button>
+                <button>Removes</button>
+              </div>
+            </div>
             <Table>
                 <TableHead>
                     <span></span>

@@ -227,7 +227,7 @@ export const BalancesTab = () => {
     const [balancesMobileExpanded, setBalancesMobileExpanded] = useState(false)
     const {account} = useWeb3React();
     const {theme, userProtfolio} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 767px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 769px)'})
 
     const handlersMobileBalancesExpanded = useSwipeable({
         onSwipedUp: () => {

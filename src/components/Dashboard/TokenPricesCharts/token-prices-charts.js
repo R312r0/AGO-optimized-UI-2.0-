@@ -31,18 +31,27 @@ const TokenPriceChartWrapper = styled.div`
 
   // Responsive || Width
 
-  @media screen and (min-width: 500px) and (max-width: 768px) {
+  @media only and (max-width: 768px) {
     width: 95%;
     height: ${props => props.isWindowExpanded ? "51vh" : "12vh"};
     padding: 0;
+  }
+
+  @media only screen and (max-width: 1024px){
+    padding: 1% 1%;
   }
 `
 
 const SinglePriceBlock = styled.div`
   border-right: ${props => props.isWindowExpanded ? props.isShowDivider ? "1px solid #40BA93" : "none" : "1px solid #40BA93"};
   padding-left: 40px;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
+  
+  @media only screen and (max-width: 768px) {
     padding-left: 28px;
+  }
+  
+  @media only screen and (max-width: 1024px){
+    padding-left: 20px;
   }
 
   &:last-child {
@@ -52,7 +61,11 @@ const SinglePriceBlock = styled.div`
   h3 {
     font-size: 1vw;
     color: white;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    @media only screen and (max-width: 1024px){
+      font-size: 1.5vw;
+    }
+
+    @media only screen and (max-width: 768px) {
       font-size: 2vw;
     }
   }
@@ -60,7 +73,11 @@ const SinglePriceBlock = styled.div`
   h1 {
     font-size: 2.1vw;
     color: #40BA93;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    @media only screen and (max-width: 1024px){
+      font-size: 1.9vw;
+    }
+
+    @media only screen and (max-width: 768px) {
       font-size: 2.6vw;
     }
   }
@@ -72,7 +89,11 @@ const SinglePriceBlock = styled.div`
     font-size: 0.6vw;
     color: white;
 
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    @media only screen and (max-width: 1024px){
+      font-size: 1.4vw;
+    }
+
+    @media only screen and  (max-width: 768px) {
       font-size: 1.2vw;
     }
 
@@ -81,6 +102,12 @@ const SinglePriceBlock = styled.div`
       height: 1.1vw;
       margin-right: 6px;
       margin-left: 5px;
+
+      @media only screen and (max-width: 1024px){
+        width: 1.4vw;
+        height: 1.2vw;
+      }
+      
       @media screen and (min-width: 500px) and (max-width: 768px) {
         width: 1vw;
         margin-right: 2px;

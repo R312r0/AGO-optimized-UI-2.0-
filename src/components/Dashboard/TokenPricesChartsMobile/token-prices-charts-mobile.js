@@ -8,18 +8,36 @@ const TokenPricesWrapper = styled.div`
     position: fixed;
     transition: 0.3s all;
     bottom: 0;
-    height: 55vh;
+    height: 65vh;
     width: 100%;
     background: white;
     padding: 0px 22px 42px 22px;
-    transform: ${props => props.opened ? "translateY(0)" : "translateY(55vh)"};
+    transform: ${props => props.opened ? "translateY(0)" : "translateY(65vh)"};
     border-radius: 40px 40px 0px 0px;
     display: grid;
     grid-template-rows: 0.5fr 0.5fr 0.5fr 3fr;
+
     h1 {
-        margin-right: 0 !important;
-        font-size: 18px;
+        font-size: 4vw;
         place-self: center;
+
+        @media only screen and (max-width: 400px) {
+            font-size: 5vw;
+        }
+    }
+
+    .token-charts-wrapper {
+        overflow-y: auto;
+    }
+
+    @media only screen and (max-width: 550px) {
+        height: 55vh;
+        transform: ${props => props.opened ? "translateY(0)" : "translateY(55vh)"};
+    }
+
+    @media only screen and (max-height: 600px) {
+        height: 90vh;
+        transform: ${props => props.opened ? "translateY(0)" : "translateY(90vh)"};
     }
 `
 
@@ -27,13 +45,15 @@ const SwipeDownCloseStripe = styled.div`
     place-self: center;
     width: 15%;
     height: 100%;
-    display: grid;
+    display: flex;
+    padding: 7% 0 4%;
+
     div {
-        width: 100%;
+        width: 100%; 
+        height: 5px;
+
         background: #BDBDBD;
         border-radius: 10px;
-        height: 5px;
-        place-self: center;
     }
 `
 
@@ -49,8 +69,8 @@ const TokenSwitcher = styled.div`
         border-radius: 15px;
         border: 0;
 
-        font-size: 14px;
-        padding: 5px 5px;
+        font-size: 3.5vw;
+        padding: 0.8vw 0.8vw;
         margin: 0 5px;
 
         &:first-child {
@@ -90,21 +110,23 @@ export const TokenPricesChartsMobile = ({opened, setOpened}) => {
             <SwipeDownCloseStripe {...handlers}>
                 <div></div>
             </SwipeDownCloseStripe>
-            <h1> Informations </h1>
+            <h1>Informations</h1>
             <TokenSwitcher currency={currency}> 
                 <button onClick={() => setCurrency("AGOUSD")}> AGOUSD/CNUSD </button>
                 <button onClick={() => setCurrency("AGOBTC")}> AGOBTC/CNBTC </button>
             </TokenSwitcher>
-            <ChartsBlock>
-                {dashboardLoading && !dashTokens ?
-                    <h1> Loading... </h1>
-                    :
-                    <>
-                        <SingleTokenPriceItem token={currency === "AGOUSD" ? dashTokens.find(item => item.name === "AGOUSD") : dashTokens.find(item => item.name === "AGOBTC")}/>
-                        <SingleTokenPriceItem token={currency === "AGOUSD" ? dashTokens.find(item => item.name === "CNUSD") : dashTokens.find(item => item.name === "CNBTC")}/>
-                    </> 
-                }
-            </ChartsBlock>
+            <div className="token-charts-wrapper">
+                <ChartsBlock>
+                    {dashboardLoading && !dashTokens ?
+                        <h1> Loading... </h1>
+                        :
+                        <>
+                            <SingleTokenPriceItem token={currency === "AGOUSD" ? dashTokens.find(item => item.name === "AGOUSD") : dashTokens.find(item => item.name === "AGOBTC")}/>
+                            <SingleTokenPriceItem token={currency === "AGOUSD" ? dashTokens.find(item => item.name === "CNUSD") : dashTokens.find(item => item.name === "CNBTC")}/>
+                        </> 
+                    }
+                </ChartsBlock>
+            </div>
         </TokenPricesWrapper>
     )
 

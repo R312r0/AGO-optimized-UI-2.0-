@@ -58,7 +58,7 @@ const ConnectWallet = styled.div`
 `
 export const ConnectWalletButton = () => {
 
-    const isMobileScreen = useMediaQuery({query: '(max-width: 767px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 769px)'})
     const {account} = useWeb3React();
     const {theme, disconnectWallet, setIsWalletModal} = useSystemContext();
 

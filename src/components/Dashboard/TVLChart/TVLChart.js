@@ -17,6 +17,10 @@ const TVLChartWrapper = styled.div`
   justify-self: flex-start;
   grid-template-rows: 28% 70%;
   padding: ${props => props.mobile ? "0" : "3.5% 10.5%"};
+
+  @media only screen and (max-width: 1024px) {
+    padding: ${props => props.mobile ? "0" : "2.5% 5.5%"};
+  }
   
   @media screen and (max-width: 480px) {
     grid-template-rows: 20% 70%;
@@ -35,32 +39,34 @@ const TVLChartWrapper = styled.div`
 
   // Responsive || Width
 
-  @media screen and (min-width: 500px) and (max-width: 768px) {
+  @media only screen and (max-width: 768px) {
     height: ${props => props.mobile ? "80%" : "23vh"};
+    grid-template-rows: 25% 75%;
   }
 
   @media only screen and (max-width: 768px) {
     .tvl-chart {
       width: 100vw;
       padding: 0 5%;
+      color: #BDBDBD;
     }
   }
 
   .tvl-info {
     display: grid;
-    padding: ${props => props.mobile ? "0 7.5%" : "0"};
-    grid-template-rows: ${props => props.mobile ? " 2fr 1fr" : " 1fr 3fr 1fr"};
+    padding: ${props => props.mobile ? "0 5%" : "0"};
+    grid-template-rows: ${props => props.mobile ? " 1fr 1fr" : " 1fr 3fr 1fr"};
 
     p {
       font-weight: 500;
-      font-size: ${props => props.mobile ? "12px" : "1.1vw"};
+      font-size: ${props => props.mobile ? "3.6vw" : "1.1vw"};
       color: ${props => props.mobile ? "#BDBDBD" : "white"};
     }
 
     h1 {
       color: ${props => props.mobile ? "white" : "#40BA93"};
       font-weight: ${props => props.mobile ? "600" : "500"};
-      font-size: ${props => props.mobile ? "24px" : "2.1vw"};
+      font-size: ${props => props.mobile ? "6.6vw" : "2.1vw"};
       align-self: flex-end;
     }
 
@@ -73,7 +79,7 @@ const TVLChartWrapper = styled.div`
 export const TVLChart = () => {
 
     const {theme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 767px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 769px)'})
 
     const data = [
         {time: '01', uv: 100000, date: "Jul 1, 2021"},
@@ -99,7 +105,6 @@ export const TVLChart = () => {
         value: data[data.length - 1].uv
     })
 
-    // TODO: Make a more better and accurate styles for this window. See /dashboards
     return (
         <TVLChartWrapper mobile={isMobileScreen}>
             <div className={'tvl-info'}>

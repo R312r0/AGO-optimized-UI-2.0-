@@ -56,6 +56,12 @@ const BottomInfo = styled.div`
             justify-self: flex-end;
         }
     }
+    
+    @media only screen and (max-width: 400px) { 
+        span {
+            line-height: 0.9;
+        }
+    }
 `
 
 export const SingleTokenPriceItem = ({token}) => {
@@ -96,7 +102,7 @@ export const SingleTokenPriceItem = ({token}) => {
             </ResponsiveContainer>
             <BottomInfo> <span>Supply:</span> <span> {formattedNum(supply)} </span></BottomInfo>
             <div></div>
-            <BottomInfo> <span>Market cap:</span> <span> {formattedNum(marketCap)} </span></BottomInfo>
+            <BottomInfo> <span>Cap:</span> <span> {formattedNum(marketCap)} </span></BottomInfo>
         </SingleTokenItemWrapper>
     )
 }

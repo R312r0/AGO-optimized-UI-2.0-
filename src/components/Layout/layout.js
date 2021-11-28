@@ -45,11 +45,6 @@ const Content = styled.div`
     padding-bottom: 0;
   }
 
-  h1 {
-    text-align: left;
-    margin-right: auto;
-  }
-
   &::-webkit-scrollbar {
     display: none;
   }
@@ -61,7 +56,10 @@ const ContentHeader = styled.h1`
   font-size: 1.8vw;
   color: white;
   align-self: center;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
+
+  margin-right: auto;
+  
+  @media screen only and (max-width: 768px) {
     padding-left: 6%;
     font-size: 2.4vw;
   }
@@ -71,7 +69,7 @@ const AgoLogo = styled.img`
   width: ${props => props.mobile ? "44px" : "2.60vw"};
   height: ${props => props.mobile ? "41px" : "2.20vw"};
   place-self: center;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
+  @media screen only and (max-width: 768px) {
     width: 44px;
     height: 40px;
     margin-left: 40px;
@@ -104,7 +102,7 @@ export const Layout = ({children}) => {
     const loadingIcon = <LoadingOutlined
         style={{fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%"}}/>
 
-    const isMobileScreen = useMediaQuery({query: '(max-width: 767px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 769px)'})
 
     return (
         <>
