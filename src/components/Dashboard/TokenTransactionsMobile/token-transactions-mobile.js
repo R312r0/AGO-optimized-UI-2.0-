@@ -12,8 +12,8 @@ const TransactionsWrapper = styled.div`
     grid-template-rows: 1fr 0.5fr 1fr 5fr;
     transition: 0.3s all;
     bottom: 0;
-    height: 65vh;
-    transform: ${props => props.opened ? "translateY(0)" : "translateY(65vh)"};
+    height: 70vh;
+    transform: ${props => props.opened ? "translateY(0)" : "translateY(70vh)"};
     width: 100%;
     background: white;
     border-radius: 40px 40px 0px 0px;

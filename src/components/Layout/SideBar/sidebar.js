@@ -10,7 +10,7 @@ import {ThemeSwitcher} from '../ThemeSwitcher/theme-switcher';
 
 const SideBarWrapper = styled.div`
   display: grid;
-  grid-template-rows: 75% 15% 15%;
+  grid-template-rows: 70% 15% 15%;
   align-items: center;
   justify-items: center;
   max-height: 100vh;
@@ -52,12 +52,12 @@ const SocialMediasList = styled.div`
 const LinkList = styled.ul`
   position: relative;
   text-align: center;
-  height: 65vh;
+  height: 55vh;
   padding: 10% 6.5%;
   width: 42%;
   border: 1px solid #4F4F4F;
   box-sizing: border-box;
-  border-radius: 1.5vw;
+  border-radius: 1vw;
   display: grid;
   grid-template-rows: repeat(6, 1fr) 2fr;
   align-self: center;

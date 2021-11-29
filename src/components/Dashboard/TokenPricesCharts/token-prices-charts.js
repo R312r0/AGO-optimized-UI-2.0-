@@ -25,6 +25,10 @@ const TokenPriceChartWrapper = styled.div`
   
   // Responsive || Height
 
+  @media only screen and (min-width: 1920px) {
+    height: ${props => props.isWindowExpanded ? "51vh" : "12vw"};
+  }
+
   @media only screen and (max-width: 1880px) {
     height: ${props => props.isWindowExpanded ? "51vh" : "11vw"};
   }

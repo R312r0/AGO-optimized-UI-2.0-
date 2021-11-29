@@ -8,14 +8,14 @@ const TokenPricesWrapper = styled.div`
     position: fixed;
     transition: 0.3s all;
     bottom: 0;
-    height: 65vh;
+    height: 70vh;
     width: 100%;
     background: white;
     padding: 0px 22px 42px 22px;
-    transform: ${props => props.opened ? "translateY(0)" : "translateY(65vh)"};
+    transform: ${props => props.opened ? "translateY(0)" : "translateY(70vh)"};
     border-radius: 40px 40px 0px 0px;
     display: grid;
-    grid-template-rows: 0.5fr 0.5fr 0.5fr 3fr;
+    grid-template-rows: 0.5fr 0.5fr 0.5fr 6fr;
 
     h1 {
         font-size: 4vw;
@@ -30,15 +30,11 @@ const TokenPricesWrapper = styled.div`
         overflow-y: auto;
     }
 
-    @media only screen and (max-width: 550px) {
-        height: 55vh;
-        transform: ${props => props.opened ? "translateY(0)" : "translateY(55vh)"};
+    @media only screen and (min-height: 700px) {
+        height: 48vh;
+        transform: ${props => props.opened ? "translateY(0)" : "translateY(48vh)"};
     }
 
-    @media only screen and (max-height: 600px) {
-        height: 90vh;
-        transform: ${props => props.opened ? "translateY(0)" : "translateY(90vh)"};
-    }
 `
 
 const SwipeDownCloseStripe = styled.div`
@@ -90,7 +86,7 @@ const ChartsBlock = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     border: 1px solid #E0E0E0;
-    padding: 10px 0px;
+    padding: 4vw 0;
     border-radius: 20px;
     box-sizing: border-box;
 `

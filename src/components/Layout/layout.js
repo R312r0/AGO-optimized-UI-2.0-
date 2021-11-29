@@ -25,6 +25,15 @@ const LayoutWrapper = styled.div`
   @media screen and (min-width: 500px) and (max-width: 768px) {
     grid-template-rows: ${props => props.mobile ? "20%" : "7% auto"};
   }
+
+
+  @media screen and (max-height: 500px) {
+    grid-template-rows: ${props => props.mobile ? "20%" : "15% auto"};
+  }
+
+  @media screen and (max-height: 400px) {
+    grid-template-rows: ${props => props.mobile ? "20%" : "23% auto"};
+  }
 `
 
 const Header = styled.div`
@@ -32,6 +41,11 @@ const Header = styled.div`
   grid-column: 1/5;
   grid-template-columns: ${props => props.mobile ? "1fr 3fr 1fr" : "0.4fr 3fr 0.5fr"};
   box-sizing: border-box;
+
+  @media screen and (max-width: 768px) {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1frr ;
+  }
 `
 
 const Content = styled.div`
@@ -69,11 +83,15 @@ const AgoLogo = styled.img`
   width: ${props => props.mobile ? "44px" : "2.60vw"};
   height: ${props => props.mobile ? "41px" : "2.20vw"};
   place-self: center;
-  @media screen only and (max-width: 768px) {
-    width: 44px;
-    height: 40px;
-    margin-left: 40px;
-    margin-bottom: 36px;
+
+  @media screen and (max-width: 1200px) {
+    width: 3.4vw;
+    height: 3vw;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 9vw;
+    height: 8vw;
   }
 `
 
@@ -82,15 +100,24 @@ const PageName = styled.h1`
   color: white;
   font-size: 24px;
   place-self: center;
+
+  @media screen and (max-width: 768px) {
+    font-size: 6vw;
+  }
 `
 
 const BurgerButton = styled.button`
   display: grid;
-  width: 20px;
-  height: 20px;
+  width: 5vw;
+  height: 5vw;
   place-self: center;
   background-color: transparent;
   border: none;
+
+  img {
+    width: 5vw;
+    height: 5vw;
+  }
 `
 
 export const Layout = ({children}) => {
@@ -102,7 +129,7 @@ export const Layout = ({children}) => {
     const loadingIcon = <LoadingOutlined
         style={{fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%"}}/>
 
-    const isMobileScreen = useMediaQuery({query: '(max-width: 769px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 768px)'})
 
     return (
         <>

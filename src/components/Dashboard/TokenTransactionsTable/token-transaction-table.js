@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 const TokenTransactionTableWrapper = styled.div`
   width: 100%;
-  height: 60vh;
+  height 40vw;
   background: radial-gradient(34.28% 208.17% at 30.1% 58.42%, rgba(30, 91, 72, 0.2) 0%, rgba(9, 33, 25, 0.2) 100%), linear-gradient(97.95deg, #272727 -6.91%, #1C1C1C 101.49%);
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
   border-radius: 2vw;
@@ -17,7 +17,7 @@ const TokenTransactionTableWrapper = styled.div`
   display: grid;
   grid-template-rows: 1fr 10fr 1fr;
 
-  margin-bottom: 70px;
+  margin-bottom: 3vw;
 
   // Responsive || Width
 
@@ -26,7 +26,7 @@ const TokenTransactionTableWrapper = styled.div`
   }
 
   @media only screen and (max-width: 768px) {
-    height: 49vh;
+    height: 49vh !important;
     width: 95%;
     grid-template-rows: 1fr 8fr 1fr;
   }

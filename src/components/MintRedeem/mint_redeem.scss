@@ -25,26 +25,34 @@
     div {
       // height: 46px;
       // height: clamp(36px, 100%, 46px);
+
       border-radius: 20px;
+
       box-sizing: border-box;
       align-items: center;
       background: #1E1E1E;
+
+      display: flex;
+      align-items: center;
+
       // display: grid;
       // grid-gap: 5px;
       // grid-template-columns:12% 2% 20% 2% 10% 2% 20% 30%;
 
-      padding-left: 61px;
-      padding-right: 78px;
+      margin: 1.2+vw 2.8% 0;
+      padding: 0.7% 3.7%;
 
       .fa-circle {
         color: #40BA93;
-        padding: 0 50px;
-
-        font-size: 10px;
-        @media only screen and (max-width: 0) {
-          font-size: 6px;
-        }
+        padding: 0 3.5vw;
+        font-size: 0.4vw;
+        
         justify-self: center;
+      }
+
+      .contract__link-polygon {
+        display: block;
+        margin-left: auto;
       }
 
       @media only screen and (max-width: 0) { //me
@@ -55,20 +63,28 @@
 
       .mint-redeem-bar-wrapper {
         display: flex;
+        align-items: center;
       }
 
       span {
         position: relative;
         color: #4F4F4F;
-        font-size: 14px;
-        @media only screen and (max-width: 0) {
-          font-size: 6px;
+        font-size: 0.7vw;
+
+        display: flex;
+        white-space: nowrap;
+
+        @media only screen and (max-width: 1650px) {
+          font-size: 0.8vw;
         }
-        justify-self: center;
 
         b {
           color: white;
           font-weight: 600;
+        }
+        
+        b, span {
+          margin-left: 0.4vw;
         }
 
         span {
@@ -140,14 +156,11 @@
       box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
       border-radius: 40px;
       width: clamp(498px, 50%, 798px);
-      height: clamp(393px, 100%, 693px);
+      height: 35vw;
       display: grid;
-      grid-template-rows: 10% 20% 8% 20% 8% 20% 14%;
+      grid-template-rows: 15% 15% 8% 15% 8% 15% 20%;
       box-sizing: border-box;
-      padding: 2% 3.5%;
-      @media only screen and (max-width: 0) {
-
-      }
+      padding: 0.5% 3.5% 2%;
 
       .fas {
         font-weight: 200;
@@ -156,42 +169,33 @@
       .mint-window-header {
         // display: grid;
         // grid-template-columns: 2fr 1fr;
-
         width: 100%;
+
         display: flex;
         align-items: center;
         justify-content: space-between;
 
-        padding-bottom: 38px;
-
         h3 {
           color: white;
-          padding-left: 30px;
-          @media only screen and (max-width: 0) {
-            padding: 10px 10px 10px 30px;
-          }
+          padding-left: 2vw;
         }
 
         button {
           background: #171717;
           box-shadow: -8px -8px 20px rgba(28, 27, 27, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
           border-radius: 16px;
-          width: 68px;
-          height: 45px;
+          width: 3.5vw;
+          height: 2.3vw;
+
+          img {
+            width: 1.2vw;
+          }
 
           &:hover {
             transition: 0.3s all;
             background-color: #40BA93;
           }
 
-          @media only screen and (max-width: 0) {
-            width: 48px;
-            height: 28px;
-            img {
-              width: 15px;
-              height: 15px;
-            }
-          }
           justify-self: flex-end;
           border: 0;
           cursor: pointer;
@@ -200,11 +204,10 @@
 
       .mint-window-input-row {
         width: 100%;
-        height: clamp(86px, 100%, 106px);
         display: grid;
         grid-template-columns: 60% 40%;
         background: #1E1E1E;
-        border-radius: 40px;
+        border-radius: 30px;
         box-sizing: border-box;
         padding: 2.5% 6%;
 
@@ -212,10 +215,7 @@
           color: white;
 
           h3 {
-            font-size: 18px;
-            @media only screen and (max-width: 0) {
-              font-size: 14px;
-            }
+            font-size: 0.9vw;
             color: #4F4F4F;
 
             b {
@@ -225,26 +225,22 @@
         }
 
         .balance {
-          display: grid;
+          display: flex;
           justify-self: flex-end;
           color: white;
         }
 
         .currency {
-          display: grid;
-          grid-template-columns: 1fr 2fr;
+          display: flex;
           align-items: center;
           justify-self: flex-end;
-          grid-column-gap: 5px;
-          font-size: 24px;
-          @media only screen and (max-width: 0) {
-            font-size: 18px;
-            img {
-              width: 33px;
-              height: 33px;
-            }
-          }
+          font-size: 1.2vw;
           color: white;
+
+          img {
+            width: 1.5vw;
+            margin-right: 0.6vw;
+          }
         }
 
         input {
@@ -422,7 +418,7 @@
           background: #171717;
           box-shadow: -8px -8px 20px rgba(28, 27, 27, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
           border-radius: 16px;
-          width: 68px;
+          width: 6vw;
           height: 45px;
 
           &:hover {

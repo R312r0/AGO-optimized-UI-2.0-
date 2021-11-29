@@ -9,8 +9,8 @@ const TVLChartWrapper = styled.div`
   background: ${props => props.mobile ? "transparent" : " radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%)"};
   box-shadow: ${props => props.mobile ? "none" : "0px 4px 16px rgba(0, 0, 0, 0.25)"};
   border-radius: 2vw;
-  height: ${props => props.mobile ? "100%" : "50vh"};
   width: 100%;
+  height: 28vw;
   display: grid;
   align-self: center;
   box-sizing: border-box;
@@ -51,6 +51,10 @@ const TVLChartWrapper = styled.div`
       color: #BDBDBD;
     }
   }
+  
+  .tvl-chart {
+    overflow: hidden;
+  }
 
   .tvl-info {
     display: grid;
@@ -79,7 +83,7 @@ const TVLChartWrapper = styled.div`
 export const TVLChart = () => {
 
     const {theme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 769px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 768px)'})
 
     const data = [
         {time: '01', uv: 100000, date: "Jul 1, 2021"},
