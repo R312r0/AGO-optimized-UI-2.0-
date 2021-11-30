@@ -90,9 +90,9 @@ const TableBody = styled.div`
 `
 
 const TableItem = styled.div`
-    margin-bottom: 10px;
+    margin-bottom: 4vw;
     &:last-child {
-        margin-bottom: 0px;
+        margin-bottom: 0;
     }
     .table-wrapper-title {
         display: flex;
@@ -107,13 +107,13 @@ const TableItem = styled.div`
 
         svg {
             width: 3.3vw;
-            height: 4.5vw;
+            height: 2.5vw;
         }
     }
     .table-wrapper {
         background: #EAECEF;
-        border-radius: 20px;
-        height: 38vh;
+        border-radius: 2.604vw;
+        height: 54vw;
         display: grid;
         grid-template-rows: 1.4fr 1fr 1fr 1fr 1fr 1fr;
         box-sizing: border-box;
@@ -136,6 +136,7 @@ const TableItem = styled.div`
         @media only screen and (max-height: 500px) {
             height: 45vh;
         }
+
         @media only screen and (max-height: 400px) {
             height: 55vh;
         }

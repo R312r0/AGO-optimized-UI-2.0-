@@ -25,7 +25,7 @@ const SocialMediasList = styled.div`
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(60.68% 60.68% at 50.88% 47.73%, #265041 0%, #222121 100%);
   width: 80%;
   left: 50%;
-  height: ${props => props.opened ? "95%" : "0px"};
+  height: ${props => props.opened ? "95%" : "0"};
   transform: translateX(-50%);
   bottom: 10px;
   border: 1px solid #4F4F4F;
@@ -44,7 +44,7 @@ const SocialMediasList = styled.div`
 
     &:hover {
       transition: 0.15s all;
-      font-size: 24px;
+      font-size: 1.250vw;
     }
   }
 `
@@ -52,8 +52,8 @@ const SocialMediasList = styled.div`
 const LinkList = styled.ul`
   position: relative;
   text-align: center;
-  height: 55vh;
-  padding: 10% 6.5%;
+  height: auto;
+  padding: 0.521vw 0.665vw;
   width: 42%;
   border: 1px solid #4F4F4F;
   box-sizing: border-box;
@@ -62,13 +62,6 @@ const LinkList = styled.ul`
   grid-template-rows: repeat(6, 1fr) 2fr;
   align-self: center;
   align-items: center;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    position: relative;
-    width: 50%;
-    margin-left: 34px;
-    bottom: 100px;
-    height: 43vh;
-  }
 
   .soc-list-light {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #40BA93;
@@ -83,7 +76,7 @@ const LinkList = styled.ul`
 
   .active-nav-tab {
     border: 1px solid #40BA93;
-    border-radius: 12px;
+    border-radius: 0.625vw;
     background: #40BA93;
     width: 100%;
     height: 70%;
@@ -97,18 +90,15 @@ const LinkList = styled.ul`
 
 const LinkListItem = styled.li`
   cursor: pointer;
-  display: grid;
+  display: flex;
   align-items: center;
-  justify-self: center;
+  justify-content: center;
   border-radius: 20%;
-  width: 100%;
-  height: 70%;
+  
+  padding: 0.3vw;
+  margin: 0.3vw 0;
+
   background-color: ${props => props.active ? "#40BA93" : "transparent"};
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    width: 100%;
-    height: 63%;
-    border-radius: 30%;
-  }
 
   &:hover {
     background-color: ${props => props.active ? "#40BA93" : "#E0E0E0"};
@@ -116,21 +106,15 @@ const LinkListItem = styled.li`
   }
 
   &:last-child {
-    border: 1px solid #4F4F4F;
-    width: 100%;
-    height: 35%;
-    border-radius: 20%;
+    border: 0.052vw solid #4F4F4F;
+    border-radius: 0.6vw;
+    padding: 0.7vw 0.9vw;
+
     justify-self: center;
     align-self: flex-end;
     display: grid;
     place-items: center;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
-      width: 100%;
-      border-radius: 30%;
-      height: 30%;
-      margin-bottom: 12px;
-    }
-
+    
     &:hover {
       transition: 0.15s all ease-out;
       opacity: 0;
@@ -140,10 +124,6 @@ const LinkListItem = styled.li`
   img {
     width: 0.9vw;
     height: 1.5vw;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
-      width: 2vw;
-      height: 2vw;
-    }
   }
 `
 

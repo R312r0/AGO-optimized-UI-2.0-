@@ -12,7 +12,7 @@ import vector from '../../../assets/icons/whiteVector.svg';
 
 const BalancesTabWrapper = styled.div`
   transition: 0.3s all;
-  width: ${props => props.opened ? props.account ? "79%" : "11.458vw" : "11.458vw"};
+  width: ${props => props.opened ? props.account ? "79%" : "13vw" : "13vw"};
   align-self: center;
   height: 2.969vw;
 
@@ -76,8 +76,9 @@ const BalancesTabWrapper = styled.div`
   .vector {
     width: 0.521vw;
     height: 0.521vw;
-    transition: .4s ease;
-    margin-left: ${props => props.opened ? "0.2vw" : "0.7vw"};
+    -webkit-transition: .4s ease;
+
+    margin: auto auto auto ${props => props.opened ? "0.2vw" : "0.7vw"};
     // position: ${props => props.opened ? "relative" : "static"};
     // bottom: ${props => props.opened ? "28px" : "2px"};
     // left: ${props => props.opened ? "250px" : "0"};
@@ -103,9 +104,10 @@ const BalancesTabWrapper = styled.div`
     }
   }
 
-  .balances-tab-wrapper {
+  .balance-tab-wrapper {
     display: flex;
     align-items: center;
+    margin-right: auto;
     
     @media screen and (max-width: 768px) {
       display: grid;
@@ -114,6 +116,12 @@ const BalancesTabWrapper = styled.div`
     }
 
     p {
+      font-size: 0.8vw;
+
+      @media screen and (max-width: 768px) {
+        font-size: 3.8vw;
+      }
+
       &:not(:first-child) {
         padding: 0 0.3vw;
       }
@@ -122,13 +130,15 @@ const BalancesTabWrapper = styled.div`
     .balance-arrow-wrapper {
       display: flex;
       align-items: center;
-      margin-left: ${props => props.opened ? "3vw" : "2vw"};
+      justify-content: center;
+      margin-left: ${props => props.opened ? "5vw" : "3vw"};
 
       transition: .4s ease;
 
       @media screen and (max-width: 768px) {
         margin-left: 3%;
-        font-size: 3.5vw;
+        font-size: 3.3vw;
+        justify-content: start;
       }
     }
   }
@@ -298,7 +308,7 @@ export const BalancesTab = () => {
             <>
                 {account ?
                     <>
-                        <div className="balances-tab-wrapper">
+                        <div className="balance-tab-wrapper">
                           <img src={theme === "light" ? pig_icon_light : pig_icon} width={20} height={20} alt="balance"/>
                           <p className='balance'> Balance </p>
                           <div className="balance-arrow-wrapper">

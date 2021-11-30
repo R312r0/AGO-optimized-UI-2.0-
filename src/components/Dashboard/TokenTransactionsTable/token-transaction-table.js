@@ -64,7 +64,7 @@ const TokenTransactionTableWrapper = styled.div`
         padding: 0.3vw 1.5vw;
 
         background: transparent;
-        border-radius: 15px;
+        border-radius: 1.302vw;
         color: #B0B0B0;
 
         border: none;
@@ -82,27 +82,21 @@ const TokenTransactionTableWrapper = styled.div`
   .transactions-heading {
     font-size: 1.5vw;
     color: white;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
-      font-size: 2vw;
-    }
   }
 `
 const Table = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 0.5fr 15fr 0.1fr;
-  row-gap: 15px;
+  row-gap: 1.1vw;
   color: white;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    grid-template-rows: 1fr 14fr;
-  }
 
   .token-transaction-separator {
     width: 100%;
-    height: 1px;
+    height: 0.052vw;
     background-color: #333;
-    border: 1px solid #333
-    border-radius: 5px;
+    border: 0.052vw solid #333;
+    border-radius: 0.260vw;
   }
 `
 const TableHead = styled.div`
@@ -110,22 +104,19 @@ const TableHead = styled.div`
   grid-template-columns: 20% 11.5% 13% 13% 27% 15%;
 
   position: relative !important;
-  
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    grid-template-columns: 23.5% 20.5% 15% 13.5% 21.5% 15%;
-  }
 
   span {
     font-style: normal;
     font-weight: 500;
     font-size: 0.8vw;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
-      font-size: 1.2vw;
-    }
 
     &:last-child {
       justify-self: flex-end;
-      padding-right: 45px;
+      padding-right: 2.344vw;
+    }
+
+    @media only screen and (max-width: 1024px) {
+      font-size: 0.9vw;
     }
   }
 `
@@ -133,18 +124,16 @@ const TableHead = styled.div`
 const TableBody = styled.div`
   display: grid;
   grid-template-columns: 20% 11.5% 13% 13% 27% 15%;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    grid-template-columns: 23.5% 20.5% 15% 13.5% 18.5% 15%;
-  }
 
   div {
     font-style: normal;
     font-weight: 300;
     font-size: 0.8vw;
     color: #BDBDBD;
-    line-height: 21px;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
-      font-size: 1.4vw;
+    line-height: 1.2vw;
+    
+    @media only screen and (max-width: 1024px) {
+      font-size: 1vw;
     }
   }
 

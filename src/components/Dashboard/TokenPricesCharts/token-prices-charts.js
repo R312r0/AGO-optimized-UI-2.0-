@@ -90,37 +90,29 @@ const SinglePriceBlock = styled.div`
     display: flex;
     align-items: center;
 
-    font-size: 0.6vw;
+    font-size: 0.729vw;
     color: white;
 
     @media only screen and (max-width: 1024px){
-      font-size: 1.4vw;
-    }
-
-    @media only screen and  (max-width: 768px) {
-      font-size: 1.2vw;
+      font-size: 1.5vw;
     }
 
     img {
+      display: block;
+
       width: 0.8vw;
       height: 1.1vw;
-      margin-right: 6px;
-      margin-left: 5px;
+      margin-right: 0.313vw;
 
       @media only screen and (max-width: 1024px){
         width: 1.4vw;
         height: 1.2vw;
       }
-      
-      @media screen and (min-width: 500px) and (max-width: 768px) {
-        width: 1vw;
-        margin-right: 2px;
-      }
     }
 
     span {
       color: #4F4F4F;
-      margin-left: 9px;
+      margin-left: 0.469vw;
     }
   }
 `
