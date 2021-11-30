@@ -20,6 +20,7 @@
     "bignumber.js": "^9.0.1",
     "chart.js": "^3.5.1",
     "dayjs": "^1.10.6",
+    "eth-rpc-errors": "^4.0.3",
     "from-exponential": "^1.1.1",
     "graphql": "^15.5.1",
     "graphql-tag": "^2.12.5",

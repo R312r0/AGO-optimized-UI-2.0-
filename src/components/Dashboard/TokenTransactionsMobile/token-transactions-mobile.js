@@ -13,7 +13,7 @@ const TransactionsWrapper = styled.div`
     transition: 0.3s all;
     bottom: 0;
     height: 70vh;
-    transform: ${props => props.opened ? "translateY(0)" : "translateY(70vh)"};
+    transform: ${props => props.opened ? "translateY(0)" : "translateY(100%)"};
     width: 100%;
     background: white;
     border-radius: 40px 40px 0px 0px;

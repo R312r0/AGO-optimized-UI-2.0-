@@ -27,8 +27,8 @@ const SwitchButton = styled.button`
   justify-content: center;
 
   background: ${props => props.active ? "#2D2D2D" : "transparent"};
-  border-radius: 30px;
-  border: ${props => props.active ? "2px solid #40BA93" : "none"};
+  border-radius: 3.906vw;
+  border: ${props => props.active ? "0.260vw solid #40BA93" : "none"};
   align-self: flex-end;
   color: ${props => props.active ? "white" : "#BDBDBD;"};
   font-weight: ${props => props.active ? "600" : "300"};
@@ -91,7 +91,7 @@ export const DashboardMobile = () => {
             </TVLVolumeSwitch>
             {activeTab === "TVL" ? <TVLChart/> : <Volume24h/>}
             <InfoButtonsArea>
-                <InfoButton onClick={() => setOpenTxs(true)}> <img src={tx_icon} alt={"mobile-tx-icon"}/> </InfoButton>
+                <InfoButton onClick={() => setOpenTxs(true)}> <img src={tx_icon} alt={"mobile-tx-icon"}/></InfoButton>
                 <InfoButton onClick={() => setOpenCharts(true)}> <img src={chart_icon} alt={"mobile-chart-icon"}/>
                 </InfoButton>
                 <InfoLabel> Transactions </InfoLabel>

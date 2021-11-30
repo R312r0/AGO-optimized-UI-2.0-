@@ -20,7 +20,7 @@ const BalancesTabWrapper = styled.div`
   margin: 0.4vw 0 0.45vw 0.5vw;
 
   background: ${props => props.mobile ? "transparent" : "linear-gradient(95.07deg, rgba(58, 58, 58, 0.4) -21.03%, rgba(0, 0, 0, 0.4) 139.31%), rgba(51, 51, 51, 0.1)"};
-  border: ${props => props.mobile ? "0" : "1px solid #333333"};
+  border: ${props => props.mobile ? "0" : "0.052vw solid #333333"};
   box-sizing: border-box;
   border-radius: 1.302vw;
 
@@ -28,7 +28,7 @@ const BalancesTabWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  font-size: 0.61vw;
+  font-size: 0.65vw;
   cursor: pointer;
 
   @media screen and (max-width: 1200px) {
@@ -79,9 +79,6 @@ const BalancesTabWrapper = styled.div`
     -webkit-transition: .4s ease;
 
     margin: auto auto auto ${props => props.opened ? "0.2vw" : "0.7vw"};
-    // position: ${props => props.opened ? "relative" : "static"};
-    // bottom: ${props => props.opened ? "28px" : "2px"};
-    // left: ${props => props.opened ? "250px" : "0"};
     transform: ${props => props.opened ? "rotate(180deg)" : "none"};
     
     @media screen and (max-width: 768px) {

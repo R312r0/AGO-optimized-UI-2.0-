@@ -9,32 +9,43 @@ import {ThemeSwitcher} from '../ThemeSwitcher/theme-switcher';
 
 
 const SideBarWrapper = styled.div`
-  display: grid;
-  grid-template-rows: 70% 15% 15%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-items: center;
-  max-height: 100vh;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    grid-template-rows: 75% 0 0;
+  
+  margin-top: 0.5vw;
+
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `
 
 const SocialMediasList = styled.div`
-  transition: 0.3s all;
-  position: absolute;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(60.68% 60.68% at 50.88% 47.73%, #265041 0%, #222121 100%);
   width: 80%;
+  height: ${props => props.opened ? "27.4vw" : "0"};
+  padding: 1.2vw 0;
+  
+  position: absolute;
   left: 50%;
-  height: ${props => props.opened ? "95%" : "0"};
-  transform: translateX(-50%);
-  bottom: 10px;
-  border: 1px solid #4F4F4F;
-  border-radius: 12px;
-  visibility: ${props => props.opened ? "visible" : "hidden"};
+  bottom: 0.521vw;
   z-index: ${props => props.opened ? "1000" : "-1000"};
-  display: grid;
-  grid-template-rows: repeat(6, 1fr);
-  align-items: center;
+
+  transition: 0.3s all;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(60.68% 60.68% at 50.88% 47.73%, #265041 0%, #222121 100%);
+  transform: translateX(-50%);
+
+  border: 0.052vw solid #4F4F4F;
+  border-radius: 0.8vw;
+  font-size: 1vw;
+  
+  visibility: ${props => props.opened ? "visible" : "hidden"};
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   a {
     display: ${props => props.opened ? "block" : "none"};
@@ -44,7 +55,7 @@ const SocialMediasList = styled.div`
 
     &:hover {
       transition: 0.15s all;
-      font-size: 1.250vw;
+      font-size: 1.4vw;
     }
   }
 `
@@ -52,16 +63,14 @@ const SocialMediasList = styled.div`
 const LinkList = styled.ul`
   position: relative;
   text-align: center;
-  height: auto;
+
   padding: 0.521vw 0.665vw;
-  width: 42%;
-  border: 1px solid #4F4F4F;
-  box-sizing: border-box;
+  
+  border: 0.052vw solid #4F4F4F;
   border-radius: 1vw;
-  display: grid;
-  grid-template-rows: repeat(6, 1fr) 2fr;
-  align-self: center;
-  align-items: center;
+  
+  display: flex;
+  flex-direction: column;
 
   .soc-list-light {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #40BA93;
@@ -75,11 +84,13 @@ const LinkList = styled.ul`
   }
 
   .active-nav-tab {
-    border: 1px solid #40BA93;
-    border-radius: 0.625vw;
-    background: #40BA93;
     width: 100%;
     height: 70%;
+
+    border: 0.052vw solid #40BA93;
+    border-radius: 0.625vw;
+    background: #40BA93;
+
     transition: 0.3s all;
 
     &:hover {
@@ -89,14 +100,22 @@ const LinkList = styled.ul`
 `
 
 const LinkListItem = styled.li`
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  height: 0;
+  
+  cursor: pointer;
   border-radius: 20%;
   
-  padding: 0.3vw;
+  padding: 1.4vw 0.9vw;
   margin: 0.3vw 0;
+
+  img {
+    width: 0.9vw;
+    height: 1.5vw;
+  }
 
   background-color: ${props => props.active ? "#40BA93" : "transparent"};
 
@@ -108,33 +127,28 @@ const LinkListItem = styled.li`
   &:last-child {
     border: 0.052vw solid #4F4F4F;
     border-radius: 0.6vw;
-    padding: 0.7vw 0.9vw;
 
-    justify-self: center;
-    align-self: flex-end;
-    display: grid;
-    place-items: center;
+    margin-top: 4vw;
     
     &:hover {
       transition: 0.15s all ease-out;
       opacity: 0;
     }
   }
-
-  img {
-    width: 0.9vw;
-    height: 1.5vw;
-  }
 `
 
 const BottomLinks = styled.div`
-  display: grid;
-  align-self: center;
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 1.4vw;
 
   a {
+    margin-left: 2vw;
     font-size: 0.8vw;
     color: white;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    
+    @media screen and (max-width: 768px) {
       display: none;
     }
   }
@@ -152,20 +166,17 @@ export const SideBar = () => {
     return (
         <SideBarWrapper>
             <LinkList>
-                <SocialMediasList opened={expandSocMedias} onMouseEnter={() => setExpandSocMedias(true)}
-                                  onMouseLeave={() => setExpandSocMedias(false)}>
-                    <a href="mailto:email@argano.io" target="_blank" rel="noreferrer"> <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="https://t.me/ARGANO_DEFI" target="_blank" rel="noreferrer"> <i
-                        class="fab fa-telegram-plane"></i> </a>
-                    <a href="https://discord.com/invite/mH7PJnNCWP" target="_blank" rel="noreferrer"> <i
-                        class="fab fa-discord"></i> </a>
-                    <a href="https://twitter.com/argano_io" target="_blank" rel="noreferrer"> <i
-                        class="fab fa-twitter"></i> </a>
-                    <a href="https://argano.medium.com/" target="_blank" rel="noreferrer"> <i class="fab fa-medium"></i>
-                    </a>
-                    <a href="https://github.com/Argano-DEX/Argano-Contracts" target="_blank" rel="noreferrer"> <i
-                        class="fab fa-github"></i> </a>
+                <SocialMediasList 
+                  opened={expandSocMedias} 
+                  onMouseEnter={() => setExpandSocMedias(true)}
+                  onMouseLeave={() => setExpandSocMedias(false)}
+                  >
+                    <a href="mailto:email@argano.io" target="_blank" rel="noreferrer"><i class="fas fa-envelope"></i></a>
+                    <a href="https://t.me/ARGANO_DEFI" target="_blank" rel="noreferrer"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="https://discord.com/invite/mH7PJnNCWP" target="_blank" rel="noreferrer"><i class="fab fa-discord"></i></a>
+                    <a href="https://twitter.com/argano_io" target="_blank" rel="noreferrer"><i class="fab fa-twitter"></i></a>
+                    <a href="https://argano.medium.com/" target="_blank" rel="noreferrer"><i class="fab fa-medium"></i></a>
+                    <a href="https://github.com/Argano-DEX/Argano-Contracts" target="_blank" rel="noreferrer"><i class="fab fa-github"></i></a>
                 </SocialMediasList>
                 {PAGES.map((item) => {
                     return (
@@ -181,13 +192,10 @@ export const SideBar = () => {
                 </LinkListItem>
             </LinkList>
             <BottomLinks>
-                <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing"
-                   target="_blank" rel="noreferrer"> White Paper </a>
-                <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer"> GitBook </a>
-                <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank"
-                   rel="noreferrer"> Audit Report </a>
-                <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank"
-                   rel="noreferrer"> $AGO contracts </a>
+                <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
+                <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
+                <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
+                <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
             </BottomLinks>
             <ThemeSwitcher/>
         </SideBarWrapper>

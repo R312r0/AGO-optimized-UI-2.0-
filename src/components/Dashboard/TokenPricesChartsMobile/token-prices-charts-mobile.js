@@ -12,7 +12,7 @@ const TokenPricesWrapper = styled.div`
     width: 100%;
     background: white;
     padding: 0px 22px 42px 22px;
-    transform: ${props => props.opened ? "translateY(0)" : "translateY(70vh)"};
+    transform: ${props => props.opened ? "translateY(0)" : "translateY(100%)"};
     border-radius: 40px 40px 0px 0px;
     display: grid;
     grid-template-rows: 0.5fr 0.5fr 0.5fr 6fr;

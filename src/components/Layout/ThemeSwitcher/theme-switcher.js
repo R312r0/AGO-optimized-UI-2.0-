@@ -4,13 +4,15 @@ import {useSystemContext} from '../../../systemProvider';
 import {useMediaQuery} from 'react-responsive';
 
 const ThemeSwitcherWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  display: flex;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
+
+  margin: 2vw 0 0 0.7vw;
+  
   width: 100%;
-  height: 100%;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
+
+  @media screen and (max-width: 768px) {
     transform: rotate(90deg);
     margin-left: 40px;
     margin-bottom: 230px;
@@ -18,15 +20,9 @@ const ThemeSwitcherWrapper = styled.div`
 
   i {
     color: white;
-    font-size: ${props => props.mobile ? "18px" : "1.5vw"};
+    font-size: ${props => props.mobile ? "2.344vw" : "1vw"};
 
-    &:first-child {
-      justify-self: flex-end;
-    }
-
-    &:last-child {
-      justify-self: flex-start;
-    }
+    padding: 0 0.4vw;
   }
 
   .acitve-daytime {
@@ -55,7 +51,7 @@ const ThemeSwitcherWrapper = styled.div`
     overflow: hidden;
     background: #ACACAC;
     box-shadow: inset 0px 4px 6px 1px rgba(14, 14, 14, 0.51);
-    border-radius: 100px;
+    border-radius: 5.208vw;
   }
 
   .toggle-state {
@@ -84,15 +80,18 @@ const ThemeSwitcherWrapper = styled.div`
 export const ThemeSwitcher = () => {
 
     const {theme, setTheme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 767px)'});
+    const isMobileScreen = useMediaQuery({query: '(max-width: 768px)'});
 
     return (
         <ThemeSwitcherWrapper mobile={isMobileScreen}>
             <i className={`fas fa-moon ${theme === "dark" ? "acitve-daytime" : ""}`}></i>
             <label className="label">
                 <div className={theme === "light" ? 'toggle active-theme-switch' : 'toggle'}>
-                    <input className="toggle-state" onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-                           type="checkbox" name="check"/>
+                    <input 
+                    className="toggle-state" 
+                    onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    type="checkbox" name="check"
+                    />
                     <div className="indicator"></div>
                 </div>
             </label>

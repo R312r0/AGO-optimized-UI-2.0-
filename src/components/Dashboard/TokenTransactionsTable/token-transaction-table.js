@@ -259,7 +259,7 @@ export const TokenTransactionTable = () => {
                 <div className="token-transaction-separator"></div>
                 {loading
                     ?
-                    <Loader/>
+                    <Loader />
                     :
                     <TableBody>
                         {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item) => {
