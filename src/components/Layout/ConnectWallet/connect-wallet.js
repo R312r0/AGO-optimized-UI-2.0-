@@ -20,7 +20,7 @@ const ConnectWallet = styled.div`
     white-space: nowrap;
     font-size: 0.990vw;
 
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    @media screen and (min-width: 500px) and (max-width: 750px) {
       margin-right: 8px;
       margin-bottom: 34px;
       font-size: 17px;
@@ -46,7 +46,7 @@ const ConnectWallet = styled.div`
 
     cursor: pointer;
 
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    @media screen and (min-width: 500px) and (max-width: 750px) {
       width: 40px;
       height: 40px;
       margin-bottom: 32px;
@@ -66,7 +66,7 @@ const ConnectWallet = styled.div`
 `
 export const ConnectWalletButton = () => {
 
-    const isMobileScreen = useMediaQuery({query: '(max-width: 768px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
     const {account} = useWeb3React();
     const {theme, disconnectWallet, setIsWalletModal} = useSystemContext();
 

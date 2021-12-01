@@ -36,7 +36,7 @@ const DashboardWrapper = styled.div`
       grid-column-gap: 2%;
     }
 
-    @media only screen and(max-width: 768px) {
+    @media only screen and(max-width: 750px) {
       grid-column-gap: 2%;
       width: 95%;
       margin-bottom: 15px;
@@ -47,7 +47,7 @@ const DashboardWrapper = styled.div`
 export const Dashboard = () => {
 
     const {theme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 768px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
 
 
     return (

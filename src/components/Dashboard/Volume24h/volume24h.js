@@ -39,12 +39,12 @@ const Volume24hChartWrapper = styled.div`
 }
 
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 750px) {
     height: ${props => props.mobile ? "80%" : "23vh"};
     grid-template-rows: 25% 75%;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 750px) {
     .volume24-chart {
         width: 100vw;
         padding: 0 5%;
@@ -77,7 +77,7 @@ const Volume24hChartWrapper = styled.div`
 export const Volume24h = () => {
 
     const {theme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 768px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
 
     const data = [
         {time: '01', uv: 100000, date: "Jul 1, 2021"},

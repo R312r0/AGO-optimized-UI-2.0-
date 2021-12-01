@@ -25,7 +25,7 @@ const TokenTransactionTableWrapper = styled.div`
     padding: 2% 2.5% 1%;
   }
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 750px) {
     height: 49vh !important;
     width: 95%;
     grid-template-rows: 1fr 8fr 1fr;

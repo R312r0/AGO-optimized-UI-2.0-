@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState, useRef} from 'react';
 import {formattedNum} from '../../../utils/helpers';
 import arrowUp from './arrow-up.svg';
 import arrowDown from './arrow-down.svg';
+import chart from './../../../assets/charts/chart.svg'
 import {LineChart, XAxis, YAxis, Line, ResponsiveContainer, Tooltip} from 'recharts';
 import {} from '../../App/App';
 import {useSystemContext} from '../../../systemProvider';
@@ -10,78 +11,161 @@ import styled from 'styled-components';
 
 
 const TokenPriceChartWrapper = styled.div`
-  position: relative;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  position: relative;
+  overflow: hidden;
   transition: 0.3s all;
-  height: ${props => props.isWindowExpanded ? "51vh" : "200px"};
+  cursor: pointer;
+
+  height: ${props => props.isWindowExpanded ? "28vw" : "10.5vw"};
+  padding: 1.823vw 2.084vw;
+  
   background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0.208vw 0.833vw rgba(0, 0, 0, 0.25);
   border-radius: 2vw;
   box-sizing: border-box;
-  padding: 2.5% 2.3%;
-  display: grid;
-  align-items: ${props => props.isWindowExpanded ? "flex-start" : "center"};;
-  grid-template-columns: 0.85fr 1.1fr 1fr 0.95fr;
   
-  // Responsive || Height
-
-  @media only screen and (min-width: 1920px) {
-    height: ${props => props.isWindowExpanded ? "51vh" : "12vw"};
-  }
-
-  @media only screen and (max-width: 1880px) {
-    height: ${props => props.isWindowExpanded ? "51vh" : "11vw"};
-  }
-
   // Responsive || Width
+  
+  @media only screen and (max-width: 1024px){
+    height: ${props => props.isWindowExpanded ? "28.5vw" : "11.3vw"};
+    padding: 2vw 1.074vw;
+  }
+  
+  .token-heading {
+    opacity: ${props => props.isWindowExpanded ? "1" : "0"};
+    transition: ${props => props.isWindowExpanded ? "0.4s all" : "0.1s all"};
+    height: ${props => props.isWindowExpanded ? "3.2vw" : "0"};
+    
+    margin: 0 0 0 1vw;
+    color: white;
+    font-size: 1.25vw;
+    
+    @media only screen and (max-width: 1024px){
+      font-weight: 300;
+      font-size: 1.5vw;
 
-  @media only and (max-width: 768px) {
-    width: 95%;
-    height: ${props => props.isWindowExpanded ? "51vh" : "12vh"};
-    padding: 0;
+      height: ${props => props.isWindowExpanded ? "4vw" : "0"};
+    }
   }
 
-  @media only screen and (max-width: 1024px){
-    padding: 1% 1%;
+  .separator {
+    margin-bottom: auto;
+
+    width: 0.052vw;
+    height: 100%;
+    background: #40BA93;
+
+    transition: 0.4s ease;
+
+    &:not(:nth-child(4)) {
+      height: ${props => props.isWindowExpanded ? "0" : "100%"};
+    }
+
+    &:last-child {
+      display: none;
+    }
+  }
+
+  .single-price-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.3s all;
+
+    .price-block-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: 0.3s all;
+
+      padding: 0 1.0415vw 0 1vw;
+
+      margin-bottom: auto;
+
+      .price-block-chart {
+        display: flex;
+        flex-direction: column;
+        opacity: ${props => props.isWindowExpanded ? "1" : "0"};
+        transition: ${props => props.isWindowExpanded ? "2s all" : "0.1s all"};
+
+        img {
+          width: auto;
+          height: 8.490vw;
+        }
+
+        main {
+          display: flex;
+          flex-direction: column;
+
+          margin-top: 1.354vw;
+          font-size: 0.729vw;
+
+          .token-data {
+            padding: 0.365vw 0.938vw;
+
+            display: flex;
+            margin-right: auto;
+
+            color: white;
+            background: #1E1E1E;
+            border-radius: 0.625vw;
+
+            &:not(:last-child) {
+              margin-bottom: 0.573vw;
+            }
+
+            p {
+              color: #4F4F4F;
+            }
+
+            span {
+              margin-left: 1.25vw;
+            }
+          }
+        }
+      }
+    }
   }
 `
 
 const SinglePriceBlock = styled.div`
-  border-right: ${props => props.isWindowExpanded ? props.isShowDivider ? "1px solid #40BA93" : "none" : "1px solid #40BA93"};
-  padding-left: 40px;
-  
-  @media only screen and (max-width: 768px) {
-    padding-left: 28px;
-  }
-  
-  @media only screen and (max-width: 1024px){
-    padding-left: 20px;
-  }
-
-  &:last-child {
-    border-right: none;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   h3 {
     font-size: 1vw;
+    margin-bottom: 0.938vw;
+
     color: white;
+
     @media only screen and (max-width: 1024px){
       font-size: 1.5vw;
+      margin-bottom: 0;
     }
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 750px) {
       font-size: 2vw;
     }
   }
 
   h1 {
-    font-size: 2.1vw;
+    font-size: 1.875vw;
     color: #40BA93;
+
     @media only screen and (max-width: 1024px){
       font-size: 1.9vw;
+      margin: auto 0;
     }
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 750px) {
       font-size: 2.6vw;
     }
   }
@@ -94,7 +178,7 @@ const SinglePriceBlock = styled.div`
     color: white;
 
     @media only screen and (max-width: 1024px){
-      font-size: 1.5vw;
+      font-size: 1vw;
     }
 
     img {
@@ -111,6 +195,7 @@ const SinglePriceBlock = styled.div`
     }
 
     span {
+      font-size: 0.729vw;
       color: #4F4F4F;
       margin-left: 0.469vw;
     }
@@ -143,73 +228,92 @@ export const TokenPricesCharts = () => {
 
 
     const Chart = ({data, fullSize}) => {
+      const tickColor = theme === "light" ? "black" : "white"
+      return (
+          <ResponsiveContainer width={'100%'} height={"100%"}>//
+              <LineChart
+                  margin={{
+                      top: 50,
+                      bottom: 1,
+                  }}
+                  data={data}
+              >
 
-        const tickColor = theme === "light" ? "black" : "white"
+                  <Line
+                      type="basis"
+                      dataKey="value"
+                      stroke="#40BA93"
+                      strokeWidth={5}
+                      dot={false}
+                      activeDot={true}
+                  />
+                  <Tooltip
+                      content={<CustomToolTip/>}
+                  />
+                  {fullSize ?
+                      <XAxis
+                          dataKey="time"
+                          axisLine={false}
+                          tickLine={false}
+                          stroke={tickColor}
+                          minTickGap={5}
+                      />
+                      :
+                      ""
+                  }
 
-        return (
-            <ResponsiveContainer width={'100%'} height={"100%"}>//
-                <LineChart
-                    margin={{
-                        top: 50,
-                        bottom: 1,
-                    }}
-                    data={data}
-                >
-
-                    <Line
-                        type="basis"
-                        dataKey="value"
-                        stroke="#40BA93"
-                        strokeWidth={5}
-                        dot={false}
-                        activeDot={true}
-                    />
-                    <Tooltip
-                        content={<CustomToolTip/>}
-                    />
-                    {fullSize ?
-                        <XAxis
-                            dataKey="time"
-                            axisLine={false}
-                            tickLine={false}
-                            stroke={tickColor}
-                            minTickGap={5}
-                        />
-                        :
-                        ""
-                    }
-
-                </LineChart>
-            </ResponsiveContainer>
+              </LineChart>
+          </ResponsiveContainer>
         )
-
     }
 
     const [showChart, setShowChart] = useState({active: true, index: 0})
 
     return (
         <TokenPriceChartWrapper isWindowExpanded={expandWindow} onClick={() => setExpandWindow(!expandWindow)}>
+          <h1 className="token-heading">Total Value Locked</h1>
+          <div className="single-price-wrapper">
             {dashTokens.map((item, _ind) => {
 
-                const Arrow = item.change24h.charAt(0) === "-" ? <img src={arrowDown} alt="arrow-down-percent"/> :
-                    <img src={arrowUp} alt="arrow-up-percent"/>
+                const Arrow = item.change24h.charAt(0) === "-" 
+                ? <img src={arrowDown} alt="arrow-down-percent"/> 
+                : <img src={arrowUp} alt="arrow-up-percent"/>
 
                 return (
-                    <SinglePriceBlock
-                        onMouseEnter={() => expandWindow ? null : setShowChart({active: true, index: _ind})}
-                        onMouseLeave={() => expandWindow ? null : setShowChart({active: false, index: null})}
-                        key={_ind}
-                        isShowDivider={_ind === 1}
-                        isWindowExpanded={expandWindow}
-                    >
-                        <h3> {item.name} </h3>
-                        <h1> ${item.currentPrice} </h1>
-                        <span> {Arrow} {item.change24h} <span>(24h)</span> </span>
-
-                    </SinglePriceBlock>
+                  <>
+                    <div className="price-block-wrapper">
+                      <main>
+                        <SinglePriceBlock
+                          onMouseEnter={() => expandWindow ? null : setShowChart({active: true, index: _ind})}
+                          onMouseLeave={() => expandWindow ? null : setShowChart({active: false, index: null})}
+                          key={_ind}
+                          isShowDivider={_ind === 1}
+                          isWindowExpanded={expandWindow}
+                        >
+                          <h3> {item.name} </h3>
+                          <h1> ${item.currentPrice} </h1>
+                          <span> {Arrow} {item.change24h} <span>(24h)</span> </span>
+                        </SinglePriceBlock>
+                        <div className="price-block-chart">
+                          <img src={chart} />
+                          <main>
+                            <div className="token-data">
+                              <p>Supply:</p>
+                              <span>253,22K</span>
+                            </div>
+                            <div className="token-data">
+                              <p>Market cap:</p>
+                              <span>$249,65K</span>
+                            </div>
+                          </main>
+                        </div>
+                      </main>
+                    </div>
+                    <div className="separator"></div>
+                  </>
                 )
             })}
+          </div>
         </TokenPriceChartWrapper>
     )
-
 }

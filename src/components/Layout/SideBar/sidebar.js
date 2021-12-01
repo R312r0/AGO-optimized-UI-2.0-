@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {useHistory} from 'react-router';
 import {NavLink} from 'react-router-dom';
 import comments_black from '../../../assets/icons/nav-links/dark-theme/comment-black.svg';
+import document_icon from './../../../assets/icons/sidebar-documents.svg';
 import {PAGES} from '../../../constants';
 import {useSystemContext} from '../../../systemProvider';
 import styled from 'styled-components';
 import {ThemeSwitcher} from '../ThemeSwitcher/theme-switcher';
+import { useMediaQuery } from 'react-responsive';
 
 
 const SideBarWrapper = styled.div`
@@ -20,6 +22,11 @@ const SideBarWrapper = styled.div`
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  .document_icon {
+    width: 1.563vw;
+    height: 2.083vw;
   }
 `
 
@@ -46,6 +53,10 @@ const SocialMediasList = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media screen and (max-width: 1024px) {
+    height: ${props => props.opened ? "31.8vw" : "0"};
+  }
 
   a {
     display: ${props => props.opened ? "block" : "none"};
@@ -117,6 +128,15 @@ const LinkListItem = styled.li`
     height: 1.5vw;
   }
 
+  @media screen and (max-width: 1024px) {
+    padding: 1.7vw 1.2vw;
+
+    img {
+      width: 1.2vw;
+      height: 2vw;
+    }
+  }
+
   background-color: ${props => props.active ? "#40BA93" : "transparent"};
 
   &:hover {
@@ -148,7 +168,7 @@ const BottomLinks = styled.div`
     font-size: 0.8vw;
     color: white;
     
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 750px) {
       display: none;
     }
   }
@@ -160,6 +180,7 @@ export const SideBar = () => {
     const history = useHistory();
     const [expandSocMedias, setExpandSocMedias] = useState(false);
     const [activeTab, setActiveTab] = useState(history.location.pathname);
+    const isTabletScreen = useMediaQuery({query: '(max-width: 1024px)'});
     const {theme, setTheme} = useSystemContext();
 
 
@@ -191,12 +212,15 @@ export const SideBar = () => {
                     <img src={comments_black} alt={'comments'}/>
                 </LinkListItem>
             </LinkList>
-            <BottomLinks>
-                <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
-                <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
-                <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
-                <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
-            </BottomLinks>
+            {isTabletScreen 
+              ? <img className="document_icon" src={document_icon}></img> 
+              : <BottomLinks>
+                  <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
+                  <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
+                  <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
+                  <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
+                </BottomLinks>
+            }
             <ThemeSwitcher/>
         </SideBarWrapper>
     )

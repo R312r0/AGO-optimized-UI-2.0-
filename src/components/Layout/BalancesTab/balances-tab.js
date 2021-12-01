@@ -37,7 +37,12 @@ const BalancesTabWrapper = styled.div`
     font-size: 0.81vw;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
+    font-size: 0.9vw;
+    width: ${props => props.opened ? props.account ? "100%" : "15vw" : "15vw"};
+  }
+
+  @media screen and (max-width: 750px) {
     grid-row-start: 2;
     grid-row-end: 3;
     grid-column-start: 1;
@@ -61,7 +66,7 @@ const BalancesTabWrapper = styled.div`
       height: 2.7vw;
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 750px) {
       width: 12vw;
       height: 12vw;
     }
@@ -81,7 +86,7 @@ const BalancesTabWrapper = styled.div`
     margin: auto auto auto ${props => props.opened ? "0.2vw" : "0.7vw"};
     transform: ${props => props.opened ? "rotate(180deg)" : "none"};
     
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 750px) {
       display: none;
     }
   }
@@ -95,7 +100,7 @@ const BalancesTabWrapper = styled.div`
 
   .balance {
     color: #40BA93;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 750px) {
       font-size: 4vw;
       margin-top: 10%;
     }
@@ -106,7 +111,7 @@ const BalancesTabWrapper = styled.div`
     align-items: center;
     margin-right: auto;
     
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 750px) {
       display: grid;
       grid-template-rows: 1fr 1fr;
       grid-template-columns: auto auto;
@@ -115,7 +120,11 @@ const BalancesTabWrapper = styled.div`
     p {
       font-size: 0.8vw;
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 1024px) {
+        font-size: 1.2vw;
+      }
+
+      @media screen and (max-width: 750px) {
         font-size: 3.8vw;
       }
 
@@ -132,7 +141,11 @@ const BalancesTabWrapper = styled.div`
 
       transition: .4s ease;
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 1024px) {
+        margin-left: ${props => props.opened ? "3.2vw" : "2.8vw"};
+      }
+
+      @media screen and (max-width: 750px) {
         margin-left: 3%;
         font-size: 3.3vw;
         justify-content: start;
@@ -244,17 +257,12 @@ const BalanceListDesktop = styled.ul`
   margin: 0 0 0 auto;
   display: ${props => props.opened ? "flex" : "none"};
 
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    margin-right: 150px;
-  }
-
   &::-webkit-scrollbar {
     display: none;
   }
 `
 
 const BalanceListItemDesktop = styled.li`
-
   &:not(:first-child) {
     padding-left: 1%;
   }
@@ -275,8 +283,15 @@ const BalanceListItemDesktop = styled.li`
     color: #828282;
     font-size: 0.625vw;
     margin-right: 1.042vw;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
-      font-size: 12px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    span {
+      font-size: 0.9vw;
+    }
+    img {
+      width: 1.7vw;
+      height: 1.7vw;
     }
   }
 `
@@ -288,7 +303,7 @@ export const BalancesTab = () => {
     const [balancesMobileExpanded, setBalancesMobileExpanded] = useState(false)
     const {account} = useWeb3React();
     const {theme, userProtfolio} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 768px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'});
 
     const handlersMobileBalancesExpanded = useSwipeable({
         onSwipedUp: () => {

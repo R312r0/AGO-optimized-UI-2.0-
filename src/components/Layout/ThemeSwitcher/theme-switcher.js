@@ -12,7 +12,7 @@ const ThemeSwitcherWrapper = styled.div`
   
   width: 100%;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 750px) {
     transform: rotate(90deg);
     margin-left: 40px;
     margin-bottom: 230px;
@@ -27,7 +27,7 @@ const ThemeSwitcherWrapper = styled.div`
 
   .acitve-daytime {
     color: #40BA93;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    @media screen and (min-width: 500px) and (max-width: 750px) {
       transform: rotate(290deg);
     }
   }
@@ -80,7 +80,7 @@ const ThemeSwitcherWrapper = styled.div`
 export const ThemeSwitcher = () => {
 
     const {theme, setTheme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 768px)'});
+    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'});
 
     return (
         <ThemeSwitcherWrapper mobile={isMobileScreen}>
