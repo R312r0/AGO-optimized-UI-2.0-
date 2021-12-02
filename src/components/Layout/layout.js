@@ -70,7 +70,7 @@ const AgoLogo = styled.img`
 
   @media screen and (max-width: 1200px) {
     width: 3.4vw;
-    height: 3vw;
+    height: 3.4vw;
   }
 
   @media screen and (max-width: 750px) {

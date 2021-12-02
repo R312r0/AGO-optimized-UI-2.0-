@@ -131,47 +131,67 @@ export const Redeem = ({info}) => {
 
 
     return (
-        <div className='redeem-wrapper'>
-            <div className='collect-redemption'> 
-                <div>
-                    <h3> Collect redemption </h3>
-                    <button disabled={collectRedemption.redemptionCollateral === "0" && collectRedemption.redemptionShare === "0"} onClick={() => collectRedemption()}> Collect </button>
+        <div className='general-wrapper'>
+            <div className='collect-redemption-wrapper'>
+                <div className='collect-redemption'> 
+                    <div>
+                        <h3> Collect redemption </h3>
+                        <button disabled={collectRedemption.redemptionCollateral === "0" && collectRedemption.redemptionShare === "0"} onClick={() => collectRedemption()}> Collect </button>
+                    </div>
+                    <div> 
+                        <h3> {redeemBalances?.redemptionCollateral} <b>{mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b> </h3>
+                        <h3> {redeemBalances?.redemptionShare} <b>{mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</b> </h3>
+                    </div>
                 </div>
-                <div> 
-                    <h3> {redeemBalances?.redemptionCollateral} <b>{mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b> </h3>
-                    <h3> {redeemBalances?.redemptionShare} <b>{mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</b> </h3>
+                <div className='collect-redemption'> 
+                    <div>
+                        <h3>Active minting</h3>
+                        <span>
+                            WBTC AGOBTC
+                        </span>
+                    </div>
+                    <div className='collect-redemption-data'> 
+                        <p>Price</p>
+                        <p>$ 30,500</p>
+                    </div>
+                    <div className='collect-redemption-data'> 
+                        <p>Volume</p>
+                        <p>0.5</p>
+                    </div>
                 </div>
             </div>
-        <div className='redeem-window'>
-            <div className='redeem-window-header'> 
+        <div className='general-window'>
+            <div className='general-window-header'> 
                 <h3> Redeem </h3>
-                <button className='mint-window-settings-btn' onClick={() => setMintRedeemCurrencyModal(true)}> <img src={setting_cog} alt={"settings"}/> </button>
+                <button className='general-window-settings-btn' onClick={() => setMintRedeemCurrencyModal(true)}> <img src={setting_cog} alt={"settings"}/> </button>
             </div>
-            <div className='redeem-window-input-row'> 
+            <div className='general-window-input-row'> 
                 <span> <h3> Input </h3> </span>
                 <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency)} </h3> </span>
                 <input onChange={(e) => handleStableInput(e.target.value)} className='inpunt-redeem' type='number' placeholder="0.00" value={input}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency}/> {mintRedeemCurrency} </span>
             </div>
-            <div className='redeem-window-op-sign-row'> 
+            <div className='general-window-op-sign-row'> 
                 <i className="fas fa-plus"/>
             </div>
-            <div className='redeem-window-input-row'> 
+            <div className='general-window-input-row'> 
                 <span> <h3> Output USDT - <b> {info.targetCollateralRatio}% </b> </h3> </span>
                 <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC")} </h3> </span>
                 <input disabled type='number' placeholder="0.00" value={collateralOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
             </div>
-            <div className='redeem-window-op-sign-row'> 
+            <div className='general-window-op-sign-row'> 
                 <i className="fas fa-arrow-down"/>
             </div>
-            <div className='redeem-window-input-row output'> 
+            <div className='general-window-input-row output'> 
                 <span> <h3> Output CNUSD - <b> {100 - info.targetCollateralRatio}% </b> </h3> </span>
                 <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC")} </h3> </span>
                 <input disabled type='number' placeholder={info.targetCollateralRatio === 100 ? "TCR is 100%" : "0.00"} value={info.targetCollateralRatio === 100 ? null : catenaOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} </span>
             </div>
-            <button onClick={approved ? handleRedeem : handleApprove} className='redeem-window-run-mint'> {approved > "0" ? "Redeem" : `Approve ${mintRedeemCurrency}`}</button>
+            <div className='general-btn-wrapper'>
+                <button className='mint-window-run-mint' onClick={approved ? handleRedeem : handleApprove}> {approved > "0" ? "Redeem" : `Approve ${mintRedeemCurrency}`}</button>
+            </div>
         </div>
     </div>
     )
