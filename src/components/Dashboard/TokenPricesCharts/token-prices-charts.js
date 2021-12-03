@@ -3,6 +3,7 @@ import {formattedNum} from '../../../utils/helpers';
 import arrowUp from './arrow-up.svg';
 import arrowDown from './arrow-down.svg';
 import chart from './../../../assets/charts/chart.svg'
+import demoChart from './../../../assets/charts/demo-chart.svg'
 import {LineChart, XAxis, YAxis, Line, ResponsiveContainer, Tooltip} from 'recharts';
 import {} from '../../App/App';
 import {useSystemContext} from '../../../systemProvider';
@@ -138,11 +139,62 @@ const TokenPriceChartWrapper = styled.div`
 const SinglePriceBlock = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
+  .demo-chart {
+    width: ${props => props.isWindowExpanded ? "0" : "10vw"};
+    height: 0;
+
+    transition: 0.1s ease;
+    opacity: 0;
+    margin-bottom: auto;
+    margin-right: auto;
+  }
+
+  &:hover {
+    transition: .4s ease;
+
+    .demo-chart {
+      transition: ${props => props.isWindowExpanded ? "0.1s ease" : ".5s ease"};
+
+      height: ${props => props.isWindowExpanded ? "0" : "3vw"};
+      opacity: 1;
+    }
+
+    h3 {
+      margin-bottom: ${props => props.isWindowExpanded ? "0.938vw" : "0"};
+    }
+
+    h1 {
+      font-size: ${props => props.isWindowExpanded ? "1.875vw" : "0.729vw"};
+    }
+  }
+
+  @media only screen and (max-width: 1024px){
+    &:hover {
+      .demo-chart {
+        height: 0;
+      }
+
+      h3 {
+        margin-bottom: 0;
+        @media only screen and (max-width: 1024px){
+          font-size: 1.5vw;
+        }
+      }
+
+      h1 {
+        font-size: 0.729vw;
+        @media only screen and (max-width: 1024px){
+          font-size: 1.9vw;
+        }
+      }
+    }
+  }
 
   h3 {
     font-size: 1vw;
     margin-bottom: 0.938vw;
+    transition: .4s ease;
 
     color: white;
 
@@ -159,6 +211,7 @@ const SinglePriceBlock = styled.div`
   h1 {
     font-size: 1.875vw;
     color: #40BA93;
+    transition: .4s ease;
 
     @media only screen and (max-width: 1024px){
       font-size: 1.9vw;
@@ -293,6 +346,7 @@ export const TokenPricesCharts = () => {
                           <h3> {item.name} </h3>
                           <h1> ${item.currentPrice} </h1>
                           <span> {Arrow} {item.change24h} <span>(24h)</span> </span>
+                          <img src={demoChart} className='demo-chart' />
                         </SinglePriceBlock>
                         <div className="price-block-chart">
                           <img src={chart} />

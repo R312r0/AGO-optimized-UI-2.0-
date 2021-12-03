@@ -49,7 +49,7 @@ const Content = styled.div`
 `
 
 const ContentHeader = styled.h1`
-  padding-left: 2.8%;
+  padding-left: 2.5vw;
   font-weight: 600;
   font-size: 1.8vw;
   color: white;

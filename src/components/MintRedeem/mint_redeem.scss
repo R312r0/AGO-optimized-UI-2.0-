@@ -301,6 +301,12 @@
             pointer-events: none;
             cursor: none;
           }
+
+          &:hover {
+            transition: .4s ease;
+            background-color: #1E1E1E;
+            color: #40BA93;
+          }
         }
       }
     }

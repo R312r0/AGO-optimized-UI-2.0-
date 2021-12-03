@@ -94,6 +94,16 @@ const LinkList = styled.ul`
     z-index: 1000;
   }
 
+  .link-message-item {
+    border: 0.052vw solid #4F4F4F;
+    margin-top: 4vw;
+
+    &:hover {
+      transition: 0.15s all ease-out;
+      opacity: 0;
+    }
+  }
+
   .active-nav-tab {
     width: 100%;
     height: 70%;
@@ -145,17 +155,12 @@ const LinkListItem = styled.li`
   }
 
   &:last-child {
-    border: 0.052vw solid #4F4F4F;
+    // border: 0.052vw solid #4F4F4F;
+    // margin-top: 4vw;
     border-radius: 0.6vw;
-
-    margin-top: 4vw;
-    
-    &:hover {
-      transition: 0.15s all ease-out;
-      opacity: 0;
-    }
   }
 `
+
 
 const BottomLinks = styled.div`
   display: flex;
@@ -201,14 +206,14 @@ export const SideBar = () => {
                 </SocialMediasList>
                 {PAGES.map((item) => {
                     return (
-                        <LinkListItem active={item.path === history.location.pathname}>
-                            <NavLink to={item.path} onClick={() => setActiveTab(item.path)}>
+                        <NavLink to={item.path} onClick={() => setActiveTab(item.path)}>
+                          <LinkListItem active={item.path === history.location.pathname}>
                                 <img src={activeTab === item.path ? item.imgActive : item.img} alt={`${item.path}`}/>
-                            </NavLink>
-                        </LinkListItem>
+                          </LinkListItem>
+                        </NavLink>
                     )
                 })}
-                <LinkListItem onMouseEnter={() => setExpandSocMedias(true)}>
+                <LinkListItem className='link-message-item' onMouseEnter={() => setExpandSocMedias(true)}>
                     <img src={comments_black} alt={'comments'}/>
                 </LinkListItem>
             </LinkList>
