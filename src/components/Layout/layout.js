@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {SideBar} from './SideBar/sidebar';
 import ago_icon from '../../assets/icons/ago-logo.svg';
@@ -139,7 +139,7 @@ export const Layout = ({children}) => {
                 {!isMobileScreen ? <SideBar/> : null}
                 <Content mobile={isMobileScreen}>
                     {!isMobileScreen ? 
-                        <ContentHeader>{PAGES.find(item => item.path === history.location.pathname).name} 
+                        <ContentHeader>{PAGES.find(item => item.path === history.location.pathname).name}
                         </ContentHeader> : null}
                     {loading ? <Spin size="large" indicator={loadingIcon}/> : children}
                 </Content>

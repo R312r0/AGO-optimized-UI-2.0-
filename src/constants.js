@@ -3,6 +3,7 @@ import { NetworkConnector } from '@web3-react/network-connector';
 // Dark theme icons.
 import dashboard_black from './assets/icons/nav-links/dark-theme/dashboard-black.svg';
 import mint_redeem_black from './assets/icons/nav-links/dark-theme/mint-redeem-black.svg';
+import foundry_black from './assets/icons/nav-links/active/foundry-active.svg';
 import staking_black from './assets/icons/nav-links/dark-theme/staking-black.svg';
 import liquidity_pools_black from './assets/icons/nav-links/dark-theme/liquidity-pools-black.svg';
 import trading_black from './assets/icons/nav-links/dark-theme/trading-black.svg';
@@ -12,6 +13,7 @@ import accounts_black from './assets/icons/nav-links/dark-theme/accounts-black.s
 // Active icons.
 import dashboard_active from './assets/icons/nav-links/active/dashboard-active.svg';
 import mint_redeem_active from './assets/icons/nav-links/active/mint-redeem-active.svg';
+import foundry_active from './assets/icons/nav-links/active/foundry-active.svg';
 import staking_active from './assets/icons/nav-links/active/staking-active.svg';
 import liquidity_pools_active from './assets/icons/nav-links/active/liq-pools-active.svg';
 import trading_active from './assets/icons/nav-links/active/trading-active.svg';
@@ -98,6 +100,7 @@ export const MAX_INT = '11579208923731619542357098500868790785326998466564056403
 export const PAGES = [
     {path: "/", name: "Dashboard", img: dashboard_black, imgActive: dashboard_active},
     {path: "/mint-redeem", name: "Mint/Redeem", img: mint_redeem_black, imgActive: mint_redeem_active},
+    {path: "/foundry", name: "Foundry", img: foundry_black, imgActive: foundry_active},
     {path: "/staking", name: "Staking rewards", img: staking_black, imgActive: staking_active},
     {path: "/liqudity-pools", name: "Liquidity-Pools", img: liquidity_pools_black, imgActive: liquidity_pools_active},
     {path: "/trading", name: "Trading", img: trading_black, imgActive: trading_active},
