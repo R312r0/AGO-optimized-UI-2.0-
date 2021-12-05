@@ -33,8 +33,6 @@ export const MintRedeem = () => {
             poolBalance = formatFromDecimal(await contracts.POOL_AGOBTC.methods.collateralDollarBalance().call(), 18);
         }
 
-        console.log(info);
-
         setMintRedeemInfo({
             stablePrice: formatFromDecimal(info["0"], 6),
             sharePrice: formatFromDecimal(info["1"], 18),

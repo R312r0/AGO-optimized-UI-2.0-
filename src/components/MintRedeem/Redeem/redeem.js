@@ -25,8 +25,6 @@ export const Redeem = ({info}) => {
         getRedemption()
     }, [mintRedeemCurrency])
 
-    console.log(info);
-
     const getAllowance = async () => {
 
         let token;

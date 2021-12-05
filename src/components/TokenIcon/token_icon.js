@@ -11,6 +11,8 @@ import cnBtc from './svg/CNBTC.svg'
 import matic from './svg/MATIC.svg'
 import usdt from './svg/USDT.svg'
 import wbtc from './svg/WBTC.svg'
+import dai from './svg/DAI.svg';
+import usdc from './svg/USDC.svg';
 
 export const TokenIcon = ({iconName}) => {
     const tokens = [
@@ -19,11 +21,14 @@ export const TokenIcon = ({iconName}) => {
         { name: "AGOBTC", icon: agoBtc },
         { name: "CNUSD", icon: cnUsd },
         { name: "CNBTC", icon: cnBtc },
-        { name: "MATIC", icon: matic },
+        { name: "WMATIC", icon: matic },
         { name: "USDT", icon: usdt },
         { name: "WBTC", icon: wbtc },
-    ]
+        { name: "DAI", icon: dai },
+        { name: "USDC", icon: usdc },
 
-    const returnedToken = tokens.filter(item => item.name === iconName)
-    return <img src={returnedToken[0].icon} width={40} height={40}/>
+    ]
+    const returnedToken = tokens.find(item => item.name === iconName)
+
+    return <img src={returnedToken.icon} width={40} height={40}/>
 }

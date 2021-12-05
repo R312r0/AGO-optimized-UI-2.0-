@@ -24,27 +24,40 @@ export const USD_PRICE_ENDPOINT = (contractAddress) => {
 
 export const MATIC_USD_PRICE_ENDPOINT = 'https://api.coingecko.com/api/v3/simple/token_price/polygon-pos?contract_addresses=0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270&vs_currencies=usd';
 
+export const FACTORY_ADDRESS = "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707"
 
 export const COINGECKO_IDS = {
     AGO: "uniswap",
-    AGOUSD: "tether", 
+    AGOUSD: "tether",
     CNUSD: "usd-coin",
     AGOBTC: "wrapped-bitcoin",
     CNBTC: "adamant",
-    WMATIC: "wmatic", 
-    USDT: "tether", 
+    WMATIC: "wmatic",
+    USDT: "tether",
     WBTC: "wrapped-bitcoin",
 }
 
+export const DEX_ADDRESESS = {
+    FACTORY: "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707",
+    ROUTER: "0x0165878a594ca255338adfa4d48449f69242eb8f",
+}
+
+export const TOKEN_ADDRESESS = {
+    AGO: "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+    WMATIC: "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+    USDC: "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+    USDT: "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+    DAI: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+}
 
 export const CONTRACT_ADRESESS = {
     AGO: "0xc3e2A3Aca375c5408C2DeA4ACcb518C26cb0cb3C",
-    AGOUSD: "0x16Cf2E9b884E1E355995Dc094BA38e2dc3c09d9D", 
+    AGOUSD: "0x16Cf2E9b884E1E355995Dc094BA38e2dc3c09d9D",
     CNUSD: "0x529A833bD70868Af24c5BF9BCF891C83DB022A99",
     AGOBTC: "0x36F1c6dcd73c246Ae557585a839e8437C8Bd8558",
     CNBTC: "0x6b2Cff0e587C9Ad77a3e913Aa25cd97c25a45369",
-    WMATIC: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", 
-    USDT: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", 
+    WMATIC: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+    USDT: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
     WBTC: "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
     POOL_AGOUSD: "0xF0c04bb6Af39a3fb06dD8E7f45d70bcb588Ac148",
     ORACLE_AGOUSD: "0x39dFCFF38d9BA1deA0CEe694097376349be567EE",
@@ -73,8 +86,8 @@ export const TX_OPERATIONS = {
 
 
 // Connectors
-export const metaMask = new InjectedConnector({ supportedChainIds: [137] });
-export const network = new NetworkConnector({ urls: { 137: "https://rpc-mainnet.maticvigil.com/" }, defaultChainId: 137 })
+export const metaMask = new InjectedConnector({ supportedChainIds: [31337] });
+export const network = new NetworkConnector({ urls: { 31337: "http://127.0.0.1:8545/" }, defaultChainId: 31337 })
 
 // Message keys
 export const MINT_REDEEM_KEY = "MINT_REDEEM_KEY";

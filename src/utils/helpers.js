@@ -96,7 +96,7 @@ export const calculateTimeDifference = (timestamp) => {
         diff = (diff / 60).toFixed(0) + " hour ago"
     }
     else if (diff < 1) {
-        diff = "< 1 minute ago"
+        diff = "recently"
     }
     else {
         diff = parseFloat(diff).toFixed(0) + " minutes ago"

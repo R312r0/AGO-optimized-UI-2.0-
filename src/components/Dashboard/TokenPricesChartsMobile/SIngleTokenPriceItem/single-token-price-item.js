@@ -74,8 +74,6 @@ const BottomInfo = styled.div`
 
 export const SingleTokenPriceItem = ({token}) => {
 
-    console.log(token);
-
     const {name, currentPrice, change24h, chartPrices, supply, marketCap} = token;
 
     const {theme} = useSystemContext();

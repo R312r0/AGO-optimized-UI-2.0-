@@ -1,5 +1,4 @@
-import React, {useContext, useState} from 'react';
-import {Layout} from '../Layout/layout';
+import React, {useState, useEffect} from 'react';
 import {TokenIcon} from '../TokenIcon/token_icon';
 import {ProvideLiquidity} from './ProvideLiquidity/provide_liquidity';
 import {Liquidity} from './Liquidity/liquidity';
@@ -7,23 +6,67 @@ import {Volume} from './Volume/volume';
 import {PieChart, Pie, Sector, Cell, ResponsiveContainer} from 'recharts';
 import './liquidity-pools.scss';
 import {useSystemContext} from '../../systemProvider';
+import {useQuery} from "@apollo/client";
+import {LIQUIDITY_POOLS} from "../../api/client";
+import {formatFromDecimal, formattedNum, formatToDecimal} from "../../utils/helpers";
+import {useWeb3React} from "@web3-react/core";
+import ERC20_ABI from '../../abi/ERC20.json';
 
 export const LiquidityPools = () => {
 
-    const [liquidityPools, setLiquidityPools] = useState([
-        {firstToken: "AGO", secondToken: "MATIC", liquidity: "$400,335,212", myLiquidity: "-", apy: "30%"},
-        {firstToken: "CNBTC", secondToken: "MATIC", liquidity: "$400,112,042", myLiquidity: "-", apy: "35%"},
-        {firstToken: "AGOBTC", secondToken: "WBTC", liquidity: "$400,223,012", myLiquidity: "$19,225,116", apy: "33%"},
-        {firstToken: "AGOUSD", secondToken: "USDT", liquidity: "$400,124,544", myLiquidity: "$19,225,116", apy: "45%"},
-        {firstToken: "CNUSD", secondToken: "MATIC", liquidity: "$400,546,987", myLiquidity: "$19,225,116", apy: "31%"},
-        {firstToken: "CNUSD", secondToken: "MATIC", liquidity: "$400,324,546", myLiquidity: "-", apy: "30%"},
-    ]);
-    const {theme} = useSystemContext();
-
+    const {account, library} = useWeb3React();
+    const {theme, contracts} = useSystemContext();
+    const {data, loading} = useQuery(LIQUIDITY_POOLS);
+    const [pools, setPools] = useState([]);
+    const [poolsPreparing, setPoolsPreparing] = useState(true);
     const [itemChoosenWindow, setItemChoosenWindow] = useState("Volume");
 
-
     const [openedWindows, setOpenedWindows] = useState([]);
+
+    useEffect(() => {
+
+        if (!loading && data.pairs) {
+
+            console.log(data);
+            prepareData(data.pairs).then(res => setPoolsPreparing(false));
+        }
+
+    }, [data, loading])
+
+
+    const prepareData = async (pools) => {
+
+        const res = pools.map(async (item) => {
+            const lp = new library.eth.Contract(ERC20_ABI, item.id);
+            const lpTotalSupply = formatFromDecimal(await lp.methods.totalSupply().call(), 18);
+            const lpUserBalance = formatFromDecimal(await lp.methods.balanceOf(account).call(), 18);  // FIXME: change "0x.." to account!
+
+            const token0 = {symbol: item.token0.symbol, address: item.token0.id, price: formattedNum(item.token0.priceUSD)}
+            const token1 = {symbol: item.token1.symbol, address: item.token1.id, price: formattedNum(item.token1.priceUSD)}
+            const liquidityUSD = item.reserveUSD;
+            const myLiquidity = (liquidityUSD / lpTotalSupply) * lpUserBalance;
+
+            const liqChart = item.liquidityChart.map((item) => {
+               const date = new Date(item.timestamp * 1000);
+               const time = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+
+               return {value: (+item.valueUSD).toFixed(2), time};
+            });
+
+            const volChart = item.volumeChart.map((item) => {
+                const date = new Date(item.timestamp * 1000);
+                const time = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+
+                return {value: (+item.valueUSD).toFixed(2), time}
+            });
+
+            return {token0,token1, liqiuidityUSD: formattedNum(liquidityUSD), myLiquidity: formattedNum(myLiquidity), liqChart, volChart}
+
+        })
+
+
+        setPools(await Promise.all(res));
+    }
 
     const handleLiquidityPoolsOpened = (name) => {
 
@@ -40,79 +83,21 @@ export const LiquidityPools = () => {
         }
     }
 
-    const ExpandedTab = (pool) => {
+    const ExpandedTab = ({pool}) => {
+
+        console.log(pool);
 
         switch (itemChoosenWindow) {
             case "Provide Liquidity":
                 return (<ProvideLiquidity pool={pool}/>)
             case "Volume":
-                return (<Volume/>)
+                return (<Volume data={pool.volChart}/>)
             case "Liquidity":
-                return (<Liquidity/>)
+                return (<Liquidity data={pool.liqChart}/>)
             default:
                 return (<ProvideLiquidity/>)
         }
     }
-
-    const ProvideLiquidityPieChart = ({token1, token2}) => {
-
-
-        const data = [
-            {name: token1, value: 400},
-            {name: token2, value: 400},
-        ];
-
-        const RADIAN = Math.PI / 180;
-        const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, percent, index}) => {
-            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-            const x = cx + radius * Math.cos(-midAngle * RADIAN);
-            const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-            return (
-                <text x={x > cx ? x - 20 : x + 20} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'}
-                      dominantBaseline="central">
-                    {`${(percent * 100).toFixed(0)}%`}
-                </text>
-            );
-        };
-
-        return (
-            <div className='chart-block'>
-                <ResponsiveContainer width="100%" height="100%">
-                    <PieChart width={200} height={200}>
-                        <defs>
-                            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0" stopColor="#40BA93"/>
-                                <stop offset="1" stopColor="rgba(64, 186, 147, 0.25)"/>
-                            </linearGradient>
-                        </defs>
-                        <defs>
-                            <linearGradient id="colorUvSecond" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0" stopColor="#358269"/>
-                                <stop offset="1" stopColor="rgba(53, 130, 105, 0.25)"/>
-                            </linearGradient>
-                        </defs>
-                        <Pie
-                            startAngle={90}
-                            endAngle={450}
-                            data={data}
-                            labelLine={false}
-                            label={renderCustomizedLabel}
-                            outerRadius={100}
-                            stroke="none"
-                            dataKey="value"
-                        >
-                            {data.map((entry, index) => (
-                                <Cell key={`cell-${index}`}
-                                      fill={index === 0 ? "url(#colorUv)" : "url(#colorUvSecond)"}/>
-                            ))}
-                        </Pie>
-                    </PieChart>
-                </ResponsiveContainer>
-            </div>
-        )
-    }
-
 
     return (
         <div className={`luqidity-pools-wrapper ${theme === "light" ? " luqidity-pools-wrapper-light" : ""}`}>
@@ -142,29 +127,26 @@ export const LiquidityPools = () => {
                 </h5>
             </div>
             <ul className='luqidity-pools-wrapper-list'>
-                {liquidityPools.map((item) => {
 
-                    const windowExpanded = openedWindows.findIndex((name) => name === item.firstToken + item.secondToken) !== -1;
+                {!poolsPreparing && pools.map((item) => {
+
+                    console.log(pools);
+                    const windowExpanded = openedWindows.findIndex((name) => name === item.token0.symbol + item.token1.symbol) !== -1;
 
                     return (
                         <li className={`luqidity-pools-wrapper-list-item ${windowExpanded ? "liq-item-opened" : ""}`}>
                             <div className='luqidity-pools-wrapper-list-item__header'>
                                 <div className='pair'>
-                                    <TokenIcon iconName={item.firstToken}/>
-                                    <TokenIcon iconName={item.secondToken}/>
-                                    <h3> {item.firstToken}-{item.secondToken} </h3>
+                                    <TokenIcon iconName={item.token0.symbol}/>
+                                    <TokenIcon iconName={item.token1.symbol}/>
+                                    <h3> {item.token0.symbol}-{item.token1.symbol} </h3>
                                 </div>
-                                <h3> {item.liquidity} </h3>
-                                <h3> {item.myLiquidity} </h3>
-                                <h3> {item.apy} </h3>
-                                <button 
-                                className='chart-expand' 
-                                onClick={() => handleLiquidityPoolsOpened(item.firstToken + item.secondToken)}
-                                >
-                                    {windowExpanded ?
-                                    <i class="fas fa-times"></i> : <i class="fas fa-chart-line"></i>
-                                    } 
-                                </button>
+                                <h3> {item.liqiuidityUSD}$ </h3>
+                                <h3>  {item.myLiquidity}$ </h3>
+                                <h3> 0% </h3>
+                                <button className='chart-expand'
+                                        onClick={() => handleLiquidityPoolsOpened(item.token0.symbol + item.token1.symbol)}> {windowExpanded ?
+                                    <i className="fas fa-times"></i> : <i className="fas fa-chart-line"></i>} </button>
                             </div>
                             {windowExpanded ?
                                 <div className='control-panel'>
@@ -183,20 +165,17 @@ export const LiquidityPools = () => {
                                     <div className="control-panel__content">
                                         {/* TODO: Make this stuff work just for choosen item */}
                                         <ExpandedTab pool={item}/>
-                                        {itemChoosenWindow === "Provide Liquidity" ?
-                                            <div className='provide-liq-wrapper'>
-                                                <ProvideLiquidityPieChart token1={item.firstToken}
-                                                                          token2={item.secondToken}/>
-                                                <button> Porvide</button>
-                                            </div>
-                                            :
+                                        {itemChoosenWindow !== "Provide Liquidity" ?
+
                                             <div className='liq-info'>
-                                                <span> <h5>Liquidity </h5> <b> $685,105,818 </b> </span>
-                                                <span> <h5>Volume (24H) </h5> <b> $11,552,984 </b> </span>
+                                                <span> <h5>Liquidity </h5> <b> ${item.liqiuidityUSD} </b> </span>
+                                                <span> <h5>Volume (24H) </h5> <b> $ volume </b> </span>
                                                 <span> <h5>Earnings (24H) </h5> <b> $51,544 </b> </span>
                                                 <span> <h5>Total APY </h5> <b> 31.84% </b> </span>
-                                                <span> <h5>My Liquidity </h5> <b> $0 </b> </span>
+                                                <span> <h5>My Liquidity </h5> <b> ${item.myLiquidity} </b> </span>
                                             </div>
+                                            :
+                                            null
                                         }
 
                                     </div>

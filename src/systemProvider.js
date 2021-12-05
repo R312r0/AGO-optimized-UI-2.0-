@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 import { NoEthereumProviderError, UserRejectedRequestError } from '@web3-react/injected-connector';
-import { metaMask, network } from './constants';
+import {DEX_ADDRESESS, metaMask, network} from './constants';
 import ERC20_ABI from './abi/ERC20.json';
+import ROUTER_ABI from './abi/Router.json';
 import TREASURY_ABI from './abi/TREASURY.json';
 import STABLE_ABI from './abi/STABLE.json';
 import SHARE_ABI from './abi/SHARE.json';
 import STABLE_POOL_ABI from './abi/STABLE_POOL.json';
 import TOKEN_ORACLE_ABI from './abi/TOKEN_ORACLE.json';
-import { CONTRACT_ADRESESS, MOCK_PRICE_ADDRESS, USD_PRICE_ENDPOINT } from './constants';
+import { CONTRACT_ADRESESS,TOKEN_ADDRESESS, MOCK_PRICE_ADDRESS, USD_PRICE_ENDPOINT } from './constants';
 import { formatFromDecimal } from './utils/helpers';
 import { message } from 'antd';
 import { ethErrors } from 'eth-rpc-errors'
@@ -128,33 +129,41 @@ export const SystemProvider = ({children}) => {
 
     const initTokens = async () => {
 
-        const AGO = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.AGO);
-        const AGOUSD = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOUSD);
-        const AGOBTC = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOBTC);
-        const CNUSD = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNUSD);
-        const CNBTC = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNBTC);
-        const USDT = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.USDT);
-        const WBTC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.WBTC)
+        const AGO = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.AGO);
+        // const AGOUSD = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOUSD);
+        // const AGOBTC = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOBTC);
+        // const CNUSD = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNUSD);
+        // const CNBTC = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNBTC);
+        const USDT = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.USDT);
+        const USDC = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.USDC);
+        const DAI = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.DAI);
+        const WMATIC = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.WMATIC);
+        // const WBTC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.WBTC)
 
 
         setTokens({
-            AGO: {name: "AGO",instance: AGO, decimals: await AGO.methods.decimals().call()},
-            AGOUSD: {name: "AGOUSD",instance: AGOUSD, decimals: await AGOUSD.methods.decimals().call()},
-            AGOBTC: {name: "AGOBTC",instance: AGOBTC, decimals: await AGOBTC.methods.decimals().call()},
-            CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call()},
-            CNBTC: {name: "CNBTC",instance: CNBTC, decimals: await CNBTC.methods.decimals().call()},
-            USDT: {name: "USDT",instance: USDT, decimals: await USDT.methods.decimals().call()},
-            WBTC: {name: "WBTC",instance: WBTC, decimals: await WBTC.methods.decimals().call()}
+            AGO: {name: "AGO",instance: AGO, decimals: await AGO.methods.decimals().call(), totalSupply: await AGO.methods.totalSupply().call()},
+            // AGOUSD: {name: "AGOUSD",instance: AGOUSD, decimals: await AGOUSD.methods.decimals().call()},
+            // AGOBTC: {name: "AGOBTC",instance: AGOBTC, decimals: await AGOBTC.methods.decimals().call()},
+            // CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call()},
+            // CNBTC: {name: "CNBTC",instance: CNBTC, decimals: await CNBTC.methods.decimals().call()},
+            USDT: {name: "USDT",instance: USDT, decimals: await USDT.methods.decimals().call(), totalSupply: await USDT.methods.totalSupply().call()},
+            USDC: {name: "USDC",instance: USDC, decimals: await USDC.methods.decimals().call(), totalSupply: await USDC.methods.totalSupply().call()},
+            DAI: {name: "DAI",instance: DAI, decimals: await DAI.methods.decimals().call(), totalSupply: await DAI.methods.totalSupply().call()},
+            WMATIC: {name: "WMATIC",instance: WMATIC, decimals: await WMATIC.methods.decimals().call(), totalSupply: await WMATIC.methods.totalSupply().call()}
+            // WBTC: {name: "WBTC",instance: WBTC, decimals: await WBTC.methods.decimals().call()}
         });
 
     }
 
     const initContracts = () => {
-        const POOL_AGOUSD = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOUSD);
-        const TREASURY_AGOUSD = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOUSD);
-        const POOL_AGOBTC = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOBTC);
-        const TREASURY_AGOBTC = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOBTC);
-        setContracts({POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC});
+        // const POOL_AGOUSD = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOUSD);
+        // const TREASURY_AGOUSD = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOUSD);
+        // const POOL_AGOBTC = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOBTC);
+        // const TREASURY_AGOBTC = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOBTC);
+        const ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.ROUTER)
+        // setContracts({POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC});
+        setContracts({ROUTER})
     }
 
     const connectWallet = (wallet) => {
@@ -188,8 +197,8 @@ export const SystemProvider = ({children}) => {
                 decimals: await item[1].instance.methods.decimals().call()
             }
 
-            obj.userNativeBalance = parseInt(formatFromDecimal(obj.userNativeBalance, obj.decimals))  
-            obj.userUsdBalance = parseInt(obj.userNativeBalance) * usdBalance[MOCK_PRICE_ADDRESS[item[0]]].usd
+            obj.userNativeBalance = parseInt(formatFromDecimal(obj.userNativeBalance, obj.decimals))
+            // obj.userUsdBalance = parseInt(obj.userNativeBalance) * usdBalance[MOCK_PRICE_ADDRESS[item[0]]].usd
 
             if (item[0].startsWith("AGO")) {
                 obj.color = "#40BA93"

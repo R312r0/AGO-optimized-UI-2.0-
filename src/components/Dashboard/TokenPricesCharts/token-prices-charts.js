@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState, useRef} from 'react';
-import {formattedNum} from '../../../utils/helpers';
+import {formatFromDecimal, formattedNum} from '../../../utils/helpers';
 import arrowUp from './arrow-up.svg';
 import arrowDown from './arrow-down.svg';
 import chart from './../../../assets/charts/chart.svg'
@@ -8,7 +8,10 @@ import {LineChart, XAxis, YAxis, Line, ResponsiveContainer, Tooltip} from 'recha
 import {} from '../../App/App';
 import {useSystemContext} from '../../../systemProvider';
 import {useDashboardContext} from '../../../providers/dashboard-provider';
+import {CustomToolTip} from "../../ChartCustomTooltip/chart-custom-tooltip";
 import styled from 'styled-components';
+import {useQuery} from "@apollo/client";
+import {MAIN_TOKENS_DATA_QUERY} from "../../../api/client";
 
 
 const TokenPriceChartWrapper = styled.div`
@@ -95,12 +98,6 @@ const TokenPriceChartWrapper = styled.div`
         flex-direction: column;
         opacity: ${props => props.isWindowExpanded ? "1" : "0"};
         transition: ${props => props.isWindowExpanded ? "2s all" : "0.1s all"};
-
-        img {
-          width: auto;
-          height: 8.490vw;
-        }
-
         main {
           display: flex;
           flex-direction: column;
@@ -258,40 +255,17 @@ const SinglePriceBlock = styled.div`
 export const TokenPricesCharts = () => {
 
     const [expandWindow, setExpandWindow] = useState(false);
-    const {theme} = useSystemContext();
-    const {dashTokens} = useDashboardContext();
+    const {theme, tokens} = useSystemContext();
 
-    const CustomToolTip = ({active, payload, label}) => {
+    const {data} = useQuery(MAIN_TOKENS_DATA_QUERY);
 
-
-        if (payload[0]) {
-            const value = payload[0].payload.value;
-            if (active) {
-                return (
-                    <div className='custom-tooltip'>
-                        <span> {value}$ </span>
-                    </div>
-                )
-            }
-        }
-
-        return null;
-
-    }
-
-
-    const Chart = ({data, fullSize}) => {
+    const Chart = ({data}) => {
       const tickColor = theme === "light" ? "black" : "white"
       return (
-          <ResponsiveContainer width={'100%'} height={"100%"}>//
+          <ResponsiveContainer width={"100%"} height={"100%"}>
               <LineChart
-                  margin={{
-                      top: 50,
-                      bottom: 1,
-                  }}
                   data={data}
               >
-
                   <Line
                       type="basis"
                       dataKey="value"
@@ -303,7 +277,6 @@ export const TokenPricesCharts = () => {
                   <Tooltip
                       content={<CustomToolTip/>}
                   />
-                  {fullSize ?
                       <XAxis
                           dataKey="time"
                           axisLine={false}
@@ -311,8 +284,6 @@ export const TokenPricesCharts = () => {
                           stroke={tickColor}
                           minTickGap={5}
                       />
-                      :
-                      ""
                   }
 
               </LineChart>
@@ -326,11 +297,40 @@ export const TokenPricesCharts = () => {
         <TokenPriceChartWrapper isWindowExpanded={expandWindow} onClick={() => setExpandWindow(!expandWindow)}>
           <h1 className="token-heading">Total Value Locked</h1>
           <div className="single-price-wrapper">
-            {dashTokens.map((item, _ind) => {
+            {data?.tokens.map((item, _ind) => {
 
-                const Arrow = item.change24h.charAt(0) === "-" 
-                ? <img src={arrowDown} alt="arrow-down-percent"/> 
+
+                if (item.name === "USDC") {
+                    return;
+                }
+                const currentDate = new Date().getTime();
+                const reverseLineChartArr = [...item.lineChartUSD].reverse();
+                const latestRecordChange = reverseLineChartArr.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
+
+                let change24h = !latestRecordChange || +latestRecordChange.valueUSD === 0 ? 0 : ((item.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
+
+                const newLineChartData = item.lineChartUSD.map(item => {
+                    const date = new Date(item.timestamp * 1000);
+                    const time = `${date.getHours()}:${date.getMinutes()}`
+
+                    return ({
+                        value: item.valueUSD,
+                        time
+                    })
+                })
+
+                const Arrow = change24h.toString().charAt(0) === "-"
+                ? <img src={arrowDown} alt="arrow-down-percent"/>
                 : <img src={arrowUp} alt="arrow-up-percent"/>
+
+                let supply;
+                // FIXME: fix in future when name will be AGO
+                if (item.name == "Argano") {
+                    supply = formatFromDecimal(tokens["AGO"].totalSupply, tokens["AGO"].decimals);
+                }
+                else {
+                    supply = formatFromDecimal(tokens[item.name].totalSupply, tokens[item.name].decimals);
+                }
 
                 return (
                   <>
@@ -344,20 +344,19 @@ export const TokenPricesCharts = () => {
                           isWindowExpanded={expandWindow}
                         >
                           <h3> {item.name} </h3>
-                          <h1> ${item.currentPrice} </h1>
-                          <span> {Arrow} {item.change24h} <span>(24h)</span> </span>
-                          <img src={demoChart} className='demo-chart' />
+                          <h1> ${(+item.priceUSD).toFixed(2)} </h1>
+                          <span> {Arrow} { change24h === Infinity ? 0 : change24h}% <span>(24h)</span> </span>
                         </SinglePriceBlock>
                         <div className="price-block-chart">
-                          <img src={chart} />
+                            <Chart data={newLineChartData}/>
                           <main>
                             <div className="token-data">
                               <p>Supply:</p>
-                              <span>253,22K</span>
+                              <span>{formattedNum(supply)}</span>
                             </div>
                             <div className="token-data">
                               <p>Market cap:</p>
-                              <span>$249,65K</span>
+                              <span>${formattedNum(supply * item.priceUSD)}</span>
                             </div>
                           </main>
                         </div>

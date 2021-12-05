@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Loader} from "../../Loader/loader";
 import {useSystemContext} from '../../../systemProvider';
-import axios from 'axios';
-import {formatFromDecimal, calculateTimeDifference} from '../../../utils/helpers';
-import {CONTRACT_ADRESESS, TX_OPERATIONS} from '../../../constants';
 import styled from 'styled-components';
 
 const TokenTransactionTableWrapper = styled.div`
   width: 100%;
-  height 40vw;
+  height: 40vw;
   background: radial-gradient(34.28% 208.17% at 30.1% 58.42%, rgba(30, 91, 72, 0.2) 0%, rgba(9, 33, 25, 0.2) 100%), linear-gradient(97.95deg, #272727 -6.91%, #1C1C1C 101.49%);
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
   border-radius: 2vw;
@@ -180,12 +177,9 @@ const TablePagination = styled.div`
   }
 `
 
-export const TokenTransactionTable = () => {
+export const TokenTransactionTable = ({data}) => {
 
-    const {theme, tokens} = useSystemContext();
-
-    const [data, setData] = useState(null);
-
+    const {theme} = useSystemContext();
     const [totalPages, setTotalPages] = useState(null);
     const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
     const [dataPaginated, setDataPaginated] = useState(null);
@@ -194,19 +188,7 @@ export const TokenTransactionTable = () => {
 
     useEffect(() => {
 
-        const fetchTxs = async () => {
-            const {data} = await axios.get("https://argano-rest-api-sever.herokuapp.com/api/transactionsOverall");
-            setData(data);
-        }
-
-        fetchTxs();
-
-    }, [])
-
-
-    useEffect(() => {
-
-        if (data) {
+        if (data.length > 0) {
             setLoading(false);
             determineNumberOfPages();
         }
@@ -264,23 +246,14 @@ export const TokenTransactionTable = () => {
                     <TableBody>
                         {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item) => {
 
-                            const token1 = Object.entries(CONTRACT_ADRESESS).find(item_loc => item_loc[1].toLocaleLowerCase() === item.token_flow[0].token.toLowerCase())
-                            const token2 = Object.entries(CONTRACT_ADRESESS).find(item_loc => item_loc[1].toLocaleLowerCase() === item.token_flow[1]?.token.toLowerCase())
-
-                            const token1Spent = formatFromDecimal(item.token_flow[0].amount.$numberDecimal, tokens[token1[0]].decimals);
-                            const token2Spent = item.token_flow[1] ? formatFromDecimal(item.token_flow[1]?.amount.$numberDecimal, tokens[token2[0]].decimals) : "-";
-
                             return (
                                 <>
-                                    <div className='operation'>{TX_OPERATIONS[item.method]}</div>
-                                    {/* TODO: Need to calculate sum depends on USD price of each token (Use our/coingecko current token-price) */}
-                                    <div> {token2 ? (parseFloat(token1Spent) + parseFloat(token2Spent)).toFixed(2) : parseFloat(token1Spent).toFixed(2)}</div>
-                                    <div>{parseFloat(token1Spent).toFixed(2)} {token1[0]}</div>
-                                    <div>{token2 ? parseFloat(token2Spent).toFixed(2) : "-"} {token2 ? token2[0] : ""}</div>
-                                    <div
-                                        className='acc'>{`${item.account.slice(0, 6)}...${item.account.slice(-4)}`}</div>
-                                    <div
-                                        className='time'>{item.block_timestamp ? calculateTimeDifference(item.block_timestamp) : "A long time ago"}</div>
+                                    <div className='operation'>{item.txName}</div>
+                                    <div>{item.totalValue}$</div>
+                                    <div>{item.token0Amount}</div>
+                                    <div>{item.token1Amount}</div>
+                                    <div className='acc'>{item.acc}</div>
+                                    <div className='time'>{item.time}</div>
                                 </>
                             );
                         })}

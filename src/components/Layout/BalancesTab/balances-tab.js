@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useSystemContext} from '../../../systemProvider';
 import {formattedNum} from '../../../utils/helpers';
@@ -9,6 +9,8 @@ import {useWeb3React} from '@web3-react/core';
 import {useMediaQuery} from 'react-responsive';
 import {useSwipeable} from 'react-swipeable';
 import vector from '../../../assets/icons/whiteVector.svg';
+import {useQuery} from "@apollo/client";
+import {TOKENS_FOR_USER_BALANCES} from "../../../api/client";
 
 const BalancesTabWrapper = styled.div`
   transition: 0.3s all;
@@ -301,9 +303,36 @@ export const BalancesTab = () => {
 
     const [balancesExpanded, setBalancesExpaned] = useState(false);
     const [balancesMobileExpanded, setBalancesMobileExpanded] = useState(false)
+    const {data, loading} = useQuery(TOKENS_FOR_USER_BALANCES);
+    const [balances, setBalances] = useState(null)
     const {account} = useWeb3React();
     const {theme, userProtfolio} = useSystemContext();
     const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'});
+
+    useEffect(() => {
+
+        if(!loading && data.tokens && userProtfolio) {
+            const res = userProtfolio.map((item) => {
+               const name = item.name;
+               const nativeBalance = item.userNativeBalance;
+               let usdBalance;
+
+               if (item.name === "AGO") {
+                   usdBalance = nativeBalance * data.tokens.find(tok => tok.name === "Argano").priceUSD;
+               }
+               else {
+                   usdBalance =  nativeBalance * data.tokens.find(tok => tok.name === name).priceUSD;
+               }
+
+               return {name, nativeBalance, usdBalance}
+            });
+
+            setBalances(res);
+        }
+
+    }, [data, userProtfolio, loading])
+
+
 
     const handlersMobileBalancesExpanded = useSwipeable({
         onSwipedUp: () => {
@@ -324,18 +353,18 @@ export const BalancesTab = () => {
                           <img src={theme === "light" ? pig_icon_light : pig_icon} width={20} height={20} alt="balance"/>
                           <p className='balance'> Balance </p>
                           <div className="balance-arrow-wrapper">
-                            <p> {userProtfolio ? formattedNum(userProtfolio.reduce((a, {userUsdBalance}) => a + userUsdBalance, 0)) : 0.00}$ </p>
+                            <p> {balances ? formattedNum(balances.reduce((a, {usdBalance}) => a + usdBalance, 0)) : 0.00}$ </p>
                               <svg className="vector" width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M0.901211 1.07468e-08L6 5L0.901211 10L1.05386e-08 9.11625L4.19758 5L1.0871e-07 0.88375" fill="white"/>
                               </svg>
                           </div>
                         </div>
                         <BalanceListDesktop opened={balancesExpanded}>
-                            {userProtfolio?.map((item) => {
+                            {balances && balances.map((item) => {
                                 return (
                                     <BalanceListItemDesktop key={"token-" + item.name}>
                                         <TokenIcon iconName={item.name}/>
-                                        <span> {formattedNum(+item.userNativeBalance)}{item.name}/{formattedNum(item.userUsdBalance)}$ </span>
+                                        <span> {formattedNum(item.nativeBalance)}{item.name}/{formattedNum(item.usdBalance)}$ </span>
                                     </BalanceListItemDesktop>
                                 )
                             })}
