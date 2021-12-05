@@ -98,6 +98,12 @@ const TokenPriceChartWrapper = styled.div`
         flex-direction: column;
         opacity: ${props => props.isWindowExpanded ? "1" : "0"};
         transition: ${props => props.isWindowExpanded ? "2s all" : "0.1s all"};
+        .chart-wrapper {
+          width: 17.708vw;
+          height: 8.490vw;
+          cursor: pointer;
+          font-size: 1vw;
+        }
         main {
           display: flex;
           flex-direction: column;
@@ -259,37 +265,37 @@ export const TokenPricesCharts = () => {
 
     const {data} = useQuery(MAIN_TOKENS_DATA_QUERY);
 
-    const Chart = ({data}) => {
-      const tickColor = theme === "light" ? "black" : "white"
-      return (
-          <ResponsiveContainer width={"100%"} height={"100%"}>
-              <LineChart
-                  data={data}
-              >
-                  <Line
-                      type="basis"
-                      dataKey="value"
-                      stroke="#40BA93"
-                      strokeWidth={5}
-                      dot={false}
-                      activeDot={true}
-                  />
-                  <Tooltip
-                      content={<CustomToolTip/>}
-                  />
-                      <XAxis
-                          dataKey="time"
-                          axisLine={false}
-                          tickLine={false}
-                          stroke={tickColor}
-                          minTickGap={5}
-                      />
-                  }
-
-              </LineChart>
-          </ResponsiveContainer>
-        )
-    }
+    // const Chart = ({data}) => {
+    //   const tickColor = theme === "light" ? "black" : "white"
+    //   return (
+    //       <ResponsiveContainer width={"100%"} height={"100%"}>
+    //           <LineChart
+    //               data={data}
+    //           >
+    //               <Line
+    //                   type="basis"
+    //                   dataKey="value"
+    //                   stroke="#40BA93"
+    //                   strokeWidth={5}
+    //                   dot={false}
+    //                   activeDot={true}
+    //               />
+    //               <Tooltip
+    //                   content={<CustomToolTip/>}
+    //               />
+    //                   <XAxis
+    //                       dataKey="time"
+    //                       axisLine={false}
+    //                       tickLine={false}
+    //                       stroke={tickColor}
+    //                       minTickGap={5}
+    //                   />
+    //               }
+    //
+    //           </LineChart>
+    //       </ResponsiveContainer>
+    //     )
+    // }
 
     const [showChart, setShowChart] = useState({active: true, index: 0})
 
@@ -348,7 +354,51 @@ export const TokenPricesCharts = () => {
                           <span> {Arrow} { change24h === Infinity ? 0 : change24h}% <span>(24h)</span> </span>
                         </SinglePriceBlock>
                         <div className="price-block-chart">
-                            <Chart data={newLineChartData}/>
+                            <div className='chart-wrapper'>
+                                <ResponsiveContainer className='responsive-container-chart' width={"100%"} height={"100%"}>
+                                    <LineChart
+                                        data={newLineChartData}
+                                        // onMouseLeave={() => setChartValue({
+                                        //     time: data[data.length - 1].date,
+                                        //     value: data[data.length - 1].uv
+                                        // })}
+                                    >
+                                        <Line
+                                            type="monotone"
+                                            dataKey="value"
+                                            stroke="rgba(64, 186, 147, 0.05)"
+                                            strokeWidth={"1vw"}
+                                            dot={false}
+                                            activeDot={true}
+                                        />
+                                        <Line
+                                            type="monotone"
+                                            dataKey="value"
+                                            stroke="#40BA93"
+                                            strokeWidth={"0.25vw"}
+                                            dot={false}
+                                            activeDot={true}
+                                        />
+                                        <Tooltip
+                                            content={CustomToolTip}
+                                            // contentStyle={{display: 'none'}}
+                                            // formatter={(value, name, props) => {
+                                            //     const {payload: {date, uv}} = props;
+                                            //     if (chartValue.value !== uv) {
+                                            //         setChartValue({time: date, value: uv})
+                                            //     }
+                                            // }}
+                                        />
+                                        <XAxis
+                                            dataKey="time"
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{fontSize: "0.7vw"}}
+                                            stroke={theme === "light" ? "black" : "white"}
+                                        />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </div>
                           <main>
                             <div className="token-data">
                               <p>Supply:</p>
