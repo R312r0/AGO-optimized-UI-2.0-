@@ -262,6 +262,7 @@
                                 .provide-liq-max__data {
                                     margin: 0.3vw 0 auto 0 !important;
                                     font-size: 0.625vw;
+                                    white-space: nowrap;
                                 }
 
                                 p {
@@ -278,6 +279,8 @@
                             }
 
                             &__input-wrapper {
+                                width: 100%;
+                                    
                                 display: flex;
                                 flex-direction: column;
 
@@ -313,6 +316,8 @@
                                     }
 
                                     input {
+                                        width: 100%;
+
                                         font-size: 0.938vw;
 
                                         background: transparent;
@@ -333,6 +338,12 @@
 
                                         &::placeholder {
                                             color: #4F4F4F;
+                                        }
+
+                                        &:focus {
+                                            &::placeholder {
+                                                opacity: 0;
+                                            }
                                         }
                                     }
                                 }
