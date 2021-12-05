@@ -20,8 +20,9 @@
     width: 100%;
 
     display: grid;
-    align-items: center;
     grid-template-columns: 1fr 1fr 1fr 0.4fr;
+    align-items: center;
+    
     margin-bottom: auto;
 
     .hide-btn {
@@ -254,7 +255,6 @@
         }
       }
     }
-
   }
 }
 

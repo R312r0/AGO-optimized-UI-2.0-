@@ -86,107 +86,105 @@ export const Volume = () => {
       }) => {
         return (
           <g>
-            <rect x={x} y={y} fill={fill} width={10} height={height} rx="7" />
+            <rect x={x} y={y} fill={fill} width="0.521vw" height={height} rx="0.25vw" />
           </g>
         )
     }
 
     return (
-        <ResponsiveContainer className="liq-chart" width={"100%"} height={250}>
-            <BarChart
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 1,
-                }}  
-                data={data}
+        <div className="vol-chart">
+            <ResponsiveContainer className="vol-chart" width={"100%"} height={"100%"}>
+                <BarChart
+                    margin="0.260vw 1.563vw 0.052vw 1.042vw"
+                    data={data}
 
-                // onMouseLeave={() => setChartValue({
-                //     time: data[data.length-1].date,
-                //     value: data[data.length-1].uv
-                // })}
-                >
-                <defs>
-                    <linearGradient
-                    id="colorUv"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="100%"
-                    gradientUnits="userSpaceOnUse"
+                    // onMouseLeave={() => setChartValue({
+                    //     time: data[data.length-1].date,
+                    //     value: data[data.length-1].uv
+                    // })}
+                    
                     >
-                    <stop offset="0" stopColor="#40BA93" />
-                    <stop offset="1" stopColor="rgba(64, 186, 147, 0)" />
-                    </linearGradient>
-                    <linearGradient id="colorUvLightTheme" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0" stopColor="#40BA93"/>
-                                <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)"/>
-                    </linearGradient>
-                    <linearGradient id="colorUvSecondLightTheme" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0" stopColor="#40BA93"/>
-                                <stop offset="1" stopColor="#114D3A"/>
-                    </linearGradient>
-                </defs>
-                <defs> 
-                    <linearGradient
-                    id="colorUvSecond"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="100%"
-                    gradientUnits="userSpaceOnUse"
+                    <defs>
+                        <linearGradient
+                        id="colorUv"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="100%"
+                        gradientUnits="userSpaceOnUse"
+                        >
+                        <stop offset="0" stopColor="#40BA93" />
+                        <stop offset="1" stopColor="rgba(64, 186, 147, 0)" />
+                        </linearGradient>
+                        <linearGradient id="colorUvLightTheme" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stopColor="#40BA93"/>
+                            <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)"/>
+                        </linearGradient>
+                        <linearGradient id="colorUvSecondLightTheme" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stopColor="#40BA93"/>
+                            <stop offset="1" stopColor="#114D3A"/>
+                        </linearGradient>
+                    </defs>
+                    <defs> 
+                        <linearGradient
+                        id="colorUvSecond"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="100%"
+                        gradientUnits="userSpaceOnUse"
+                        >
+                        <stop offset="0" stopColor="#40BA93" />
+                        <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)" />
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid stroke={theme === "light" ? "white" : "#3A3C45"}   strokeDasharray="7 7"/>
+                    <Bar
+                        dataKey="uv"
+                        radius={[10, 10, 10, 10]}
+                        shape={<CustomBar/>}
                     >
-                    <stop offset="0" stopColor="#40BA93" />
-                    <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)" />
-                    </linearGradient>
-                </defs>
-                <CartesianGrid stroke={theme === "light" ? "white" : "#3A3C45"}   strokeDasharray="7 7"/>
-                <Bar
-                    dataKey="uv"
-                    radius={[10, 10, 10, 10]}
-                    shape={<CustomBar/>}
-                >
-                    {data.map((entry, _ind )=> {
-                        return <Cell fill={_ind % 2 === 0 || _ind % 3 === 0 ? 'url(#colorUvLightTheme)' : 'url(#colorUvSecondLightTheme)' }/>
-                    })}
-                </Bar>
+                        {data.map((entry, _ind )=> {
+                            return <Cell fill={_ind % 2 === 0 || _ind % 3 === 0 ? 'url(#colorUvLightTheme)' : 'url(#colorUvSecondLightTheme)' }/>
+                        })}
+                    </Bar>
 
-                <Tooltip
-                    contentStyle={{ display: 'none' }}
-                    cursor={{ fill: "rgba(255, 255, 255, 0.15)" }}
-                    // formatter={(value, name, props) => {
-                    //     const {payload: {date, uv}} = props;
-                    //     if (chartValue.value !== uv) {
-                    //         setChartValue({time: date, value: uv})
-                    //     }
-                    // }}
-                />
-                <XAxis
-                    dataKey="time"
-                    axisLine={true}
-                    tickLine={false}
-                    stroke={theme === "light" ? "black" : "white"}
-                    interval={8}
-                    // tickCount={8}
-                    // minTickGap={100}
-                />
-                <YAxis
-                    dataKey="uv"
-                    axisLine={true}
-                    tickLine={false}
-                    stroke={theme === "light" ? "black" : "white"}
+                    <Tooltip
+                        contentStyle={{ display: 'none' }}
+                        cursor={{ fill: "rgba(255, 255, 255, 0.15)" }}
+                        // formatter={(value, name, props) => {
+                        //     const {payload: {date, uv}} = props;
+                        //     if (chartValue.value !== uv) {
+                        //         setChartValue({time: date, value: uv})
+                        //     }
+                        // }}
+                    />
+                    <XAxis
+                        dataKey="time"
+                        axisLine={true}
+                        tickLine={false}
+                        stroke={theme === "light" ? "black" : "white"}
+                        interval={8}
+                        // tickCount={8}
+                        // minTickGap={100}
+                    />
+                    <YAxis
+                        dataKey="uv"
+                        axisLine={true}
+                        tickLine={false}
+                        stroke={theme === "light" ? "black" : "white"}
 
-                    tickFormatter={(tick) => {
-                        return `${formattedNum(tick)}`
-                    }}
-                    interval="preserveStartEnd"
-                    domain={[0, Math.max.apply(Math, data.map((obj) => obj.uv ))]}
-                    // minTickGap={30}
-                />
+                        tickFormatter={(tick) => {
+                            return `${formattedNum(tick)}`
+                        }}
+                        interval="preserveStartEnd"
+                        domain={[0, Math.max.apply(Math, data.map((obj) => obj.uv ))]}
+                        // minTickGap={30}
+                    />
 
-            </BarChart>
-        </ResponsiveContainer>
+                </BarChart>
+            </ResponsiveContainer>
+        </div>
     )
 
 }

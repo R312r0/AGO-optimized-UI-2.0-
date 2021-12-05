@@ -1,127 +1,174 @@
 .luqidity-pools-wrapper {
-    display: grid;
-    padding-left: 1.5%;
-    padding-right: 4.65%;
-    grid-template-rows: 100px 50px auto;
-    h1 {
+    display: flex;
+    flex-direction: column;
+
+    .luqidity-pools-wrapper-heading {
+        margin-top: 1.302vw;
+        margin-left: 1.563vw;
+        padding-left: 2.5vw;
+
+        font-size: 1.25vw;
+        font-weight: 300;
+
         color: white;
-        align-self: center;
-        font-size: 36px;
-        @media only screen and (max-width: 1500px) {
-            font-size: 24px;
-        }
     }
+    
     &__list-header {
         display: grid;
-        grid-template-columns: 4fr 6fr 2fr 4fr 1fr;
-        justify-items: center;
-        color: #4F4F4F;
-        margin-top: 60px;
-        margin-right: 80px;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr;
+        margin: 2.969vw 6.771vw 0.938vw 6.51vw;
+
         h5 {
-            color: white;
+            display: flex;
+            align-items: center;
+
+            font-size: 0.938vw;
+            color: #4F4F4F;
+
+            svg {
+                margin-left: 1.458vw;
+
+                width: 1.823vw;
+                height: 1.042vw;
+            }
         }
     }
+
     .luqidity-pools-wrapper-list {
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+
         padding: 0;
+
         .luqidity-pools-wrapper-list-item {
-            transition: 0.3s all;
-            display: grid;
-            grid-template-columns: 2.5fr 2fr 1.3fr 2.6fr 1fr;
-            background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-            box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.25);
-            border-radius: 40px;
-            min-height: 80px;
-            max-height: 566px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-items: center;
-            margin-bottom: 20px;
-            padding-left: 45px;
-            h3 {
-                color: white;
-                @media only screen and (max-width: 1500px) {
-                    font-size: 18px;
+            justify-content: center;
+
+            padding: 1vw 2.813vw 1vw 3.489vw;
+            margin: 0 3.958vw 1.042vw 3.021vw;
+            
+            background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+            border-radius: 2.083vw;
+            
+            transition: 0.3s all;
+
+            &__header {
+                width: 100%;
+
+                display: grid;
+                align-items: center;
+                grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr;
+
+                & h3, & div {
+                    margin-right: auto;
                 }
             }
 
+            h3 {
+                font-size: 0.938vw;
+                color: white;
+            }
 
            .pair {
-               display: grid;
-               grid-template-columns: 15% 15% 70%;
-               align-items: center;
-               justify-self: flex-start;
-               justify-items: center;
                width: 100%;
-               padding-left: 40px;
-               h3 {
-                   justify-self: flex-start;
-                   color: white;
+
+               display: flex;
+               align-items: center;
+               color: white;
+
+               font-size: 0.938vw;
+               
+               img {
+                   width: 2.448vw;
+                   height: 2.448vw;
+
+                   &:not(:first-child) {
+                       margin: 0 0.990vw 0 0.469vw;
+                   }
                }
-               @media only screen and (max-width: 1500px) {
-                    h3 {
-                        font-size: 18px;
-                    }
-                    img {
-                        width: 30px;
-                        height: 30px;
-                    }
-                }
            }
 
            .chart-expand {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                width: 3.542vw;
+                height: 1.7vw;
+
+                font-size: 0.938vw;
                 cursor: pointer;
                 background: #1E1E1E;
-                border: 1px solid #4F4F4F;
-                border-radius: 20px;
-                width: 70px;
-                height: 35px;
-                font-size: 18px;
                 color: #4F4F4F;
+
+                border: 0.052vw solid #4F4F4F;
+                border-radius: 1.042vw;
+
                 &:hover {
                     transition: 0.3s all;
+
                     background-color: #40BA93;
-                    border: 1px solid #40BA93;
+                    border: 0.052vw solid #40BA93;
                     color: white;
                 }
            }
-
-           
         }
+
         .liq-item-opened {
-            animation: listOpened 0.3s;
-            height: 566px;
-            padding: 0% 5% 5% 5%;
-            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            padding: 0.938vw 2.813vw 4vw 3.489vw;
+            transition: .4s ease;
+
+            height: 100%;
+        
             background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-            grid-template-rows: 20% 80%;
+            
+            // animation: listOpened 0.3s;
+
+            // .luqidity-pools-wrapper-list-item__header {
+            //     margin-bottom: auto;
+            // }
+
             .control-panel {
-                display: grid;
-                grid-column: 1/6;
-                grid-template-rows: 10% 90%;
-                grid-row-gap: 5%;
                 width: 100%;
-                height: 100%;
+                
+                display: flex;
+                flex-direction: column;
+
+                margin-bottom: auto;
+                
                 &__header {
-                    display: grid;
-                    width: 40%;
-                    grid-template-columns: 1fr 1fr 1fr;
-                    padding-left: 40px;
-                    padding-right: 40px;
+                    display: flex;
+                    padding: 1.563vw 0 1.823vw;
+                    
                     button {
-                        max-width: 121px;
+                        font-size: 0.729vw;
+                        padding: 0.521vw 1.25vw;
+
                         cursor: pointer;
-                        width: 100%;
-                        border-radius: 20px;
-                        border: 1px solid transparent;
+                        white-space: nowrap;
+                        
+                        border-radius: 1.042vw;
+                        border: 0.052vw solid transparent;
+
                         background-color: transparent;
                         color: #4f4f4f;
                     }
+
                     .active {
                         animation: activeTabLiq 0.25s;
                         background-color: #40BA93;
-                        border: 1px solid #40BA93;
+                        border: 0.052vw solid #40BA93;
                         color: white;
                     }
+
                     @keyframes activeTabLiq {
                         0% {
                             width: 0;
@@ -129,181 +176,231 @@
                             color: transparent;
                         }
                         25% {
-                            width: 20px;
+                            width: 1.042vw;
                             opacity: 0.25;
                             color: transparent;
 
                             
                         }
                         50% {
-                            width: 40px;
+                            width: 2.083vw;
                             opacity: 0.50;
                             color: transparent;
 
                         }
                         75% {
-                            width: 80px;
+                            width: 4.167vw;
                             opacity: 0.75;
                             color: transparent;
 
                         }
                         100% {
-                            width: 121px;
+                            width: 6.25vw;
                             color: white;
                             opacity: 1;
                         }
                     }
                 }
+
                 &__content {
-                    display: grid;
-                    grid-template-columns: 65% 35%;
+                    display: flex;
+                    justify-content: space-between;
 
                     .provide-liq-wrapper {
-                        display: grid;
-                        grid-template-rows: 80% 20%;
-                        height: 100%;
+                        width: 24.792vw;
+
+                        margin-left: 2.396vw;
+
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        
                         background: linear-gradient(95.56deg, #1D1D1D 13.15%, #282828 95.93%);
-                        border-radius: 40px;
-                        width: 100%;
-                        max-width: 476px;
+                        border-radius: 2.083vw;
+
+                        .chart-block {
+                            width: 15vw;
+                            height: 15vw;
+
+                            overflow: hidden;
+                        }
+
                         button {
+                            margin: 0 auto;
+                            padding: 0.208vw 1.406vw;
+
                             cursor: pointer;
-                            height: 40px;
-                            width: 120px;
-                            justify-self: center;
-                            align-self: flex-start;                            
-                            background-color: #40BA93;
-                            border-radius: 30px;
-                            border: 1px solid #40BA93;
                             color: white;
+                            font-size: 0.729vw;
+                            
+                            background-color: #40BA93;
+                            border: 0.052vw solid #40BA93;
+                            border-radius: 1.042vw;
                         }
                     }
 
                     .provide-liquidity-block {
-                        max-width: 820px;
-                        min-width: 500px;
-                        max-height: 320px;
-                        background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-                        border-radius: 40px;
-                        padding: 20px 40px 20px 40px;
-                        display: grid;
-                        grid-row-gap: 5px;
-                        grid-template-rows: repeat(4, 75px);
-                        margin-right: 15px;
+                        width: 100%;
 
-                        &__input-row {
-                            display: grid;
-                            grid-template-rows: 1fr 2fr;
-                            align-items: center;
-                            border-bottom: 1px solid #333333;
-                            padding-bottom: 5px;
-                            span {
-                                display: grid;
-                                font-size: 18px;
-                                color: #828282;
-                                grid-template-columns: 1fr 3fr;
+                        background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+                        border-radius: 2.083vw;
+
+                        padding: 1.1vw 1.979vw 1.1vw 2.604vw;
+
+                        &__item {
+                            display: flex;
+                            justify-content: space-between;
+
+                            &:not(:last-child) {
+                                border-bottom: 0.052vw solid #333333;
+                            }
+
+                            &__data {
+                                display: flex;
+                                flex-direction: column-reverse;
+
+                                .provide-liq-max__data {
+                                    margin: 0.3vw 0 auto 0 !important;
+                                    font-size: 0.625vw;
+                                }
+
                                 p {
+                                    color: white;
+                                    margin: auto 0 auto auto;
+
+                                    font-size: 0.938vw;
+
                                     &:last-child {
-                                        justify-self: flex-end;
+                                        margin-bottom: 0;
+                                        color: #828282;
                                     }
                                 }
                             }
-                            div {
-                                display: grid;
-                                grid-template-columns: 125px auto;
-                                p {
-                                    display: grid;
-                                    align-items: center;
-                                    grid-template-columns: 1fr 3fr;
-                                    h5 {
-                                        justify-self: center;
-                                    }
+
+                            &__input-wrapper {
+                                display: flex;
+                                flex-direction: column;
+
+                                padding: 0.460vw 0;
+
+                                .provide-liq-heading {
+                                    font-size: 0.625vw;
                                 }
-                                input {
-                                    background-color: transparent;
+
+                                p {
+                                    font-size: 0.938vw;
+                                    color: #828282;
+                                }
+
+                                &__token {
                                     color: white;
-                                    border: 0;
-                                    &:focus {
-                                        outline: none;
+                                    display: flex;
+                                    align-items: center;
+
+                                    .provide-liq-white {
+                                        color: white;
+
+                                        &::placeholder {
+                                            color: white;
+                                        }
                                     }
-                                    &::placeholder {
+
+                                    h5 {
+                                        font-size: 0.938vw;
+                                        padding: 0 0.781vw;
+
                                         color: white;
                                     }
-                                }
-                            }
-                        }
-                        &__add-info-row {
-                            display: grid;
-                            border-bottom: 1px solid #333333;
-                            // grid-template-columns: 1fr;
-                            grid-template-rows: 1fr 2fr;
-                            padding-bottom: 5px;
-                            &:last-child {
-                                border-bottom: 0;
-                            }
-                            input {
-                                background-color: transparent;
-                                color: white;
-                                border: 0;
-                                font-size: 18px;
-                                &:focus {
-                                    outline: none;
-                                }
-                                &::placeholder {
-                                    color: white;
-                                    font-size: 18px;
-                                }
-                            }
-                            span {
-                                display: grid;
-                                font-size: 12px;
-                                color: #828282;
-                                grid-template-columns: 1fr 1fr;
-                                p {
-                                    &:last-child {
-                                        justify-self: flex-end;
+
+                                    input {
+                                        font-size: 0.938vw;
+
+                                        background: transparent;
+                                        border: none;
+                                        outline: none;
+
+                                        color: #4F4F4F;
+
+                                        &::-webkit-outer-spin-button,
+                                        &::-webkit-inner-spin-button {
+                                            -webkit-appearance: none;
+                                            margin: 0;
+                                        }
+
+                                        input[type=number] {
+                                            -moz-appearance: textfield;
+                                        }
+
+                                        &::placeholder {
+                                            color: #4F4F4F;
+                                        }
                                     }
                                 }
-                            }
-                            div {
-                                display: grid;
                             }
                         }
                     }
 
+                    .vol-chart {
+                        width: 47.5vw;
+                        height: 10.521vw;
+
+                        margin-top: auto;
+                        overflow: hidden;
+                        font-size: 0.938vw;
+
+                        align-self: center;
+                        justify-self: flex-start;
+                    }
+
                     .liq-chart {
+                        width: 45.083vw;
+                        height: 10.104vw;
+
+                        margin-top: auto;
+                        overflow: hidden;
+                        font-size: 0.938vw;
+
                         align-self: center;
                         justify-self: flex-start;
                     }
 
                     .liq-info {
+                        width: 19.063vw;
+                        height: 13.021vw;
+
                         display: grid;
-                        padding: 20px;
-                        animation: liqInfoAppears 0.3s;
                         grid-template-columns: 1fr;
+
+                        padding: 1.7vw 2.083vw;
+                        animation: liqInfoAppears 0.3s;
                         background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-                        border-radius: 40px;
+
+                        border-radius: 2.083vw;
                         box-sizing: border-box;
-                        max-width: 366px;
-                        max-height: 250px;
-                        width: 95%;
-                        height: 100%;
+                       
                         justify-self: flex-end;
                         align-self: center;
+
                         span {
                             display: grid;
                             grid-template-columns: 1fr 1fr;
-                            border-bottom: 1px solid #333333;
+                            border-bottom: 0.052vw solid #333333;
                             align-items: center;
+
+                            font-size: 0.729vw;
+
                             h5 {
                                 color: #828282;
                                 font-weight: 300;
-                                font-size: 14px;
                             }
+
                             &:last-child {
-                                border-bottom: 1px solid transparent;
+                                border-bottom: 0.052vw solid transparent;
                             }
+
                             b {
+                                font-weight: 500;
+                                color: white;
                                 justify-self: flex-end;
                             }
                         }
@@ -339,14 +436,14 @@
             }
         }
 
-        @keyframes listOpened {
-            0% {
-                height: 104px;
-            }
-            100% {
-                height: 566px;
-            }
-        }
+        // @keyframes listOpened {
+        //     0% {
+        //         height: 104px;
+        //     }
+        //     100% {
+        //         height: 566px;
+        //     }
+        // }
 
         @keyframes listClosed {
             0% {
@@ -362,10 +459,6 @@
 }
 
 .luqidity-pools-wrapper-light {
-
-    h1 {
-        color: black;
-    }
 
     .luqidity-pools-wrapper-list {
         .luqidity-pools-wrapper-list-item {

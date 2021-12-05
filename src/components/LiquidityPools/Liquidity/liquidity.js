@@ -73,31 +73,32 @@ export const Liquidity = () => {
         {time: '01', uv: 900000, date: "Jul 16, 2021"},
     ];
 
-
-
     return(
-        <ResponsiveContainer className='liq-chart' width="100%" height={220}>
-        <AreaChart
-          width={500}
-          height={400}
-          data={data}
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke={theme === "light" ? "white" : "#3A3C45"} />
-          <XAxis dataKey="time"
-                              axisLine={true}
-                              tickLine={false}
-                              stroke={theme === "light" ? "black" : "white"}
-                              interval={8} />
-          <Tooltip />
-          <Area type="monotone" strokeWidth={3} dataKey="uv" stroke="#40BA93" fill="rgba(64, 186, 147, 0.2)" />
-        </AreaChart>
-      </ResponsiveContainer>
+      <div className='liq-chart'>
+        <ResponsiveContainer className='liq-chart' width="100%" height='100%'>
+          <AreaChart
+            width={500}
+            height={400}
+            data={data}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke={theme === "light" ? "white" : "#3A3C45"} />
+            <XAxis
+              dataKey="time"
+              axisLine={true}
+              tickLine={false}
+              stroke={theme === "light" ? "black" : "white"}
+              interval={8} 
+            />
+            <Tooltip />
+            <Area type="monotone" strokeWidth={3} dataKey="uv" stroke="#40BA93" fill="rgba(64, 186, 147, 0.2)" />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
     )
-
 }

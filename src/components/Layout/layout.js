@@ -125,8 +125,7 @@ export const Layout = ({children}) => {
                     />
                     {isMobileScreen ?
                         <>
-                            <PageName
-                                mobile={isMobileScreen}> {PAGES.find(item => item.path === history.location.pathname).name} </PageName>
+                            <PageName mobile={isMobileScreen}>{PAGES.find(item => item.path === history.location.pathname).name}</PageName>
                             <BurgerButton onClick={() => setShowMobileSideBar(true)} mobile={isMobileScreen}>
                                 <img src={burger_menu} alt="burger-mobile"/>
                             </BurgerButton>
@@ -139,13 +138,16 @@ export const Layout = ({children}) => {
                 </Header>
                 {!isMobileScreen ? <SideBar/> : null}
                 <Content mobile={isMobileScreen}>
-                    {/* {!isMobileScreen ? null : <BalancesTab/>} */}
                     {!isMobileScreen ? 
-                        <ContentHeader>{PAGES.find(item => item.path === history.location.pathname).name} </ContentHeader> : null}
+                        <ContentHeader>{PAGES.find(item => item.path === history.location.pathname).name} 
+                        </ContentHeader> : null}
                     {loading ? <Spin size="large" indicator={loadingIcon}/> : children}
                 </Content>
-                {isMobileScreen ? <SideBarMobile showMobileSideBar={showMobileSideBar}
-                                                 setShowMobileSideBar={setShowMobileSideBar}/> : null}
+                {isMobileScreen 
+                ? <SideBarMobile 
+                showMobileSideBar={showMobileSideBar}
+                setShowMobileSideBar={setShowMobileSideBar}
+                /> : null}
             </LayoutWrapper>
         </>
     )
