@@ -86,6 +86,8 @@ export const TVLChart = ({data}) => {
     const [chartValue, setChartValue] = useState({time: undefined, value: undefined});
     const [loading, setLoading] = useState(true);
 
+    console.log(data);
+
     useEffect(() => {
         if(data.length > 0) {
             setChartValue({

@@ -50,14 +50,14 @@ export const LiquidityPools = () => {
                const date = new Date(item.timestamp * 1000);
                const time = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
 
-               return {value: (+item.valueUSD).toFixed(2), time};
+               return {value: +item.valueUSD, time};
             });
 
             const volChart = item.volumeChart.map((item) => {
                 const date = new Date(item.timestamp * 1000);
                 const time = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
 
-                return {value: (+item.valueUSD).toFixed(2), time}
+                return {value: +item.valueUSD, time}
             });
 
             return {token0,token1, liqiuidityUSD: formattedNum(liquidityUSD), myLiquidity: formattedNum(myLiquidity), liqChart, volChart}

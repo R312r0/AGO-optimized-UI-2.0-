@@ -80,7 +80,7 @@ export const Dashboard = () => {
             const dateFromItem = new Date(item.timestamp * 1000);
             const time = `${dateFromItem.getHours()}:${dateFromItem.getMinutes()}:${dateFromItem.getSeconds()}`
             const date = dateFromItem.toDateString();
-            const uv = item.value > 0 ? item.value : 0;
+            const uv = +item.value > 0 ? +item.value : 0;
             return {time, uv, date};
         })
 
