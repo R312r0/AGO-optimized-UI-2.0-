@@ -7,6 +7,7 @@ import {Volume} from './Volume/volume';
 import {PieChart, Pie, Sector, Cell, ResponsiveContainer} from 'recharts';
 import './liquidity-pools.scss';
 import {useSystemContext} from '../../systemProvider';
+import { Transactions } from './Transactions/transactions';
 
 export const LiquidityPools = () => {
 
@@ -49,6 +50,8 @@ export const LiquidityPools = () => {
                 return (<Volume/>)
             case "Liquidity":
                 return (<Liquidity/>)
+            case "Transactions":
+                return (<Transactions/>)
             default:
                 return (<ProvideLiquidity/>)
         }
@@ -168,10 +171,9 @@ export const LiquidityPools = () => {
                             </div>
                             {windowExpanded ?
                                 <div className='control-panel'>
-                                    <div className='control-panel__header'>
+                                    <div className={`control-panel__header ${itemChoosenWindow === "Transactions" ? "control-panel__header__transactions" : ""}`}>
                                         <button onClick={() => setItemChoosenWindow("Provide Liquidity")}
-                                                className={`${itemChoosenWindow === "Provide Liquidity" ? "active" : ""}`}> Provide
-                                            Liquidity
+                                                className={`${itemChoosenWindow === "Provide Liquidity" ? "active" : ""}`}> Provide Liquidity
                                         </button>
                                         <button onClick={() => setItemChoosenWindow("Volume")}
                                                 className={`${itemChoosenWindow === "Volume" ? "active" : ""}`}> Volume
@@ -179,17 +181,21 @@ export const LiquidityPools = () => {
                                         <button onClick={() => setItemChoosenWindow("Liquidity")}
                                                 className={`${itemChoosenWindow === "Liquidity" ? "active" : ""}`}> Liquidity
                                         </button>
+                                        <button onClick={() => setItemChoosenWindow("Transactions")}
+                                                className={`${itemChoosenWindow === "Transactions" ? "active" : ""}`}> Transactions
+                                        </button>
                                     </div>
                                     <div className="control-panel__content">
                                         {/* TODO: Make this stuff work just for choosen item */}
                                         <ExpandedTab pool={item}/>
                                         {itemChoosenWindow === "Provide Liquidity" ?
                                             <div className='provide-liq-wrapper'>
-                                                <ProvideLiquidityPieChart token1={item.firstToken}
-                                                                          token2={item.secondToken}/>
-                                                <button> Porvide</button>
+                                                <ProvideLiquidityPieChart token1={item.firstToken} token2={item.secondToken}/>
+                                                <button>Porvide</button>
                                             </div>
-                                            :
+                                            : null
+                                        }
+                                        {itemChoosenWindow === "Volume" ?
                                             <div className='liq-info'>
                                                 <span> <h5>Liquidity </h5> <b> $685,105,818 </b> </span>
                                                 <span> <h5>Volume (24H) </h5> <b> $11,552,984 </b> </span>
@@ -197,8 +203,18 @@ export const LiquidityPools = () => {
                                                 <span> <h5>Total APY </h5> <b> 31.84% </b> </span>
                                                 <span> <h5>My Liquidity </h5> <b> $0 </b> </span>
                                             </div>
+                                            : null
                                         }
-
+                                        {itemChoosenWindow === "Liquidity" ?
+                                            <div className='liq-info'>
+                                                <span> <h5>Liquidity </h5> <b> $685,105,818 </b> </span>
+                                                <span> <h5>Volume (24H) </h5> <b> $11,552,984 </b> </span>
+                                                <span> <h5>Earnings (24H) </h5> <b> $51,544 </b> </span>
+                                                <span> <h5>Total APY </h5> <b> 31.84% </b> </span>
+                                                <span> <h5>My Liquidity </h5> <b> $0 </b> </span>
+                                            </div>
+                                            : null
+                                        }
                                     </div>
                                 </div>
                                 :

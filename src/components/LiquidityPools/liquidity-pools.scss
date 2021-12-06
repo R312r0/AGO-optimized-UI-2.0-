@@ -100,6 +100,8 @@
                 width: 3.542vw;
                 height: 1.7vw;
 
+                margin-left: auto;
+
                 font-size: 0.938vw;
                 cursor: pointer;
                 background: #1E1E1E;
@@ -148,6 +150,10 @@
                     display: flex;
                     padding: 1.563vw 0 1.823vw;
                     
+                    &__transactions {
+                        padding: 1.563vw 0 0;
+                    }
+
                     button {
                         font-size: 0.729vw;
                         padding: 0.521vw 1.25vw;
@@ -205,6 +211,40 @@
                 &__content {
                     display: flex;
                     justify-content: space-between;
+
+                    .transactions-wrapper {
+                        width: 100%;
+
+                        &__switch-buttons {
+                            width: 19.5vw;
+                            margin-left: auto;
+                            margin-bottom: 0.990vw;
+
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+
+                            .transanction-tabs-wrapper-active {
+                                color: white;
+                                background: #40BA93;
+                                font-weight: 700;
+                            }
+
+                            button {
+                                font-size: 0.729vw;
+                                font-weight: 300;
+
+                                padding: 0.260vw 1.302vw;
+
+                                background: transparent;
+                                border-radius: 1.302vw;
+                                color: #B0B0B0;
+
+                                border: none;
+                                cursor: pointer;
+                            }
+                        }
+                    }
 
                     .provide-liq-wrapper {
                         width: 24.792vw;
