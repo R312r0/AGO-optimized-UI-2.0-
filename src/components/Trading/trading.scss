@@ -1,74 +1,86 @@
-
 .trading-wrapper {
+    display: flex;
+    height: auto;
 
-    display: grid;
-    height: 100%;
-    grid-template-areas: "hd hd hd"
-    "ch ch exchg"
-    "txs txs exchg"
-    "txs txs .";
-    box-sizing: border-box;
-    grid-template-rows: 10% 70% 20% auto;
-    grid-template-columns: 30% 30% 40%;
     &__header {
-        grid-area: hd;
-        display: grid;
-        align-self: center;
-        grid-column: 1/3;
+        display: flex;
         h1 {
-            font-size: 36px;
-            @media only screen and (max-width: 1500px) {
-                font-size: 24px;
-            }
+            font-size: 1.25vw;
             align-self: center;
             color: white;
         }
     }
+
+    .trading-container {
+        display: flex;
+        flex-direction: column;
+    }
+
     .trading-wrapper-chart {
-        grid-area: ch;
-        position: relative;
-        display: grid;
-        grid-template-rows: 10% 7.5% 82.5%;
-        box-sizing: border-box;
+        width: 50.938vw;
         padding: 4% 6.75% 2% 6.75%;
-        width: clamp(578px, 95%, 978px);
-        height: clamp(347px , 95%, 647px);
-        justify-self: center;
+
         &__header {
-            display: grid;
+            margin: 1vw 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
             h1 {
                 align-self: flex-end;
-                font-size: 24px;
+                font-size: 1.25vw;
                 color: white;
             }
         }
+
         &__control-panel {
-            display: grid;
-            width: 35%;
-            grid-template-columns: 2fr repeat(5, 1fr);
-            grid-column-gap: 5px;
+            display: flex;
             align-items: center;
+            
+
             span {
                 color: white;
-                font-size: 14px;
+                font-size: 0.729vw;
             }
+
             button {
-                font-size: 14px;
+                margin: 0 0.2vw;
+                padding: 0.3vw 0.521vw;
+
+                font-size: 0.729vw;
 
                 color: #828282;
+
                 border: 0;
                 background-color: transparent;
                 cursor: pointer;
-                width: 30px;
-                height: 30px;
-                border-radius: 10px;
+
+                border-radius: 0.521vw;
             }
 
             select {
+                padding: 0.2vw 0.4vw;
+                margin-left: 0.6vw;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
                 background-color: transparent;
                 color: white;
-                border-radius: 15px;
-                border: 1px solid #40BA93;
+
+                font-size: 0.938vw;
+
+                border-radius: 0.781vw;
+                border: 0.052vw solid #40BA93;
+
+                option {
+                    color: white;
+                    font-size: 0.938vw;
+                    background-color: black;
+                    border: 0.052vw solid #40BA93;
+                }
             }
 
             .active-time-frame {
@@ -77,18 +89,40 @@
             }
         }
 
+        .chart-self {
+            width: 100%;
+            height: 25.938vw;
+
+            overflow: hidden;
+        }
+
         .chart-switcher {
-            position: absolute;
-            top: 5%;
-            right: 5%;
+            width: 4.166vw;
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+
             button {
-                width: 40px;
-                height: 40px;
+                width: 2.083vw;
+                height: 2.083vw;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
                 border: 0;
                 background-color: transparent;
-                border-radius: 10px;
+                border-radius: 0.521vw;
+                
                 cursor: pointer;
+
+                img {
+                    width: 1.1vw;
+                    height: 1.1vw;
+                }
             }
+            
             .active-chart-type {
                 background-color: #40BA93;
             }
@@ -114,18 +148,19 @@
             }
         }
     }
+
     .trading-wrapper-exchange {
-        grid-area: exchg;
-        padding: 6.55%;
-        display: grid;
-        justify-self: center;
-        grid-template-rows: 10% 20% 10% 20% 35% 5%;
-        width: clamp(242px, 95%, 642px);
-        height: clamp(442px, 95%, 867px);
-        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        padding: 2vw;
+        margin-left: 2.083vw;
+        margin-right: 2.083vw;
+
         &__header {
             color: white;
-            font-size: 24px;
+            font-size: 1.25vw;
         }
 
         &__swap-input {
@@ -275,17 +310,17 @@
         }
     }
     .trading-wrapper-txs {
-        grid-area: txs;
-        width: clamp(578px, 95%, 978px);
-        justify-self: center;
+        margin-top: 2.083vw;
 
-        height: 200%;
+        width: 100%;
+        height: 300px;
+        justify-self: center;
     }
 
     .trading-window-box {
         background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-        box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.25);
-        border-radius: 40px;
+        box-shadow: 0 0.208vw 2.083vw rgba(0, 0, 0, 0.25);
+        border-radius: 2.083vw;
     }
 }
 

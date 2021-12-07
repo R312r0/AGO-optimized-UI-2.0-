@@ -91,32 +91,31 @@ const TradingWindow = () => {
 
                     <div className='trading-wrapper-chart__header'> 
                         <h1> Chart </h1>
-                    </div>
-                    <div className='trading-wrapper-chart__control-panel'> 
-                        {chartType === "line" ? 
-                            null    
-                            :
-                            <>
-                                <span> Time </span>
-                                {chartTimeStamp.map((item) => {
+                        <div className='trading-wrapper-chart__control-panel'> 
+                            {chartType === "line" ? 
+                                null    
+                                :
+                                <>
+                                    {chartTimeStamp.map((item) => {
+                                        return (
+                                            <button onClick={() => onChangeTimeStamp(item.value)} className={item.active ?  "active-time-frame" : null}> {item.value} </button> 
+                                        )
+                                    })}
+                                </>
+                            }
+
+                            <select value={tokensCoinGecko.find(item => item.active).name} onChange={(e) => onChangeTokenSelect(e.target.value)} > 
+                                {tokensCoinGecko.map((item) => {
                                     return (
-                                        <button onClick={() => onChangeTimeStamp(item.value)} className={item.active ?  "active-time-frame" : null}> {item.value} </button> 
+                                        <option> {item.name} </option>
                                     )
                                 })}
-                            </>
-                        }
-
-                        <select value={tokensCoinGecko.find(item => item.active).name} onChange={(e) => onChangeTokenSelect(e.target.value)} > 
-                            {tokensCoinGecko.map((item) => {
-                                return (
-                                    <option> {item.name} </option>
-                                )
-                            })}
-                        </select>
+                            </select>
+                        </div>
                     </div>
                     <div className='trading-wrapper-chart__chart-graph'>
                         <TradingChart candleData={candleChart} lineData={lineChart} chartType={chartType}/> 
-                </div>  
+                    </div>  
                 </>
             }
             </div>

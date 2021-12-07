@@ -211,7 +211,7 @@ export const TradingChart = ({candleData, lineData, chartType }) => {
      return (
         <>
             <div ref={parentRef} className='chart-self'> 
-                <div ref={ref} id='chart'> </div>
+                <div ref={ref} id='chart'></div>
             </div>
             <div className='chart-control-data'> 
             {tradingInfo && chartType === "candle" ? 
