@@ -49,7 +49,6 @@ const TradingWindow = () => {
     }, [tokensCoinGecko, chartTimeStamp])
 
     const fetchChartTokenData = async (token, timestamp) => {
-
         try {
 
             setLoading(true)
@@ -84,11 +83,6 @@ const TradingWindow = () => {
                 null
                 :
                 <>
-                <div className="chart-switcher">
-                    <button onClick={() => setChartType("candle")} className={chartType === "candle" ? "active-chart-type" : ""}> <img src={chartType === "candle" ? candle_active : candle} width={20} height={20} alt="candle"/> </button>
-                    <button onClick={() => setChartType("line")} className={chartType === "line" ? "active-chart-type" : ""}> <img src={chartType === "line" ? line_active : line} width={20} height={20} alt="line"/> </button>
-                    </div>
-
                     <div className='trading-wrapper-chart__header'> 
                         <h1> Chart </h1>
                         <div className='trading-wrapper-chart__control-panel'> 
@@ -111,6 +105,11 @@ const TradingWindow = () => {
                                     )
                                 })}
                             </select>
+
+                            <div className="chart-switcher">
+                                <button onClick={() => setChartType("candle")} className={chartType === "candle" ? "active-chart-type" : ""}> <img src={chartType === "candle" ? candle_active : candle} width={20} height={20} alt="candle"/> </button>
+                                <button onClick={() => setChartType("line")} className={chartType === "line" ? "active-chart-type" : ""}> <img src={chartType === "line" ? line_active : line} width={20} height={20} alt="line"/> </button>
+                            </div>
                         </div>
                     </div>
                     <div className='trading-wrapper-chart__chart-graph'>
