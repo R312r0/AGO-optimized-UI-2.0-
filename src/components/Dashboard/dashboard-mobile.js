@@ -9,30 +9,35 @@ import {TokenPricesChartsMobile} from './TokenPricesChartsMobile/token-prices-ch
 
 const DashboardWrapperMobile = styled.div`
   display: grid;
-  grid-template-rows: 0.5fr 3fr 1fr;
+  grid-template-rows: 0.2fr 3fr 1fr;
 `
 const TVLVolumeSwitch = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0 5%;
 `
 const SwitchButton = styled.button`
-  margin-right: 10px;
-  background: ${props => props.active ? "#2D2D2D" : "transparent"};
-  border-radius: 20px;
-  border: ${props => props.active ? "2px solid #40BA93" : "none"};
+  width: 48%;
   height: 45%;
+  padding: 4% 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: ${props => props.active ? "#2D2D2D" : "transparent"};
+  border-radius: 3.906vw;
+  border: ${props => props.active ? "0.260vw solid #40BA93" : "none"};
   align-self: flex-end;
   color: ${props => props.active ? "white" : "#BDBDBD;"};
   font-weight: ${props => props.active ? "600" : "300"};
-  font-size: 14px;
+  font-size: 3vw;
 `
 const InfoButtonsArea = styled.div`
   display: grid;
   margin-bottom: 30px;
-  height: 115px;
-  grid-template-rows: 2fr 1fr;
+  grid-template-rows: 3fr 2fr;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   align-items: center;
@@ -52,13 +57,24 @@ const InfoButton = styled.button`
   border-radius: 20px;
   width: 100%;
   height: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
+  padding: 8% 0;
+
+  img {
+    width: 8vw;
+
+    @media only screen and (max-width: 500px) {
+      width: 10vw;
+    }
+  }
 `
 
 const InfoLabel = styled.span`
   display: grid;
   align-self: flex-start;
   color: white;
+
+  font-size: 4vw;
 `
 
 export const DashboardMobile = () => {
@@ -71,12 +87,11 @@ export const DashboardMobile = () => {
         <DashboardWrapperMobile>
             <TVLVolumeSwitch activeTab>
                 <SwitchButton onClick={() => setActiveTab("TVL")} active={activeTab === "TVL"}> TVL </SwitchButton>
-                <SwitchButton onClick={() => setActiveTab("Volume 24h")} active={activeTab === "Volume 24h"}> Volume
-                    24h </SwitchButton>
+                <SwitchButton onClick={() => setActiveTab("Volume 24h")} active={activeTab === "Volume 24h"}> Volume 24h </SwitchButton>
             </TVLVolumeSwitch>
             {activeTab === "TVL" ? <TVLChart/> : <Volume24h/>}
             <InfoButtonsArea>
-                <InfoButton onClick={() => setOpenTxs(true)}> <img src={tx_icon} alt={"mobile-tx-icon"}/> </InfoButton>
+                <InfoButton onClick={() => setOpenTxs(true)}> <img src={tx_icon} alt={"mobile-tx-icon"}/></InfoButton>
                 <InfoButton onClick={() => setOpenCharts(true)}> <img src={chart_icon} alt={"mobile-chart-icon"}/>
                 </InfoButton>
                 <InfoLabel> Transactions </InfoLabel>

@@ -1,10 +1,8 @@
 .mint-redeem-wrapper {
-  display: grid;
-  height: 100%;
-  grid-template-rows: 10% 10% 80%;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
-  padding-bottom: 2.5%;
+  padding: 0 0 3vw 2.5vw;
 
   .mint-redeem-header {
     display: grid;
@@ -13,57 +11,57 @@
       align-self: center;
       margin: 0;
       color: white;
-      font-size: 36px;
-      @media only screen and (max-width: 1500px) {
-        font-size: 26px;
-      }
+      font-size: 1.875vw;
     }
   }
 
   .mint-redeem-tx-info {
-    display: grid;
-    align-items: center;
-
     div {
-      height: 46px;
-      height: clamp(36px, 100%, 46px);
-      border-radius: 20px;
+      border-radius: 1.042vw;
+
       box-sizing: border-box;
-      background: #1E1E1E;
-      display: grid;
-      grid-gap: 5px;
-      grid-template-columns:12% 2% 20% 2% 10% 2% 20% 30%;
-      padding-left: 25px;
-      padding-right: 25px;
       align-items: center;
+      background: #1E1E1E;
+
+      display: flex;
+      align-items: center;
+
+      margin: 1.2vw 2.5vw 0 0;
+      padding: 0.625vw 3.229vw;
 
       .fa-circle {
         color: #40BA93;
-        font-size: 10px;
-        @media only screen and (max-width: 1500px) {
-          font-size: 6px;
-        }
+        padding: 0 3.5vw;
+        font-size: 0.4vw;
+        
         justify-self: center;
       }
 
-      @media only screen and (max-width: 1500px) { //me
-        padding-bottom: 10px;
-        padding-top: 10px;
-        width: 100%;
+      .contract__link-polygon {
+        display: block;
+        margin-left: auto;
+      }
+
+      .mint-redeem-bar-wrapper {
+        display: flex;
+        align-items: center;
       }
 
       span {
         position: relative;
         color: #4F4F4F;
-        font-size: 14px;
-        @media only screen and (max-width: 1500px) {
-          font-size: 6px;
-        }
-        justify-self: center;
+        font-size: 0.7vw;
+
+        display: flex;
+        white-space: nowrap;
 
         b {
           color: white;
           font-weight: 600;
+        }
+        
+        b, span {
+          margin-left: 0.4vw;
         }
 
         span {
@@ -91,342 +89,105 @@
   }
 
   .mint-redeem-switcher {
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
+
+    margin: 1.719vw 0;
+
     div {
+      display: flex;
+
       button {
-        width: 90px;
-        height: 40px;
-        border-radius: 20px;
-        font-size: 18px;
-        @media only screen and (max-width: 1500px) {
-          font-size: 14px;
-        }
-        border: 0px;
+        font-size: 0.938vw;
+        padding: 0.365vw 1.250vw;
+
+        cursor: pointer;
+        border-radius: 1.042vw;
+        border: 0;
+
         background-color: transparent;
         color: #4F4F4F;
-        cursor: pointer;
       }
     }
 
     .active-switcher-button {
       background-color: #40BA93;
       color: white;
-      font-size: 18px;
-      @media only screen and (max-width: 1500px) {
-        font-size: 14px;
-      }
     }
   }
 
-  .mint-wrapper {
-    display: grid;
-    align-items: flex-start;
-    justify-items: center;
-    box-sizing: border-box;
-    @media only screen and (max-width: 1500px) { //me
-      display: flex;
-      width: 30%;
-      margin-top: 10px;
-    }
+  .general-wrapper {
+    display: flex;
+    justify-content: start;
 
-    .mint-window {
+    .general-window {
       background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
-      box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
-      border-radius: 40px;
-      width: clamp(498px, 50%, 798px);
-      height: clamp(393px, 100%, 693px);
-      display: grid;
-      grid-template-rows: 10% 20% 8% 20% 8% 20% 14%;
-      box-sizing: border-box;
-      padding: 2% 3.5%;
-      @media only screen and (max-width: 1500px) {
+      box-shadow: 0 0.208vw 0.833vw rgba(0, 0, 0, 0.25);
+      border-radius: 2.083vw;    
+      padding: 1.094vw 2.969vw 2.083vw 2.656vw;
 
+      .fas {
+        font-weight: 200;
       }
 
-      .mint-window-header {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-
-        h3 {
-          color: white;
-          @media only screen and (max-width: 1500px) {
-            padding: 10px;
-          }
-        }
-
-        button {
-          background: #171717;
-          box-shadow: -8px -8px 20px rgba(28, 27, 27, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
-          border-radius: 16px;
-          width: 68px;
-          height: 45px;
-
-          &:hover {
-            transition: 0.3s all;
-            background-color: #40BA93;
-          }
-
-          @media only screen and (max-width: 1500px) {
-            width: 48px;
-            height: 28px;
-            img {
-              width: 15px;
-              height: 15px;
-            }
-          }
-          justify-self: flex-end;
-          border: 0;
-          cursor: pointer;
-        }
-      }
-
-      .mint-window-input-row {
+      .general-window-header {
         width: 100%;
-        height: clamp(86px, 100%, 106px);
-        display: grid;
-        grid-template-columns: 60% 40%;
-        background: #1E1E1E;
-        border-radius: 40px;
-        box-sizing: border-box;
-        padding: 2.5% 6%;
+        margin-bottom: 1.979vw;
 
-        span {
-          color: white;
-
-          h3 {
-            font-size: 18px;
-            @media only screen and (max-width: 1500px) {
-              font-size: 14px;
-            }
-            color: #4F4F4F;
-
-            b {
-              color: white;
-            }
-          }
-        }
-
-        .balance {
-          display: grid;
-          justify-self: flex-end;
-          color: white;
-        }
-
-        .currency {
-          display: grid;
-          grid-template-columns: 1fr 2fr;
-          align-items: center;
-          justify-self: flex-end;
-          grid-column-gap: 5px;
-          font-size: 24px;
-          @media only screen and (max-width: 1500px) {
-            font-size: 18px;
-            img {
-              width: 33px;
-              height: 33px;
-            }
-          }
-          color: white;
-        }
-
-        input {
-          background-color: transparent;
-          border: 0;
-          color: #A9AAAB;
-          font-size: 24px;
-          @media only screen and (max-width: 1500px) {
-            font-size: 18px;
-          }
-
-          &:focus {
-            outline: none;
-          }
-
-          &::placeholder {
-            color: #A9AAAB;
-            font-size: 24px;
-          }
-        }
-      }
-
-      .output {
-        input {
-          color: #40BA93;
-
-          &::placeholder {
-            color: #40BA93;
-          }
-
-          pointer-events: none;
-        }
-      }
-
-      .mint-window-op-sign-row {
-        display: grid;
-        place-items: center;
-
-        i {
-          color: #C4C4C4;
-          font-size: 24px;
-        }
-
-        .fa-arrow-down {
-          color: #40BA93;
-        }
-      }
-
-      .mint-window-run-mint {
-        justify-self: center;
-        align-self: flex-end;
-        border: 0;
-        color: white;
-        height: clamp(51px, 80%, 71px);
-        width: 60%;
-        font-size: 24px;
-        background: #40BA93;
-        box-shadow: -6px -6px 30px rgba(51, 51, 51, 0.25), 4px 4px 20px rgba(0, 0, 0, 0.25);
-        border-radius: 30px;
-        cursor: pointer;
-
-        &:disabled {
-          background-color: lightgray;
-          cursor: none;
-          pointer-events: none;
-          color: black;
-        }
-
-        @media only screen and (max-width: 1500px) {
-          font-size: 18px;
-          margin-top: 40px;
-        }
-      }
-    }
-  }
-
-  .redeem-wrapper {
-    display: grid;
-    grid-template-columns: 25% 50% 25%;
-
-    .collect-redemption {
-      width: clamp(284px, 80%, 334px);
-      height: clamp(175px, 100%, 181px);
-      background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-      border-radius: 40px;
-      justify-self: center;
-      display: grid;
-      grid-template-columns: 1fr;
-      box-sizing: border-box;
-      padding: 9.3% 7%;
-
-      div {
-        display: grid;
-        grid-template-columns: 60% 40%;
+        display: flex;
         align-items: center;
-
-        &:first-child {
-          h3 {
-            color: white;
-          }
-        }
+        justify-content: space-between;
 
         h3 {
-          font-size: 14px;
-          color: #4F4F4F;
+          font-size: 1.250vw;
+          padding-left: 1.823vw;
 
-          b {
-            color: #40BA93;
-          }
+          color: white;
         }
 
         button {
-          width: 100%;
-          max-width: 91px;
-          justify-self: flex-end;
-          height: 50%;
-          border: 1px solid #40BA93;
-          border-radius: 20px;
+          width: 3.542vw;
+          height: 2.344vw;
           cursor: pointer;
-          background-color: transparent;
-          color: white;
 
-          &:hover {
-            transition: 0.3s;
-            background-color: #40BA93;
-            color: white;
-          }
-        }
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-        &:first-child {
-          border-bottom: 1px solid #333333;
-        }
-      }
-    }
-
-    .redeem-window {
-      background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
-      box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
-      border-radius: 40px;
-      width: clamp(498px, 100%, 798px);
-      height: clamp(393px, 100%, 693px);
-      justify-self: center;
-      display: grid;
-      grid-template-rows: 10% 20% 8% 20% 8% 20% 14%;
-      box-sizing: border-box;
-      padding: 4% 7%;
-
-      .redeem-window-header {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-
-        h3 {
-          color: white;
-        }
-
-        button {
           background: #171717;
-          box-shadow: -8px -8px 20px rgba(28, 27, 27, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
-          border-radius: 16px;
-          width: 68px;
-          height: 45px;
+          box-shadow: -0.417vw -0.417vw 1.042vw rgba(28, 27, 27, 0.25), 0.208vw 0.208vw 0.521vw rgba(0, 0, 0, 0.25);
+          border-radius: 0.833vw;
+          border: none;
+
+          img { 
+            width: 1.146vw;
+            height: 1.146vw;
+          }
 
           &:hover {
             transition: 0.3s all;
             background-color: #40BA93;
           }
-
-          @media only screen and (max-width: 1500px) {
-            width: 48px;
-            height: 28px;
-            img {
-              width: 15px;
-              height: 15px;
-            }
-          }
-          justify-self: flex-end;
-          border: 0;
-          cursor: pointer;
         }
       }
 
-      .redeem-window-input-row {
-        width: 100%;
-        height: clamp(86px, 100%, 106px);
+      .general-window-input-row {
+        width: 35.625vw;
+
         display: grid;
         grid-template-columns: 60% 40%;
+
         background: #1E1E1E;
-        border-radius: 40px;
+        border-radius: 1.563vw;
         box-sizing: border-box;
-        padding: 2.5% 6%;
+
+        padding: 1.042vw 3vw 1.042vw 2.396vw;
 
         span {
           color: white;
 
           h3 {
-            font-size: 18px;
-            @media only screen and (max-width: 1500px) {
-              font-size: 14px;
-            }
+            font-size: 0.938vw;
             color: #4F4F4F;
 
             b {
@@ -436,47 +197,42 @@
         }
 
         .balance {
-          display: grid;
+          display: flex;
           justify-self: flex-end;
           color: white;
-        }
 
-        .inpunt-redeem {
-          color: #A9AAAB;
-
-          &::placeholder {
-            color: #A9AAAB;
-          }
+          padding-bottom: 0.156vw;
         }
 
         .currency {
-          display: grid;
-          grid-template-columns: 1fr 2fr;
+          display: flex;
           align-items: center;
           justify-self: flex-end;
-          grid-column-gap: 5px;
-          font-size: 24px;
-
-
-          @media only screen and (max-width: 1500px) {
-            font-size: 18px;
-            img {
-              width: 33px;
-              height: 33px;
-            }
-          }
+          
+          font-size: 1.2vw;
           color: white;
+
+          img {
+            width: 1.979vw;
+            height: 1.979vw;
+            margin-right: 0.6vw;
+          }
         }
 
         input {
           background-color: transparent;
           border: 0;
-          color: #40BA93;
-          font-size: 24px;
+          color: #A9AAAB;
+          font-size: 1.25vw;
 
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
 
-          @media only screen and (max-width: 1500px) {
-            font-size: 18px;
+          input[type=number] {
+            -moz-appearance: textfield;
           }
 
           &:focus {
@@ -484,8 +240,7 @@
           }
 
           &::placeholder {
-            color: #40BA93;
-            font-size: 24px;
+            color: #A9AAAB;
           }
         }
       }
@@ -502,13 +257,15 @@
         }
       }
 
-      .redeem-window-op-sign-row {
+      .general-window-op-sign-row {
         display: grid;
         place-items: center;
 
+        padding: 1.042vw 0;
+        
         i {
           color: #C4C4C4;
-          font-size: 24px;
+          font-size: 1.25vw;
         }
 
         .fa-arrow-down {
@@ -516,20 +273,141 @@
         }
       }
 
-      .redeem-window-run-mint {
-        justify-self: center;
-        align-self: flex-end;
-        border: 0;
-        color: white;
-        height: clamp(51px, 80%, 71px);
-        width: 60%;
-        font-size: 24px;
-        background: #40BA93;
-        box-shadow: -6px -6px 30px rgba(51, 51, 51, 0.25), 4px 4px 20px rgba(0, 0, 0, 0.25);
-        border-radius: 30px;
-        cursor: pointer;
-      }
+      .general-btn-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
 
+        .mint-window-run-mint {
+          font-size: 1.406vw;
+  
+          width: 17.813vw;
+          height: 3.698vw;
+          margin-top: 2.135vw;
+  
+          color: white;
+          background: #40BA93;
+  
+          cursor: pointer;
+  
+          box-shadow: -0.313vw -0.313vw 1.563vw rgba(51, 51, 51, 0.25), 0.208vw 0.208vw 1.042vw rgba(0, 0, 0, 0.25);
+          border-radius: 1.563vw;
+          border: 0;
+  
+          &:disabled {
+            background-color: lightgray;
+            color: black;
+  
+            pointer-events: none;
+            cursor: none;
+          }
+
+          &:hover {
+            transition: .4s ease;
+            background-color: #1E1E1E;
+            color: #40BA93;
+          }
+        }
+      }
+    }
+  }
+
+.collect-redemption {
+  width: 20.5vw;
+  margin-right: 2.083vw;
+  margin-bottom: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 2.344vw 2.188vw;
+
+  background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+  border-radius: 2.083vw;
+
+  .collect-redemption-data {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.729vw;
+
+    padding: 0.729vw 0 !important;
+    color: #4F4F4F;
+
+    p:last-child {
+      color: white;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 0.052vw solid #333333;
+    }
+  }
+
+  div {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    align-items: center;
+
+    padding-bottom: 0.521vw;
+    border-bottom: 0.052vw solid #333333;
+
+    span {
+      display: flex;
+      justify-content: center;
+      font-size: 0.7vw;
+
+      color: #40BA93;
+    }
+
+    h3 {
+      font-size: 0.729vw;
+      color: #4F4F4F;
+
+      &:first-child {
+        color: white;
+      }
+        
+      b {
+        margin-left: 0.208vw;
+        color: #40BA93;
+      }
+    }
+
+    button {
+      font-size: 0.729vw;
+      padding: 0.208vw 0.5vw;
+
+      border: 0.052vw solid #40BA93;
+      border-radius: 1.042vw;
+
+      cursor: pointer;
+      background-color: transparent;
+      color: white;
+
+      &:hover {
+        transition: 0.3s;
+        background-color: #40BA93;
+        color: white;
+      }
+    }
+
+    &:last-child {
+      display: flex;
+      justify-content: space-between;
+
+      border: 0;
+      padding-bottom: 0;
+      padding-top: 1.406vw;
+
+      h3 {
+        &:first-child {
+          color: #4F4F4F;
+        }
+      }
+    }
+  }
+
+    &:not(:last-child) {
+      margin-bottom: 2.083vw;
     }
   }
 }
@@ -574,22 +452,23 @@
     }
   }
 
-  .mint-wrapper {
-    .mint-window {
+  .general-wrapper {
+    .general-window {
       background: #FFFFFF;
 
-      .mint-window-header {
+      .general-window-header {
+
         h3 {
           color: black;
         }
 
         button {
-          background: #F2F2F2;
           box-shadow: none;
+
         }
       }
 
-      .mint-window-input-row {
+      .general-window-input-row {
         background: #F2F2F2;
 
         span {
@@ -603,63 +482,6 @@
         .currency {
           color: black;
         }
-      }
-
-      .mint-window-run-mint {
-        box-shadow: none;
-      }
-    }
-  }
-
-  .redeem-wrapper {
-    .collect-redemption {
-      background: #F2F2F2;
-
-      div {
-        button {
-          color: black;
-        }
-
-        &:first-child {
-          h3 {
-            color: black;
-          }
-        }
-      }
-    }
-
-    .redeem-window {
-      background: #FFFFFF;
-
-      .redeem-window-header {
-        h3 {
-          color: black;
-        }
-
-        button {
-          background: #F2F2F2;
-          box-shadow: none;
-        }
-      }
-
-      .redeem-window-input-row {
-        background: #F2F2F2;
-
-        span {
-          h3 {
-            b {
-              color: black;
-            }
-          }
-        }
-
-        .currency {
-          color: black;
-        }
-      }
-
-      .redeem-window-run-mint {
-        box-shadow: none;
       }
     }
   }

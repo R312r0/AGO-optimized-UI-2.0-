@@ -1,106 +1,168 @@
-import { useWeb3React } from '@web3-react/core';
-import React, { useEffect, useState } from 'react';
-import { useSystemContext } from '../../../systemProvider';
-import { formatFromDecimal, formattedNum, formatToDecimal } from '../../../utils/helpers';
+import React, {useState} from 'react';
 import { TokenIcon } from '../../TokenIcon/token_icon';
-import { ProvideLiquidityPieChart } from '../ProvideLiqPieChart/provide-liquidity-pie-chart';
-import { CONTRACT_ADRESESS, MAX_INT } from '../../../constants';
+import {formattedNum, formatToDecimal} from "../../../utils/helpers";
+import {Cell, Pie, PieChart, ResponsiveContainer} from "recharts";
+import {useSystemContext} from "../../../systemProvider";
+import {useWeb3React} from "@web3-react/core";
 
-export const ProvideLiquidity = ({ pool }) => {
 
-    const { firstToken, secondToken, isPoolWmatic } = pool;
+export const ProvideLiquidity = ({pool}) => {
 
-    const { contracts, tokens } = useSystemContext();
+    const { token0, token1 } = pool;
+    const {account} = useWeb3React();
+    const {contracts} = useSystemContext();
+    const [input0, setInput0] = useState(null);
+    const [input1, setInput1] = useState(null);
+    const [usdValue, setUsdValue] = useState(0);
 
-    const { account } = useWeb3React();
+    const handleInput0 = (value) => {
 
-    const [token0Amount, setToken0Amount] = useState(0);
+        setInput0(value);
+        const priceForEquality = value * token0.price;
+        const token1Amount = priceForEquality / token1.price;
+        setInput1(token1Amount);
+        setUsdValue(priceForEquality * 2);
+    }
 
-    const [token1Amount, setToken1Amount] = useState(0);
+    const handleInput1 = (value) => {
+        setInput1(value);
+        setInput0(0);
+        const priceForEquality = value * token1.price;
+        const token0Amount = priceForEquality / token0.price;
+        setInput0(token0Amount);
+        setUsdValue(formattedNum(priceForEquality * 2));
+    }
 
-    const [allowance, setAllowance] = useState(null);
 
-    useEffect(() => {
+    const provideLiquidity = async () => {
 
-        async function checkRouterAllowance() {
-
-            const token0Allowance =  await tokens[firstToken].instance.methods.allowance(account, CONTRACT_ADRESESS.DEX_ROUTER).call();
-            const token1Allowance = await tokens[secondToken]?.instance.methods.allowance(account, CONTRACT_ADRESESS.DEX_ROUTER).call();
-            setAllowance(token0Allowance === MAX_INT && token1Allowance === MAX_INT);
-
-        }
-
-        checkRouterAllowance();
-
-    }, []);
-
-    console.log(allowance)
-    
-    const handleToken0Input = (value) => {
-
-        console.log(value);
-        setToken0Amount(value);
+        await contracts.ROUTER.methods.addLiquidity(
+            token0.address,
+            token1.address,
+            formatToDecimal(input0, 18),
+            formatToDecimal(input1, 18),
+            0,
+            0,
+            account,
+            9999999999).send({from: account})
 
     }
 
-    const handleToken1Input = (value) => {
+    const ProvideLiquidityPieChart = ({token1, token2}) => {
 
-        console.log(value);
-        setToken1Amount(value);
 
-    }
+        const data = [
+            {name: token1, value: 400},
+            {name: token2, value: 400},
+        ];
 
-    const handleProvideLiquidity = async () => {
+        const RADIAN = Math.PI / 180;
+        const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, percent, index}) => {
+            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+            const x = cx + radius * Math.cos(-midAngle * RADIAN);
+            const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-        const deadline = +new Date() + 1500;
+            return (
+                <text x={x > cx ? x - 20 : x + 20} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'}
+                      dominantBaseline="central">
+                    {`${(percent * 100).toFixed(0)}%`}
+                </text>
+            );
+        };
 
-        if (isPoolWmatic) {
-
-            const pairTokenAddress = firstToken === "WMATIC" ? CONTRACT_ADRESESS[secondToken] : CONTRACT_ADRESESS[firstToken];
-
-            contracts.DEX_ROUTER.methods.addLiquidityETH(pairTokenAddress, formatToDecimal(token0Amount, 6), 0, 0, account, deadline).send({from: account, value: token1Amount});
-        }
-        else {
-            contracts.DEX_ROUTER.methods.addLiquidity(firstToken.address, secondToken.address, token0Amount, token1Amount, 0, 0, account, deadline).send({from: account});
-        }
-    }
-
-    const approveTokens = async () => {
-
-        if (isPoolWmatic) {
-            const pairTokenAddress = firstToken === "WMATIC" ? CONTRACT_ADRESESS[secondToken] : CONTRACT_ADRESESS[firstToken];
-            
-            // TODO: from subgraph take a address of tokens, create instances and make approve
-        }
+        return (
+            <div className='chart-block'>
+                <ResponsiveContainer width="100%" height="100%">
+                    <PieChart width={200} height={200}>
+                        <defs>
+                            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0" stopColor="#40BA93"/>
+                                <stop offset="1" stopColor="rgba(64, 186, 147, 0.25)"/>
+                            </linearGradient>
+                        </defs>
+                        <defs>
+                            <linearGradient id="colorUvSecond" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0" stopColor="#358269"/>
+                                <stop offset="1" stopColor="rgba(53, 130, 105, 0.25)"/>
+                            </linearGradient>
+                        </defs>
+                        <Pie
+                            startAngle={90}
+                            endAngle={450}
+                            data={data}
+                            labelLine={false}
+                            label={renderCustomizedLabel}
+                            outerRadius={100}
+                            stroke="none"
+                            dataKey="value"
+                        >
+                            {data.map((entry, index) => (
+                                <Cell key={`cell-${index}`}
+                                      fill={index === 0 ? "url(#colorUv)" : "url(#colorUvSecond)"}/>
+                            ))}
+                        </Pie>
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
+        )
     }
 
     return(
         <>
-        <div className='provide-liquidity-block'> 
-            <div className='provide-liquidity-block__input-row'> 
-                <span> <p>{firstToken} </p> <p>=$47,654.36</p>  </span>
-                <div> 
-                    <p><TokenIcon iconName={firstToken}/> <h5>{firstToken}</h5> </p>
-                    <input type="number" placeholder={`Enter ${firstToken} amout`} value={token0Amount} onChange={(e) => handleToken0Input(e.target.value)}/>
+        <div className='provide-liquidity-block'>
+
+
+            <div className='provide-liquidity-block__item'>
+                <div className='provide-liquidity-block__item__input-wrapper'> 
+                    <p>{token0.symbol}</p>
+                    <div className='provide-liquidity-block__item__input-wrapper__token'>
+                        <TokenIcon iconName={token0.symbol}/>
+                        <h5>{token0.symbol}</h5>
+                        <input type="number" onChange={(e) => handleInput0(e.target.value)} value={input0} placeholder={`Enter ${token0.symbol} amout`}/>
+                    </div>
+                </div>
+
+                <div className='provide-liquidity-block__item__data'>
+                    <p>0.236956852637269</p>
+                    <p>=${token0.price}</p>
                 </div>
             </div>
-            <div className='provide-liquidity-block__input-row'> 
-                <span> <p>{secondToken} </p> <p>=$6,654.36</p>  </span>
-                <div> 
-                    <p><TokenIcon iconName={secondToken}/> <h5>{secondToken}</h5> </p>
-                    <input type="number" placeholder={`Enter ${secondToken} amout`} value={token1Amount} onChange={(e) => handleToken1Input(e.target.value)}/>
+
+
+            <div className='provide-liquidity-block__item'>
+                <div className='provide-liquidity-block__item__input-wrapper'> 
+                    <p>{token1.symbol}</p>
+                    <div className='provide-liquidity-block__item__input-wrapper__token'>
+                        <TokenIcon iconName={token1.symbol}/>
+                        <h5>{token1.symbol}</h5>
+                        <input type="number" placeholder={`Enter ${token1.symbol} amout`} onChange={(e) => handleInput1(e.target.value)} value={input1}/>
+                    </div>
+                </div>
+
+                <div className='provide-liquidity-block__item__data'>
+                    <p>0.236956852637269</p>
+                    <p>=${token1.price}</p>
                 </div>
             </div>
-            <div className='provide-liquidity-block__add-info-row'> 
-                <span> <p> USD value </p> <p>Max: = -$140.26</p>  </span>
-                <input type="text" disabled value={`${formattedNum(1000000)}$`}/>
+
+            <div className='provide-liquidity-block__item'>
+                <div className='provide-liquidity-block__item__input-wrapper'> 
+                    <p className='provide-liq-heading'>USD Value</p>
+                    <div className='provide-liquidity-block__item__input-wrapper__token'>
+                        <span className="provide-liq-white"> {usdValue}$ </span>
+                    </div>
+                </div>
+
+                <div className='provide-liquidity-block__item__data'> 
+                    <p className='provide-liq-max__data'>Max: = -$140.26</p>
+                </div>
             </div>
         </div>
         <div className='provide-liq-wrapper'>
-            <ProvideLiquidityPieChart token1={firstToken} token2={secondToken}/>
-            <button onClick={() => handleProvideLiquidity()}> Porvide</button>
+            <ProvideLiquidityPieChart token1={token0.symbol}
+                                      token2={token1.symbol}/>
+            <button onClick={() => provideLiquidity()}> Porvide</button>
         </div>
         </>
     )
-
 }

@@ -2,39 +2,61 @@ import React, {useState} from 'react';
 import {useHistory} from 'react-router';
 import {NavLink} from 'react-router-dom';
 import comments_black from '../../../assets/icons/nav-links/dark-theme/comment-black.svg';
+import document_icon from './../../../assets/icons/sidebar-documents.svg';
 import {PAGES} from '../../../constants';
 import {useSystemContext} from '../../../systemProvider';
 import styled from 'styled-components';
 import {ThemeSwitcher} from '../ThemeSwitcher/theme-switcher';
+import { useMediaQuery } from 'react-responsive';
 
 
 const SideBarWrapper = styled.div`
-  display: grid;
-  grid-template-rows: 75% 15% 15%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-items: center;
-  max-height: 100vh;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    grid-template-rows: 75% 0 0;
+  
+  margin-top: 0.5vw;
+
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .document_icon {
+    width: 1.563vw;
+    height: 2.083vw;
   }
 `
 
 const SocialMediasList = styled.div`
-  transition: 0.3s all;
-  position: absolute;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(60.68% 60.68% at 50.88% 47.73%, #265041 0%, #222121 100%);
   width: 80%;
+  height: ${props => props.opened ? "27.4vw" : "0"};
+  padding: 1.2vw 0;
+  
+  position: absolute;
   left: 50%;
-  height: ${props => props.opened ? "95%" : "0px"};
-  transform: translateX(-50%);
-  bottom: 10px;
-  border: 1px solid #4F4F4F;
-  border-radius: 12px;
-  visibility: ${props => props.opened ? "visible" : "hidden"};
+  bottom: 0.521vw;
   z-index: ${props => props.opened ? "1000" : "-1000"};
-  display: grid;
-  grid-template-rows: repeat(6, 1fr);
-  align-items: center;
+
+  transition: 0.3s all;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(60.68% 60.68% at 50.88% 47.73%, #265041 0%, #222121 100%);
+  transform: translateX(-50%);
+
+  border: 0.052vw solid #4F4F4F;
+  border-radius: 0.8vw;
+  font-size: 1vw;
+  
+  visibility: ${props => props.opened ? "visible" : "hidden"};
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  @media screen and (max-width: 1024px) {
+    height: ${props => props.opened ? "31.8vw" : "0"};
+  }
 
   a {
     display: ${props => props.opened ? "block" : "none"};
@@ -44,7 +66,7 @@ const SocialMediasList = styled.div`
 
     &:hover {
       transition: 0.15s all;
-      font-size: 24px;
+      font-size: 1.4vw;
     }
   }
 `
@@ -52,23 +74,14 @@ const SocialMediasList = styled.div`
 const LinkList = styled.ul`
   position: relative;
   text-align: center;
-  height: 65vh;
-  padding: 10% 6.5%;
-  width: 42%;
-  border: 1px solid #4F4F4F;
-  box-sizing: border-box;
-  border-radius: 1.5vw;
-  display: grid;
-  grid-template-rows: repeat(6, 1fr) 2fr;
-  align-self: center;
-  align-items: center;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    position: relative;
-    width: 50%;
-    margin-left: 34px;
-    bottom: 100px;
-    height: 43vh;
-  }
+
+  padding: 0.521vw 0.665vw;
+  
+  border: 0.052vw solid #4F4F4F;
+  border-radius: 1vw;
+  
+  display: flex;
+  flex-direction: column;
 
   .soc-list-light {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #40BA93;
@@ -81,12 +94,24 @@ const LinkList = styled.ul`
     z-index: 1000;
   }
 
+  .link-message-item {
+    border: 0.052vw solid #4F4F4F;
+    margin-top: 4vw;
+
+    &:hover {
+      transition: 0.15s all ease-out;
+      opacity: 0;
+    }
+  }
+
   .active-nav-tab {
-    border: 1px solid #40BA93;
-    border-radius: 12px;
-    background: #40BA93;
     width: 100%;
     height: 70%;
+
+    border: 0.052vw solid #40BA93;
+    border-radius: 0.625vw;
+    background: #40BA93;
+
     transition: 0.3s all;
 
     &:hover {
@@ -96,19 +121,33 @@ const LinkList = styled.ul`
 `
 
 const LinkListItem = styled.li`
-  cursor: pointer;
-  display: grid;
+  display: flex;
   align-items: center;
-  justify-self: center;
+  justify-content: center;
+
+  height: 0;
+  
+  cursor: pointer;
   border-radius: 20%;
-  width: 100%;
-  height: 70%;
-  background-color: ${props => props.active ? "#40BA93" : "transparent"};
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    width: 100%;
-    height: 63%;
-    border-radius: 30%;
+  
+  padding: 1.4vw 0.9vw;
+  margin: 0.3vw 0;
+
+  img {
+    width: 0.9vw;
+    height: 1.5vw;
   }
+
+  @media screen and (max-width: 1024px) {
+    padding: 1.7vw 1.2vw;
+
+    img {
+      width: 1.2vw;
+      height: 2vw;
+    }
+  }
+
+  background-color: ${props => props.active ? "#40BA93" : "transparent"};
 
   &:hover {
     background-color: ${props => props.active ? "#40BA93" : "#E0E0E0"};
@@ -116,45 +155,25 @@ const LinkListItem = styled.li`
   }
 
   &:last-child {
-    border: 1px solid #4F4F4F;
-    width: 100%;
-    height: 35%;
-    border-radius: 20%;
-    justify-self: center;
-    align-self: flex-end;
-    display: grid;
-    place-items: center;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
-      width: 100%;
-      border-radius: 30%;
-      height: 30%;
-      margin-bottom: 12px;
-    }
-
-    &:hover {
-      transition: 0.15s all ease-out;
-      opacity: 0;
-    }
-  }
-
-  img {
-    width: 0.9vw;
-    height: 1.5vw;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
-      width: 2vw;
-      height: 2vw;
-    }
+    // border: 0.052vw solid #4F4F4F;
+    // margin-top: 4vw;
+    border-radius: 0.6vw;
   }
 `
 
+
 const BottomLinks = styled.div`
-  display: grid;
-  align-self: center;
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 1.4vw;
 
   a {
+    margin-left: 2vw;
     font-size: 0.8vw;
     color: white;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    
+    @media screen and (max-width: 750px) {
       display: none;
     }
   }
@@ -166,49 +185,47 @@ export const SideBar = () => {
     const history = useHistory();
     const [expandSocMedias, setExpandSocMedias] = useState(false);
     const [activeTab, setActiveTab] = useState(history.location.pathname);
+    const isTabletScreen = useMediaQuery({query: '(max-width: 1024px)'});
     const {theme, setTheme} = useSystemContext();
 
 
     return (
         <SideBarWrapper>
             <LinkList>
-                <SocialMediasList opened={expandSocMedias} onMouseEnter={() => setExpandSocMedias(true)}
-                                  onMouseLeave={() => setExpandSocMedias(false)}>
-                    <a href="mailto:email@argano.io" target="_blank" rel="noreferrer"> <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="https://t.me/ARGANO_DEFI" target="_blank" rel="noreferrer"> <i
-                        class="fab fa-telegram-plane"></i> </a>
-                    <a href="https://discord.com/invite/mH7PJnNCWP" target="_blank" rel="noreferrer"> <i
-                        class="fab fa-discord"></i> </a>
-                    <a href="https://twitter.com/argano_io" target="_blank" rel="noreferrer"> <i
-                        class="fab fa-twitter"></i> </a>
-                    <a href="https://argano.medium.com/" target="_blank" rel="noreferrer"> <i class="fab fa-medium"></i>
-                    </a>
-                    <a href="https://github.com/Argano-DEX/Argano-Contracts" target="_blank" rel="noreferrer"> <i
-                        class="fab fa-github"></i> </a>
+                <SocialMediasList 
+                  opened={expandSocMedias} 
+                  onMouseEnter={() => setExpandSocMedias(true)}
+                  onMouseLeave={() => setExpandSocMedias(false)}
+                  >
+                    <a href="mailto:email@argano.io" target="_blank" rel="noreferrer"><i class="fas fa-envelope"></i></a>
+                    <a href="https://t.me/ARGANO_DEFI" target="_blank" rel="noreferrer"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="https://discord.com/invite/mH7PJnNCWP" target="_blank" rel="noreferrer"><i class="fab fa-discord"></i></a>
+                    <a href="https://twitter.com/argano_io" target="_blank" rel="noreferrer"><i class="fab fa-twitter"></i></a>
+                    <a href="https://argano.medium.com/" target="_blank" rel="noreferrer"><i class="fab fa-medium"></i></a>
+                    <a href="https://github.com/Argano-DEX/Argano-Contracts" target="_blank" rel="noreferrer"><i class="fab fa-github"></i></a>
                 </SocialMediasList>
                 {PAGES.map((item) => {
                     return (
-                        <LinkListItem active={item.path === history.location.pathname}>
-                            <NavLink to={item.path} onClick={() => setActiveTab(item.path)}>
+                        <NavLink to={item.path} onClick={() => setActiveTab(item.path)}>
+                          <LinkListItem active={item.path === history.location.pathname}>
                                 <img src={activeTab === item.path ? item.imgActive : item.img} alt={`${item.path}`}/>
-                            </NavLink>
-                        </LinkListItem>
+                          </LinkListItem>
+                        </NavLink>
                     )
                 })}
-                <LinkListItem onMouseEnter={() => setExpandSocMedias(true)}>
+                <LinkListItem className='link-message-item' onMouseEnter={() => setExpandSocMedias(true)}>
                     <img src={comments_black} alt={'comments'}/>
                 </LinkListItem>
             </LinkList>
-            <BottomLinks>
-                <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing"
-                   target="_blank" rel="noreferrer"> White Paper </a>
-                <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer"> GitBook </a>
-                <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank"
-                   rel="noreferrer"> Audit Report </a>
-                <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank"
-                   rel="noreferrer"> $AGO contracts </a>
-            </BottomLinks>
+            {isTabletScreen 
+              ? <img className="document_icon" src={document_icon}></img> 
+              : <BottomLinks>
+                  <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
+                  <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
+                  <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
+                  <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
+                </BottomLinks>
+            }
             <ThemeSwitcher/>
         </SideBarWrapper>
     )

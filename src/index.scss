@@ -1,16 +1,13 @@
-@font-face {
-    font-family: 'Popins';
-    src: local('Popins'), url(font/Poppins-Regular.ttf) format('truetype');
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Popins !important;
+    font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 1.2em !important;
+    font-size: 1.2em;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -28,11 +25,11 @@ code {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    margin: 0!important;
+    margin: 0;
 }
 
 p {
-    margin: 0!important;
+    margin: 0;
 }
 
 
@@ -44,7 +41,7 @@ p {
 
 .ant-argano-message {
     margin-top: 20px;
-
+    
     div {
         background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient( 90.99deg, #272727 2.18%, #1C1C1C 104.4%);
         border-radius: 20px;

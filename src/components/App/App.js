@@ -12,6 +12,9 @@ import { Trading } from '../Trading/trading';
 import { Layout } from '../Layout/layout';
 import { Accounts } from '../Accounts/accounts';
 import 'antd/dist/antd.css';
+import {Foundry} from "../Foundry/foundry";
+
+
 
 export const App = () => {
 
@@ -22,11 +25,12 @@ export const App = () => {
                     <Switch>
                         <Route path="/" component={Dashboard} exact/>
                         <Route path="/mint-redeem" component={MintRedeem} exact/>
+                        <Route path="/foundry" component={Foundry} exact/>
                         <Route path="/staking" component={StakingRewards} exact/>
                         <Route path="/liqudity-pools" component={LiquidityPools} exact/>
                         <Route path="/trading" component={Trading} exact/>
                         <Route path="/accounts" component={Accounts} exact/>
-                </Switch>
+                    </Switch>
                 </Layout>
             </Router>
             <WalletModal/>

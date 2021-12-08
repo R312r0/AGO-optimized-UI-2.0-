@@ -33,8 +33,6 @@ export const MintRedeem = () => {
             poolBalance = formatFromDecimal(await contracts.POOL_AGOBTC.methods.collateralDollarBalance().call(), 18);
         }
 
-        console.log(info);
-
         setMintRedeemInfo({
             stablePrice: formatFromDecimal(info["0"], 6),
             sharePrice: formatFromDecimal(info["1"], 18),
@@ -61,7 +59,8 @@ export const MintRedeem = () => {
                         <span> Slippage: <b>{mintRedeemSlipage}%</b></span>
                         <i class="fas fa-circle"></i>
                         <span> Rates: <span> 1 <b>{mintRedeemCurrency}</b> = {mintRedeemInfo.stablePrice} <b> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b> </span> </span>
-                        <span> <a href="https://polygonscan.com/"> View contracts on PolygonScan </a> <i class="fas fa-external-link-alt"></i> </span>
+                    
+                        <span className='contract__link-polygon'> <a href="https://polygonscan.com/"> View contracts on PolygonScan </a> <i class="fas fa-external-link-alt"></i> </span>
                     </div>
                 </div>
                 <div className='mint-redeem-switcher'> 

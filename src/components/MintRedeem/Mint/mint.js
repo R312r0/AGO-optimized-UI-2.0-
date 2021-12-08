@@ -34,20 +34,21 @@ export const Mint = ({info}) => {
     useEffect(() => {
 
         if (account) {
-            const usdt = getTokenBalance("USDT");
-            const wbtc = getTokenBalance("WBTC");
-    
-            if (usdt.userNativeBalance === "0" && mintRedeemCurrency === "AGOUSD") {
-                setMintButtonDisabled(true);
-                message.warn({content: `You have 0 USDT to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
+            if (mintRedeemCurrency === "AGOUSD") {
+                const usdt = getTokenBalance("USDT");
+                if (usdt.userNativeBalance === "0" && mintRedeemCurrency === "AGOUSD") {
+                    setMintButtonDisabled(true);
+                    message.warn({content: `You have 0 USDT to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
+                }
             }
-            else if (wbtc.userNativeBalance === "0" && mintRedeemCurrency === "AGOBTC") {
-                setMintButtonDisabled(true);
-                message.warn({content: `You have 0 WBTC to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
+            else if (mintRedeemCurrency === "AGOBTC") {
+                const wbtc = getTokenBalance("WBTC");
+                if (wbtc.userNativeBalance === "0" && mintRedeemCurrency === "AGOBTC") {
+                    setMintButtonDisabled(true);
+                    message.warn({content: `You have 0 WBTC to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
+                }
             }
         }
-
-
     }, [userProtfolio])
 
     const getAllowance = async () => {
@@ -172,39 +173,59 @@ export const Mint = ({info}) => {
     }
 
     return (
-        <div className='mint-wrapper'> 
-            <div className='mint-window'>
-                <div className='mint-window-header'> 
-                    <h3> Mint </h3>
-                    <button onClick={() => setMintRedeemCurrencyModal(true)}> <img src={setting_cog} alt="settings"/> </button>
+        <div className='general-wrapper'> 
+            <div className='collect-redemption-wrapper'>
+                <div className='collect-redemption'> 
+                    <div>
+                        <h3>Active minting</h3>
+                        <span>
+                            WBTC AGOBTC
+                        </span>
+                    </div>
+                    <div className='collect-redemption-data'> 
+                        <p>Price</p>
+                        <p>$ 30,500</p>
+                    </div>
+                    <div className='collect-redemption-data'> 
+                        <p>Volume</p>
+                        <p>0.5</p>
+                    </div>
                 </div>
-                <div className='mint-window-input-row'> 
+            </div>
+            <div className='general-window'>
+                <div className='general-window-header'> 
+                    <h3> Mint </h3>
+                    <button className='general-window-settings-btn' onClick={() => setMintRedeemCurrencyModal(true)}> <img src={setting_cog} alt="settings"/> </button>
+                </div>
+                <div className='general-window-input-row'>
                     <span> <h3> Input <b> -{info.targetCollateralRatio}% </b> </h3> </span>
                     <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC")}  </h3> </span>
                     <input type='number' placeholder="0.00" onChange={(e) => handleCollateralInput(e.target.value)} value={collateralInput}/>
                     <span className='currency'> <TokenIcon iconName={ mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
                 </div>
-                <div className='mint-window-op-sign-row'> 
+                <div className='general-window-op-sign-row'> 
                     <i className="fas fa-plus"/>
                 </div>
-                <div className='mint-window-input-row'> 
+                <div className='general-window-input-row'> 
                     <span> <h3> Input <b> -{info.targetCollateralRatio - 100}% </b> </h3> </span>
                     <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC")} </h3> </span>
                     <input type='number' disabled={info.targetCollateralRatio === 100} placeholder={info.targetCollateralRatio === 100 ? "TCR is 100%" : "0.00"} onChange={(e) => handleCatenaInput(e.target.value)} value={info.targetCollateralRatio === 100 ? "" : catenaInput}/>
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</span>
                 </div>
-                <div className='mint-window-op-sign-row'> 
+                <div className='general-window-op-sign-row'> 
                     <i className="fas fa-arrow-down"/>
                 </div>
-                <div className='mint-window-input-row output'> 
+                <div className='general-window-input-row output'> 
                     <span> <h3> Output(estimated) </h3> </span>
                     <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency)} </h3> </span>
                     <input disabled type='number' placeholder="0.00" value={outputInput}/>
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency}/> {mintRedeemCurrency} </span>
                 </div>
-                <button style={{background: "pink", width: "200px", height: "50px"}} onClick={() => handleRefreshCollateralRatio()}> Pablo refresh TCR </button>
-                <button style={{background: "pink", width: "200px", height: "50px"}} onClick={() => handleUnpause()}> Pablo Unpause </button>
-                <MintButton/>
+                {/* <button style={{background: "pink", width: "200px", height: "50px"}} onClick={() => handleRefreshCollateralRatio()}> Pablo refresh TCR </button>
+                <button style={{background: "pink", width: "200px", height: "50px"}} onClick={() => handleUnpause()}> Pablo Unpause </button> */}
+                <div className="general-btn-wrapper">
+                    <MintButton/>
+                </div>
             </div>
         </div>
     )

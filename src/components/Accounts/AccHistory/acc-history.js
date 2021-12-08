@@ -29,7 +29,6 @@ export const AccHistory = ({isOpened, setIsOpened}) => {
     }, [])
 
 
-    console.log(data);
 
 
     return (

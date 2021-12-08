@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {TokenPricesCharts} from './TokenPricesCharts/token-prices-charts';
 import {TVLChart} from './TVLChart/TVLChart';
 import {Volume24h} from './Volume24h/volume24h';
@@ -7,6 +7,9 @@ import {useSystemContext} from '../../systemProvider';
 import styled from 'styled-components';
 import {useMediaQuery} from 'react-responsive';
 import {DashboardMobile} from './dashboard-mobile';
+import {useQuery} from "@apollo/client";
+import {DASHBOARD_QUERY} from "../../api/client";
+import {calculateTimeDifference, formatAddress, formattedNum} from "../../utils/helpers";
 
 const DashboardWrapper = styled.div`
   display: grid;
@@ -17,16 +20,26 @@ const DashboardWrapper = styled.div`
   grid-row-gap: 5%;
   justify-items: center;
   padding: 1.5%;
-  @media screen and (min-width: 500px) and (max-width: 768px) {
-    grid-row-gap: 0;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
-  
+
+  @media only screen and (max-width: 1024px){
+    grid-row-gap: 2%;
+  }
+
   .tvl-volume {
     display: grid;
     width: 100%;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 5%;
-    @media screen and (min-width: 500px) and (max-width: 768px) {
+    
+    @media only screen and (max-width: 1024px){
+      grid-column-gap: 2%;
+    }
+
+    @media only screen and(max-width: 750px) {
       grid-column-gap: 2%;
       width: 95%;
       margin-bottom: 15px;
@@ -34,10 +47,79 @@ const DashboardWrapper = styled.div`
   }
 `
 
+const TXS_NAME = {
+    SWAP: "Swap",
+    ADD: "Add liquidity",
+    BURN: "Remove liquidity"
+}
+
 export const Dashboard = () => {
 
     const {theme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 767px)'})
+    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
+    const {data, loading, error} = useQuery(DASHBOARD_QUERY);
+
+    console.log(data);
+    console.log(loading);
+    console.log(error)
+
+    const [projCharts, setProjCharts] = useState({tvl: [], volume: []});
+    const [transactions, setTransactions] = useState([]);
+
+    useEffect(() => {
+
+        if (!loading && data) {
+
+            const tvlChart = convertProjChartData(data.uniswapFactory.totalValueLocked);
+            const volumeChart = convertProjChartData(data.uniswapFactory.totalVolume);
+            const txs = convertTransactionsData(data.transactions)
+            setProjCharts({
+                tvl: tvlChart,
+                volume:volumeChart
+            })
+            setTransactions(txs);
+        }
+
+    }, [loading])
+
+
+    const convertProjChartData = (data) => {
+        const res = data.map((item, _ind) => {
+            const dateFromItem = new Date(item.timestamp * 1000);
+            const time = `${dateFromItem.getHours()}:${dateFromItem.getMinutes()}:${dateFromItem.getSeconds()}`
+            const date = dateFromItem.toDateString();
+            const uv = +item.value > 0 ? +item.value : 0;
+            return {time, uv, date};
+        })
+
+        return res;
+    }
+
+    const convertTransactionsData = (data) => {
+        const {SWAP, ADD, BURN} = TXS_NAME;
+
+        const res = data.map(item => {
+            let txName;
+            let totalValue = formattedNum((+item.amountTotalUSD).toFixed(2));
+            let token0Amount = `${(+item.amount0).toFixed(2)} ${item.token0}`
+            let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`
+            let acc = formatAddress(item.from);
+            let time = calculateTimeDifference(item.timestamp);
+            switch (item.name) {
+                case SWAP:
+                    txName = `${item.name} ${item.token0} for ${item.token1}`
+                    break;
+                case ADD:
+                    txName = `${item.name} ${item.token0} and ${item.token1}`
+                    break;
+                case BURN:
+                    txName = `${item.name} ${item.token0} and ${item.token1}`
+                    break;
+            }
+            return {txName, totalValue, token0Amount, token1Amount, acc, time}
+        })
+        return res;
+    }
 
 
     return (
@@ -48,10 +130,10 @@ export const Dashboard = () => {
                 <DashboardWrapper>
                     <TokenPricesCharts/>
                     <div className='tvl-volume'>
-                        <TVLChart/>
-                        <Volume24h/>
+                        <TVLChart data={projCharts.tvl}/>
+                        <Volume24h data={projCharts.volume}/>
                     </div>
-                    <TokenTransactionTable/>
+                    <TokenTransactionTable data={transactions}/>
                 </DashboardWrapper>
             }
         </>
