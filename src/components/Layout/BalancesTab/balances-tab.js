@@ -312,19 +312,17 @@ export const BalancesTab = () => {
     useEffect(() => {
 
         if(!loading && data.tokens && userProtfolio) {
+
+            console.log(userProtfolio);
+            console.log(data.tokens);
             const res = userProtfolio.map((item) => {
                const name = item.name;
                const nativeBalance = item.userNativeBalance;
-               let usdBalance;
+               const usdBalance = data.tokens.find(tok => tok.symbol === name);
 
-               if (item.name === "AGO") {
-                   usdBalance = nativeBalance * data.tokens.find(tok => tok.name === "Argano").priceUSD;
-               }
-               else {
-                   usdBalance =  nativeBalance * data.tokens.find(tok => tok.name === name).priceUSD;
-               }
+               console.log(usdBalance)
 
-               return {name, nativeBalance, usdBalance}
+               return {name, nativeBalance, usdBalance: usdBalance.priceUSD * nativeBalance}
             });
 
             setBalances(res);

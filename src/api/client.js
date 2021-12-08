@@ -6,13 +6,13 @@ import {
 import {FACTORY_ADDRESS} from "../constants";
 
 export const client = new ApolloClient({
-    uri: "http://127.0.0.1:8000/subgraphs/name/R312R0/ganache",
+    uri: "https://api.thegraph.com/subgraphs/name/r312r0/vlad-ago-subgraph",
     cache: new InMemoryCache()
 });
 
 export const DASHBOARD_QUERY = gql(`
     query dashboard {
-        uniswapFactory(id: "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707") {
+        uniswapFactory(id: "0xcaf4fa9103ef5f4832dfcac40a0d66c4202de377") {
           totalValueLocked(orderBy: timestamp, orderDirection: asc) {
             value
             timestamp
@@ -37,11 +37,10 @@ export const DASHBOARD_QUERY = gql(`
 
 export const MAIN_TOKENS_DATA_QUERY = gql(`
     query mainTokens {
-        tokens(where: {isProtocolMain: true}) {
+        tokens(first: 4, where: {isProtocolMain: true}) {
             id
-            name
+            symbol
             priceUSD
-            totalSupply
             lineChartUSD(orderBy: timestamp, orderDirection: asc) {
              valueUSD
              timestamp
@@ -55,7 +54,7 @@ export const TOKENS_FOR_USER_BALANCES = gql(`
     query userBalanceTokens {
         tokens(where: {isProtocolMain: true}) {
             id
-            name
+            symbol
             priceUSD
         }
     }

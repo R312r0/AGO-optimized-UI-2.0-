@@ -9,11 +9,13 @@ import STABLE_ABI from './abi/STABLE.json';
 import SHARE_ABI from './abi/SHARE.json';
 import STABLE_POOL_ABI from './abi/STABLE_POOL.json';
 import TOKEN_ORACLE_ABI from './abi/TOKEN_ORACLE.json';
-import { CONTRACT_ADRESESS,TOKEN_ADDRESESS, MOCK_PRICE_ADDRESS, USD_PRICE_ENDPOINT } from './constants';
+import { CONTRACT_ADRESESS } from './constants';
 import { formatFromDecimal } from './utils/helpers';
 import { message } from 'antd';
 import { ethErrors } from 'eth-rpc-errors'
 import { EthereumRpcError, EthereumProviderError } from 'eth-rpc-errors'
+import {useQuery} from "@apollo/client";
+import {TOKENS_FOR_USER_BALANCES} from "./api/client";
 
 
 const SystemContext = React.createContext();
@@ -21,7 +23,7 @@ export const useSystemContext = () => useContext(SystemContext);
 
 export const SystemProvider = ({children}) => {
 
-    const {account, activate, active, library, deactivate, error} = useWeb3React();
+    const {account, activate, active, library, deactivate} = useWeb3React();
 
     const [theme, setTheme] = useState("dark");
 
@@ -67,18 +69,18 @@ export const SystemProvider = ({children}) => {
 
 
 
-    useEffect(() => {
-
-        if (error instanceof UnsupportedChainIdError ) {
-            message.error({content: "You choose wrong network in your wallet please change it to Polygon Mainnet", key: "NETWORK", className: "ant-argano-message", duration: 3000})
-        }
-        else {
-            message.success({content: "Success!", key: "NETWORK", className: "ant-argano-message", duration: 3})
-        }
-
-        console.log(error);
-
-    }, [error])
+    // useEffect(() => {
+    //
+    //     if (error instanceof UnsupportedChainIdError ) {
+    //         message.error({content: "You choose wrong network in your wallet please change it to Polygon Mainnet", key: "NETWORK", className: "ant-argano-message", duration: 3000})
+    //     }
+    //     else {
+    //         message.success({content: "Success!", key: "NETWORK", className: "ant-argano-message", duration: 3})
+    //     }
+    //
+    //     console.log(error);
+    //
+    // }, [error])
 
     // 2. Inits contracts and tokens not-depend if user connected or not.
     useEffect(() => {
@@ -129,23 +131,23 @@ export const SystemProvider = ({children}) => {
 
     const initTokens = async () => {
 
-        const AGO = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.AGO);
-        // const AGOUSD = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOUSD);
+        const AGO = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.AGO);
+        const AGOUSD = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOUSD);
         // const AGOBTC = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOBTC);
-        // const CNUSD = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNUSD);
+        const CNUSD = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNUSD);
         // const CNBTC = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNBTC);
-        const USDT = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.USDT);
-        const USDC = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.USDC);
-        const DAI = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.DAI);
-        const WMATIC = new library.eth.Contract(ERC20_ABI, TOKEN_ADDRESESS.WMATIC);
+        const USDT = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.USDT);
+        const USDC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.USDC);
+        const DAI = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.DAI);
+        const WMATIC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.WMATIC);
         // const WBTC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.WBTC)
 
 
         setTokens({
             AGO: {name: "AGO",instance: AGO, decimals: await AGO.methods.decimals().call(), totalSupply: await AGO.methods.totalSupply().call()},
-            // AGOUSD: {name: "AGOUSD",instance: AGOUSD, decimals: await AGOUSD.methods.decimals().call()},
+            AGOUSD: {name: "AGOUSD",instance: AGOUSD, decimals: await AGOUSD.methods.decimals().call()},
             // AGOBTC: {name: "AGOBTC",instance: AGOBTC, decimals: await AGOBTC.methods.decimals().call()},
-            // CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call()},
+            CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call()},
             // CNBTC: {name: "CNBTC",instance: CNBTC, decimals: await CNBTC.methods.decimals().call()},
             USDT: {name: "USDT",instance: USDT, decimals: await USDT.methods.decimals().call(), totalSupply: await USDT.methods.totalSupply().call()},
             USDC: {name: "USDC",instance: USDC, decimals: await USDC.methods.decimals().call(), totalSupply: await USDC.methods.totalSupply().call()},
@@ -157,13 +159,13 @@ export const SystemProvider = ({children}) => {
     }
 
     const initContracts = () => {
-        // const POOL_AGOUSD = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOUSD);
-        // const TREASURY_AGOUSD = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOUSD);
+        const POOL_AGOUSD = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOUSD);
+        const TREASURY_AGOUSD = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOUSD);
         // const POOL_AGOBTC = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOBTC);
         // const TREASURY_AGOBTC = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOBTC);
         const ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.ROUTER)
         // setContracts({POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC});
-        setContracts({ROUTER})
+        setContracts({ROUTER, POOL_AGOUSD, TREASURY_AGOUSD})
     }
 
     const connectWallet = (wallet) => {
@@ -189,8 +191,6 @@ export const SystemProvider = ({children}) => {
 
         const balances = Object.entries(tokens).map(async (item) => {
 
-            const usdBalance =  await (await fetch(USD_PRICE_ENDPOINT(MOCK_PRICE_ADDRESS[item[0]]))).json();  
-            
             const obj = {
                 name: item[0],
                 userNativeBalance: await item[1].instance.methods.balanceOf(account).call(),
@@ -219,7 +219,9 @@ export const SystemProvider = ({children}) => {
 
     const getTokenBalance = (name) => {
 
-        return parseFloat(userProtfolio?.find((item) => item.name === name).userNativeBalance).toFixed(2)
+        console.log(name);
+
+        return parseFloat(userProtfolio.find((item) => item.name === name).userNativeBalance).toFixed(2)
 
     }
 

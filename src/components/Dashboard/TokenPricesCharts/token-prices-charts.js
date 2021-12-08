@@ -263,7 +263,10 @@ export const TokenPricesCharts = () => {
     const [expandWindow, setExpandWindow] = useState(false);
     const {theme, tokens} = useSystemContext();
 
-    const {data} = useQuery(MAIN_TOKENS_DATA_QUERY);
+    const {data, error} = useQuery(MAIN_TOKENS_DATA_QUERY);
+
+    console.log(data);
+    console.log(error);
 
     // const Chart = ({data}) => {
     //   const tickColor = theme === "light" ? "black" : "white"
@@ -329,14 +332,7 @@ export const TokenPricesCharts = () => {
                 ? <img src={arrowDown} alt="arrow-down-percent"/>
                 : <img src={arrowUp} alt="arrow-up-percent"/>
 
-                let supply;
-                // FIXME: fix in future when name will be AGO
-                if (item.name == "Argano") {
-                    supply = formatFromDecimal(tokens["AGO"].totalSupply, tokens["AGO"].decimals);
-                }
-                else {
-                    supply = formatFromDecimal(tokens[item.name].totalSupply, tokens[item.name].decimals);
-                }
+                const supply = formatFromDecimal(tokens[item.symbol].totalSupply, tokens[item.symbol].decimals);
 
                 return (
                   <>
@@ -349,7 +345,7 @@ export const TokenPricesCharts = () => {
                           isShowDivider={_ind === 1}
                           isWindowExpanded={expandWindow}
                         >
-                          <h3> {item.name} </h3>
+                          <h3> {item.symbol} </h3>
                           <h1> ${(+item.priceUSD).toFixed(2)} </h1>
                           <span> {Arrow} { change24h === Infinity ? 0 : change24h}% <span>(24h)</span> </span>
                         </SinglePriceBlock>

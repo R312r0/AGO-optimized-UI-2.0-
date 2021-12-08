@@ -57,19 +57,27 @@ export const Dashboard = () => {
 
     const {theme} = useSystemContext();
     const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
-    const {data, loading} = useQuery(DASHBOARD_QUERY);
+    const {data, loading, error} = useQuery(DASHBOARD_QUERY);
+
+    console.log(data);
+    console.log(loading);
+    console.log(error)
+
     const [projCharts, setProjCharts] = useState({tvl: [], volume: []});
     const [transactions, setTransactions] = useState([]);
+
     useEffect(() => {
 
         if (!loading && data) {
+
             const tvlChart = convertProjChartData(data.uniswapFactory.totalValueLocked);
             const volumeChart = convertProjChartData(data.uniswapFactory.totalVolume);
-            convertTransactionsData(data.transactions)
+            const txs = convertTransactionsData(data.transactions)
             setProjCharts({
                 tvl: tvlChart,
                 volume:volumeChart
             })
+            setTransactions(txs);
         }
 
     }, [loading])
@@ -110,7 +118,7 @@ export const Dashboard = () => {
             }
             return {txName, totalValue, token0Amount, token1Amount, acc, time}
         })
-        setTransactions(res);
+        return res;
     }
 
 

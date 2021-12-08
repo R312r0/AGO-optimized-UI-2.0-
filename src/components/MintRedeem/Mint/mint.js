@@ -34,20 +34,21 @@ export const Mint = ({info}) => {
     useEffect(() => {
 
         if (account) {
-            const usdt = getTokenBalance("USDT");
-            const wbtc = getTokenBalance("WBTC");
-    
-            if (usdt.userNativeBalance === "0" && mintRedeemCurrency === "AGOUSD") {
-                setMintButtonDisabled(true);
-                message.warn({content: `You have 0 USDT to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
+            if (mintRedeemCurrency === "AGOUSD") {
+                const usdt = getTokenBalance("USDT");
+                if (usdt.userNativeBalance === "0" && mintRedeemCurrency === "AGOUSD") {
+                    setMintButtonDisabled(true);
+                    message.warn({content: `You have 0 USDT to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
+                }
             }
-            else if (wbtc.userNativeBalance === "0" && mintRedeemCurrency === "AGOBTC") {
-                setMintButtonDisabled(true);
-                message.warn({content: `You have 0 WBTC to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
+            else if (mintRedeemCurrency === "AGOBTC") {
+                const wbtc = getTokenBalance("WBTC");
+                if (wbtc.userNativeBalance === "0" && mintRedeemCurrency === "AGOBTC") {
+                    setMintButtonDisabled(true);
+                    message.warn({content: `You have 0 WBTC to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
+                }
             }
         }
-
-
     }, [userProtfolio])
 
     const getAllowance = async () => {
