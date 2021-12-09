@@ -34,7 +34,7 @@ export const MintRedeem = () => {
         }
 
         setMintRedeemInfo({
-            stablePrice: formatFromDecimal(info["0"], 6),
+            stablePrice: formatFromDecimal(info["0"], 18),
             sharePrice: formatFromDecimal(info["1"], 18),
             targetCollateralRatio: formatFromDecimal(info["2"], 6) * 100,
             effectiveCollateralRatio: formatFromDecimal(info["3"], 6),
@@ -45,6 +45,9 @@ export const MintRedeem = () => {
         })
 
     }, [mintRedeemCurrency]);
+
+
+    console.log(mintRedeemInfo);
 
     return (
         <>

@@ -224,6 +224,7 @@ export const Mint = ({info}) => {
                 {/* <button style={{background: "pink", width: "200px", height: "50px"}} onClick={() => handleRefreshCollateralRatio()}> Pablo refresh TCR </button>
                 <button style={{background: "pink", width: "200px", height: "50px"}} onClick={() => handleUnpause()}> Pablo Unpause </button> */}
                 <div className="general-btn-wrapper">
+                    <button onClick={() => handleRefreshCollateralRatio()}> Refresh collateral ratio </button>
                     <MintButton/>
                 </div>
             </div>
