@@ -77,7 +77,7 @@ const InfoLabel = styled.span`
   font-size: 4vw;
 `
 
-export const DashboardMobile = () => {
+export const DashboardMobile = ({tvl, volume, txs}) => {
 
     const [activeTab, setActiveTab] = useState("TVL")
     const [openTxs, setOpenTxs] = useState(false);
@@ -89,7 +89,7 @@ export const DashboardMobile = () => {
                 <SwitchButton onClick={() => setActiveTab("TVL")} active={activeTab === "TVL"}> TVL </SwitchButton>
                 <SwitchButton onClick={() => setActiveTab("Volume 24h")} active={activeTab === "Volume 24h"}> Volume 24h </SwitchButton>
             </TVLVolumeSwitch>
-            {activeTab === "TVL" ? <TVLChart/> : <Volume24h/>}
+            {activeTab === "TVL" ? <TVLChart data={tvl}/> : <Volume24h data={tvl}/>}
             <InfoButtonsArea>
                 <InfoButton onClick={() => setOpenTxs(true)}> <img src={tx_icon} alt={"mobile-tx-icon"}/></InfoButton>
                 <InfoButton onClick={() => setOpenCharts(true)}> <img src={chart_icon} alt={"mobile-chart-icon"}/>
@@ -97,7 +97,7 @@ export const DashboardMobile = () => {
                 <InfoLabel> Transactions </InfoLabel>
                 <InfoLabel> Informations </InfoLabel>
             </InfoButtonsArea>
-            <TokenTransactionsMobile opened={openTxs} setOpened={setOpenTxs}/>
+            <TokenTransactionsMobile opened={openTxs} setOpened={setOpenTxs} data={txs}/>
             <TokenPricesChartsMobile opened={openCharts} setOpened={setOpenCharts}/>
         </DashboardWrapperMobile>
     )

@@ -74,11 +74,10 @@ const BottomInfo = styled.div`
 
 export const SingleTokenPriceItem = ({token}) => {
 
-    const {name, currentPrice, change24h, chartPrices, supply, marketCap} = token;
+    const {name, currentPrice, change24h, priceLineChart, supply, marketCap} = token;
 
     const {theme} = useSystemContext();
-
-    const Arrow = change24h.charAt(0) === "-" ? <img src={arrowDown} alt="arrow-down-percent"/> : <img src={arrowUp} alt="arrow-up-percent"/>
+    const Arrow = change24h.toString().charAt(0) === "-" ? <img src={arrowDown} alt="arrow-down-percent"/> : <img src={arrowUp} alt="arrow-up-percent"/>
 
     return (
         <SingleTokenItemWrapper> 
@@ -87,10 +86,10 @@ export const SingleTokenPriceItem = ({token}) => {
                 <p>(24)</p>
             </div>
             <h1> $ {formattedNum(currentPrice)} </h1>
-            <h5> {Arrow} {change24h} </h5>
+            <h5> {Arrow} {change24h} % </h5>
             <div className="single-token-wrapper">
                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={chartPrices}>
+                    <AreaChart data={priceLineChart}>
                         <defs> 
                         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="10%" stopColor="#40BA93" stopOpacity={1}/>
@@ -108,9 +107,9 @@ export const SingleTokenPriceItem = ({token}) => {
                     </AreaChart>
                 </ResponsiveContainer>
             </div>
-            <BottomInfo> <span>Supply:</span> <span> {formattedNum(supply)} </span></BottomInfo>
+            <BottomInfo> <span>Supply:</span> <span> {supply} </span></BottomInfo>
             <div></div>
-            <BottomInfo> <span>Cap:</span> <span> {formattedNum(marketCap)} </span></BottomInfo>
+            <BottomInfo> <span>Cap:</span> <span> {marketCap}$ </span></BottomInfo>
         </SingleTokenItemWrapper>
     )
 }

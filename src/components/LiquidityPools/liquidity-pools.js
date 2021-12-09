@@ -1,9 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {TokenIcon} from '../TokenIcon/token_icon';
-import {ProvideLiquidity} from './ProvideLiquidity/provide_liquidity';
-import {Liquidity} from './Liquidity/liquidity';
-import {Volume} from './Volume/volume';
-import {PieChart, Pie, Sector, Cell, ResponsiveContainer} from 'recharts';
 import './liquidity-pools.scss';
 import {useSystemContext} from '../../systemProvider';
 import {useQuery} from "@apollo/client";
@@ -11,17 +6,17 @@ import {LIQUIDITY_POOLS} from "../../api/client";
 import {formatFromDecimal, formattedNum, formatToDecimal} from "../../utils/helpers";
 import {useWeb3React} from "@web3-react/core";
 import ERC20_ABI from '../../abi/ERC20.json';
+import {LiquidityPoolsItem} from "./Liquidity-pools-item/liquidity-pools-item";
+import {Spin} from "antd";
+import {LOADER_INDICATOR} from "../../constants";
 
 export const LiquidityPools = () => {
 
     const {account, library} = useWeb3React();
-    const {theme, contracts} = useSystemContext();
+    const {theme} = useSystemContext();
     const {data, loading} = useQuery(LIQUIDITY_POOLS);
     const [pools, setPools] = useState([]);
     const [poolsPreparing, setPoolsPreparing] = useState(true);
-    const [itemChoosenWindow, setItemChoosenWindow] = useState("Volume");
-
-    const [openedWindows, setOpenedWindows] = useState([]);
 
     useEffect(() => {
 
@@ -37,7 +32,7 @@ export const LiquidityPools = () => {
         const res = pools.map(async (item) => {
             const lp = new library.eth.Contract(ERC20_ABI, item.id);
             const lpTotalSupply = formatFromDecimal(await lp.methods.totalSupply().call(), 18);
-            const lpUserBalance = formatFromDecimal(await lp.methods.balanceOf(account).call(), 18);  // FIXME: change "0x.." to account!
+            const lpUserBalance = formatFromDecimal(await lp.methods.balanceOf(account).call(), 18);
 
             const token0 = {symbol: item.token0.symbol, address: item.token0.id, price: formattedNum(item.token0.priceUSD)}
             const token1 = {symbol: item.token1.symbol, address: item.token1.id, price: formattedNum(item.token1.priceUSD)}
@@ -62,37 +57,7 @@ export const LiquidityPools = () => {
 
         })
 
-
         setPools(await Promise.all(res));
-    }
-
-    const handleLiquidityPoolsOpened = (name) => {
-
-        const isName = openedWindows.findIndex((item) => item === name);
-
-        if (isName === -1) {
-            setOpenedWindows([...openedWindows, name]);
-        } else {
-
-            const tempArr = openedWindows;
-            tempArr.splice(isName, 1);
-            setOpenedWindows([...tempArr]);
-
-        }
-    }
-
-    const ExpandedTab = ({pool}) => {
-
-        switch (itemChoosenWindow) {
-            case "Provide Liquidity":
-                return (<ProvideLiquidity pool={pool}/>)
-            case "Volume":
-                return (<Volume data={pool.volChart}/>)
-            case "Liquidity":
-                return (<Liquidity data={pool.liqChart}/>)
-            default:
-                return (<ProvideLiquidity/>)
-        }
     }
 
     return (
@@ -123,64 +88,15 @@ export const LiquidityPools = () => {
                 </h5>
             </div>
             <ul className='luqidity-pools-wrapper-list'>
-
-                {!poolsPreparing && pools.map((item) => {
-
-                    const windowExpanded = openedWindows.findIndex((name) => name === item.token0.symbol + item.token1.symbol) !== -1;
-
-                    return (
-                        <li className={`luqidity-pools-wrapper-list-item ${windowExpanded ? "liq-item-opened" : ""}`}>
-                            <div className='luqidity-pools-wrapper-list-item__header'>
-                                <div className='pair'>
-                                    <TokenIcon iconName={item.token0.symbol}/>
-                                    <TokenIcon iconName={item.token1.symbol}/>
-                                    <h3> {item.token0.symbol}-{item.token1.symbol} </h3>
-                                </div>
-                                <h3> {item.liqiuidityUSD}$ </h3>
-                                <h3>  {item.myLiquidity}$ </h3>
-                                <h3> 0% </h3>
-                                <button className='chart-expand'
-                                        onClick={() => handleLiquidityPoolsOpened(item.token0.symbol + item.token1.symbol)}> {windowExpanded ?
-                                    <i className="fas fa-times"></i> : <i className="fas fa-chart-line"></i>} </button>
-                            </div>
-                            {windowExpanded ?
-                                <div className='control-panel'>
-                                    <div className='control-panel__header'>
-                                        <button onClick={() => setItemChoosenWindow("Provide Liquidity")}
-                                                className={`${itemChoosenWindow === "Provide Liquidity" ? "active" : ""}`}> Provide
-                                            Liquidity
-                                        </button>
-                                        <button onClick={() => setItemChoosenWindow("Volume")}
-                                                className={`${itemChoosenWindow === "Volume" ? "active" : ""}`}> Volume
-                                        </button>
-                                        <button onClick={() => setItemChoosenWindow("Liquidity")}
-                                                className={`${itemChoosenWindow === "Liquidity" ? "active" : ""}`}> Liquidity
-                                        </button>
-                                    </div>
-                                    <div className="control-panel__content">
-                                        {/* TODO: Make this stuff work just for choosen item */}
-                                        <ExpandedTab pool={item}/>
-                                        {itemChoosenWindow !== "Provide Liquidity" ?
-
-                                            <div className='liq-info'>
-                                                <span> <h5>Liquidity </h5> <b> ${item.liqiuidityUSD} </b> </span>
-                                                <span> <h5>Volume (24H) </h5> <b> $ volume </b> </span>
-                                                <span> <h5>Earnings (24H) </h5> <b> $51,544 </b> </span>
-                                                <span> <h5>Total APY </h5> <b> 31.84% </b> </span>
-                                                <span> <h5>My Liquidity </h5> <b> ${item.myLiquidity} </b> </span>
-                                            </div>
-                                            :
-                                            null
-                                        }
-
-                                    </div>
-                                </div>
-                                :
-                                ""
-                            }
-                        </li>
-                    )
-                })}
+                {poolsPreparing ? <Spin size="large" indicator={LOADER_INDICATOR}/> :
+                    <>
+                        {pools.map((item) => {
+                            return (
+                                <LiquidityPoolsItem pool={item}/>
+                            )
+                        })}
+                    </>
+                }
             </ul>
         </div>
 

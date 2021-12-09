@@ -121,7 +121,7 @@ export const Dashboard = () => {
     return (
         <>
             {isMobileScreen ?
-                <DashboardMobile/>
+                <DashboardMobile tvl={projCharts.tvl} volume={projCharts.volume} txs={transactions}/>
                 :
                 <DashboardWrapper>
                     <TokenPricesCharts/>

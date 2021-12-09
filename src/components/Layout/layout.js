@@ -8,7 +8,7 @@ import {LoadingOutlined} from '@ant-design/icons';
 import {BalancesTab} from './BalancesTab/balances-tab';
 import {useMediaQuery} from 'react-responsive';
 import styled from 'styled-components';
-import {PAGES} from '../../constants';
+import {LOADER_INDICATOR, PAGES} from '../../constants';
 import {SideBarMobile} from './SideBarMobile/sidebar-mobile';
 import {useSystemContext} from '../../systemProvider';
 import {ConnectWalletButton} from './ConnectWallet/connect-wallet';
@@ -109,10 +109,6 @@ export const Layout = ({children}) => {
     const [showMobileSideBar, setShowMobileSideBar] = useState(false);
     const {loading} = useSystemContext();
     const history = useHistory();
-
-    const loadingIcon = <LoadingOutlined
-        style={{fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%"}}/>
-
     const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
 
     return (
@@ -141,7 +137,7 @@ export const Layout = ({children}) => {
                     {!isMobileScreen ? 
                         <ContentHeader>{PAGES.find(item => item.path === history.location.pathname).name}
                         </ContentHeader> : null}
-                    {loading ? <Spin size="large" indicator={loadingIcon}/> : children}
+                    {loading ? <Spin size="large" indicator={LOADER_INDICATOR}/> : children}
                 </Content>
                 {isMobileScreen 
                 ? <SideBarMobile 

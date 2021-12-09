@@ -3,6 +3,12 @@ import styled from 'styled-components';
 import { useSwipeable, UP, DOWN, SwipeEventData } from 'react-swipeable';
 import { useDashboardContext } from '../../../providers/dashboard-provider';
 import { SingleTokenPriceItem } from './SIngleTokenPriceItem/single-token-price-item';
+import {useQuery} from "@apollo/client";
+import {MAIN_TOKENS_DATA_QUERY} from "../../../api/client";
+import arrowDown from "../TokenPricesCharts/arrow-down.svg";
+import arrowUp from "../TokenPricesCharts/arrow-up.svg";
+import {formatFromDecimal, formattedNum} from "../../../utils/helpers";
+import {useSystemContext} from "../../../systemProvider";
 
 const TokenPricesWrapper = styled.div`
     position: fixed;
@@ -93,13 +99,75 @@ const ChartsBlock = styled.div`
 
 export const TokenPricesChartsMobile = ({opened, setOpened}) => {
 
+    const {data, loading, error} = useQuery(MAIN_TOKENS_DATA_QUERY);
+    const {tokens} = useSystemContext();
+    const [tokenDataLoading, setTokeDataLoading] = useState(true);
+    const [convertedData, setConvertedData] = useState(null);
     const [currency, setCurrency] = useState("AGOUSD");
-    const {dashTokens, dashboardLoading} = useDashboardContext();
 
     const handlers = useSwipeable({
         onSwipedDown: () => setOpened(false),
         preventDefaultTouchmoveEvent: true,
     })
+
+    useEffect(() => {
+
+        if (!loading && data) {
+            convertDataForTokens(data)
+        }
+
+    }, [loading, data]);
+
+    useEffect(() => {
+
+        if (convertedData) {
+            setTokeDataLoading(false)
+        }
+
+    }, [convertedData])
+
+
+    const convertDataForTokens = (data) => {
+
+        const res = data.tokens.map((item) => {
+
+            const name = item.symbol;
+            const currentPrice = (+item.priceUSD).toFixed(2);
+            const currentDate = new Date().getTime();
+            const reverseLineChartArr = [...item.lineChartUSD].reverse();
+            const latestRecordChange = reverseLineChartArr.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
+
+            let change24h = !latestRecordChange || +latestRecordChange.valueUSD === 0 ? 0 : ((item.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
+
+            const priceLineChart = item.lineChartUSD.map(item => {
+                const date = new Date(item.timestamp * 1000);
+                const time = `${date.getHours()}:${date.getMinutes()}`
+
+                return ({
+                    value: item.valueUSD,
+                    time
+                })
+            })
+
+            const supply = formattedNum(formatFromDecimal(tokens[item.symbol].totalSupply, tokens[item.symbol].decimals));
+            const marketCap = formattedNum(formatFromDecimal(tokens[item.symbol].totalSupply, tokens[item.symbol].decimals) * item.priceUSD);
+
+            return {name, currentPrice, change24h, priceLineChart, supply, marketCap}
+        })
+
+        const filterRes = res.filter(item => {
+            if (item.symbol === "USDC" || item.symbol === "DAI" || item.symbol === "CNUSD") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        })
+
+        setConvertedData(filterRes);
+    }
+
+    console.log(convertedData);
 
     return (
         <TokenPricesWrapper opened={opened}> 
@@ -113,17 +181,17 @@ export const TokenPricesChartsMobile = ({opened, setOpened}) => {
             </TokenSwitcher>
             <div className="token-charts-wrapper">
                 <ChartsBlock>
-                    {dashboardLoading && !dashTokens ?
+                    {tokenDataLoading && !convertedData ?
                         <h1> Loading... </h1>
                         :
                         <>
-                            <SingleTokenPriceItem token={currency === "AGOUSD" ? dashTokens.find(item => item.name === "AGOUSD") : dashTokens.find(item => item.name === "AGOBTC")}/>
-                            <SingleTokenPriceItem token={currency === "AGOUSD" ? dashTokens.find(item => item.name === "CNUSD") : dashTokens.find(item => item.name === "CNBTC")}/>
+                            {/*FIXME: Change tokens for AGOUSD/CNUSD AGOBTC/CNBTC when it would be available in subgraph*/}
+                            <SingleTokenPriceItem token={currency === "AGOUSD" ? convertedData.find(item => item.name === "AGOUSD") : convertedData.find(item => item.name === "USDT")}/>
+                            <SingleTokenPriceItem token={currency === "AGOUSD" ? convertedData.find(item => item.name === "AGO") : convertedData.find(item => item.name === "WMATIC")}/>
                         </> 
                     }
                 </ChartsBlock>
             </div>
         </TokenPricesWrapper>
     )
-
 }

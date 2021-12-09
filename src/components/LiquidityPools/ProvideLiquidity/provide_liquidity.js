@@ -6,9 +6,8 @@ import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
 
 
-export const ProvideLiquidity = ({pool}) => {
+export const ProvideLiquidity = ({token0, token1}) => {
 
-    const { token0, token1 } = pool;
     const {account} = useWeb3React();
     const {contracts} = useSystemContext();
     const [input0, setInput0] = useState(null);

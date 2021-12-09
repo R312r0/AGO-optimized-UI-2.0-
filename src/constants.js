@@ -18,26 +18,9 @@ import staking_active from './assets/icons/nav-links/active/staking-active.svg';
 import liquidity_pools_active from './assets/icons/nav-links/active/liq-pools-active.svg';
 import trading_active from './assets/icons/nav-links/active/trading-active.svg';
 import accounts_acitve from './assets/icons/nav-links/active/accounts-active.svg';
+import {LoadingOutlined} from "@ant-design/icons";
 
-export const USD_PRICE_ENDPOINT = (contractAddress) => {
 
-    return `https://api.coingecko.com/api/v3/simple/token_price/polygon-pos?contract_addresses=${contractAddress}&vs_currencies=usd`;
-}
-
-export const MATIC_USD_PRICE_ENDPOINT = 'https://api.coingecko.com/api/v3/simple/token_price/polygon-pos?contract_addresses=0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270&vs_currencies=usd';
-
-export const FACTORY_ADDRESS = "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707"
-
-export const COINGECKO_IDS = {
-    AGO: "uniswap",
-    AGOUSD: "tether",
-    CNUSD: "usd-coin",
-    AGOBTC: "wrapped-bitcoin",
-    CNBTC: "adamant",
-    WMATIC: "wmatic",
-    USDT: "tether",
-    WBTC: "wrapped-bitcoin",
-}
 
 export const DEX_ADDRESESS = {
     FACTORY: "0xcAF4FA9103eF5f4832dfcac40a0D66c4202De377",
@@ -63,12 +46,8 @@ export const CONTRACT_ADRESESS = {
     // TREASURY_AGOBTC: "0x3DD514281E4aFd5EDaB6261Face66A1bCA207bcE"
 }
 
-export const TX_OPERATIONS = {
-    collectRedemption: "Collect Redemption",
-    mint: "Mint",
-    redeem: "Redeem"
-}
-
+export const LOADER_INDICATOR = <LoadingOutlined
+    style={{fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%"}}/>
 
 // Connectors
 export const metaMask = new InjectedConnector({ supportedChainIds: [80001] });

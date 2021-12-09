@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { useSwipeable } from 'react-swipeable';
-import axios from 'axios';
-import { TX_OPERATIONS, CONTRACT_ADRESESS } from '../../../constants';
-import { formatFromDecimal, calculateTimeDifference } from '../../../utils/helpers';
 import { useSystemContext } from '../../../systemProvider';
+import {calculateTimeDifference, formatAddress} from "../../../utils/helpers";
 
 const TransactionsWrapper = styled.div`
     position: fixed;
@@ -144,23 +142,7 @@ const TableItem = styled.div`
 
 `
 
-export const TokenTransactionsMobile = ({opened, setOpened}) => {
-
-
-    const [data, setData] = useState();
-
-    const {tokens} = useSystemContext();
-
-    useEffect(() => {
-
-        const fetchTxs = async () => {
-            const {data} = await axios.get("https://argano-rest-api-sever.herokuapp.com/api/transactionsOverall");
-            setData(data);
-        }
-
-        fetchTxs();
-
-    }, [])
+export const TokenTransactionsMobile = ({opened, setOpened, data}) => {
 
     const handlers = useSwipeable({
         onSwipedDown: () => setOpened(false),
@@ -182,26 +164,20 @@ export const TokenTransactionsMobile = ({opened, setOpened}) => {
             <TableBody> 
                 {data && data.map(item => {
 
-                    const token1 = Object.entries(CONTRACT_ADRESESS).find(item_loc => item_loc[1].toLocaleLowerCase() === item.token_flow[0].token.toLowerCase())
-                    const token2 = Object.entries(CONTRACT_ADRESESS).find(item_loc => item_loc[1].toLocaleLowerCase() === item.token_flow[1]?.token.toLowerCase())
-
-                    const token1Spent = formatFromDecimal(item.token_flow[0].amount.$numberDecimal, tokens[token1[0]].decimals); 
-                    const token2Spent = item.token_flow[1] ? formatFromDecimal(item.token_flow[1]?.amount.$numberDecimal, tokens[token2[0]].decimals) : "-";
-
                     return (
-                        <TableItem> 
+                        <TableItem>
                             <div className="table-wrapper">
                                 <div className="table-wrapper-title">
-                                    <span>{TX_OPERATIONS[item.method]}</span>
+                                    <span>{item.txName}</span>
                                     <svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M8.825 7L5 2.66981L1.175 7L8.36561e-07 5.66038L5 -5.1656e-07L10 5.66038L8.825 7Z" fill="#828282"/>
                                     </svg>
                                 </div>
-                                <span className="table-wrapper-data"> <h5> Total Value </h5> <h5> {token2 ? (parseFloat(token1Spent) + parseFloat(token2Spent)).toFixed(2) : parseFloat(token1Spent).toFixed(2)} </h5> </span>
-                                <span className="table-wrapper-data"> <h5> Token Amount </h5> <h5> {parseFloat(token1Spent).toFixed(2)} {token1[0]} </h5> </span>
-                                <span className="table-wrapper-data"> <h5> Token Amount </h5> <h5> {token2 ?  parseFloat(token2Spent).toFixed(2) : "-"} {token2 ? token2[0] : ""}</h5> </span>
-                                <span className="table-wrapper-data"> <h5> Account </h5> <h5 style={{color: "#40BA93"}}> {`${item.account.slice(0, 6)}...${item.account.slice(-4)}`} </h5> </span>
-                                <span className="table-wrapper-data"> <h5> Time </h5> <h5> {item.block_timestamp ? calculateTimeDifference(item.block_timestamp) : "A long time ago" } </h5> </span>
+                                <span className="table-wrapper-data"> <h5> Total Value </h5> <h5> {item.totalValue} </h5> </span>
+                                <span className="table-wrapper-data"> <h5> Token Amount </h5> <h5> {item.token0Amount} </h5> </span>
+                                <span className="table-wrapper-data"> <h5> Token Amount </h5> <h5> {item.token1Amount} </h5> </span>
+                                <span className="table-wrapper-data"> <h5> Account </h5> <h5 style={{color: "#40BA93"}}> {item.acc} </h5> </span>
+                                <span className="table-wrapper-data"> <h5> Time </h5> <h5> {item.time} </h5> </span>
                             </div>
                         </TableItem>
                     )

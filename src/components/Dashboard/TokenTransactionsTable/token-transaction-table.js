@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Loader} from "../../Loader/loader";
 import {useSystemContext} from '../../../systemProvider';
 import styled from 'styled-components';
+import {Spin} from "antd";
+import {LOADER_INDICATOR} from "../../../constants";
 
 const TokenTransactionTableWrapper = styled.div`
   width: 100%;
@@ -241,7 +242,7 @@ export const TokenTransactionTable = ({data}) => {
                 <div className="token-transaction-separator"></div>
                 {loading
                     ?
-                    <Loader />
+                    <Spin size={"default"} indicator={LOADER_INDICATOR}/>
                     :
                     <TableBody>
                         {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item) => {
