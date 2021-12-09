@@ -3,6 +3,7 @@ import { TokenIcon } from '../../TokenIcon/token_icon';
 import { ProvideLiquidity } from '../ProvideLiquidity/provide_liquidity';
 import { Volume } from '../Volume/volume';
 import { Liquidity } from '../Liquidity/liquidity';
+import {RemoveLiquidityModal} from "../RemoveLiquidityModal/remove-liquidity-modal";
 
 const TABS = {
     PROVIDE_LIQUIDITY: "Provide liquidity",
@@ -10,16 +11,17 @@ const TABS = {
     LIQUIDITY: "Liquidity"
 }
 
-export const LiquidityPoolsItem = ({pool: {token0, token1, liqiuidityUSD, myLiquidity, volChart, liqChart }}) => {
+export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD, myLiquidity, volChart, liqChart, lpTokenContract, lpUserBalance }}) => {
 
     const { PROVIDE_LIQUIDITY, VOLUME, LIQUIDITY } = TABS;
     const [windowExpanded, setWindowExpanded] = useState(false);
     const [chosenWindow, setChosenWindow] = useState(PROVIDE_LIQUIDITY);
+    const [removeLiquidityModal, setRemoveLiquidityModal] = useState(false);
 
     const ExpandedTab = () => {
         switch (chosenWindow) {
             case PROVIDE_LIQUIDITY:
-                return (<ProvideLiquidity token0={token0} token1={token1}/>)
+                return (<ProvideLiquidity token0={token0} token1={token1} setRemoveLiqModal={setRemoveLiquidityModal}/>)
             case VOLUME:
                 return (<Volume data={volChart}/>)
             case LIQUIDITY:
@@ -30,6 +32,7 @@ export const LiquidityPoolsItem = ({pool: {token0, token1, liqiuidityUSD, myLiqu
     };
 
     return (
+        <>
         <li className={`luqidity-pools-wrapper-list-item ${windowExpanded ? "liq-item-opened" : ""}`}>
             <div className='luqidity-pools-wrapper-list-item__header'>
                 <div className='pair'>
@@ -78,5 +81,14 @@ export const LiquidityPoolsItem = ({pool: {token0, token1, liqiuidityUSD, myLiqu
                 null
             }
         </li>
+            <RemoveLiquidityModal visible={removeLiquidityModal}
+                                  setVisible={setRemoveLiquidityModal}
+                                  poolAddress={address}
+                                  token0={token0}
+                                  token1={token1}
+                                  lpTokenContract={lpTokenContract}
+                                  lpUserBalance={lpUserBalance}
+            />
+        </>
     )
 }

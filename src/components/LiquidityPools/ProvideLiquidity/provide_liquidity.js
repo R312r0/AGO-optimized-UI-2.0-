@@ -6,7 +6,7 @@ import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
 
 
-export const ProvideLiquidity = ({token0, token1}) => {
+export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
 
     const {account} = useWeb3React();
     const {contracts} = useSystemContext();
@@ -161,6 +161,7 @@ export const ProvideLiquidity = ({token0, token1}) => {
             <ProvideLiquidityPieChart token1={token0.symbol}
                                       token2={token1.symbol}/>
             <button onClick={() => provideLiquidity()}> Porvide</button>
+            <button onClick={() => setRemoveLiqModal(true)}> Remove</button>
         </div>
         </>
     )

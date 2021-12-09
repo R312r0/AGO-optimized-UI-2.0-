@@ -53,7 +53,7 @@ export const LiquidityPools = () => {
                 return {value: +item.valueUSD, time}
             });
 
-            return {token0,token1, liqiuidityUSD: formattedNum(liquidityUSD), myLiquidity: formattedNum(myLiquidity), liqChart, volChart}
+            return {address: item.id, lpTokenContract: lp, lpUserBalance, token0,token1, liqiuidityUSD: formattedNum(liquidityUSD), myLiquidity: formattedNum(myLiquidity), liqChart, volChart}
 
         })
 
@@ -61,6 +61,7 @@ export const LiquidityPools = () => {
     }
 
     return (
+        <>
         <div className={`luqidity-pools-wrapper ${theme === "light" ? " luqidity-pools-wrapper-light" : ""}`}>
             <h3 className='luqidity-pools-wrapper-heading'>Trading pools</h3>
             <div className='luqidity-pools-wrapper__list-header'>
@@ -99,7 +100,7 @@ export const LiquidityPools = () => {
                 }
             </ul>
         </div>
-
+        </>
     )
 
 }

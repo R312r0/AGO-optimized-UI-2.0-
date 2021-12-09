@@ -1,3 +1,51 @@
+.remove-liquidity-modal {
+
+    .ant-modal-content {
+        border-radius: 25px;
+        height: 30vh;
+        background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+        .ant-modal-body {
+            display: grid;
+            grid-auto-rows: auto;
+            height: 100%;
+            h3 {
+                color: white;
+                font-weight: 500;
+                align-self: center;
+                justify-self: flex-start;
+            }
+            p {
+                color: white;
+            }
+
+            input {
+                outline: none;
+                border: 0px;
+                border-radius: 25px;
+                background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+                justify-self: center;
+                height: 70%;
+                width: 50%;
+                color: white;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            button {
+                width: 100px;
+                height: 35px;
+                background: #40BA93;
+                border: 0px;
+                border-radius: 25px;
+                color: white;
+                place-self: center;
+            }
+
+
+        }
+
+    }
+}
+
 .luqidity-pools-wrapper {
     display: flex;
     flex-direction: column;
