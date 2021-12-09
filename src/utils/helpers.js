@@ -68,13 +68,11 @@ export const formatToDecimal = (value, decimals) => {
       returned_amount = fromExponential(returned_amount)
     }
     const result = returned_amount;
-    console.log('To Decimal: ', result)
     return result
 }
   
 export const formatFromDecimal = (value, decimals) => {
     if(isNaN(Number(value))) {
-      // console.log(`Error: ${value} is not a number`)
       return;
     }
   

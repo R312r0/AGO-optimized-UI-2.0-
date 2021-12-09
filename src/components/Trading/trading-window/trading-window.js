@@ -62,7 +62,6 @@ const TradingWindow = () => {
     //
     //     }
     //     catch (e) {
-    //         console.log(e)
     //     }
     // }
 

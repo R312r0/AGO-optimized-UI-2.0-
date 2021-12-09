@@ -78,7 +78,6 @@ export const SystemProvider = ({children}) => {
     //         message.success({content: "Success!", key: "NETWORK", className: "ant-argano-message", duration: 3})
     //     }
     //
-    //     console.log(error);
     //
     // }, [error])
 

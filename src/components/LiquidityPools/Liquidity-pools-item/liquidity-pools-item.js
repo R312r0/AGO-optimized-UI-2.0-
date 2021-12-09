@@ -12,9 +12,6 @@ const TABS = {
 
 export const LiquidityPoolsItem = ({pool: {token0, token1, liqiuidityUSD, myLiquidity, volChart, liqChart }}) => {
 
-    console.log(token0)
-
-    console.log(token1)
     const { PROVIDE_LIQUIDITY, VOLUME, LIQUIDITY } = TABS;
     const [windowExpanded, setWindowExpanded] = useState(false);
     const [chosenWindow, setChosenWindow] = useState(PROVIDE_LIQUIDITY);

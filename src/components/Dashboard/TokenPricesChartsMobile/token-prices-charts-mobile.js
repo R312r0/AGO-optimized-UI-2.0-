@@ -167,8 +167,6 @@ export const TokenPricesChartsMobile = ({opened, setOpened}) => {
         setConvertedData(filterRes);
     }
 
-    console.log(convertedData);
-
     return (
         <TokenPricesWrapper opened={opened}> 
             <SwipeDownCloseStripe {...handlers}>
