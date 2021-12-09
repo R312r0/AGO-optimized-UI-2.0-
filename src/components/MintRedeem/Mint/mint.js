@@ -221,8 +221,6 @@ export const Mint = ({info}) => {
                     <input disabled type='number' placeholder="0.00" value={outputInput}/>
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency}/> {mintRedeemCurrency} </span>
                 </div>
-                {/* <button style={{background: "pink", width: "200px", height: "50px"}} onClick={() => handleRefreshCollateralRatio()}> Pablo refresh TCR </button>
-                <button style={{background: "pink", width: "200px", height: "50px"}} onClick={() => handleUnpause()}> Pablo Unpause </button> */}
                 <div className="general-btn-wrapper">
                     <button onClick={() => handleRefreshCollateralRatio()}> Refresh collateral ratio </button>
                     <MintButton/>

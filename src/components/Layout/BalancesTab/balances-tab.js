@@ -313,25 +313,25 @@ export const BalancesTab = () => {
 
         if(!loading && data.tokens && userProtfolio) {
 
-            console.log(data.tokens);
-            console.log(userProtfolio);
-            const res = userProtfolio.filter((item) => {
-                console.log(item);
+            const res = userProtfolio.map((item) => {
                const name = item.name;
                const nativeBalance = item.userNativeBalance;
-
                const usdBalance = data.tokens.find(tok => tok.symbol === name);
-
-               if (!usdBalance) {
-                   return false;
-               }
 
                return {name, nativeBalance, usdBalance: usdBalance.priceUSD * nativeBalance}
             });
 
-            console.log(res);
+            const filteredRes = res.filter((item) => {
+                if (item.name === "USDC" || item.name === "DAI" || item.name === "CNUSD") {
+                    return false;
+                }
+                else {
+                    return true;
+                }
 
-            setBalances(res);
+            })
+
+            setBalances(filteredRes);
         }
 
     }, [data, userProtfolio, loading])

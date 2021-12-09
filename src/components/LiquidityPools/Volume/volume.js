@@ -9,8 +9,6 @@ export const Volume = ({data}) => {
     const {theme} = useSystemContext();
     const block = useRef(null)
 
-    console.log(data);
-
     const CustomBar = ({
         x,
         y,

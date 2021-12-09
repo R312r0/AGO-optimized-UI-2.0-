@@ -265,9 +265,6 @@ export const TokenPricesCharts = () => {
 
     const {data, error} = useQuery(MAIN_TOKENS_DATA_QUERY);
 
-    console.log(data);
-    console.log(error);
-
     // const Chart = ({data}) => {
     //   const tickColor = theme === "light" ? "black" : "white"
     //   return (
@@ -308,8 +305,7 @@ export const TokenPricesCharts = () => {
           <div className="single-price-wrapper">
             {data?.tokens.map((item, _ind) => {
 
-
-                if (item.name === "USDC") {
+                if (item.symbol === "USDC" || item.symbol === "DAI" || item.symbol === "CNUSD") {
                     return;
                 }
                 const currentDate = new Date().getTime();

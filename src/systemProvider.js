@@ -218,11 +218,7 @@ export const SystemProvider = ({children}) => {
     }
 
     const getTokenBalance = (name) => {
-
-        console.log(name);
-
         return parseFloat(userProtfolio.find((item) => item.name === name).userNativeBalance).toFixed(2)
-
     }
 
     const systemValue = {

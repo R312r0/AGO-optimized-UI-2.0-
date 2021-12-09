@@ -26,8 +26,6 @@ export const LiquidityPools = () => {
     useEffect(() => {
 
         if (!loading && data.pairs) {
-
-            console.log(data);
             prepareData(data.pairs).then(res => setPoolsPreparing(false));
         }
 
@@ -85,8 +83,6 @@ export const LiquidityPools = () => {
 
     const ExpandedTab = ({pool}) => {
 
-        console.log(pool);
-
         switch (itemChoosenWindow) {
             case "Provide Liquidity":
                 return (<ProvideLiquidity pool={pool}/>)
@@ -130,7 +126,6 @@ export const LiquidityPools = () => {
 
                 {!poolsPreparing && pools.map((item) => {
 
-                    console.log(pools);
                     const windowExpanded = openedWindows.findIndex((name) => name === item.token0.symbol + item.token1.symbol) !== -1;
 
                     return (

@@ -37,7 +37,7 @@ export const DASHBOARD_QUERY = gql(`
 
 export const MAIN_TOKENS_DATA_QUERY = gql(`
     query mainTokens {
-        tokens(first: 4, where: {isProtocolMain: true}) {
+        tokens(first: 100, orderBy: symbol, orderDirection: asc) {
             id
             symbol
             priceUSD
@@ -52,7 +52,7 @@ export const MAIN_TOKENS_DATA_QUERY = gql(`
 export const TOKENS_FOR_USER_BALANCES = gql(`
 
     query userBalanceTokens {
-        tokens(where: {isProtocolMain: true}) {
+        tokens(first: 100, orderBy: symbol, orderDirection: asc) {
             id
             symbol
             priceUSD

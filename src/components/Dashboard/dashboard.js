@@ -59,10 +59,6 @@ export const Dashboard = () => {
     const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
     const {data, loading, error} = useQuery(DASHBOARD_QUERY);
 
-    console.log(data);
-    console.log(loading);
-    console.log(error)
-
     const [projCharts, setProjCharts] = useState({tvl: [], volume: []});
     const [transactions, setTransactions] = useState([]);
 
