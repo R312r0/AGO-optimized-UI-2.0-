@@ -1,6 +1,10 @@
 .trading-wrapper {
     display: flex;
     height: auto;
+
+    margin-top: 1.354vw;
+    padding-left: 2.5vw;
+
     &__header {
         display: flex;
         h1 {
@@ -13,6 +17,246 @@
     .trading-container {
         display: flex;
         flex-direction: column;
+    }
+
+    .switch-wrapper {
+        width: fit-content;
+
+        .switch {
+            display: none;
+        }
+        
+        .switch + div {
+            width: 2.552vw;
+            height: 1.354vw;
+
+            border-radius: 1.042vw;
+            border: 0.052vw solid #4F4F4F;
+
+            background-color: transparent;
+            transition: background-color 200ms;
+            cursor: pointer;
+        }
+        
+        .switch:checked + div {
+            background-color: #40BA93;
+        }
+        
+        .switch + div > div {
+            width: 1.25vw;
+            height: 1.25vw;
+
+            border-radius: 100%;
+            border: 0.052vw solid #4F4F4F;
+            background-color: #fff;
+
+            box-shadow: 0 0.208vw 0.313vw 0.052vw rgba(0, 0, 0, 0.39);
+
+            transition: transform 250ms;
+            pointer-events: none;
+        }
+        
+        .switch:checked + div {
+            border: 0.052vw solid #40BA93;
+        }
+        
+        .switch:checked + div > div {
+            transform: translateX(1.302vw);
+            border: 0.052vw solid #40BA93;
+        }
+    }
+
+    .trading-wrapper-filter {
+        width: 100%;
+
+        padding: 1.979vw 3.854vw 2.188vw;
+        margin: 0 2.083vw;
+
+        display: flex;
+        flex-direction: column;
+        color: white;
+
+        h1 {
+            font-size: 1.25vw;
+            font-weight: 500;
+            color: white;
+        }
+
+        &__heading {
+            margin: 0.833vw 0 0 1.094vw;
+
+            font-size: 0.938vw;
+            color: #828282;
+        }
+
+        &__buttons {
+            width: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            margin-bottom: 0.521vw;
+
+            button {
+                margin-top: 1.563vw;
+
+                display: flex;
+                color: white;
+
+                border: none;
+                background: transparent;
+
+                padding: 0.521vw 1.563vw;
+                font-size: 0.938vw;
+            }
+
+            .active {
+                color: #40BA93;
+            }
+        }
+
+        &__item {
+            display: flex;
+            flex-direction: column;
+
+            background: #1F1E20;
+            border-radius: 1.563vw;
+            padding: 0.8vw 1vw;
+
+            .range-slider-filter {
+                .MuiSlider-rail {
+                    background-color: #333;
+                }
+
+                .MuiSlider-markActive {
+                    display: flex !important;
+                    background-color: black;
+                    height: 0.208vw;
+                }
+
+                .MuiSlider-markActive:first-child {
+                    background-color: white;
+                }
+
+                .MuiSlider-mark {
+                    display: none;
+                }
+
+            }
+
+            .small__input {
+                width: 6vw;
+                padding: 0.260vw 1.458vw;
+
+                font-size: 0.938vw;
+                text-align: center;
+
+                border-radius: 1.042vw;
+                border: 0.052vw solid #333333;
+
+                &::placeholder {
+                    font-size: 0.7vw;
+                }
+            }
+
+            &__spliter {
+                margin-top: 0.573vw;
+                display: flex;
+                justify-content: space-between;
+
+                &__switcher {
+                    display: flex;
+                    flex-direction: column;
+                    
+                    p {
+                        margin-top: 0.885vw;
+                        font-size: 0.729vw;
+                        color: #828282;
+
+                        img {
+                            width: 0.625vw;
+                            height: 0.625vw;
+
+                            margin-left: 0.356vw;
+                        }
+                    }
+                }
+
+                &__amounts {
+                    display: flex;
+                    align-items: center;
+
+                    .switcher__input {
+                        width: 4.219vw;
+                        height: fit-content;
+
+                        margin: 0 0.3vw;
+                        padding: 0.156vw 0.938vw;
+
+                        font-size: 0.729vw;
+                        text-align: center;
+
+                        border-radius: 1.042vw;
+                        border: 0.052vw solid #333333;
+                    }
+
+                    svg {
+                        width: 0.417vw;
+                        height: 0.417vw;
+                    }
+                }
+            }
+
+            &__input {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                span {
+                    font-size: 0.938vw;
+                    font-weight: 500;
+                    color: #828282;
+                }
+
+                p {
+                    display: flex;
+                    align-items: center;
+
+                    font-size: 0.938vw;
+                    font-weight: 500;
+
+                    svg {
+                        width: 0.625vw;
+                        height: 0.417vw;
+
+                        margin-left: 0.417vw;
+                    }
+                }
+
+                svg {
+                    width: 13.802vw;
+                    height: 0.573vw;
+
+                    margin-top: 0.417vw;
+                    margin-bottom: auto;
+                }
+
+                input { 
+                    font-size: 0.938vw;
+
+                    padding: 0.260vw 0.938vw;
+
+                    border-radius: 1.042vw;
+                    border: 0.052vw solid #333333;
+
+                    &::placeholder {
+                        font-size: 0.729vw;
+                        color: #333333;
+                    }
+                }
+            }
+        }
     }
 
     .trading-wrapper-chart {

@@ -1,16 +1,13 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import line from '../../assets/icons/chart-switcher/line.svg';
-import candle from '../../assets/icons/chart-switcher/candle.svg';
-import line_active from '../../assets/icons/chart-switcher/line-active.svg';
-import candle_active from '../../assets/icons/chart-switcher/candle-active.svg';
-import swap_trading from '../../assets/icons/swap-trading.svg';
-import swap_trading_dark from '../../assets/icons/swap-trading-dark.svg';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 
-import TradingWindow from './trading-window/trading-window';
-import {TradingChart} from './trading-chart/trading-chart';
-import { TokenIcon } from '../TokenIcon/token_icon';
+import info_icon from '../../assets/icons/additionally-info.svg';
 import './trading.scss';
+import TradingWindow from './trading-window/trading-window';
 import { useSystemContext } from '../../systemProvider';
+import { ThemeSwitcher } from '../Layout/ThemeSwitcher/theme-switcher';
+import { styled } from '@mui/system';
 
 export const Trading = () => {
 
@@ -38,7 +35,154 @@ export const Trading = () => {
                     </div>
                 </div>
             </div>
-            <div className='trading-wrapper-exchange trading-window-box'> 
+
+            <div className="trading-wrapper-filter trading-window-box">
+                <h1>Balance: 3000 USDT</h1>
+
+                <div className="trading-wrapper-filter__buttons">
+                    <button>Market</button>
+                    <button className="active">Limit</button>
+                </div>
+
+                <div className="trading-wrapper-filter__item">
+                    <div className="trading-wrapper-filter__item__input">
+                        <p>WBTC/USDT
+                            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 0.901211L5 6L0 0.901211L0.88375 0L5 4.19758L9.11625 0" fill="white"/>
+                            </svg>
+                        </p>
+                        <input type="text" placeholder="Amount" />
+                    </div>
+                    <div className="trading-wrapper-filter__item__input">
+                        <input className="small__input" value="54300" type="text" />
+                        <svg width="283" height="11" viewBox="0 0 283 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="3" width="278" height="5" rx="2" fill="#40BA93"/>
+                            <circle cx="277.5" cy="5.5" r="5" fill="#40BA93" stroke="#333333"/>
+                            <circle cx="5.5" cy="5.5" r="5" fill="#40BA93" stroke="#333333"/>
+                            <circle cx="73.5" cy="5.5" r="5" fill="#40BA93" stroke="#333333"/>
+                            <circle cx="141.5" cy="5.5" r="5" fill="#40BA93" stroke="#333333"/>
+                            <circle cx="209.5" cy="5.5" r="5" fill="#40BA93" stroke="#333333"/>
+                        </svg>
+                    </div>
+
+                    <div className="trading-wrapper-filter__item__spliter">
+                        <div className="trading-wrapper-filter__item__spliter__switcher">
+                            <div class="switch-wrapper">
+                                <label>
+                                    <input class="switch" type="checkbox" />
+                                    <div>
+                                        <div></div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <p>
+                                Split Buy
+                                <img src={info_icon} />
+                            </p>
+                        </div>
+
+                        <div className="trading-wrapper-filter__item__spliter__amounts">
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="#40BA93" stroke="#333333"/></svg>
+                            <input className="switcher__input" type="text" value="53600" />
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="#40BA93" stroke="#333333"/></svg>
+                            <input className="switcher__input" type="text" value="52800" />
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="#40BA93" stroke="#333333"/></svg>
+                            <input className="switcher__input" type="text" value="52300" />
+                        </div>
+                    </div>
+                </div>
+
+                <h3 className="trading-wrapper-filter__heading">Take Profit</h3>
+                <div className="trading-wrapper-filter__item">
+                    <div className="trading-wrapper-filter__item__input">
+                        <span>Last</span>
+                        <input className="small__input" value="60000" type="text" />
+                    
+                    </div>
+
+                    <div className="trading-wrapper-filter__item__spliter">
+                        <div className="trading-wrapper-filter__item__spliter__switcher">
+                            <div class="switch-wrapper">
+                                <label>
+                                    <input class="switch" type="checkbox" />
+                                    <div>
+                                        <div></div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <p>
+                                Split T/P
+                                <img src={info_icon} />
+                            </p>
+                        </div>
+
+                        <div className="trading-wrapper-filter__item__spliter__amounts">
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="#40BA93" stroke="#333333"/></svg>
+                            <input className="switcher__input" type="text" value="53600" />
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="#40BA93" stroke="#333333"/></svg>
+                            <input className="switcher__input" type="text" value="52800" />
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="#40BA93" stroke="#333333"/></svg>
+                            <input className="switcher__input" type="text" value="52300" />
+                        </div>
+                    </div>
+
+                    <div className="trading-wrapper-filter__item__spliter">
+                        <div className="trading-wrapper-filter__item__spliter__switcher">
+                            <div class="switch-wrapper">
+                                <label>
+                                    <input class="switch" type="checkbox" />
+                                    <div>
+                                        <div></div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <p>
+                                Trailing Take Profit
+                                <img src={info_icon} />
+                            </p>
+                        </div>
+                    </div>
+
+                    <Box sx={{ width: "3.542vw" }}>
+                        <Slider
+                            className="range-slider-filter"
+                            defaultValue={2}
+                            marks
+                            marksLabel={{
+                                color: '#000'
+                            }}
+
+                            sx={{ 
+                                height: "0.208vw",
+                                color: "#40BA93",
+
+                                '& .MuiSlider-thumb': {
+                                    width: '0.573vw',
+                                    height: '0.573vw',
+                                    border: '0.052vw solid #333',
+                                    boxShadow: 'none !important',
+                                    '&:hover': {
+                                        boxShadow: 'none !important',
+                                    }
+                                },
+                            }}
+
+                            step={1}
+                            min={1}
+                            max={4}
+                            hover={0}
+                        />
+                    </Box>
+                    
+                </div>
+
+            </div>
+
+            {/* TO DO: by clicking on the Simple Swap button from ContentNoader, should be displayed this window}
+            {/* <div className='trading-wrapper-exchange trading-window-box'> 
                 <div className='trading-wrapper-exchange__header'>
                     <h1>Market</h1>
                     <div className='trading-wrapper-exchange__header__buttons'>
@@ -97,7 +241,9 @@ export const Trading = () => {
                     <span> <h3> You Save </h3> <b className="active"> = $73.62 </b> </span>
                 </div>
                 <button className='trading-wrapper-exchange__swap-btn'> SWAP </button>
-            </div>
+            </div> */}
+
+
         </div>
     )
 }
