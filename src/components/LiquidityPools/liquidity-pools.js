@@ -9,6 +9,38 @@ import ERC20_ABI from '../../abi/ERC20.json';
 import {LiquidityPoolsItem} from "./Liquidity-pools-item/liquidity-pools-item";
 import {Spin} from "antd";
 import {LOADER_INDICATOR} from "../../constants";
+import styled from "styled-components";
+import {CreatePairModal} from "./CreatePairModal/create-pair-modal";
+
+const SearchBar = styled.div`
+  width: 39.271vw;
+  padding: 1.354vw 1.979vw;
+
+  margin: 0 auto;
+  
+  display: flex;
+  align-items: center;
+  background: #1A1A1A;
+  border-radius: 2.083vw;
+  
+  input {
+    width: 100%;
+    font-size: 0.938vw;
+    font-weight: 300;
+
+    color: white;
+
+    border: none;
+    background: none;
+    outline: none;
+
+    &:focus {
+      &::placeholder {
+          opacity: 0;
+      } 
+    }
+  }
+`
 
 export const LiquidityPools = () => {
 
@@ -17,6 +49,7 @@ export const LiquidityPools = () => {
     const {data, loading} = useQuery(LIQUIDITY_POOLS);
     const [pools, setPools] = useState([]);
     const [poolsPreparing, setPoolsPreparing] = useState(true);
+    const [isCreatePairModal, setIsCreatePairModal] = useState(false);
 
     useEffect(() => {
 
@@ -63,6 +96,17 @@ export const LiquidityPools = () => {
     return (
         <>
         <div className={`luqidity-pools-wrapper ${theme === "light" ? " luqidity-pools-wrapper-light" : ""}`}>
+            <div className={'luqidity-pools-wrapper-page-header'}>
+                <h1> Liquidity pools </h1>
+                  <SearchBar>
+                    <input type="text" placeholder="Search pool" />
+                    <svg width="23" height="23" viewBox="0 0 23 23">
+                      <path d="M9.17198 18.344C4.09212 18.344 0 14.2519 0 9.17198C0 4.09212 4.09212 0 9.17198 0C14.2519 0 18.344 4.09212 18.344 9.17198C18.344 14.2519 14.2519 18.344 9.17198 18.344ZM9.17198 1.41107C4.86821 1.41107 1.41107 4.86821 1.41107 9.17198C1.41107 13.4758 4.86821 16.9329 9.17198 16.9329C13.4758 16.9329 16.9329 13.4758 16.9329 9.17198C16.9329 4.86821 13.4758 1.41107 9.17198 1.41107Z" fill="#333333"/>
+                      <path d="M16.0027 15.0048L22.3384 21.3405L21.3408 22.3381L15.0051 16.0024L16.0027 15.0048Z" fill="#333333"/>
+                    </svg>
+                  </SearchBar>
+                <button onClick={() => setIsCreatePairModal(true)}> Create Pair </button>
+            </div>
             <h3 className='luqidity-pools-wrapper-heading'>Trading pools</h3>
             <div className='luqidity-pools-wrapper__list-header'>
                 <h5> Pool </h5>
@@ -100,6 +144,7 @@ export const LiquidityPools = () => {
                 }
             </ul>
         </div>
+            <CreatePairModal visible={isCreatePairModal} setVisible={setIsCreatePairModal}/>
         </>
     )
 

@@ -1,3 +1,16 @@
+.create-pair-modal {
+    .ant-modal-content {
+        border-radius: 25px;
+        height: 40vh;
+        background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+        .ant-modal-body {
+            display: grid;
+            grid-template-rows: 1.5fr 2fr 2fr 1fr;
+            height: 100%;
+        }
+    }
+}
+
 .remove-liquidity-modal {
 
     .ant-modal-content {
@@ -49,6 +62,31 @@
 .luqidity-pools-wrapper {
     display: flex;
     flex-direction: column;
+
+    .luqidity-pools-wrapper-page-header {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        align-items: center;
+        padding-left: 2.5vw;
+        padding-right: 2.5vw;
+        h1 {
+            color: white;
+            font-size: 2.1vw;
+        }
+        button {
+            border: 0px;
+            width: 145px;
+            height: 57px;
+            background: #40BA93;
+            border-radius: 30px;
+            color: white;
+            justify-self: flex-end;
+            &:hover {
+                background: linear-gradient(90.19deg, #560397 -3.27%, #3D1B57 103.63%);
+            }
+        }
+
+    }
 
     .luqidity-pools-wrapper-heading {
         margin-top: 1.302vw;

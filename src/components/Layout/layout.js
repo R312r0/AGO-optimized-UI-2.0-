@@ -142,36 +142,6 @@ const TradingBar = styled.div`
   }
 `
 
-const SearchBar = styled.div`
-  width: 39.271vw;
-  padding: 1.354vw 1.979vw;
-
-  margin: 0 auto;
-  
-  display: flex;
-  align-items: center;
-  background: #1A1A1A;
-  border-radius: 2.083vw;
-  
-  input {
-    width: 100%;
-    font-size: 0.938vw;
-    font-weight: 300;
-
-    color: white;
-
-    border: none;
-    background: none;
-    outline: none;
-
-    &:focus {
-      &::placeholder {
-          opacity: 0;
-      } 
-    }
-  }
-`
-
 const AgoLogo = styled.img`
   width: 2.60vw;
   height: 2.20vw;
@@ -243,40 +213,34 @@ export const Layout = ({children}) => {
                 </Header>
                 {!isMobileScreen ? <SideBar/> : null}
                 <Content mobile={isMobileScreen}>
-                    {!isMobileScreen ? 
-                        <ContentHeader>
-                          <h1>{PAGES.find(item => item.path === history.location.pathname).name}</h1>
-                          {PAGES.find(item => item.path === history.location.pathname).name === 'Trading' ?
-                          <TradingBar>
-                            <main>
-                              <img src="static/media/WBTC.3d49d464.svg" />
-                              <img src="static/media/USDT.6dc09781.svg" />
-                              <p>WBTC-USDT</p>
-                              <svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white"/></svg>
-                              <span>Liquidity:</span>
-                              <b>$400,335,212</b>
-                              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 0.901211L5 6L0 0.901211L0.88375 0L5 4.19758L9.11625 0" fill="white"/>
-                              </svg>
-                            </main>
+                    {/*{!isMobileScreen ? */}
+                    {/*    <ContentHeader>*/}
+                    {/*      <h1>{PAGES.find(item => item.path === history.location.pathname).name}</h1>*/}
+                    {/*      {PAGES.find(item => item.path === history.location.pathname).name === 'Trading' ?*/}
+                    {/*      <TradingBar>*/}
+                    {/*        <main>*/}
+                    {/*          <img src="static/media/WBTC.3d49d464.svg" />*/}
+                    {/*          <img src="static/media/USDT.6dc09781.svg" />*/}
+                    {/*          <p>WBTC-USDT</p>*/}
+                    {/*          <svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white"/></svg>*/}
+                    {/*          <span>Liquidity:</span>*/}
+                    {/*          <b>$400,335,212</b>*/}
+                    {/*          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
+                    {/*            <path d="M10 0.901211L5 6L0 0.901211L0.88375 0L5 4.19758L9.11625 0" fill="white"/>*/}
+                    {/*          </svg>*/}
+                    {/*        </main>*/}
 
-                            <div className="buttons">
-                              <button>Simple Swap</button>
-                              <button className='active'>Trading</button>
-                            </div>
-                          </TradingBar>
-                          : null}
+                    {/*        <div className="buttons">*/}
+                    {/*          <button>Simple Swap</button>*/}
+                    {/*          <button className='active'>Trading</button>*/}
+                    {/*        </div>*/}
+                    {/*      </TradingBar>*/}
+                    {/*      : null}*/}
 
-                          {PAGES.find(item => item.path === history.location.pathname).name === 'Liquidity-Pools' ?
-                          <SearchBar>
-                            <input type="text" placeholder="Search pool" />
-                            <svg width="23" height="23" viewBox="0 0 23 23">
-                              <path d="M9.17198 18.344C4.09212 18.344 0 14.2519 0 9.17198C0 4.09212 4.09212 0 9.17198 0C14.2519 0 18.344 4.09212 18.344 9.17198C18.344 14.2519 14.2519 18.344 9.17198 18.344ZM9.17198 1.41107C4.86821 1.41107 1.41107 4.86821 1.41107 9.17198C1.41107 13.4758 4.86821 16.9329 9.17198 16.9329C13.4758 16.9329 16.9329 13.4758 16.9329 9.17198C16.9329 4.86821 13.4758 1.41107 9.17198 1.41107Z" fill="#333333"/>
-                              <path d="M16.0027 15.0048L22.3384 21.3405L21.3408 22.3381L15.0051 16.0024L16.0027 15.0048Z" fill="#333333"/>
-                            </svg>
-                          </SearchBar>
-                          : null}
-                        </ContentHeader> : null}
+                    {/*      {PAGES.find(item => item.path === history.location.pathname).name === 'Liquidity-Pools' ?*/}
+
+                    {/*      : null}*/}
+                    {/*    </ContentHeader> : null}*/}
                     {loading ? <Spin size="large" indicator={LOADER_INDICATOR}/> : children}
                 </Content>
                 {isMobileScreen 
