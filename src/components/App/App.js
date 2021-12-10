@@ -14,15 +14,13 @@ import { Accounts } from '../Accounts/accounts';
 import 'antd/dist/antd.css';
 import {Foundry} from "../Foundry/foundry";
 
-
-
 export const App = () => {
 
     return (
         <>
             <Router>
-                <Layout>
-                    <Switch>
+                <Switch>
+                    <Layout>
                         <Route path="/" component={Dashboard} exact/>
                         <Route path="/mint-redeem" component={MintRedeem} exact/>
                         <Route path="/foundry" component={Foundry} exact/>
@@ -30,8 +28,8 @@ export const App = () => {
                         <Route path="/liqudity-pools" component={LiquidityPools} exact/>
                         <Route path="/trading" component={Trading} exact/>
                         <Route path="/accounts" component={Accounts} exact/>
-                    </Switch>
-                </Layout>
+                    </Layout>
+                </Switch>
             </Router>
             <WalletModal/>
             <CurrencySwitchModal/>
