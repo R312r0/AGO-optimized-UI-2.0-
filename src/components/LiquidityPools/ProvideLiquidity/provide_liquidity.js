@@ -1,18 +1,31 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { TokenIcon } from '../../TokenIcon/token_icon';
 import {formattedNum, formatToDecimal} from "../../../utils/helpers";
 import {Cell, Pie, PieChart, ResponsiveContainer} from "recharts";
 import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
+import {DEX_ADDRESESS, MAX_INT} from "../../../constants";
 
 
 export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
 
     const {account} = useWeb3React();
-    const {contracts} = useSystemContext();
+    const {contracts, tokens} = useSystemContext();
     const [input0, setInput0] = useState(null);
     const [input1, setInput1] = useState(null);
     const [usdValue, setUsdValue] = useState(0);
+    const [allowance, setAllowance] = useState({
+        token0: false,
+        token1: false
+    })
+
+    useEffect(() => {
+
+        if (account) {
+            checkAllowance()
+        }
+
+    }, [account])
 
     const handleInput0 = (value) => {
 
@@ -32,6 +45,20 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
         setUsdValue(formattedNum(priceForEquality * 2));
     }
 
+    const checkAllowance = async () => {
+
+        const tokenContract0 = tokens[token0.symbol].instance;
+        const tokenContract1 = tokens[token1.symbol].instance;
+
+        const allowance0 = (await tokenContract0.methods.allowance(account, DEX_ADDRESESS.ROUTER).call()).length === MAX_INT.length;
+        const allowance1 = (await tokenContract1.methods.allowance(account, DEX_ADDRESESS.ROUTER).call()).length === MAX_INT.length;
+
+        setAllowance({
+            token0: allowance0,
+            token1: allowance1
+        })
+
+    }
 
     const provideLiquidity = async () => {
 
@@ -106,6 +133,25 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
         )
     }
 
+    const ProvideButton = () => {
+
+        if (allowance.token0 && allowance.token1) {
+            return <button onClick={() => provideLiquidity()}> Porvide</button>
+        }
+        else {
+            return <button onClick={() => handleApprove()}> Approve </button>
+        }
+
+    }
+
+    const handleApprove = async () => {
+        const tokenContract0 = tokens[token0.symbol].instance;
+        const tokenContract1 = tokens[token1.symbol].instance;
+
+        await tokenContract0.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account})
+        await tokenContract1.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account})
+    }
+
     return(
         <>
         <div className='provide-liquidity-block'>
@@ -160,8 +206,8 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
         <div className='provide-liq-wrapper'>
             <ProvideLiquidityPieChart token1={token0.symbol}
                                       token2={token1.symbol}/>
-            <button onClick={() => provideLiquidity()}> Porvide</button>
             <button onClick={() => setRemoveLiqModal(true)}> Remove</button>
+            <ProvideButton/>
         </div>
         </>
     )

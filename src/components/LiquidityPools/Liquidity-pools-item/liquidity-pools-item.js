@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { TokenIcon } from '../../TokenIcon/token_icon';
 import { ProvideLiquidity } from '../ProvideLiquidity/provide_liquidity';
 import { Volume } from '../Volume/volume';
 import { Liquidity } from '../Liquidity/liquidity';
 import {RemoveLiquidityModal} from "../RemoveLiquidityModal/remove-liquidity-modal";
+import {useSystemContext} from "../../../systemProvider";
+import {useWeb3React} from "@web3-react/core";
+import {DEX_ADDRESESS, MAX_INT} from "../../../constants";
 
 const TABS = {
     PROVIDE_LIQUIDITY: "Provide liquidity",
