@@ -6,7 +6,6 @@ import candle_active from '../../../assets/icons/chart-switcher/candle-active.sv
 import { useSystemContext } from '../../../systemProvider';
 import {COINGECKO_IDS} from '../../../constants';
 import { TradingChart } from '../trading-chart/trading-chart';
-import { TokenIcon } from '../../TokenIcon/token_icon';
 import '../trading.scss';
 import axios from 'axios';
 

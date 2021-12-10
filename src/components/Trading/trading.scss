@@ -14,6 +14,15 @@
         }
     }
 
+    input:disabled {
+        color: #333;
+        border-color: #333;
+
+        &::placeholder {
+            color: #333;
+        }
+    }
+
     .trading-container {
         display: flex;
         flex-direction: column;
@@ -81,6 +90,30 @@
             font-weight: 500;
             color: white;
         }
+        
+        .trade-btn {
+            width: 7.292vw;
+            height: 1.875vw;
+
+            margin: 2.604vw auto 0;
+
+            font-size: 0.729vw;
+            border-radius: 1.042vw;
+
+            color: white;
+            background: #10DC9B;
+            border: none
+        }
+
+        &__switch-wrapper {
+            margin-top: 0.99vw;
+            margin-bottom: 0.313vw;
+            display: flex;
+
+            .switch-wrapper {
+                margin: auto 0 0 0.573vw;
+            }
+        }
 
         &__heading {
             margin: 0.833vw 0 0 1.094vw;
@@ -125,24 +158,11 @@
             padding: 0.8vw 1vw;
 
             .range-slider-filter {
+                padding: 0;
+
                 .MuiSlider-rail {
                     background-color: #333;
                 }
-
-                .MuiSlider-markActive {
-                    display: flex !important;
-                    background-color: black;
-                    height: 0.208vw;
-                }
-
-                .MuiSlider-markActive:first-child {
-                    background-color: white;
-                }
-
-                .MuiSlider-mark {
-                    display: none;
-                }
-
             }
 
             .small__input {
@@ -166,6 +186,8 @@
                 justify-content: space-between;
 
                 &__switcher {
+                    width: 100%;
+                    
                     display: flex;
                     flex-direction: column;
                     
@@ -181,29 +203,95 @@
                             margin-left: 0.356vw;
                         }
                     }
+
+                    .red-range-filter {
+                        width: 100%;
+                        margin: 1vw 0 0.469vw;
+
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        &:last-child {
+                            margin: 0vw 0 0.469vw;
+                        }
+
+                        input {
+                            width: 4.219vw;
+                            height: fit-content;
+    
+                            margin: 0 0.3vw;
+                            padding: 0.156vw 0.938vw;
+    
+                            font-size: 0.729vw;
+                            text-align: center;
+    
+                            border-radius: 1.042vw;
+                            border: 0.052vw solid #333333;
+                        }
+                    }
                 }
 
                 &__amounts {
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
 
-                    .switcher__input {
-                        width: 4.219vw;
-                        height: fit-content;
+                    &__sliders__wrapper {
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
 
-                        margin: 0 0.3vw;
-                        padding: 0.156vw 0.938vw;
+                        .trading-wrapper-filter__item__spliter__amounts__sliders {
+                            display: flex;
+                            flex-direction: column;
+    
+                            align-items: center;
+                            margin-top: 0.521vw;
 
-                        font-size: 0.729vw;
-                        text-align: center;
+                            &__input {
+                                display: flex;
+                                align-items: center;
 
-                        border-radius: 1.042vw;
-                        border: 0.052vw solid #333333;
-                    }
+                                .switcher__input {
+                                    width: 4.219vw;
+                                    height: fit-content;
+            
+                                    margin: 0 0.3vw;
+                                    padding: 0.156vw 0.938vw;
+            
+                                    font-size: 0.729vw;
+                                    text-align: center;
+            
+                                    border-radius: 1.042vw;
+                                    border: 0.052vw solid #333333;
+                                }
 
-                    svg {
-                        width: 0.417vw;
-                        height: 0.417vw;
+                                .circle-separator {
+                                    width: 0.417vw;
+                                    height: 0.417vw;
+                                    border: 0.052vw solid #333;
+
+                                    border-radius: 50%;
+        
+                                    background-color: #40BA93;
+                                }
+                            }
+    
+                            p {
+                                margin-bottom: 0.260vw;
+    
+                                font-size: 0.521vw;
+                                color: #828282;
+                            }
+    
+                            b {
+                                margin-top: 0.573vw;
+    
+                                font-size: 0.521vw;
+                                color: white;
+                            }
+                        }
                     }
                 }
             }
@@ -213,7 +301,7 @@
                 justify-content: space-between;
                 align-items: center;
 
-                span {
+                p {
                     font-size: 0.938vw;
                     font-weight: 500;
                     color: #828282;
@@ -662,8 +750,7 @@
         padding: 2vw;
 
         width: 100%;
-        min-height: 10vw;
-        height: auto;
+        height: 100%;
         justify-self: center;
 
         &__header {
