@@ -61,6 +61,22 @@ export const TOKENS_FOR_USER_BALANCES = gql(`
 
 `)
 
+export const GET_PAIR_TXS = gql(`
+    query pairTxs($token0: String!, $token1: String!) {
+        transactions(first: 100, where: {token0: $token0, token1: $token1}, orderBy: timestamp, orderDirection: desc) {
+            name
+            from
+            token0
+            token1
+            amount0
+            amount1
+            amountTotalUSD
+            timestamp
+        }
+    }
+
+`)
+
 export const LIQUIDITY_POOLS = gql(`
     query liqPools {
         pairs(first: 10) {

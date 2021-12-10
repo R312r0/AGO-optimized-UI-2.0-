@@ -46,8 +46,9 @@ export const CONTRACT_ADRESESS = {
     // TREASURY_AGOBTC: "0x3DD514281E4aFd5EDaB6261Face66A1bCA207bcE"
 }
 
-export const LOADER_INDICATOR = <LoadingOutlined
-    style={{fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%"}}/>
+export const LOADER_INDICATOR = <LoadingOutlined style={{fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%"}}/>
+
+export const LOADER_INDICATOR_LOCAL = <LoadingOutlined style={{fontSize: "3vw", color: "#40BA93", position: "absolute", top: "50%", left: "50%"}}/>
 
 // Connectors
 export const metaMask = new InjectedConnector({ supportedChainIds: [80001] });
@@ -68,3 +69,9 @@ export const PAGES = [
     {path: "/trading", name: "Trading", img: trading_black, imgActive: trading_active},
     {path: "/accounts", name: "Accounts", img: accounts_black, imgActive: accounts_acitve},
 ]
+
+export const TXS_NAME = {
+    SWAP: "Swap",
+    ADD: "Add liquidity",
+    BURN: "Remove liquidity"
+}

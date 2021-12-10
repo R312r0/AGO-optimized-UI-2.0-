@@ -7,16 +7,18 @@ import {RemoveLiquidityModal} from "../RemoveLiquidityModal/remove-liquidity-mod
 import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
 import {DEX_ADDRESESS, MAX_INT} from "../../../constants";
+import {Transactions} from "../Transactions/transactions";
 
 const TABS = {
     PROVIDE_LIQUIDITY: "Provide liquidity",
     VOLUME: "Volume",
-    LIQUIDITY: "Liquidity"
+    LIQUIDITY: "Liquidity",
+    TRANSACTIONS: "Transactions"
 }
 
 export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD, myLiquidity, volChart, liqChart, lpTokenContract, lpUserBalance }}) => {
 
-    const { PROVIDE_LIQUIDITY, VOLUME, LIQUIDITY } = TABS;
+    const { PROVIDE_LIQUIDITY, VOLUME, LIQUIDITY, TRANSACTIONS } = TABS;
     const [windowExpanded, setWindowExpanded] = useState(false);
     const [chosenWindow, setChosenWindow] = useState(PROVIDE_LIQUIDITY);
     const [removeLiquidityModal, setRemoveLiquidityModal] = useState(false);
@@ -29,6 +31,8 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
                 return (<Volume data={volChart}/>)
             case LIQUIDITY:
                 return (<Liquidity data={liqChart}/>)
+            case TRANSACTIONS:
+                return (<Transactions token0={token0} token1={token1}/>)
             default:
                 return (<ProvideLiquidity/>)
         };
@@ -62,6 +66,9 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
                         </button>
                         <button onClick={() => setChosenWindow(LIQUIDITY)}
                                 className={`${chosenWindow === LIQUIDITY ? "active" : ""}`}> Liquidity
+                        </button>
+                        <button onClick={() => setChosenWindow(TRANSACTIONS)}
+                                className={`${chosenWindow === TRANSACTIONS ? "active" : ""}`}> Transactions
                         </button>
                     </div>
                     <div className="control-panel__content">

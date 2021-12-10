@@ -80,15 +80,11 @@ export const TradingChart = ({candleData, lineData, chartType }) => {
 
     function handleCrosshairMoved(param) {
 
-        if (!param.point)  {
-
-
+        if (!param.point) {
             return;
         }
 
         if (!param.time) {
-
-
             setTradingInfo(prevState => ({
                 ...prevState 
             }))
@@ -211,19 +207,32 @@ export const TradingChart = ({candleData, lineData, chartType }) => {
      return (
         <>
             <div ref={parentRef} className='chart-self'> 
-                <div ref={ref} id='chart'> </div>
+                <div ref={ref} id='chart'></div>
             </div>
+            
             <div className='chart-control-data'> 
             {tradingInfo && chartType === "candle" ? 
                 <>
-                    <ul> 
-                        <li> {tradingInfo.time} </li> 
-                        <li> O: <b>{tradingInfo.open}</b> </li>
-                        <li> H: <b>{tradingInfo.high}</b> </li>
-                        <li> L: <b>{tradingInfo.low}</b> </li>
-                        <li> C: <b>{tradingInfo.close}</b> </li>
-                    </ul>
-                    <span> Change:  <b>{tradingInfo.change} </b> </span>
+                    <data> {tradingInfo.time} </data>
+                    <main>
+                        <ul> 
+                            <li><span>O:</span><b>{tradingInfo.open}</b></li>
+                            <li><span>H:</span><b>{tradingInfo.high}</b></li>
+                            <li><span>L:</span><b>{tradingInfo.low}</b></li>
+                            <li><span>C:</span><b>{tradingInfo.close}</b></li>
+                        </ul>
+                        <ul> 
+                            <li><span>MA(7):</span><b>{tradingInfo.open}</b></li>
+                            <li><span>MA(25):</span><b>{tradingInfo.high}</b></li>
+                            <li><span>MA(99):</span><b>{tradingInfo.low}</b></li>
+                        </ul>
+                        <ul> 
+                            <li><span>CHANGE:</span><b>0.00%</b></li>
+                            <li><span>AMPLITUDE:</span><b>3.99%</b></li>
+                        </ul>
+
+                        <button>Reset</button>
+                    </main>
                 </>
                 :
                 ""

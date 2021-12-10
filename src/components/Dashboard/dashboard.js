@@ -10,6 +10,7 @@ import {DashboardMobile} from './dashboard-mobile';
 import {useQuery} from "@apollo/client";
 import {DASHBOARD_QUERY} from "../../api/client";
 import {calculateTimeDifference, formatAddress, formattedNum} from "../../utils/helpers";
+import {TXS_NAME} from "../../constants";
 
 const DashboardWrapper = styled.div`
   display: grid;
@@ -46,12 +47,6 @@ const DashboardWrapper = styled.div`
     }
   }
 `
-
-const TXS_NAME = {
-    SWAP: "Swap",
-    ADD: "Add liquidity",
-    BURN: "Remove liquidity"
-}
 
 export const Dashboard = () => {
 
