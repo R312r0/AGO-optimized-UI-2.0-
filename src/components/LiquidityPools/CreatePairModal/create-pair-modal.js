@@ -335,37 +335,6 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
         else {
             setToken1Input(token1Balance);
         }
-
-        // let findToken;
-        //
-        // if (inputNum === 0) {
-        //     findToken = userProtfolio.find((item) => item.name === token0Select.symbol);
-        //     if (!findToken) {
-        //         const contr = new library.eth.Contract(ERC20_ABI, token0Select.id);
-        //         const balance = await contr.methods.balanceOf(account).call();
-        //
-        //         setToken0Input(formatFromDecimal(balance, token0Select.decimals));
-        //     }
-        //
-        //     else {
-        //         setToken0Input(findToken.userNativeBalance);
-        //     }
-        // }
-        // else if (inputNum === 1) {
-        //     findToken = userProtfolio.find((item) => item.name === token1Select.symbol);
-        //
-        //     if (!findToken) {
-        //         const contr = new library.eth.Contract(ERC20_ABI, token1Select.id);
-        //         const balance = await contr.methods.balanceOf(account).call();
-        //
-        //         setToken1Input(formatFromDecimal(balance, token1Select.decimals));
-        //     }
-        //
-        //     else {
-        //         setToken1Input(findToken.userNativeBalance);
-        //     }
-        // }
-
     }
 
 
@@ -438,7 +407,6 @@ const SelectTokenWindow = ({setWindow, token0Select, setToken0Select, token1Sele
         if (data && !loading) {
             setTokensArr(data.tokens);
         }
-
 
     }, [data, loading])
 
