@@ -14,6 +14,9 @@ import wbtc from './svg/WBTC.svg'
 import dai from './svg/DAI.svg';
 import usdc from './svg/USDC.svg';
 
+// Unknonw token icon
+import unknow from './svg/UNKNOWN_TOKEN.png';
+
 export const TokenIcon = ({iconName}) => {
     const tokens = [
         { name: "AGO", icon: ago },
@@ -30,5 +33,5 @@ export const TokenIcon = ({iconName}) => {
     ]
     const returnedToken = tokens.find(item => item.name === iconName)
 
-    return <img src={returnedToken.icon} width={40} height={40}/>
+    return <img src={returnedToken?.icon ? returnedToken?.icon : unknow} width={40} height={40}/>
 }

@@ -49,6 +49,16 @@ export const MAIN_TOKENS_DATA_QUERY = gql(`
     }
 `)
 
+export const TOKENS_FOR_LIQUIDITY_POOLS = gql(`
+    query liqTokens {
+        tokens(first: 100, orderBy: symbol, orderDirection: asc) {
+            id
+            symbol
+            decimals
+        }
+    }
+`)
+
 export const TOKENS_FOR_USER_BALANCES = gql(`
 
     query userBalanceTokens {

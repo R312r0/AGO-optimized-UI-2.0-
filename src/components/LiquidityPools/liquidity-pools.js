@@ -144,7 +144,7 @@ export const LiquidityPools = () => {
                 }
             </ul>
         </div>
-            <CreatePairModal visible={isCreatePairModal} setVisible={setIsCreatePairModal}/>
+            <CreatePairModal visible={isCreatePairModal} setVisible={setIsCreatePairModal} pools={pools}/>
         </>
     )
 

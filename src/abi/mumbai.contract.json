@@ -1,0 +1,114 @@
+[
+  {
+    "name": "ARGANO",
+    "address": "0x6F5b69CF3090e65872b28E150B00cb8cD0f5e1bA",
+    "params": [
+      "Argano",
+      "AGO",
+      "65000000000000000000000000"
+    ]
+  },
+  {
+    "name": "TokenERC20",
+    "address": "0x7FD21700b827C2De3E2F00bD7b3782Ab1ab64484",
+    "params": [
+      "WMATIC",
+      "WMATIC",
+      "1000000000000000000000000"
+    ]
+  },
+  {
+    "name": "TokenERC20",
+    "address": "0x145114129ee7ECFDEAff5DF1Fc13E68D5D06390f",
+    "params": [
+      "USDC",
+      "USDC",
+      "1000000000000000000000000"
+    ]
+  },
+  {
+    "name": "TokenERC20",
+    "address": "0x92F649404a501C58e5173a9493b992c29621F79E",
+    "params": [
+      "USDT",
+      "USDT",
+      "1000000000000000000000000"
+    ]
+  },
+  {
+    "name": "TokenERC20",
+    "address": "0x87c67bcB19Fdf0587cB02f2CE080b663fa6361b5",
+    "params": [
+      "DAI",
+      "DAI",
+      "1000000000000000000000000"
+    ]
+  },
+  {
+    "name": "UniswapV2Factory",
+    "address": "0xcAF4FA9103eF5f4832dfcac40a0D66c4202De377",
+    "params": [
+      "0x6e6Baf3A4fE4b2290C7E9C40a06dEe9026931fF5"
+    ]
+  },
+  {
+    "name": "UniswapV2Router02",
+    "address": "0xE9a2C04b019346fF7B4C6788345bCe03E73672C5",
+    "params": [
+      "0xcAF4FA9103eF5f4832dfcac40a0D66c4202De377",
+      "0x7FD21700b827C2De3E2F00bD7b3782Ab1ab64484"
+    ]
+  },
+  {
+    "name": "Treasury",
+    "address": "0x8ECF669120A78d0B1dd24c484EB0243E37f6E363",
+    "params": [
+      1638977873,
+      43200
+    ]
+  },
+  {
+    "name": "Dollar",
+    "address": "0xeabfC74db4aEdB95F1822e3e1E2ec2AC9a1B2F8F",
+    "params": [
+      "Argano Dollar token",
+      "AGOUSD",
+      "0x8ECF669120A78d0B1dd24c484EB0243E37f6E363",
+      "1000000000000000000"
+    ]
+  },
+  {
+    "name": "Share",
+    "address": "0x06CB38bE23Cd8c1FaA79C15a5FDdD81598bfb79E",
+    "params": [
+      "Catena Dollar share token",
+      "CNUSD",
+      "80000000000000000000000000",
+      "1000000000000000000",
+      "80000000000000000000000000",
+      "0x8ECF669120A78d0B1dd24c484EB0243E37f6E363",
+      "0x6e6Baf3A4fE4b2290C7E9C40a06dEe9026931fF5"
+    ]
+  },
+  {
+    "name": "Foundry",
+    "address": "0x2E12b4bEC235F23F93906885cBFa87637736303B",
+    "params": [
+      "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+      "0x06CB38bE23Cd8c1FaA79C15a5FDdD81598bfb79E",
+      "0x8ECF669120A78d0B1dd24c484EB0243E37f6E363"
+    ]
+  },
+  {
+    "name": "Pool",
+    "address": "0xFe939BcfE3cD3561620BeAeeC0a8E46B3ef6534a",
+    "params": [
+      "0xeabfC74db4aEdB95F1822e3e1E2ec2AC9a1B2F8F",
+      "0x06CB38bE23Cd8c1FaA79C15a5FDdD81598bfb79E",
+      "0x92F649404a501C58e5173a9493b992c29621F79E",
+      "0x6F5b69CF3090e65872b28E150B00cb8cD0f5e1bA",
+      "0x8ECF669120A78d0B1dd24c484EB0243E37f6E363",
+      "5000000000000000000000000"
+    ]
+  }
+]
