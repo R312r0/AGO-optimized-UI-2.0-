@@ -25,5 +25,5 @@ export const TokenIcon = ({iconName}) => {
     ]
 
     const returnedToken = tokens.filter(item => item.name === iconName)
-    return <img src={returnedToken[0].icon} width={40} height={40}/>
+    return <img src={returnedToken[0].icon} />
 }

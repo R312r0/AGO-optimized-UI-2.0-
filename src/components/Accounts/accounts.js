@@ -1,16 +1,22 @@
+import './accounts.scss';
 import React, { useContext, useEffect, useState } from 'react';
 import history_accounts from '../../assets/icons/history-accounts.svg';
+import roundChart from './../../assets/charts/round-chart.svg'
+import agologo from './../../assets/icons/ago-logo.svg'
 import { TokenIcon } from '../TokenIcon/token_icon';
 import { ResponsiveContainer, Pie, PieChart, Cell, Tooltip } from 'recharts';
-import './accounts.scss';
 import { PortfolioPerfomance } from './PortfolioPerfomance/portfolio_perfomance';
 import { AccHistory } from './AccHistory/acc-history';
 import { useSystemContext } from '../../systemProvider';
 import { useWeb3React } from '@web3-react/core';
 import { formattedNum } from '../../utils/helpers';
+import Slider from '@mui/material/Slider';
+import AccountsSynthetic from './accounts-synthetic/accounts-synthetic';
+import AccountsTrading from './accounts-trading/accounts-trading';
+import AccountsStaking from './accounts-staking/accounts-staking';
+import AccountsPools from './accounts-pools/accounts-pools';
 
 export const Accounts = () => {
-
     const {theme, userProtfolio} = useSystemContext();
     const [sumUserBalances, setSumUserBalances] = useState(0.00);
     const {account} = useWeb3React();
@@ -24,14 +30,6 @@ export const Accounts = () => {
     }, [userProtfolio])
  
     const [historyOpened, setHistoryOpened] = useState(false);
-
-    const mockUserStaked = [
-        {name: "AGO", staked: 12, reward: 0.013},
-        {name: "AGOUSD", staked: 12, reward: 0.013},
-        {name: "AGOBTC", staked: 12, reward: 0.013},
-        {name: "CNUSD", staked: 12, reward: 0.013},
-        {name: "CNBTC", staked: 12, reward: 0.013},
-    ]
 
     const mockUserLiquidityPools = [
         {firstToken: "AGO", secondToken: "MATIC", provided: 110, reward: 10},
@@ -56,12 +54,11 @@ export const Accounts = () => {
         return null;
     }
 
-
     const PortfolioPieChart = ({assetsList}) => {
 
         return (
-            <ResponsiveContainer width="100%" height="100%">
-                <PieChart width={0} height={0}>
+            <ResponsiveContainer>
+                {/* <PieChart width={0} height={0}>
                     <Pie
                     startAngle={0} 
                     endAngle={360}
@@ -78,8 +75,8 @@ export const Accounts = () => {
                     <Tooltip
                     content={<CustomToolTip/>}
                     />
-                </PieChart>
-        </ResponsiveContainer>
+                </PieChart> */}
+            </ResponsiveContainer>
         )
     }
 
@@ -88,86 +85,94 @@ export const Accounts = () => {
         {
             account ? 
             <div className={`accounts-wrapper ${theme === "light" ? " accounts-wrapper-light" : ""}`}> 
-            <AccHistory isOpened={historyOpened} setIsOpened={setHistoryOpened}/>
-            <h1 className='accounts-wrapper-header'> Accounts </h1>
-            <PortfolioPerfomance/>
-            <div className="accounts-wrapper-portoflio-assets main-block"> 
-                <div className='accounts-wrapper-portoflio-assets__header'> 
-                    <div> 
-                        <h1> ${sumUserBalances} </h1>
-                        <h1> -$0.175557 (1.2%) </h1>
-                    </div>
-                    <button onClick={() => setHistoryOpened(true)}> History <img src={history_accounts} alt={"history"}/> </button>
-                </div>
-                <div className='accounts-wrapper-portoflio-assets__assets-chart-info'> 
-                    <div className='accounts-wrapper-portoflio-assets__assets-chart-info__pie-chart'>
-                        <PortfolioPieChart assetsList={userProtfolio}/>
-                    </div>
-                    <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
-                        <h3> All assets </h3>
-                        <ul> 
-                            {userProtfolio.map((item, _ind) => {
-                                return <li key={item.value}> 
-                                    <span><TokenIcon iconName={item.name}/> {item.name} </span>
-                                    <span className={_ind === 4 ? "negative-change" : ""}> {formattedNum(item.userNativeBalance)} </span>
-                                </li> 
-                            })}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div className='accounts-wrapper-use-staking-pools secondary-block'> 
-                <h1> Staking </h1>
-                <div className='accounts-wrapper-use-staking-pools__list-header'> 
-                    <span> Pool </span>
-                    <span> Staked </span>
-                    <span> Reward </span>
-                </div>
-                <ul> 
-                    {mockUserStaked.map((item) => {
-                        return (
-                            <li key={item.name}>
-                                <div>
-                                    <TokenIcon iconName={item.name}/>
-                                    <span> {item.name} </span>
+                {/* <AccHistory isOpened={historyOpened} setIsOpened={setHistoryOpened}/> */}
+        
+                <div className='accounts-container'>
+                    <div className='accounts-container-duo'>
+                        <PortfolioPerfomance/>
+                        <div className="accounts-wrapper-portoflio-assets cosmetical-wrapper"> 
+                            <div className='accounts-wrapper-portoflio-assets__assets-chart-info'> 
+                                
+                                <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
+                                    {/* <PortfolioPieChart assetsList={userProtfolio}/> */}
+                                    <img className='round-chart-img' src={roundChart} />
+                                    <ul> 
+                                        {userProtfolio.map((item, _ind) => {
+                                            return <li key={item.value}> 
+                                                <span><TokenIcon iconName={item.name}/> {item.name} </span>
+                                                <b className={_ind === 4 ? "negative-change" : ""}> {formattedNum(item.userNativeBalance)} </b>
+                                            </li> 
+                                        })}
+                                    </ul>
                                 </div>
-                                <span> {item.staked} </span>
-                                <span> {item.reward} </span>
-                            </li>
-                        )
-                    })}    
-                </ul>  
-            </div>
 
-            <div className='accounts-wrapper-use-liq-pools secondary-block'> 
-                <h1> Pools </h1>
-                <div className='accounts-wrapper-use-liq-pools__list-header'> 
-                    <span> Pool </span>
-                    <span> LP provided </span>
-                    <span> Reward </span>
-                </div>
-                <ul> 
-                    {mockUserLiquidityPools.map((item) => {
-                        return (
-                            <li key={item.firstToken + item.secondToken}>
-                                <div className='dual-liq-icons'> 
-                                    <div>
-                                        <TokenIcon iconName={item.firstToken}/>
-                                        <TokenIcon iconName={item.secondToken}/>
-                                    </div>
-                                    <span> {item.firstToken + "-" + item.secondToken} </span>
+                                <div className='accounts-wrapper-portoflio-assets__assets-chart-info__bars'>
+                                    <ul>
+                                        <li>
+                                            <p>68%</p>
+                                            <span style={{ height: '3.646vw', backgroundColor: '#40BA93' }}></span>
+                                            <p>AGO</p>
+                                        </li>
+                                        <li>
+                                            <p>5%</p>
+                                            <span style={{ height: '2.604vw', backgroundColor: '#DB1BB1' }}></span>
+                                            <p>AGOUSD</p>
+                                        </li>
+                                        <li>
+                                            <p>4%</p>
+                                            <span style={{ height: '2.135vw', backgroundColor: '#EAD200' }}></span>
+                                            <p>AGOBTC</p>
+                                        </li>
+                                        <li>
+                                            <p>4%</p>
+                                            <span style={{ height: '2.135vw', backgroundColor: '#DB1B60' }}></span>
+                                            <p>CNUSD</p>
+                                        </li>
+                                        <li>
+                                            <p>3%</p>
+                                            <span style={{ height: '2.135vw', backgroundColor: '#9018EE' }}></span>
+                                            <p>CNUSD</p>
+                                        </li>
+                                        <li>
+                                            <p>3%</p>
+                                            <span style={{ height: '2.135vw', backgroundColor: '#1BB8DB' }}></span>
+                                            <p>CNUSD</p>
+                                        </li>
+                                        <li>
+                                            <p>2%</p>
+                                            <span style={{ height: '1.615vw', backgroundColor: '#EA8C00' }}></span>
+                                            <p>CNUSD</p>
+                                        </li>
+                                        <li>
+                                            <p>0%</p>
+                                            <span style={{ height: '1.146vw', backgroundColor: '#DB1B60' }}></span>
+                                            <p>CNUSD</p>
+                                        </li>
+                                    </ul>
+
+                                    <button onClick={() => setHistoryOpened(true)}>
+                                        <img src={history_accounts} alt={"history"}/> 
+                                        History 
+                                    </button>
                                 </div>
-                                <span> {item.provided} </span>
-                                <span> {item.reward} </span>
-                            </li>
-                        )
-                    })}    
-                </ul>  
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='accounts-container-duo'>
+                        <AccountsSynthetic />
+                        <AccountsTrading />
+                    </div>
+
+                    <div className='accounts-container-duo'>
+                        <AccountsStaking />
+                        <AccountsPools />
+                    </div>
+                </div>
+                
             </div>
-        </div>
-        :
-        <h1 className='connect-wallet-alert'> Please connect wallet to use Accounts page. </h1>
+            :
+            <h1 className='connect-wallet-alert'> Please connect wallet to use Accounts page. </h1>
         }       
         </>
     )

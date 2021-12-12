@@ -313,12 +313,13 @@
 
                     font-size: 0.938vw;
                     font-weight: 500;
+                    color: white;
 
                     svg {
                         width: 0.625vw;
                         height: 0.417vw;
 
-                        margin-left: 0.417vw;
+                        margin: 0 0 0 0.417vw !important;
                     }
                 }
 
