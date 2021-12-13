@@ -119,6 +119,18 @@ export const LIQUIDITY_POOLS = gql(`
     }
 `)
 
+export const TOKENS_TRADING = gql(`
+    query tradingTokens {
+        tokens(first: 100, orderBy: symbol, orderDirection: asc) {
+            symbol
+            lineChartUSD(orderBy: timestamp, orderDirection: asc) {
+             valueUSD
+             timestamp
+           }
+        }
+    }
+`)
+
 export const LIQ_POOLS_TRADING = gql(`
 
     query tradingPairs {
