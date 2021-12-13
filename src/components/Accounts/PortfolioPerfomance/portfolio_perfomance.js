@@ -35,7 +35,7 @@ export const PortfolioPerfomance = () => {
 
 
     return (
-        <div className="accounts-wrapper-portoflio-perf main-block"> 
+        <div className="accounts-wrapper-portoflio-perf cosmetical-wrapper"> 
         <div className='accounts-wrapper-portoflio-perf__header-control-panel'>
             <h1> Portfolio perfomance </h1>
             <div className='accounts-wrapper-portoflio-perf__header-control-panel__time-frame-list'> 
@@ -64,7 +64,7 @@ export const PortfolioPerfomance = () => {
                     type="monotone"
                     dataKey="uv"
                     stroke="#40BA93"
-                    strokeWidth={5}
+                    strokeWidth={"0.260vw"}
                     dot={false}
                     activeDot={true}
                 />
@@ -81,7 +81,7 @@ export const PortfolioPerfomance = () => {
                     dataKey="time"
                     axisLine={false}
                     tickLine={false}
-                    tick={{ color: "white" }}
+                    tick={{ color: "white", fontSize: "1vw" }}
                 />
 
             </LineChart>

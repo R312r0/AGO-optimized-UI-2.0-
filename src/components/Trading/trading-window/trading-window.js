@@ -3,9 +3,9 @@ import line from '../../../assets/icons/chart-switcher/line.svg';
 import candle from '../../../assets/icons/chart-switcher/candle.svg';
 import line_active from '../../../assets/icons/chart-switcher/line-active.svg';
 import candle_active from '../../../assets/icons/chart-switcher/candle-active.svg';
+import {COINGECKO_IDS} from "../../../constants";
 import { useSystemContext } from '../../../systemProvider';
 import { TradingChart } from '../trading-chart/trading-chart';
-import { TokenIcon } from '../../TokenIcon/token_icon';
 import '../trading.scss';
 import axios from 'axios';
 
@@ -29,23 +29,23 @@ const TradingWindow = () => {
     const [loading, setLoading] = useState(true);
 
 
-    // useEffect(() => {
-    //
-    //     if (tokens) {
-    //         const tokensArr = Object.entries(tokens).map((item, _ind) => ({name: item[0], coindgeckoId: COINGECKO_IDS[item[0]], active: _ind === 0}));
-    //         setTokensCoingecko(tokensArr);
-    //     }
-    //
-    // }, [tokens])
-    //
-    //
-    // useEffect(() => {
-    //
-    //     if (tokensCoinGecko && chartTimeStamp) {
-    //         fetchChartTokenData(tokensCoinGecko.find(item => item.active).coindgeckoId, chartTimeStamp.find(item => item.active).timeframe);
-    //     }
-    //
-    // }, [tokensCoinGecko, chartTimeStamp])
+    useEffect(() => {
+
+        if (tokens) {
+            const tokensArr = Object.entries(tokens).map((item, _ind) => ({name: item[0], coindgeckoId: COINGECKO_IDS[item[0]], active: _ind === 0}));
+            setTokensCoingecko(tokensArr);
+        }
+
+    }, [tokens])
+
+
+    useEffect(() => {
+
+        if (tokensCoinGecko && chartTimeStamp) {
+            fetchChartTokenData(tokensCoinGecko.find(item => item.active).coindgeckoId, chartTimeStamp.find(item => item.active).timeframe);
+        }
+
+    }, [tokensCoinGecko, chartTimeStamp])
 
     const fetchChartTokenData = async (token, timestamp) => {
 
@@ -80,37 +80,36 @@ const TradingWindow = () => {
         {loading ?
             null
             :
-            null
-            // <>
-            //     <div className='trading-wrapper-chart__header'>
-            //         <h1> Chart </h1>
-            //         <div className='trading-wrapper-chart__control-panel'>
-            //             {chartType === "line" ?
-            //                 null
-            //                 :
-            //                 <>
-            //                     {chartTimeStamp.map((item) => {
-            //                         return <button onClick={() => onChangeTimeStamp(item.value)} className={item.active ?  "active-time-frame" : null}> {item.value} </button>
-            //                     })}
-            //                 </>
-            //             }
-            //
-            //             <select value={tokensCoinGecko.find(item => item.active).name} onChange={(e) => onChangeTokenSelect(e.target.value)} >
-            //                 {tokensCoinGecko.map((item) => {
-            //                     return <option> {item.name} </option>
-            //                 })}
-            //             </select>
-            //
-            //             <div className="chart-switcher">
-            //                 <button onClick={() => setChartType("candle")} className={chartType === "candle" ? "active-chart-type" : ""}> <img src={chartType === "candle" ? candle_active : candle} width={20} height={20} alt="candle"/> </button>
-            //                 <button onClick={() => setChartType("line")} className={chartType === "line" ? "active-chart-type" : ""}> <img src={chartType === "line" ? line_active : line} width={20} height={20} alt="line"/> </button>
-            //             </div>
-            //         </div>
-            //     </div>
-            //     <div className='trading-wrapper-chart__chart-graph'>
-            //         <TradingChart candleData={candleChart} lineData={lineChart} chartType={chartType}/>
-            //     </div>
-            // </>
+            <>
+                <div className='trading-wrapper-chart__header'>
+                    <h1> Chart </h1>
+                    <div className='trading-wrapper-chart__control-panel'>
+                        {chartType === "line" ?
+                            null
+                            :
+                            <>
+                                {chartTimeStamp.map((item) => {
+                                    return <button onClick={() => onChangeTimeStamp(item.value)} className={item.active ?  "active-time-frame" : null}> {item.value} </button>
+                                })}
+                            </>
+                        }
+
+                        <select value={tokensCoinGecko.find(item => item.active).name} onChange={(e) => onChangeTokenSelect(e.target.value)} >
+                            {tokensCoinGecko.map((item) => {
+                                return <option> {item.name} </option>
+                            })}
+                        </select>
+
+                        <div className="chart-switcher">
+                            <button onClick={() => setChartType("candle")} className={chartType === "candle" ? "active-chart-type" : ""}> <img src={chartType === "candle" ? candle_active : candle} width={20} height={20} alt="candle"/> </button>
+                            <button onClick={() => setChartType("line")} className={chartType === "line" ? "active-chart-type" : ""}> <img src={chartType === "line" ? line_active : line} width={20} height={20} alt="line"/> </button>
+                        </div>
+                    </div>
+                </div>
+                <div className='trading-wrapper-chart__chart-graph'>
+                    <TradingChart candleData={candleChart} lineData={lineChart} chartType={chartType}/>
+                </div>
+            </>
         }
     </div>
 }

@@ -14,11 +14,11 @@ import {TOKENS_FOR_USER_BALANCES} from "../../../api/client";
 
 const BalancesTabWrapper = styled.div`
   transition: 0.3s all;
-  width: ${props => props.opened ? props.account ? "79%" : "13vw" : "13vw"};
+  width: fit-content;
   align-self: center;
   height: 2.969vw;
 
-  padding: 0 0.4vw;
+  padding: 0.4vw ${props => props.account ? "0.8vw 0.4vw 0.5vw" : "1.2vw"};;
   margin: 0.4vw 0 0.45vw 0.5vw;
 
   background: ${props => props.mobile ? "transparent" : "linear-gradient(95.07deg, rgba(58, 58, 58, 0.4) -21.03%, rgba(0, 0, 0, 0.4) 139.31%), rgba(51, 51, 51, 0.1)"};
@@ -34,14 +34,12 @@ const BalancesTabWrapper = styled.div`
   cursor: pointer;
 
   @media screen and (max-width: 1200px) {
-    width: ${props => props.opened ? props.account ? "79%" : "13vw" : "13vw"};
     height: 3.2vw;
     font-size: 0.81vw;
   }
 
   @media screen and (max-width: 1024px) {
     font-size: 0.9vw;
-    width: ${props => props.opened ? props.account ? "100%" : "15vw" : "15vw"};
   }
 
   @media screen and (max-width: 750px) {
@@ -55,31 +53,6 @@ const BalancesTabWrapper = styled.div`
     font-size: 2.5vw;
   }
 
-  img {
-    margin-right: 0.2vw;
-    grid-row: ${props => props.mobile ? "1/3" : "1/2"};
-    padding: 0.2vw 0;
-    width: 1.875vw;
-    height: 2.083vw;
-
-    @media screen and (max-width: 1200px) {
-      padding: 0.2vw 0;
-      width: 2.4vw;
-      height: 2.7vw;
-    }
-
-    @media screen and (max-width: 750px) {
-      width: 12vw;
-      height: 12vw;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .vector img {
-      display: none;
-    }
-  }
-
   .vector {
     width: 0.521vw;
     height: 0.521vw;
@@ -88,13 +61,19 @@ const BalancesTabWrapper = styled.div`
     margin: auto auto auto ${props => props.opened ? "0.2vw" : "0.7vw"};
     transform: ${props => props.opened ? "rotate(180deg)" : "none"};
     
+    @media screen and (max-width: 1024px) {
+      width: 0.938vw;
+      height: 0.938vw;
+
+      margin: 0 0.5vw;
+    }
+
     @media screen and (max-width: 750px) {
       display: none;
     }
   }
 
   p {
-    /*grid-row: ${props => props.mobile ? "none" : "1/2"};*/
     color: white;
     white-space: nowrap;
     line-height: 1;
@@ -106,6 +85,11 @@ const BalancesTabWrapper = styled.div`
       font-size: 4vw;
       margin-top: 10%;
     }
+  }
+
+  .balance-tab-wrapper__pig {
+    width: 2.083vw;
+    height: 2.083vw;
   }
 
   .balance-tab-wrapper {
@@ -207,6 +191,8 @@ const BalanceOverall = styled.div`
 `
 
 const BalanceList = styled.ul`
+  width: 100%;
+  margin-left: auto;
   box-sizing: border-box;
   padding: 2.083vw;
 `
@@ -226,7 +212,7 @@ const BalanceSwipeStripe = styled.div`
 `
 
 const BalanceListItem = styled.li`
-  display: grid;
+  display: flex;
   align-items: center;
   grid-template-columns: 1fr 3fr;
   background: linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
@@ -250,51 +236,47 @@ const BalanceListItem = styled.li`
 `
 
 const BalanceListDesktop = styled.ul`
+  display: ${props => props.opened ? "flex" : "none !important"};
+  height: 100%;
+
+  margin-left: ${props => props.opened ? "20px" : "0"};
+  margin-bottom: 0;
+
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  color: white;
 
-  width: 100%;
-  overflow: auto;
-  margin: 0 0 0 auto;
-  display: ${props => props.opened ? "flex" : "none"};
-
-  &::-webkit-scrollbar {
+  opacity: ${props => props.opened ? "1" : "0"};
+  transition: ${props => props.opened ? "1s ease" : "0"};
+  
+  @media screen and (max-width: 750px) {
     display: none;
   }
 `
 
 const BalanceListItemDesktop = styled.li`
-  &:not(:first-child) {
-    padding-left: 1%;
-  }
+  display: flex;
+  align-items: center;
 
-  white-space: nowrap;
-  border-right: 0.104vw solid #4F4F4F;
-
-  &:last-child {
-    border-right: 0;
-  }
+  padding-right: 1.042vw;
 
   img {
-    width: 1.042vw;
-    height: 1.042vw;
+    width: 1.563vw;
+    height: 1.563vw;
   }
 
   span {
     color: #828282;
-    font-size: 0.625vw;
-    margin-right: 1.042vw;
+    font-size: 0.729vw;
+    padding-left: 0.5vw;
   }
 
-  @media screen and (max-width: 1024px) {
-    span {
-      font-size: 0.9vw;
-    }
-    img {
-      width: 1.7vw;
-      height: 1.7vw;
-    }
+  &:not(:first-child) {
+    padding-left: 1.042vw;
+  }
+
+  &:not(:last-child) {
+    border-right: 0.104vw solid #4F4F4F;
   }
 `
 
@@ -356,7 +338,7 @@ export const BalancesTab = () => {
                 {account ?
                     <>
                         <div className="balance-tab-wrapper">
-                          <img src={theme === "light" ? pig_icon_light : pig_icon} width={20} height={20} alt="balance"/>
+                          <img className='balance-tab-wrapper__pig' src={theme === "light" ? pig_icon_light : pig_icon} alt="balance"/>
                           <p className='balance'> Balance </p>
                           <div className="balance-arrow-wrapper">
                             <p> {balances ? formattedNum(balances.reduce((a, {usdBalance}) => a + usdBalance, 0)) : 0.00}$ </p>
@@ -365,6 +347,7 @@ export const BalancesTab = () => {
                               </svg>
                           </div>
                         </div>
+
                         <BalanceListDesktop opened={balancesExpanded}>
                             {balances && balances.map((item) => {
                                 return (
@@ -386,8 +369,7 @@ export const BalancesTab = () => {
                     </BalancesMobileExpandWrapper>
                     <BalanceExpand opened={balancesMobileExpanded}>
                         <BalanceOverall>
-                            <img src={theme === "light" ? pig_icon_light : pig_icon} width={35} height={35}
-                                 alt="balance"/>
+                            <img src={theme === "light" ? pig_icon_light : pig_icon} alt="balance"/>
                             <h5> Balance </h5>
                             <h5> {userProtfolio ? formattedNum(userProtfolio.reduce((a, {userUsdBalance}) => a + userUsdBalance, 0)) : 0.00}$ </h5>
                         </BalanceOverall>

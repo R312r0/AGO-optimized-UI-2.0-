@@ -22,6 +22,17 @@ import {LoadingOutlined} from "@ant-design/icons";
 
 
 
+export const COINGECKO_IDS = {
+    AGO: "uniswap",
+    AGOUSD: "tether",
+    CNUSD: "usd-coin",
+    AGOBTC: "wrapped-bitcoin",
+    CNBTC: "adamant",
+    WMATIC: "wmatic",
+    USDT: "tether",
+    WBTC: "wrapped-bitcoin",
+}
+
 export const DEX_ADDRESESS = {
     FACTORY: "0xcAF4FA9103eF5f4832dfcac40a0D66c4202De377",
     ROUTER: "0xE9a2C04b019346fF7B4C6788345bCe03E73672C5",
