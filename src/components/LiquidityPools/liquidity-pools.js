@@ -108,11 +108,28 @@ export const LiquidityPools = () => {
             return
         }
 
-        const newPools = poolsFormatted.filter(item => {
-            if (item.token0.symbol.startsWith(value) || item.token1.symbol.startsWith(value)) {
+        console.log(value)
+
+
+        const newPools = pools.filter(item => {
+
+            const pairSearchPattern = `${item.token0.symbol}-${item.token1.symbol}`
+            const pairSearchPatternReverse = `${item.token1.symbol}-${item.token0.symbol}`
+
+            if (item.token0.symbol.startsWith(value.toUpperCase()) || item.token1.symbol.startsWith(value.toUpperCase())) {
                 return item;
             }
+            else if (pairSearchPattern.startsWith(value.toUpperCase())) {
+                return item;
+            }
+
+            else if (pairSearchPatternReverse.startsWith(value.toUpperCase())) {
+                return item;
+            }
+
         })
+
+        console.log(newPools)
 
         setPoolsFormatted(newPools);
 
