@@ -94,6 +94,7 @@ export const LIQUIDITY_POOLS = gql(`
           reserveETH
           reserveUSD
           volumeUSD
+          isRewardPool
           liquidityChart(orderBy: timestamp, orderDirection: asc) {
             valueUSD
             timestamp

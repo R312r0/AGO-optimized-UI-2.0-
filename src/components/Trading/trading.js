@@ -181,7 +181,7 @@ export const Trading = () => {
 
             </div>
 
-            {/* TO DO: by clicking on the Simple Swap button from ContentNoader, should be displayed this window}
+            {/* TODO: by clicking on the Simple Swap button from ContentNoader, should be displayed this window}
             {/* <div className='trading-wrapper-exchange trading-window-box'> 
                 <div className='trading-wrapper-exchange__header'>
                     <h1>Market</h1>

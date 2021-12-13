@@ -48,9 +48,13 @@ export const LiquidityPools = () => {
     const {theme} = useSystemContext();
     const {data, loading} = useQuery(LIQUIDITY_POOLS);
     const [pools, setPools] = useState([]);
+    const [earnPools, setEarnPools] = useState([]);
     const [poolsFormatted, setPoolsFormatted] = useState([]);
+    const [earnPoolsFormatted, setEarnPoolsFormatted] = useState([]);
     const [poolsPreparing, setPoolsPreparing] = useState(true);
     const [isCreatePairModal, setIsCreatePairModal] = useState(false);
+
+    console.log(data);
 
     useEffect(() => {
 
@@ -60,13 +64,15 @@ export const LiquidityPools = () => {
 
     }, [data, loading])
 
+
     useEffect(() => {
 
-        if (pools.length > 0) {
+        if (pools.length > 0 && earnPools.length > 0) {
             setPoolsFormatted(pools);
+            setEarnPoolsFormatted(earnPools);
         }
 
-    }, [pools])
+    }, [pools, earnPools])
 
     const prepareData = async (pools) => {
 
@@ -94,11 +100,15 @@ export const LiquidityPools = () => {
                 return {value: +item.valueUSD, time}
             });
 
-            return {address: item.id, lpTokenContract: lp, lpUserBalance, token0,token1, liqiuidityUSD: formattedNum(liquidityUSD), myLiquidity: formattedNum(myLiquidity), liqChart, volChart}
+            return {address: item.id, isEarnAgo: item.isRewardPool, lpTokenContract: lp, lpUserBalance, token0,token1, liqiuidityUSD: formattedNum(liquidityUSD), myLiquidity: formattedNum(myLiquidity), liqChart, volChart}
 
         })
 
-        setPools(await Promise.all(res));
+        const trading = (await Promise.all(res)).filter((item) => !item.isEarnAgo);
+        const earnAgo = (await Promise.all(res)).filter((item) => item.isEarnAgo);
+
+        setPools(trading);
+        setEarnPools(earnAgo);
     }
 
     const handleChangePool = (value) => {
@@ -107,8 +117,6 @@ export const LiquidityPools = () => {
             setPoolsFormatted(pools);
             return
         }
-
-        console.log(value)
 
 
         const newPools = pools.filter(item => {
@@ -129,10 +137,25 @@ export const LiquidityPools = () => {
 
         })
 
-        console.log(newPools)
+        const newPoolsEarn = earnPools.filter(item => {
+
+            const pairSearchPattern = `${item.token0.symbol}-${item.token1.symbol}`
+            const pairSearchPatternReverse = `${item.token1.symbol}-${item.token0.symbol}`
+
+            if (item.token0.symbol.startsWith(value.toUpperCase()) || item.token1.symbol.startsWith(value.toUpperCase())) {
+                return item;
+            }
+            else if (pairSearchPattern.startsWith(value.toUpperCase())) {
+                return item;
+            }
+
+            else if (pairSearchPatternReverse.startsWith(value.toUpperCase())) {
+                return item;
+            }
+        })
 
         setPoolsFormatted(newPools);
-
+        setEarnPoolsFormatted(newPoolsEarn);
     }
 
     return (
@@ -149,7 +172,7 @@ export const LiquidityPools = () => {
                   </SearchBar>
                 <button onClick={() => setIsCreatePairModal(true)}> Create Pair </button>
             </div>
-            <h3 className='luqidity-pools-wrapper-heading'>Trading pools</h3>
+            <h3 className='luqidity-pools-wrapper-heading'> Earn AGO pools </h3>
             <div className='luqidity-pools-wrapper__list-header'>
                 <h5> Pool </h5>
                 <h5> 
@@ -167,6 +190,42 @@ export const LiquidityPools = () => {
                     </svg>
                 </h5>
                 <h5> 
+                    APY
+                    <svg width="51" height="22" viewBox="0 0 51 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.70711 0.292892C8.31658 -0.0976314 7.68342 -0.0976315 7.29289 0.292892L0.928933 6.65685C0.538408 7.04738 0.538408 7.68054 0.928933 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292892ZM9 21L9 1L7 1L7 21L9 21Z" fill="#40BA93"/>
+                        <path d="M42.2929 21.7071C42.6834 22.0976 43.3166 22.0976 43.7071 21.7071L50.0711 15.3431C50.4616 14.9526 50.4616 14.3195 50.0711 13.9289C49.6805 13.5384 49.0474 13.5384 48.6569 13.9289L43 19.5858L37.3431 13.9289C36.9526 13.5384 36.3195 13.5384 35.9289 13.9289C35.5384 14.3195 35.5384 14.9526 35.9289 15.3431L42.2929 21.7071ZM42 1L42 21L44 21L44 1L42 1Z" fill="#333333"/>
+                    </svg>
+                </h5>
+            </div>
+            <ul className='luqidity-pools-wrapper-list earn-ago'>
+                {poolsPreparing ? <Spin size="large" indicator={LOADER_INDICATOR}/> :
+                    <>
+                        {earnPoolsFormatted.map((item) => {
+                            return (
+                                <LiquidityPoolsItem pool={item}/>
+                            )
+                        })}
+                    </>
+                }
+            </ul>
+            <h3 className='luqidity-pools-wrapper-heading'>Trading pools</h3>
+            <div className='luqidity-pools-wrapper__list-header'>
+                <h5> Pool </h5>
+                <h5>
+                    Liquidity
+                    <svg width="51" height="22" viewBox="0 0 51 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.70711 0.292892C8.31658 -0.0976314 7.68342 -0.0976315 7.29289 0.292892L0.928933 6.65685C0.538408 7.04738 0.538408 7.68054 0.928933 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292892ZM9 21L9 1L7 1L7 21L9 21Z" fill="#40BA93"/>
+                        <path d="M42.2929 21.7071C42.6834 22.0976 43.3166 22.0976 43.7071 21.7071L50.0711 15.3431C50.4616 14.9526 50.4616 14.3195 50.0711 13.9289C49.6805 13.5384 49.0474 13.5384 48.6569 13.9289L43 19.5858L37.3431 13.9289C36.9526 13.5384 36.3195 13.5384 35.9289 13.9289C35.5384 14.3195 35.5384 14.9526 35.9289 15.3431L42.2929 21.7071ZM42 1L42 21L44 21L44 1L42 1Z" fill="#333333"/>
+                    </svg>
+                </h5>
+                <h5>
+                    My Liquidity
+                    <svg width="51" height="22" viewBox="0 0 51 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.70711 0.292892C8.31658 -0.0976314 7.68342 -0.0976315 7.29289 0.292892L0.928933 6.65685C0.538408 7.04738 0.538408 7.68054 0.928933 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292892ZM9 21L9 1L7 1L7 21L9 21Z" fill="#333333"/>
+                        <path d="M42.2929 21.7071C42.6834 22.0976 43.3166 22.0976 43.7071 21.7071L50.0711 15.3431C50.4616 14.9526 50.4616 14.3195 50.0711 13.9289C49.6805 13.5384 49.0474 13.5384 48.6569 13.9289L43 19.5858L37.3431 13.9289C36.9526 13.5384 36.3195 13.5384 35.9289 13.9289C35.5384 14.3195 35.5384 14.9526 35.9289 15.3431L42.2929 21.7071ZM42 1L42 21L44 21L44 1L42 1Z" fill="#EF3725"/>
+                    </svg>
+                </h5>
+                <h5>
                     APY
                     <svg width="51" height="22" viewBox="0 0 51 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.70711 0.292892C8.31658 -0.0976314 7.68342 -0.0976315 7.29289 0.292892L0.928933 6.65685C0.538408 7.04738 0.538408 7.68054 0.928933 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292892ZM9 21L9 1L7 1L7 21L9 21Z" fill="#40BA93"/>
