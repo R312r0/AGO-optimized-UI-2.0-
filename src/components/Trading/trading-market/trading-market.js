@@ -4,9 +4,11 @@ import swap_trading from './../../../assets/icons/swap-trading.svg';
 import swap_trading_dark from './../../../assets/icons/swap-trading-dark.svg';
 import { useSystemContext } from '../../../systemProvider';
 
-const TradingMarket = () => {
+const TradingMarket = ({pool}) => {
 
     const {theme} = useSystemContext();
+
+    console.log(pool);
 
     return (
         <div className='trading-wrapper-exchange trading-window-box'> 

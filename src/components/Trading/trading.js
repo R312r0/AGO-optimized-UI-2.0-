@@ -96,6 +96,14 @@ const TradingBar = styled.div`
     ul {
       height: 200px;
       overflow-y: scroll;
+      li {
+        display: grid;
+        grid-template-columns: 0.5fr 0.5fr 2fr 0.25fr 0.5fr 2fr;
+        transition: 0.3s;
+        &:hover {
+            background: #40BA93;
+        }
+      }
     }
     
   }
@@ -132,12 +140,12 @@ export const Trading = () => {
     const [expandLiqPoolsList, setExpandLiqPoolsList] = useState(false);
     const [chartDimensions, setChartDimensions] = useState(null);
     const [tradingTab, setTradingTab] = useState(SIMPLE_SWAP)
-    const [choosedPool, setChoosedPool] = useState(null);
+    const [chosedPool, setChosedPool] = useState(null);
 
     useEffect(() => {
 
         if (!loading && data) {
-            setChoosedPool(data.pairs[0]);
+            setChosedPool(data.pairs[0]);
         }
 
     }, [data, loading])
@@ -156,32 +164,33 @@ export const Trading = () => {
                 <h1>Trading</h1>
                 <TradingBar listExapned={expandLiqPoolsList}>
                     <main onClick={() => setExpandLiqPoolsList(!expandLiqPoolsList)}>
-                        <TokenIcon iconName={choosedPool?.token0.symbol}/>
-                        <TokenIcon iconName={choosedPool?.token1.symbol}/>
-                        <p> {choosedPool?.token0.symbol}-{choosedPool?.token1.symbol}</p>
-                        <svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white"/></svg>
-                        <span>Liquidity:</span>
-                        <b>${formattedNum(choosedPool?.reserveUSD)}</b>
-                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 0.901211L5 6L0 0.901211L0.88375 0L5 4.19758L9.11625 0" fill="white"/>
-                        </svg>
-
                         {expandLiqPoolsList ?
                             <ul>
                                 {data?.pairs.map((item, _ind) => {
                                     return (
-                                        <li key={_ind+"_pool"+item.id}>
+                                        <li onClick={() => setChosedPool(item)} key={_ind+"_pool"+item.id}>
                                             <TokenIcon iconName={item.token0.symbol}/>
                                             <TokenIcon iconName={item.token1.symbol}/>
                                             <p> {item.token0.symbol}-{item.token1.symbol}</p>
                                             <svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white"/></svg>
-                                            <span>Liquidity:</span>
-                                            <b>${formattedNum(item.reserveUSD)}</b>
+                                            <span>Liquidity: <b>${formattedNum(item.reserveUSD)}</b></span>
+
                                         </li>
                                     )
                                 })}
                             </ul>
-                            :null
+                            :
+                            <>
+                                <TokenIcon iconName={chosedPool?.token0.symbol}/>
+                                <TokenIcon iconName={chosedPool?.token1.symbol}/>
+                                <p> {chosedPool?.token0.symbol}-{chosedPool?.token1.symbol}</p>
+                                <svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white"/></svg>
+                                <span>Liquidity:</span>
+                                <b>${formattedNum(chosedPool?.reserveUSD)}</b>
+                                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 0.901211L5 6L0 0.901211L0.88375 0L5 4.19758L9.11625 0" fill="white"/>
+                                </svg>
+                            </>
                         }
                     </main>
 
@@ -205,7 +214,7 @@ export const Trading = () => {
                         </div>
                     </div>
                 </div>
-                {tradingTab === SIMPLE_SWAP ?  <TradingMarket/> : <TradingFilters/>}
+                {tradingTab === SIMPLE_SWAP ?  <TradingMarket pool={chosedPool}/> : <TradingFilters/>}
             </div>
         </>
     )
