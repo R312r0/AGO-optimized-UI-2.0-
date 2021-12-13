@@ -118,3 +118,29 @@ export const LIQUIDITY_POOLS = gql(`
         }
     }
 `)
+
+export const LIQ_POOLS_TRADING = gql(`
+
+    query tradingPairs {
+        pairs(first: 100, orderBy: reserveUSD, orderDirection: desc) {
+            id
+            reserveUSD
+            token0 {
+                id
+                name
+                symbol
+                priceUSD
+            }
+            token1 {
+                id
+                name
+                symbol
+                priceUSD
+            }
+            token0Price
+            token1Price
+        }
+        
+    }
+
+`)
