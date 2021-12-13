@@ -15,16 +15,32 @@ import AccountsSynthetic from './accounts-synthetic/accounts-synthetic';
 import AccountsTrading from './accounts-trading/accounts-trading';
 import AccountsStaking from './accounts-staking/accounts-staking';
 import AccountsPools from './accounts-pools/accounts-pools';
+import {useQuery} from "@apollo/client";
+import {TOKENS_FOR_USER_BALANCES} from "../../api/client";
+
+const tokenColors = ["#40BA93", "#DB1BB1", "#DB1BB1", "#EAD200", "#DB1B60", "#9018EE", "#1BB8DB", "#EA8C00", "#DB1B60"]
+
 
 export const Accounts = () => {
     const {theme, userProtfolio} = useSystemContext();
+    const {data, loading} = useQuery(TOKENS_FOR_USER_BALANCES);
     const [sumUserBalances, setSumUserBalances] = useState(0.00);
+    const [balances, setBalances] = useState(null);
     const {account} = useWeb3React();
 
     useEffect(() => {
 
-        if (userProtfolio) {
-            setSumUserBalances(formattedNum(userProtfolio.reduce((a, {userUsdBalance}) => a + userUsdBalance, 0)))
+        if (userProtfolio && data && !loading) {
+            const res = userProtfolio.map((item) => {
+                const name = item.name;
+                const nativeBalance = item.userNativeBalance;
+                const usdBalance = data.tokens.find(tok => tok.symbol === name);
+
+                return {name, nativeBalance, usdBalance: usdBalance.priceUSD * nativeBalance}
+            });
+
+            setBalances(res);
+            setSumUserBalances(res.reduce((a, {usdBalance}) => a + usdBalance, 0))
         }
     
     }, [userProtfolio])
@@ -83,7 +99,7 @@ export const Accounts = () => {
     return (
         <>
         {
-            account ? 
+            account && userProtfolio && data ?
             <div className={`accounts-wrapper ${theme === "light" ? " accounts-wrapper-light" : ""}`}> 
                 {/* <AccHistory isOpened={historyOpened} setIsOpened={setHistoryOpened}/> */}
         
@@ -94,13 +110,13 @@ export const Accounts = () => {
                             <div className='accounts-wrapper-portoflio-assets__assets-chart-info'> 
                                 
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
-                                    {/* <PortfolioPieChart assetsList={userProtfolio}/> */}
+                                    {/* <PortfolioPieChart assetsList={userProtfolio}/> */}>
                                     <img className='round-chart-img' src={roundChart} />
                                     <ul> 
-                                        {userProtfolio.map((item, _ind) => {
-                                            return <li key={item.value}> 
+                                        {balances && balances.map((item, _ind) => {
+                                            return <li key={item.name}>
                                                 <span><TokenIcon iconName={item.name}/> {item.name} </span>
-                                                <b className={_ind === 4 ? "negative-change" : ""}> {formattedNum(item.userNativeBalance)} </b>
+                                                <b className={_ind === 4 ? "negative-change" : ""}> {formattedNum(item.nativeBalance)} </b>
                                             </li> 
                                         })}
                                     </ul>
@@ -108,46 +124,24 @@ export const Accounts = () => {
 
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info__bars'>
                                     <ul>
-                                        <li>
-                                            <p>68%</p>
-                                            <span style={{ height: '3.646vw', backgroundColor: '#40BA93' }}></span>
-                                            <p>AGO</p>
-                                        </li>
-                                        <li>
-                                            <p>5%</p>
-                                            <span style={{ height: '2.604vw', backgroundColor: '#DB1BB1' }}></span>
-                                            <p>AGOUSD</p>
-                                        </li>
-                                        <li>
-                                            <p>4%</p>
-                                            <span style={{ height: '2.135vw', backgroundColor: '#EAD200' }}></span>
-                                            <p>AGOBTC</p>
-                                        </li>
-                                        <li>
-                                            <p>4%</p>
-                                            <span style={{ height: '2.135vw', backgroundColor: '#DB1B60' }}></span>
-                                            <p>CNUSD</p>
-                                        </li>
-                                        <li>
-                                            <p>3%</p>
-                                            <span style={{ height: '2.135vw', backgroundColor: '#9018EE' }}></span>
-                                            <p>CNUSD</p>
-                                        </li>
-                                        <li>
-                                            <p>3%</p>
-                                            <span style={{ height: '2.135vw', backgroundColor: '#1BB8DB' }}></span>
-                                            <p>CNUSD</p>
-                                        </li>
-                                        <li>
-                                            <p>2%</p>
-                                            <span style={{ height: '1.615vw', backgroundColor: '#EA8C00' }}></span>
-                                            <p>CNUSD</p>
-                                        </li>
-                                        <li>
-                                            <p>0%</p>
-                                            <span style={{ height: '1.146vw', backgroundColor: '#DB1B60' }}></span>
-                                            <p>CNUSD</p>
-                                        </li>
+                                        {balances && balances.map((item, _ind) => {
+
+                                            let percentDiff;
+                                            if (item.usdBalance === 0) {
+                                                percentDiff = 0;
+                                            }
+                                            else {
+                                                percentDiff = ((item.usdBalance / sumUserBalances) * 100)
+                                            }
+
+                                            return (
+                                                <li>
+                                                    <p>{percentDiff.toFixed(2)}%</p>
+                                                    <span style={{ height: `${(percentDiff * 0.1) + 1}vh`, backgroundColor: tokenColors[_ind] }}/>
+                                                    <p>{item.name}</p>
+                                                </li>
+                                            )
+                                        })}
                                     </ul>
 
                                     <button onClick={() => setHistoryOpened(true)}>
