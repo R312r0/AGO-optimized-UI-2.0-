@@ -127,12 +127,14 @@ export const LIQ_POOLS_TRADING = gql(`
             reserveUSD
             token0 {
                 id
+                decimals
                 name
                 symbol
                 priceUSD
             }
             token1 {
                 id
+                decimals
                 name
                 symbol
                 priceUSD
