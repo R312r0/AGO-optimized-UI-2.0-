@@ -37,6 +37,7 @@ const Content = styled.div`
   flex-direction: column;
 
   padding-bottom: 100px;
+  position: relative;
   overflow-y: auto;
   
   @media only screen and (max-width: 750px) {

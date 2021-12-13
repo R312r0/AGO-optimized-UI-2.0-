@@ -20,128 +20,304 @@
     }
 
     .acc-hisotry {
-        z-index: 9999999;
-        position: absolute;
-        right: 0;
-        width: 0%;
+        width: 0;
         height: 100%;
-        background-color: #202020;
-        display: grid;
+
+        display: flex;
+        overflow-y: auto;
+
+        z-index: 9999999;
+
+        position: absolute;
+        top: 0;
+        right: 0;
         opacity: 0;
-        visibility: hidden;
-        grid-template-rows: 5% 15% 80%;
+
+        background-color: #202020;
+
         padding-right: 2.5%;
         padding-left: 2.5%;
         box-sizing: border-box;
-        transition: 1s all;
 
-        a {
-            color: #4F4F4F;
-            text-decoration: none;
-            i {
-                color: #40BA93;
+        transition: 1s ease;
+
+        &::-webkit-scrollbar {
+            display: none;
+        } 
+
+        main {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            opacity: 0;
+        }
+
+        .acc-hisotry-heading {
+            h1 {
+                margin-top: 0.677vw;
+                font-size: 1.875vw;
+                color: white;
+            }
+
+            a {
+                display: flex;
+                align-items: center;
+    
+                color: #4F4F4F;
+                text-decoration: none;
+                
+                font-size: 0.729vw;
+            
+                i {
+                    font-size: 0.521vw;
+                    color: #40BA93;
+                    margin-right: 0.417vw;
+                }
             }
         }
 
         .acc-hisotry-header {
-            display: grid;
-            grid-template-columns: 20% 60% 20%;
-            h1 {
-                color: white;
-                align-self: flex-start;
-            }
+            width: 100%;
+            display: flex;
+            align-items: center;
+
             input {
-                justify-self: center;
-                align-self: flex-start;
-                width: clamp(355px,100%,655px);
-                height: clamp(40px, 100%, 50px);
+                width: 34.115vw;
+                height: 2.604vw;
                 background-color: transparent;
-                border-radius: 25px;
-                border: 1px solid #40BA93;
-                padding-left: 25px;
-                padding-right: 5%;
-                font-size: 18px;
+                margin-left: auto;
+
+                border-radius: 1.302vw;
+                border: 0.052vw solid #40BA93;
+
+                padding-left: 1.354vw;
+                padding-right: 1.354vw;
+                font-size: 0.938vw;
+
                 background-image: url('../../assets/icons/search-input.svg');
                 background-repeat: no-repeat;
-                background-position: 95% center;
+                background-position: 97% center;
                 box-sizing: border-box;
+
                 outline: 0;
+
+                &:focus {
+                    &::placeholder {
+                        opacity: 0;
+                    }
+                }
+
                 &::placeholder {
                     color: #40524C;
                 }
+
                 color: white;
+
                 &:focus {
                     outline: none;
                 }
             }
-            button {
-                background-color: transparent;
-                height: 42px;
-                width: clamp(131px, 100%, 171px);
-                border: 1px solid #4F4F4F;
-                box-sizing: border-box;
-                border-radius: 25px;
-                color: white;
-                justify-self: flex-end;
-                cursor: pointer;
-                font-size: 14px;
-                &:hover {
-                    transition: 0.3s;
-                    background-color: #40BA93;
-                    border: 1px solid #40BA93;
-                }
-            }
         } 
+
         .acc-hisotry-body {
-            padding-right: 10%;
+            margin-top: 2vw;
+
             ul {
+                margin-right: 10.417vw;
+
+                data {
+                    display: block;
+                    padding: 0.833vw 0 0.677vw;
+
+                    font-size: 0.833vw;
+                    font-weight: 500;
+                }
+
+                .dark {
+                    color: #4F4F4F;
+                }
+
+                .light {
+                    color: white;
+                }
+
                 li {
-                    h5 {
-                        color: white;
-                        font-weight: 500;
-                    }
-                    span {
-                        display: grid;
-                        grid-template-columns: 20% 80%;
-                        p {
-                            white-space: nowrap;
-                            justify-self: flex-start;
+                    padding: 0.833vw 0;
+
+                    display: grid; 
+                    grid-template-columns: 1fr 1.5fr 0.4fr;
+                    color: white;
+                    
+                    border-bottom: 0.052vw solid #333333;
+
+                    .action-container {
+                        display: flex;
+                        position: relative;
+
+                        .text {
+                            display: flex;
+                            flex-direction: column;
+
+                            margin-left: 3vw;
+                        }
+
+                        .action-img {
+                            width: 1.979vw;
+                            height: 1.979vw;
+
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            background-color: #333;
+                            border-radius: 0.521vw;
+
+                            position: absolute;
+                            left: -0.781vw;
+
+                            img {
+                                width: 0.625vw;
+                            }
                         }
                     }
-                    display: grid;
-                    grid-template-columns: 50px 400px 50px 400px;
-                    align-items: center;
-                    color: white;
-                    min-height: 50px;
-                    border-bottom: 1px solid #333333;
+
+                    .action-currency {
+                        display: flex;
+                        align-items: center;
+                        
+                        margin-right: 1.250vw;
+
+                        img {
+                            width: 1.354vw;
+                            margin-right: 0.938vw;
+                        }
+
+                        .arrow {
+                            margin: 0 2.604vw 0 1.25vw;
+
+                            width: 0.677vw;
+                            height: 1.094vw;
+                        }
+
+                        .text {
+                            display: flex;
+                            flex-direction: column;
+
+                            p {
+                                font-size: 0.729vw;
+                                font-weight: 500;
+                            }
+
+                            b {
+                                font-weight: 300;
+                                font-size: 0.625vw;
+                            }
+                        }
+                    }
+
+                    .action-transaction-data {
+                        display: flex;
+                        flex-direction: column;
+                        
+                        .account-key {
+                            margin-top: 0.104vw;
+
+                            display: flex;
+                            align-items: center;
+
+                            span {
+                                width: 0.781vw;
+                                height: 0.781vw;
+
+                                margin: 0 0.625vw 0.156vw 0;
+
+                                background-color: #40BA93;
+                                border-radius: 50%;
+                            }
+                        }
+                    }
+
+                    p {
+                        font-size: 0.729vw;
+                        font-weight: 500;
+                    }
+
+                    b {
+                        font-weight: 300;
+                        font-size: 0.625vw;
+                    }
+                }
+            }
+        }
+
+        .acc-hisotry-buttons {
+            display: flex;
+            margin-left: 7.813vw;
+
+            button {
+                display: flex;
+                align-items: center;
+
+                padding: 0.677vw 0.990vw;
+                white-space: nowrap;
+
+                font-size: 0.729vw;
+
+                background-color: transparent;
+                border: 0.052vw solid #4F4F4F;
+                border-radius: 1.302vw;
+                color: white;
+
+                cursor: pointer;
+
+                &:first-child {
+                    color: #40BA93;
+                    margin-right: 1.25vw;
+                }
+
+                img {
+                    width: 0.625vw;
+                    height: 0.833vw;
+
+                    margin-right: 0.521vw;
+                }
+
+                &:hover {
+                    transition: .3s;
+                    border: 0.052vw solid #40BA93;
                 }
             }
         }
     }
-    .acc-history-opened {
-        animation: historyMount 1s;
-        width: 100%;
-        opacity: 1;
-        visibility: visible;
-        
-    }
 
-    @keyframes historyMount {
-        0% {
-            width: 0%;
-            opacity: 0;
-            visibility: hidden;
-        }
-        10% {
-            visibility: visible;
-        }
-        20% {
+    
+    .acc-history-opened {
+        width: 100%;
+        margin-bottom: auto;
+        opacity: 1;
+       
+        main {
             opacity: 1;
         }
-        100% {
-            width: 100%;
-        }
     }
+
+    // @keyframes historyMount {
+    //     0% {
+    //         width: 0%;
+    //         opacity: 0;
+    //         visibility: hidden;
+    //     }
+    //     10% {
+    //         visibility: visible;
+    //     }
+    //     20% {
+    //         opacity: 1;
+    //     }
+    //     100% {
+    //         width: 100%;
+    //     }
+    // }
 
     @keyframes historyDestroy {
         0% {
