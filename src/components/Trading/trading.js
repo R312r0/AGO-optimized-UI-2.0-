@@ -14,6 +14,8 @@ import {LIQ_POOLS_TRADING} from "../../api/client";
 import {formattedNum} from "../../utils/helpers";
 
 const ContentHeader = styled.div`
+  width: 100%;
+
   display: flex;
   align-items: center;
 
@@ -23,37 +25,37 @@ const ContentHeader = styled.div`
     font-weight: 500;
     font-size: 1.8vw;
     color: white;
-
-    @media screen only and (max-width: 750px) {
-    padding-left: 6%;
-    font-size: 2.4vw;
-  }
   }
 `
 
 const TradingBar = styled.div`
+  width: 100%;
+
   position: relative;
   display: flex;
   color: white;
   margin-left: 4.583vw;
 
   .buttons {
+    width: fit-content;
     display: flex;
     align-items: center;
 
-    margin-left: 24vw;
+    margin: 0 8.5vw 0 auto;
   }
 
   main {
     position: ${props => props.listExapned ? "absolute" : "relative"};
+    padding: ${props => props.listExapned ? "0.8vw 1.25vw" : "0.417vw 1.25vw"};
+
     display: flex;
     align-items: center;
-    padding: 0.417vw 1.25vw;
     z-index: 99999999;
+    cursor: pointer;
     
     border: 0.052vw solid #4F4F4F;
     border-radius: 1.302vw;
-    background: linear-gradient(94.62deg, rgba(150, 17, 255, 0.4) 0%, rgba(61, 27, 87, 0.4) 116.74%);
+    background: linear-gradient(94.62deg, rgba(150, 17, 255, 0.4) 0%, rgba(61, 27, 87, 0.4) 116.74%), #212121;
 
     img {
       &:not(:first-child) {
@@ -71,7 +73,7 @@ const TradingBar = styled.div`
     }
 
     svg {
-      margin: 0 0.625vw;
+      margin: ${props => props.listExapned ? "0 auto" : "0 0.625vw"};
       width: 0.052vw;
       height: 100%;
 
@@ -85,27 +87,44 @@ const TradingBar = styled.div`
       font-weight: 400;
       font-size: 0.938vw;
       color: #828282;
-      margin-right: 0.417vw;
     }
 
     b {
+      margin-right: ${props => props.listExapned ? "0" : "1.25vw"};
+      margin-left: 0.417vw;
+      
       font-size: 0.938vw;
       font-weight: 500;
-      margin-right: 1.25vw;
+
+      color: white;
     }
-    ul {
-      height: 200px;
+
+    .expanded-liquidity-list {
+      height: fit-content;
+      margin-bottom: 0;
       overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
       li {
         display: grid;
-        grid-template-columns: 0.5fr 0.5fr 2fr 0.25fr 0.5fr 2fr;
+        grid-template-columns: 1fr 3.125vw 0.8fr;
+        padding: 0.5vw 1vw;
+        
+        border-radius: 1vw;
         transition: 0.3s;
+
+        .data-wrapper {
+          display: flex;
+        }
+
         &:hover {
-            background: #40BA93;
+          background: rgba(0, 0, 0, 0.3);
         }
       }
     }
-    
   }
 `
 
@@ -118,6 +137,10 @@ const TradingTabButton = styled.button`
   border-radius: 25px;
   background: ${props => props.active ? "#40BA93" : "transparent"};
   transition: 0.3s;
+
+  &:first-child {
+    margin-right: 0.4vw;
+  }
 `
 
 const TRADING_TABS = {
@@ -165,16 +188,17 @@ export const Trading = () => {
                 <TradingBar listExapned={expandLiqPoolsList}>
                     <main onClick={() => setExpandLiqPoolsList(!expandLiqPoolsList)}>
                         {expandLiqPoolsList ?
-                            <ul>
+                            <ul className='expanded-liquidity-list'>
                                 {data?.pairs.map((item, _ind) => {
                                     return (
                                         <li onClick={() => setChosedPool(item)} key={_ind+"_pool"+item.id}>
+                                          <div className='data-wrapper'>
                                             <TokenIcon iconName={item.token0.symbol}/>
                                             <TokenIcon iconName={item.token1.symbol}/>
                                             <p> {item.token0.symbol}-{item.token1.symbol}</p>
-                                            <svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white"/></svg>
-                                            <span>Liquidity: <b>${formattedNum(item.reserveUSD)}</b></span>
-
+                                          </div>
+                                          <svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white"/></svg>
+                                          <span>Liquidity: <b>${formattedNum(item.reserveUSD)}</b></span>
                                         </li>
                                     )
                                 })}

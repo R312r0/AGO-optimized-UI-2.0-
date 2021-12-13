@@ -344,6 +344,7 @@ export const TokenPricesCharts = () => {
                           <h3> {item.symbol} </h3>
                           <h1> ${(+item.priceUSD).toFixed(2)} </h1>
                           <span> {Arrow} { change24h === Infinity ? 0 : change24h}% <span>(24h)</span> </span>
+                          <img src={demoChart} className='demo-chart' />
                         </SinglePriceBlock>
                         <div className="price-block-chart">
                             <div className='chart-wrapper'>
