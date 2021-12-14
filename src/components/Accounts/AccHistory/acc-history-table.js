@@ -275,6 +275,346 @@ export const AccHistoryTable = () => {
                     </div>
                 </div>
             </li>
+
+            
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>Argano</p>
+                        {/*  01:04 AM  */}
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>MATIC</p>
+                        <b>$16.05</b> 
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>Argano</p>
+                        {/*  01:04 AM  */}
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+            
+            <data className='light'>October 15, 2020</data>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>Argano</p>
+                        {/*  01:04 AM  */}
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>MATIC</p>
+                        <b>$16.05</b> 
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>Argano</p>
+                        {/*  01:04 AM  */}
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>Argano</p>
+                        {/*  01:04 AM  */}
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>MATIC</p>
+                        <b>$16.05</b> 
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>Argano</p>
+                        {/*  01:04 AM  */}
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>Argano</p>
+                        {/*  01:04 AM  */}
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>MATIC</p>
+                        <b>$16.05</b> 
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div className='action-container'>
+                    <span className='action-img'>
+                        <img src={lockIcon} />
+                    </span>
+                    <div className='text'>
+                        <p>Approval</p>
+                        <b>01:05 PM</b>
+                    </div>
+                </div>
+
+                <div className='action-currency'>
+                    <img src={agoLogo} />
+                    <div className='text'>
+                        <p>Argano</p>
+                        {/*  01:04 AM  */}
+                    </div>
+                </div>
+
+                <div className='action-transaction-data'>
+                    <p>Aplication</p>
+                    <div className='account-key'>
+                        <span></span>
+                        <b>0x007a...f248</b>
+                    </div>
+                </div>
+            </li>
             
         </ul>
     )

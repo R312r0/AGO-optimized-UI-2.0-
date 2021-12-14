@@ -27,9 +27,10 @@
         overflow-y: auto;
 
         z-index: 9999999;
+        margin-left: 5vw;
 
-        position: absolute;
-        top: 0;
+        position: fixed;
+        top: 5vw;
         right: 0;
         opacity: 0;
 
@@ -82,40 +83,47 @@
             display: flex;
             align-items: center;
 
-            input {
+            .search__input {
                 width: 34.115vw;
                 height: 2.604vw;
                 background-color: transparent;
+
+                display: flex;
+                align-items: center;
+
                 margin-left: auto;
+                padding-left: 1.354vw;
+                padding-right: 1.354vw;
 
                 border-radius: 1.302vw;
                 border: 0.052vw solid #40BA93;
 
-                padding-left: 1.354vw;
-                padding-right: 1.354vw;
-                font-size: 0.938vw;
-
-                background-image: url('../../assets/icons/search-input.svg');
-                background-repeat: no-repeat;
-                background-position: 97% center;
-                box-sizing: border-box;
-
-                outline: 0;
-
-                &:focus {
+                input {
+                    font-size: 0.938vw;
+    
+                    width: 100%;
+                    outline: 0;
+    
+                    &:focus {
+                        &::placeholder {
+                            opacity: 0;
+                        }
+                    }
+    
                     &::placeholder {
-                        opacity: 0;
+                        color: #40524C;
+                    }
+    
+                    color: white;
+    
+                    &:focus {
+                        outline: none;
                     }
                 }
 
-                &::placeholder {
-                    color: #40524C;
-                }
-
-                color: white;
-
-                &:focus {
-                    outline: none;
+                svg {
+                    width: 0.938vw;
+                    height: 0.938vw;
                 }
             }
         } 
@@ -293,7 +301,7 @@
 
     
     .acc-history-opened {
-        width: 100%;
+        width: calc(100% - 10vw);
         margin-bottom: auto;
         opacity: 1;
        
@@ -301,23 +309,6 @@
             opacity: 1;
         }
     }
-
-    // @keyframes historyMount {
-    //     0% {
-    //         width: 0%;
-    //         opacity: 0;
-    //         visibility: hidden;
-    //     }
-    //     10% {
-    //         visibility: visible;
-    //     }
-    //     20% {
-    //         opacity: 1;
-    //     }
-    //     100% {
-    //         width: 100%;
-    //     }
-    // }
 
     @keyframes historyDestroy {
         0% {
