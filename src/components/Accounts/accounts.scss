@@ -27,9 +27,10 @@
         overflow-y: auto;
 
         z-index: 9999999;
+        margin-left: 5vw;
 
-        position: absolute;
-        top: 0;
+        position: fixed;
+        top: 5vw;
         right: 0;
         opacity: 0;
 
@@ -43,7 +44,7 @@
 
         &::-webkit-scrollbar {
             display: none;
-        } 
+        }
 
         main {
             width: 100%;
@@ -63,12 +64,12 @@
             a {
                 display: flex;
                 align-items: center;
-    
+
                 color: #4F4F4F;
                 text-decoration: none;
-                
+
                 font-size: 0.729vw;
-            
+
                 i {
                     font-size: 0.521vw;
                     color: #40BA93;
@@ -82,43 +83,50 @@
             display: flex;
             align-items: center;
 
-            input {
+            .search__input {
                 width: 34.115vw;
                 height: 2.604vw;
                 background-color: transparent;
+
+                display: flex;
+                align-items: center;
+
                 margin-left: auto;
+                padding-left: 1.354vw;
+                padding-right: 1.354vw;
 
                 border-radius: 1.302vw;
                 border: 0.052vw solid #40BA93;
 
-                padding-left: 1.354vw;
-                padding-right: 1.354vw;
-                font-size: 0.938vw;
+                input {
+                    font-size: 0.938vw;
 
-                background-image: url('../../assets/icons/search-input.svg');
-                background-repeat: no-repeat;
-                background-position: 97% center;
-                box-sizing: border-box;
+                    width: 100%;
+                    outline: 0;
 
-                outline: 0;
+                    &:focus {
+                        &::placeholder {
+                            opacity: 0;
+                        }
+                    }
 
-                &:focus {
                     &::placeholder {
-                        opacity: 0;
+                        color: #40524C;
+                    }
+
+                    color: white;
+
+                    &:focus {
+                        outline: none;
                     }
                 }
 
-                &::placeholder {
-                    color: #40524C;
-                }
-
-                color: white;
-
-                &:focus {
-                    outline: none;
+                svg {
+                    width: 0.938vw;
+                    height: 0.938vw;
                 }
             }
-        } 
+        }
 
         .acc-hisotry-body {
             margin-top: 2vw;
@@ -145,10 +153,10 @@
                 li {
                     padding: 0.833vw 0;
 
-                    display: grid; 
+                    display: grid;
                     grid-template-columns: 1fr 1.5fr 0.4fr;
                     color: white;
-                    
+
                     border-bottom: 0.052vw solid #333333;
 
                     .action-container {
@@ -185,7 +193,7 @@
                     .action-currency {
                         display: flex;
                         align-items: center;
-                        
+
                         margin-right: 1.250vw;
 
                         img {
@@ -219,7 +227,7 @@
                     .action-transaction-data {
                         display: flex;
                         flex-direction: column;
-                        
+
                         .account-key {
                             margin-top: 0.104vw;
 
@@ -291,33 +299,16 @@
         }
     }
 
-    
+
     .acc-history-opened {
-        width: 100%;
+        width: calc(100% - 10vw);
         margin-bottom: auto;
         opacity: 1;
-       
+
         main {
             opacity: 1;
         }
     }
-
-    // @keyframes historyMount {
-    //     0% {
-    //         width: 0%;
-    //         opacity: 0;
-    //         visibility: hidden;
-    //     }
-    //     10% {
-    //         visibility: visible;
-    //     }
-    //     20% {
-    //         opacity: 1;
-    //     }
-    //     100% {
-    //         width: 100%;
-    //     }
-    // }
 
     @keyframes historyDestroy {
         0% {
@@ -428,11 +419,8 @@
         flex-direction: column;
 
         &__assets-chart-info {
-            height: 100%;
-
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
 
             .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list {
                 display: flex;
@@ -873,16 +861,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr 2fr;
     width: fit-content;
-    height: 3.125vw;
-    border-radius: 0.833vw;
+    height: 60px;
+    border-radius: 16px;
     background-color: #171717;
     color: white;
     place-items: center;
-
     img {
-        width: 1.302vw;
-        height: 1.302vw;
+        width: 25px;
+        height: 25px;
     }
-
-    font-size: 0.938vw;
+    font-size: 18px;
 }   
