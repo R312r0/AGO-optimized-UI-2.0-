@@ -28,7 +28,6 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
     }, [account])
 
     const handleInput0 = (value) => {
-
         setInput0(value);
         const priceForEquality = value * token0.price;
         const token1Amount = priceForEquality / token1.price;
@@ -156,7 +155,6 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
         <>
         <div className='provide-liquidity-block'>
 
-
             <div className='provide-liquidity-block__item'>
                 <div className='provide-liquidity-block__item__input-wrapper'> 
                     <p>{token0.symbol}</p>
@@ -204,10 +202,14 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
             </div>
         </div>
         <div className='provide-liq-wrapper'>
-            <ProvideLiquidityPieChart token1={token0.symbol}
-                                      token2={token1.symbol}/>
-            <button onClick={() => setRemoveLiqModal(true)}> Remove</button>
-            <ProvideButton/>
+            <ProvideLiquidityPieChart 
+            token1={token0.symbol}
+            token2={token1.symbol}
+            />
+            <div className='buttons'>
+                <button onClick={() => setRemoveLiqModal(true)}> Remove</button>
+                <ProvideButton/>
+            </div>
         </div>
         </>
     )

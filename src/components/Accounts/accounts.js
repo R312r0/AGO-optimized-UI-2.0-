@@ -110,7 +110,7 @@ export const Accounts = () => {
                             <div className='accounts-wrapper-portoflio-assets__assets-chart-info'> 
                                 
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
-                                    {/* <PortfolioPieChart assetsList={userProtfolio}/> */}>
+                                    {/* <PortfolioPieChart assetsList={userProtfolio}/> */}
                                     <img className='round-chart-img' src={roundChart} />
                                     <ul> 
                                         {balances && balances.map((item, _ind) => {

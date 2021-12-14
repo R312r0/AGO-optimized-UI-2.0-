@@ -252,8 +252,11 @@
         flex-direction: column;
 
         &__assets-chart-info {
+            height: 100%;
+
             display: flex;
             flex-direction: column;
+            justify-content: space-around;
 
             .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list {
                 display: flex;
@@ -296,7 +299,7 @@
                     
                     li {
                         width: 15.521vw;
-                        padding: 0 1.302vw;
+                        padding: 0.573vw 1.302vw;
 
                         display: flex;
                         align-items: center;
@@ -694,14 +697,16 @@
     display: grid;
     grid-template-columns: 1fr 1fr 2fr;
     width: fit-content;
-    height: 60px;
-    border-radius: 16px;
+    height: 3.125vw;
+    border-radius: 0.833vw;
     background-color: #171717;
     color: white;
     place-items: center;
+
     img {
-        width: 25px;
-        height: 25px;
+        width: 1.302vw;
+        height: 1.302vw;
     }
-    font-size: 18px;
+
+    font-size: 0.938vw;
 }   

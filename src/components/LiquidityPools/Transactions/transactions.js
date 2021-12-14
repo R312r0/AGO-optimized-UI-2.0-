@@ -60,6 +60,13 @@ const TableBody = styled.div`
   row-gap: 0.938vw;
   overflow-y: auto;
 
+  & * {
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+    padding-right: 1vw;
+  }
+
   &::-webkit-scrollbar {
     width: 0.208vw;
 

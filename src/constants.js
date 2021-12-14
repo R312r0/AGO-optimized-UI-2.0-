@@ -3,7 +3,7 @@ import { NetworkConnector } from '@web3-react/network-connector';
 // Dark theme icons.
 import dashboard_black from './assets/icons/nav-links/dark-theme/dashboard-black.svg';
 import mint_redeem_black from './assets/icons/nav-links/dark-theme/mint-redeem-black.svg';
-import foundry_black from './assets/icons/nav-links/active/foundry-active.svg';
+import foundry_black from './assets/icons/nav-links/dark-theme/foundry-active.svg';
 import staking_black from './assets/icons/nav-links/dark-theme/staking-black.svg';
 import liquidity_pools_black from './assets/icons/nav-links/dark-theme/liquidity-pools-black.svg';
 import trading_black from './assets/icons/nav-links/dark-theme/trading-black.svg';

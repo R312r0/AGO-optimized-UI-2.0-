@@ -170,7 +170,7 @@ export const LiquidityPools = () => {
                       <path d="M16.0027 15.0048L22.3384 21.3405L21.3408 22.3381L15.0051 16.0024L16.0027 15.0048Z" fill="#333333"/>
                     </svg>
                   </SearchBar>
-                <button onClick={() => setIsCreatePairModal(true)}> Create Pair </button>
+                <button className='create-btn' onClick={() => setIsCreatePairModal(true)}> Create Pair </button>
             </div>
             <h3 className='luqidity-pools-wrapper-heading'> Earn AGO pools </h3>
             <div className='luqidity-pools-wrapper__list-header'>

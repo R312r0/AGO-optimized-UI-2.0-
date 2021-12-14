@@ -123,6 +123,13 @@ const TableBody = styled.div`
   display: grid;
   grid-template-columns: 20% 11.5% 13% 13% 27% 15%;
 
+  & * {
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+    padding-right: 1vw;
+  }
+
   div {
     font-style: normal;
     font-weight: 300;

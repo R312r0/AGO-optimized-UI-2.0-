@@ -73,7 +73,7 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
                     </div>
                     <div className="control-panel__content">
                         <ExpandedTab/>
-                        {chosenWindow !== PROVIDE_LIQUIDITY ?
+                        {chosenWindow !== TRANSACTIONS && chosenWindow !== PROVIDE_LIQUIDITY ?
 
                             <div className='liq-info'>
                                 <span> <h5>Liquidity </h5> <b> ${liqiuidityUSD} </b> </span>

@@ -29,9 +29,9 @@ export const TokenIcon = ({iconName}) => {
         { name: "WBTC", icon: wbtc },
         { name: "DAI", icon: dai },
         { name: "USDC", icon: usdc },
-
     ]
+    
     const returnedToken = tokens.find(item => item.name === iconName)
 
-    return <img src={returnedToken?.icon ? returnedToken?.icon : unknow} width={40} height={40}/>
+    return <img src={returnedToken?.icon ? returnedToken?.icon : unknow} />
 }

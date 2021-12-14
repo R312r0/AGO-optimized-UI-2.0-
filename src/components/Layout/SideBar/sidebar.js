@@ -32,7 +32,7 @@ const SideBarWrapper = styled.div`
 
 const SocialMediasList = styled.div`
   width: 80%;
-  height: ${props => props.opened ? "27.4vw" : "0"};
+  height: ${props => props.opened ? "calc(100% - 1.042vw)" : "0"};
   padding: 1.2vw 0;
   
   position: absolute;
@@ -53,10 +53,6 @@ const SocialMediasList = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  @media screen and (max-width: 1024px) {
-    height: ${props => props.opened ? "31.8vw" : "0"};
-  }
 
   a {
     display: ${props => props.opened ? "block" : "none"};
