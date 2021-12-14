@@ -101,7 +101,7 @@ export const Accounts = () => {
         {
             account && userProtfolio && data ?
             <div className={`accounts-wrapper ${theme === "light" ? " accounts-wrapper-light" : ""}`}> 
-                {/* <AccHistory isOpened={historyOpened} setIsOpened={setHistoryOpened}/> */}
+                <AccHistory isOpened={historyOpened} setIsOpened={setHistoryOpened}/>
         
                 <div className='accounts-container'>
                     <div className='accounts-container-duo'>
