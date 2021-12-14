@@ -131,6 +131,22 @@ export const TOKENS_TRADING = gql(`
     }
 `)
 
+export const LIQ_POOLS_ACCOUNTS = gql(`
+    query userPools {
+        pairs(first: 100) {
+            id
+            reserveUSD
+            token0 {
+                symbol
+            }
+            token1 {
+                symbol
+            }
+        }
+    }
+
+`)
+
 export const LIQ_POOLS_TRADING = gql(`
 
     query tradingPairs {

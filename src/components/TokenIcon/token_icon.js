@@ -4,7 +4,7 @@ import React from 'react'
 import ago from './svg/AGO.svg'
 import agoUsd from './svg/AGOUSD.svg'
 import agoBtc from './svg/AGOBTC.svg'
-import cnUsd from './svg/CNUSD.svg'
+import cnUsd from './svg/CNUSD.png'
 import cnBtc from './svg/CNBTC.svg'
 
 // Market icons import

@@ -26,6 +26,7 @@ export const Accounts = () => {
     const {data, loading} = useQuery(TOKENS_FOR_USER_BALANCES);
     const [sumUserBalances, setSumUserBalances] = useState(0.00);
     const [balances, setBalances] = useState(null);
+    const [syntheticAssets, setSyntheticAssets] = useState(null);
     const {account} = useWeb3React();
 
     useEffect(() => {
@@ -40,20 +41,13 @@ export const Accounts = () => {
             });
 
             setBalances(res);
+            setSyntheticAssets(res.filter(item => item.name === "AGOUSD" || item.name === "CNUSD" || item.name === "AGOBTC" || item.name === "CNBTC"))
             setSumUserBalances(res.reduce((a, {usdBalance}) => a + usdBalance, 0))
         }
     
     }, [userProtfolio])
  
     const [historyOpened, setHistoryOpened] = useState(false);
-
-    const mockUserLiquidityPools = [
-        {firstToken: "AGO", secondToken: "MATIC", provided: 110, reward: 10},
-        {firstToken: "CNBTC", secondToken: "MATIC", provided: 110, reward: 10},
-        {firstToken: "AGOBTC", secondToken: "WBTC", provided: 110, reward: 10},
-        {firstToken: "AGOUSD", secondToken: "USDT", provided: 110, reward: 10},
-        {firstToken: "CNUSD", secondToken: "MATIC", provided: 110, reward: 10},
-    ]
 
     const CustomToolTip = ({active, payload, label}) => {
 
@@ -154,7 +148,7 @@ export const Accounts = () => {
                     </div>
 
                     <div className='accounts-container-duo'>
-                        <AccountsSynthetic />
+                        <AccountsSynthetic sytheticAssets={syntheticAssets}/>
                         <AccountsTrading />
                     </div>
 
