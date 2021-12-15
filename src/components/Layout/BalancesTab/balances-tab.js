@@ -33,23 +33,15 @@ const BalancesTabWrapper = styled.div`
   font-size: 0.65vw;
   cursor: pointer;
 
-  @media screen and (max-width: 1200px) {
-    height: 3.2vw;
-    font-size: 0.81vw;
-  }
-
   @media screen and (max-width: 1024px) {
     font-size: 0.9vw;
   }
 
   @media screen and (max-width: 750px) {
-    grid-row-start: 2;
-    grid-row-end: 3;
-    grid-column-start: 1;
-    grid-column-end: 4;
+    width: 100%;
+    height: auto;
 
-    margin auto;
-    width: ${props => props.opened ? "70%" : "34%"};
+    margin: 0;
     font-size: 2.5vw;
   }
 
@@ -79,19 +71,6 @@ const BalancesTabWrapper = styled.div`
     line-height: 1;
   }
 
-  .balance {
-    color: #40BA93;
-    @media screen and (max-width: 750px) {
-      font-size: 4vw;
-      margin-top: 10%;
-    }
-  }
-
-  .balance-tab-wrapper__pig {
-    width: 2.083vw;
-    height: 2.083vw;
-  }
-
   .balance-tab-wrapper {
     display: flex;
     align-items: center;
@@ -99,8 +78,37 @@ const BalancesTabWrapper = styled.div`
     
     @media screen and (max-width: 750px) {
       display: grid;
-      grid-template-rows: 1fr 1fr;
-      grid-template-columns: auto auto;
+      grid-template-columns: repeat(2, auto);
+      grid-template-rows: repeat(2, 1fr);
+
+      margin: 0;
+
+      align-items: center;
+    }
+
+    .balance {
+      color: #40BA93;
+  
+      @media screen and (max-width: 750px) {
+        grid-area: 1 / 2 / 2 / 3;
+        
+        margin-left: 1.6vw;
+
+        font-size: 3.733vw;
+        font-weight: 500;
+      }
+    }
+
+    .balance-tab-wrapper__pig {
+      width: 2.083vw;
+      height: 2.083vw;
+
+      grid-area: 1 / 1 / 3 / 2;
+
+      @media screen and (max-width: 750px) {
+        width: 9.067vw;
+        height: 9.067vw;
+      }
     }
 
     p {
@@ -132,8 +140,10 @@ const BalancesTabWrapper = styled.div`
       }
 
       @media screen and (max-width: 750px) {
-        margin-left: 3%;
-        font-size: 3.3vw;
+        grid-area: 2 / 2 / 5 / 3;
+
+        margin: 0 auto 0 1.6vw;
+        font-size: 4vw;
         justify-content: start;
       }
     }

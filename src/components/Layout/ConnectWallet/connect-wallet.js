@@ -19,12 +19,6 @@ const ConnectWallet = styled.div`
     justify-self: flex-end;
     white-space: nowrap;
     font-size: 0.990vw;
-
-    @media screen and (min-width: 500px) and (max-width: 750px) {
-      margin-right: 8px;
-      margin-bottom: 34px;
-      font-size: 17px;
-    }
   }
 
   button {
@@ -46,13 +40,6 @@ const ConnectWallet = styled.div`
 
     cursor: pointer;
 
-    @media screen and (min-width: 500px) and (max-width: 750px) {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 32px;
-      margin-right: 30px;
-    }
-
     img {
       width: 1.302vw;
       height: 1.302vw;
@@ -61,6 +48,29 @@ const ConnectWallet = styled.div`
     &:hover {
       background-color: #40BA93;
       transition: 0.3s all;
+    }
+
+    @media screen and (max-width: 750px) {
+      width: 16.800vw;
+      height: 16.800vw;
+
+      img {
+        width: 8vw;
+        height: 8vw;
+      }
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    display: flex;
+    flex-direction: row-reverse;
+
+    width: fit-content;
+    padding: 3.2vw 5.333vw 0;
+
+    span {
+      font-size: 4.8vw;
+      margin-left: 3.2vw;
     }
   }
 `
