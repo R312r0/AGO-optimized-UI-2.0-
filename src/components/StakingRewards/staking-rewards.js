@@ -36,6 +36,9 @@ export const StakingRewards = () => {
 
     return (
             <div className={`staking-wrapper ${theme === "light" ? " staking-wrapper-light" : ""}`}> 
+
+                <h1 className='main__heading__page'>Staking Rewards</h1>
+
                 <div className='staking-reward-header'>
                     <h3> Select to stake </h3>
                 </div>

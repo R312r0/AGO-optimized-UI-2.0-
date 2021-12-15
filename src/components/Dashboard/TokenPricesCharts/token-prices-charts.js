@@ -27,6 +27,7 @@ const TokenPriceChartWrapper = styled.div`
 
   height: ${props => props.isWindowExpanded ? "28vw" : "10.5vw"};
   padding: 1.823vw 2.084vw;
+  margin-bottom: 3.646vw;
   
   background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
   box-shadow: 0px 0.208vw 0.833vw rgba(0, 0, 0, 0.25);
@@ -38,6 +39,7 @@ const TokenPriceChartWrapper = styled.div`
   @media only screen and (max-width: 1024px){
     height: ${props => props.isWindowExpanded ? "28.5vw" : "11.3vw"};
     padding: 2vw 1.074vw;
+    margin-bottom: 2vw;
   }
   
   .token-heading {

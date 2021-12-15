@@ -51,6 +51,7 @@ export const MintRedeem = () => {
         <>
             {account && mintRedeemInfo ? 
                 <div className={`mint-redeem-wrapper ${theme === "light" ? " mint-redeem-wrapper-light" : ""}`}>
+                <h1 className='main__heading__page'>Minting/Redeeming</h1>
                 <div className='mint-redeem-tx-info'> 
                     <div>
                         <span> {activeTab === "Mint" ? "Minting" : "Redeem"} fee: <b>{activeTab === "Mint" ?  mintRedeemInfo.mintFee : mintRedeemInfo.redeemFee}%</b></span>

@@ -15,37 +15,39 @@ import {TXS_NAME} from "../../constants";
 const DashboardWrapper = styled.div`
   display: grid;
   width: 100%;
+  padding: 1vw 1.771vw 0;
+
   position: relative;
-  grid-template-rows: repeat(3, auto);
-  grid-column-gap: 20px;
-  grid-row-gap: 5%;
+  grid-template-rows: 4vw auto auto auto;
   justify-items: center;
-  padding: 1.5%;
 
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  @media only screen and (max-width: 1024px){
-    grid-row-gap: 2%;
   }
 
   .tvl-volume {
     display: grid;
     width: 100%;
     grid-template-columns: 1fr 1fr;
-    grid-column-gap: 5%;
+    grid-column-gap: 4.167vw;
+
+    margin-bottom: 3.646vw;
     
     @media only screen and (max-width: 1024px){
-      grid-column-gap: 2%;
+      grid-column-gap: 2.5vw;
+      margin-bottom: 2vw;
     }
 
     @media only screen and(max-width: 750px) {
-      grid-column-gap: 2%;
       width: 95%;
       margin-bottom: 15px;
     }
   }
+`
+
+const Heading = styled.div`
+  width: 100%;
+  margin-left: 1.25vw;
 `
 
 export const Dashboard = () => {
@@ -119,6 +121,7 @@ export const Dashboard = () => {
                 <DashboardMobile tvl={projCharts.tvl} volume={projCharts.volume} txs={transactions}/>
                 :
                 <DashboardWrapper>
+                    <Heading className='main__heading__page'>Dashboard</Heading>
                     <TokenPricesCharts/>
                     <div className='tvl-volume'>
                         <TVLChart data={projCharts.tvl}/>

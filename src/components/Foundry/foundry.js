@@ -7,7 +7,7 @@ export const Foundry = () => {
 
     return (
         <div className='foundry'> 
-            <h1 className='foundry__heading'>Foundry</h1>
+            <h1 className='foundry__heading main__heading__page'>Foundry</h1>
 
             <main className='foundry__wrapper'>
                 <div className='foundry__details'>

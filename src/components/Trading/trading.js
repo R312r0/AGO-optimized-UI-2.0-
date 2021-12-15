@@ -184,7 +184,7 @@ export const Trading = () => {
     return (
         <>
             <ContentHeader>
-                <h1>Trading</h1>
+                <h1 className='main__heading__page'>Trading</h1>
                 <TradingBar listExapned={expandLiqPoolsList}>
                     <main onClick={() => setExpandLiqPoolsList(!expandLiqPoolsList)}>
                         {expandLiqPoolsList ?

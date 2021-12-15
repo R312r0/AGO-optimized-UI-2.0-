@@ -162,7 +162,7 @@ export const LiquidityPools = () => {
         <>
         <div className={`luqidity-pools-wrapper ${theme === "light" ? " luqidity-pools-wrapper-light" : ""}`}>
             <div className={'luqidity-pools-wrapper-page-header'}>
-                <h1> Liquidity pools </h1>
+                <h1 className='main__heading__page'> Liquidity pools </h1>
                   <SearchBar>
                     <input onChange={(e) => handleChangePool(e.target.value)} type="text" placeholder="Search pool" />
                     <svg width="23" height="23" viewBox="0 0 23 23">

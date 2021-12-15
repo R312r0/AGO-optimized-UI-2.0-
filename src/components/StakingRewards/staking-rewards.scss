@@ -2,12 +2,11 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-right: 2.604vw;
+  padding: 0 2.604vw;
 
   .staking-reward-header {
     h3 {
       margin-top: 0.260vw;
-      padding-left: 2.5vw;
 
       font-size: 1.25vw;
       font-weight: 300;
@@ -50,16 +49,12 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 0.4fr;
 
-      margin: 2.969vw 2.813vw 0.938vw 6.51vw;
+      margin: 2.969vw 2.813vw 0.938vw 3.906vw;
 
       span {
         font-size: 0.938vw;
         color: #4f4f4f;
       }
-    }
-
-    ul {
-      padding-left: 2.604vw;
     }
 
     &__item {

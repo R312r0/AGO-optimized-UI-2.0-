@@ -278,11 +278,11 @@
         display: flex;
         justify-content: center;
 
-        .mint-window-run-mint {
-          font-size: 1.406vw;
+        button {
+          font-size: 0.938vw;
   
-          width: 17.813vw;
-          height: 3.698vw;
+          width: 13.813vw;
+          height: 3vw;
           margin-top: 2.135vw;
   
           color: white;
@@ -300,6 +300,10 @@
   
             pointer-events: none;
             cursor: none;
+          }
+
+          &:first-child {
+            margin-right: 1.4vw;
           }
 
           &:hover {

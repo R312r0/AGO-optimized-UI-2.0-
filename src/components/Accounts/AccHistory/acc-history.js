@@ -38,8 +38,6 @@ export const AccHistory = ({isOpened, setIsOpened}) => {
     console.log(data);
 
     return (
-        // TO DO: For blocking scrolling when History page is active, the component Content from layout.js should take a style overflow: hidden;
-
         <div className={`acc-hisotry ${isOpened ? " acc-history-opened" : ""} ${theme === "light" ? " acc-history-light" : ""}`}>
             <main>
                 <div className='acc-hisotry-header'>
