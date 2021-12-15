@@ -25,7 +25,7 @@ const AccountsSynthetic = ({sytheticAssets}) => {
                             <span> {item.usdBalance} </span>
                         </li>
                     )
-                })}    
+                })}
             </ul>
 
             <div className='accounts-wrapper-use-staking-pools__pagination'>

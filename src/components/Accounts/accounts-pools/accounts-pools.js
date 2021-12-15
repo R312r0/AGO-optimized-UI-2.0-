@@ -17,6 +17,14 @@ const AccountsPools = () => {
 
     useEffect(() => {
 
+        if (account) {
+            getUserPools();
+        }
+
+    }, [account])
+
+    useEffect(() => {
+
         if (data && !loading) {
             getUserPools()
         }
@@ -79,7 +87,6 @@ const AccountsPools = () => {
     return (
         <div className='accounts-wrapper-use-staking-pools cosmetical-wrapper'> 
             <h1> Pools </h1>
-            
             <div className='accounts-wrapper-use-staking-pools__list-header'> 
                 <span> Pair </span>
                 <span> My Liquidity </span>
@@ -87,7 +94,7 @@ const AccountsPools = () => {
             </div>
 
             <ul>
-                {/* {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item) => {
+                {dataPaginated && dataPaginated[`${currentClickedNumber}`] ? dataPaginated[`${currentClickedNumber}`].map((item) => {
                     return (
                         <li>
                             <div>
@@ -99,13 +106,13 @@ const AccountsPools = () => {
                             <span>${formattedNum(parseFloat(item.userLpUsdBalance).toFixed(2))}</span>
                         </li>
                     )
-                })} */}
+                }) : <h1> No Pools </h1>}
             </ul>
 
             <div className='accounts-wrapper-use-staking-pools__pagination'>
-                {/* {dataPaginated && Object.entries(dataPaginated).map((item) => {
+                {dataPaginated && Object.entries(dataPaginated).map((item) => {
                     return <span onClick={() => setCurrentClickedNumber(item[0])} className={item[0] === currentClickedNumber ? "active" : ""}>{item[0]}</span>
-                })} */}
+                })}
             </div>
 
             <div className='accounts-wrapper-use-staking-pools__buttons'>

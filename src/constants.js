@@ -57,6 +57,7 @@ export const CONTRACT_ADRESESS = {
     // TREASURY_AGOBTC: "0x3DD514281E4aFd5EDaB6261Face66A1bCA207bcE"
 }
 
+
 export const LOADER_INDICATOR = <LoadingOutlined style={{fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%"}}/>
 
 export const LOADER_INDICATOR_LOCAL = <LoadingOutlined style={{fontSize: "3vw", color: "#40BA93", position: "absolute", top: "50%", left: "50%"}}/>

@@ -1,94 +1,130 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import { ResponsiveContainer, LineChart, Line, Tooltip, XAxis} from 'recharts';
 import { useSystemContext } from '../../../systemProvider';
-import { formattedNum } from '../../../utils/helpers';
+import {formatFromDecimal, formattedNum} from '../../../utils/helpers';
+import {useQuery} from "@apollo/client";
+import {PORTFOLIO_PERFOMANCE} from "../../../api/client";
+import {useWeb3React} from "@web3-react/core";
+import {LOADER_INDICATOR_LOCAL} from "../../../constants";
+import {Spin} from "antd";
 
 export const PortfolioPerfomance = () => {
 
-    const {userPortfolio} = useSystemContext();
+    const {account} = useWeb3React();
+    const {data, loading} = useQuery(PORTFOLIO_PERFOMANCE, {
+        variables: {id: account.toLowerCase()}
+    })
+    const [formattedData, setFormattedData] = useState(null);
+    const [portfolioPerfValue, setPortfolioPerfValue] = useState(0);
+    const [readyDataLoading, setReadyDataLoading] = useState(true);
 
-    const mockPortfolioPerfChart = [
-        {time: '01', uv: 100, date: "Jul 1, 2021"},
-        {time: '02', uv: 200, date: "Jul 2, 2021"},
-        {time: '03', uv: 100, date: "Jul 3, 2021"},
-        {time: '04', uv: 250, date: "Jul 4, 2021"},
-        {time: '05', uv: 300, date: "Jul 5, 2021"},
-        {time: '06', uv: 100, date: "Jul 6, 2021"},
-        {time: '07', uv: 200, date: "Jul 7, 2021"},
-        {time: '08', uv: 300, date: "Jul 8, 2021"},
-        {time: '09', uv: 250, date: "Jul 9, 2021"},
-        {time: '10', uv: 500, date: "Jul 10, 2021"},
-        {time: '11', uv: 400, date: "Jul 11, 2021"},
-        {time: '12', uv: 300, date: "Jul 12, 2021"},
-        {time: '13', uv: 500, date: "Jul 13, 2021"},
-        {time: '14', uv: 200, date: "Jul 14, 2021"},
-        {time: '15', uv: 100, date: "Jul 15, 2021"},
-        {time: '16', uv: 150, date: "Jul 16, 2021"},
-    ]
+    useEffect(() => {
 
-    const getPortfolioData = async () => {
+        if (data?.user && !loading) {
+            console.log(data);
+            formatUserPortfolioData(data.user.portfolioPerfomance)
+        }
+        else {
+            setFormattedData([]);
+        }
+
+
+    }, [data, loading])
+
+
+    useEffect(() => {
+
+        if (formattedData) {
+            setReadyDataLoading(false);
+        }
+
+    }, [formattedData])
+
+    const formatUserPortfolioData = (arr) => {
+
+        const newData = arr.map((item) => {
+
+            const {value: {AGOBalance, AGOPrice, USDTBalance, USDTPrice}} = item;
+
+            const AgoToDollar = parseFloat(formatFromDecimal(AGOBalance, 18)) * parseFloat(AGOPrice);
+            const USDTToDollar = parseFloat(formatFromDecimal(USDTBalance, 18)) * parseFloat(USDTPrice);
+
+            const newTime = new Date(item.timestamp * 1000).getMinutes();
+
+            return {value: parseFloat((AgoToDollar + USDTToDollar).toFixed(2)), time: newTime}
+        })
+
+
+        setFormattedData(newData);
+        setPortfolioPerfValue(newData[newData.length - 1].value)
 
     }
 
-    const [portfolioPerfValue, setPortfolioPerfValue] = useState(mockPortfolioPerfChart[mockPortfolioPerfChart.length - 1].uv);
+    useEffect(() => {
+
+        if (formattedData?.length > 0) {
+            setPortfolioPerfValue(formattedData[formattedData.length - 1])
+        }
+
+    }, [formattedData])
 
 
     return (
-        <div className="accounts-wrapper-portoflio-perf cosmetical-wrapper"> 
-        <div className='accounts-wrapper-portoflio-perf__header-control-panel'>
-            <h1> Portfolio perfomance </h1>
-            <div className='accounts-wrapper-portoflio-perf__header-control-panel__time-frame-list'> 
-                <button className='active-frame'> 1H </button>
-                <button> 1D </button>
-                <button> 1W </button>
-                <button> 1M </button>
-                <button> 1Y </button>
-            </div>
+        <div className="accounts-wrapper-portoflio-perf cosmetical-wrapper">
+            {!readyDataLoading && formattedData?.length > 0  ?
+                <>
+                    <div className='accounts-wrapper-portoflio-perf__header-control-panel'>
+                        <h1> Portfolio perfomance </h1>
+                        <div className='accounts-wrapper-portoflio-perf__header-control-panel__time-frame-list'>
+                            <button className='active-frame'> 1H </button>
+                            <button> 1D </button>
+                            <button> 1W </button>
+                            <button> 1M </button>
+                            <button> 1Y </button>
+                        </div>
+                    </div>
+                    <div className='accounts-wrapper-portoflio-perf__price-change'>
+                        <h1> ${formattedNum(portfolioPerfValue)} </h1>
+                    </div>
+                    <div className='accounts-wrapper-portoflio-perf__chart'>
+                    <ResponsiveContainer width={"100%"} height={"90%"} style={{position: "relative"}}>
+                    <LineChart margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 1,
+                        }}
+                        data={formattedData}>
+                    <Line type="monotone"
+                        dataKey="value"
+                        stroke="#40BA93"
+                        strokeWidth={"0.260vw"}
+                        dot={false}
+                        activeDot={true}/>
+                    <Tooltip contentStyle={{ display: 'none' }}
+                        formatter={(value, name, props) => {
+                            if (portfolioPerfValue.value !== props.payload.value) {
+                                setPortfolioPerfValue(props.payload.value)
+                            }
+                        }}/>
+                    <XAxis dataKey="time"
+                        axisLine={false}
+                        tickLine={false}
+                        tick={{ color: "white", fontSize: "1vw" }}/>
+                    </LineChart>
+                    </ResponsiveContainer>
+                    </div>
+                </>
+                :
+                <>
+                    {
+                        formattedData?.length <= 0 ? null : <Spin indicator={LOADER_INDICATOR_LOCAL}/>
+                    }
+                </>
+            }
+            {formattedData?.length <= 0 ?  <h1 style={{position: "absolute", top: "40%", left: "40%"}}> No Data </h1> : null}
         </div>
-        <div className='accounts-wrapper-portoflio-perf__price-change'>
-            <h1> ${formattedNum(portfolioPerfValue)} </h1>
-        </div>
-        <div className='accounts-wrapper-portoflio-perf__chart'>
-        <ResponsiveContainer width={"100%"} height={"90%"}>
-            <LineChart
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 1,
-                }}  
-                data={mockPortfolioPerfChart}
-                >
-                <Line
-                    type="monotone"
-                    dataKey="uv"
-                    stroke="#40BA93"
-                    strokeWidth={"0.260vw"}
-                    dot={false}
-                    activeDot={true}
-                />
-                <Tooltip
-                    contentStyle={{ display: 'none' }}
-                    formatter={(value, name, props) => {
-                        const {payload: {uv}} = props;
-                        if (portfolioPerfValue.value !== uv) {
-                            setPortfolioPerfValue(uv)
-                        }
-                      }}
-                />
-                <XAxis
-                    dataKey="time"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ color: "white", fontSize: "1vw" }}
-                />
-
-            </LineChart>
-        </ResponsiveContainer>
-        </div>
-
-    </div>
     )
 
 }

@@ -147,6 +147,24 @@ export const LIQ_POOLS_ACCOUNTS = gql(`
 
 `)
 
+
+export const PORTFOLIO_PERFOMANCE = gql(`
+    
+    query userPortfolioPerformance($id: String!) {
+        user(id: $id) {
+            portfolioPerfomance(orderBy: timestamp, orderDirection: asc) {
+              value {
+                AGOBalance
+                AGOPrice
+                USDTBalance
+                USDTPrice
+              }
+              timestamp
+            }
+        }
+    }
+`)
+
 export const LIQ_POOLS_TRADING = gql(`
 
     query tradingPairs {
