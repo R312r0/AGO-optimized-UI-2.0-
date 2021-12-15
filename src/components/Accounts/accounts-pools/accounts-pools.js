@@ -17,19 +17,11 @@ const AccountsPools = () => {
 
     useEffect(() => {
 
-        if (account) {
-            getUserPools();
-        }
-
-    }, [account])
-
-    useEffect(() => {
-
-        if (data && !loading) {
+        if (account && data && !loading) {
             getUserPools()
         }
 
-    }, [data, loading])
+    }, [account, data, loading])
 
     const determineNumberOfPages = (arr) => {
         const itemsPerPage = 3;
