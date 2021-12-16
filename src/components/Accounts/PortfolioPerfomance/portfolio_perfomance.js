@@ -45,14 +45,31 @@ export const PortfolioPerfomance = () => {
 
         const newData = arr.map((item) => {
 
-            const {value: {AGOBalance, AGOPrice, USDTBalance, USDTPrice}} = item;
+            const {value: {
+                AGOBalance,
+                AGOPrice,
+                AGOUSDBalance,
+                AGOUSDPrice,
+                CNUSDBalance,
+                CNUSDPrice,
+                WMATICBalance,
+                WMATICPrice,
+                USDTBalance,
+                USDTPrice
+            }} = item;
 
             const AgoToDollar = parseFloat(formatFromDecimal(AGOBalance, 18)) * parseFloat(AGOPrice);
+            const AgoUsdToDollar =  parseFloat(formatFromDecimal(AGOUSDBalance, 18)) * parseFloat(AGOUSDPrice)
+            const CnUsdToDollart =  parseFloat(formatFromDecimal(CNUSDBalance, 18)) * parseFloat(CNUSDPrice)
+            const WmaticToDollart =  parseFloat(formatFromDecimal(WMATICBalance, 18)) * parseFloat(WMATICPrice)
             const USDTToDollar = parseFloat(formatFromDecimal(USDTBalance, 18)) * parseFloat(USDTPrice);
+
 
             const newTime = new Date(item.timestamp * 1000).getMinutes();
 
-            return {value: parseFloat((AgoToDollar + USDTToDollar).toFixed(2)), time: newTime}
+            console.log(new Date(item.timestamp * 1000))
+
+            return {value: parseFloat((AgoToDollar + AgoUsdToDollar + CnUsdToDollart + WmaticToDollart +  USDTToDollar).toFixed(2)), time: newTime}
         })
 
 

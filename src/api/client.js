@@ -156,6 +156,12 @@ export const PORTFOLIO_PERFOMANCE = gql(`
               value {
                 AGOBalance
                 AGOPrice
+                AGOUSDBalance
+                AGOUSDPrice
+                CNUSDBalance
+                CNUSDPrice
+                WMATICBalance
+                WMATICPrice
                 USDTBalance
                 USDTPrice
               }
