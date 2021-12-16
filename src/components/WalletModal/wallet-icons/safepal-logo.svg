@@ -1,14 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 31 35.4" style="enable-background:new 0 0 31 35.4;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#050101;}
-</style>
-<title>形状结合</title>
-<desc>Created with Sketch.</desc>
-<path id="形状结合" class="st0" d="M31,20.5V23c0,7-10.2,11-13.3,12l0,0l-1.1,0.4v-4.3l0.6-0.2c4.9-1.8,9.8-4.9,9.8-7.9l0,0
-	v-2.5H31z M15.5,0l4.2,1.3v4.4l-4.2-1.3l-0.3,0.1v9.9h4.4v4.1h-4.4v16.8l-1.2-0.4c-0.5-0.2-1.4-0.5-2.5-1l0,0l-0.5-0.2V1.3L15.5,0z
-	 M9.8,1.8v4.4L4.1,7.9v6.5h5.7v18.9l-1.3-0.6c-3.9-2-8.5-5.3-8.5-10l0,0v-2.2h4.1v2.2c0,1,0.5,2,1.5,3l0,0v-7.2H0V4.7L9.8,1.8z
-	 M20.9,1.7l10,3.1v13.8h-5.9v6c0,0-1.3,1.7-4.1,3.1c0-0.8,0-12.9,0-20.3L20.9,1.7z M25.1,7.3v7.1h1.8V7.9L25.1,7.3z"/>
+<svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="24.5" cy="24.5" r="24.5" fill="#1F1E20"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M40 27.1102V29.4407C40 35.9661 29.8 39.6949 26.7 40.6271L25.6 41V36.9915L26.2 36.8051C31.1 35.1271 36 32.2373 36 29.4407V27.1102H40ZM24.5 8L28.7 9.21186V13.3136L24.5 12.1017L24.2 12.1949V21.4237H28.6V25.2458H24.2V40.9068L23 40.5339C22.5 40.3475 21.6 40.0678 20.5 39.6017L20 39.4153V9.21186L24.5 8ZM18.8 9.67797V13.7797L13.1 15.3644V21.4237H18.8V39.0424L17.5 38.4831C13.6 36.6186 9 33.5424 9 29.161V27.1102H13.1V29.161C13.1 30.0932 13.6 31.0254 14.6 31.9576V25.2458H9V12.3814L18.8 9.67797ZM29.9 9.58475L39.9 12.4746V25.339H34V30.9322C34 30.9322 32.7 32.5169 29.9 33.822C29.9 33.0763 29.9 21.7966 29.9 14.8983V9.58475ZM34.1 14.8051V21.4237H35.9V15.3644L34.1 14.8051Z" fill="white"/>
 </svg>

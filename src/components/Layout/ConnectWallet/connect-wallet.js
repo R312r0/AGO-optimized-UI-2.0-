@@ -58,6 +58,10 @@ const ConnectWallet = styled.div`
         width: 8vw;
         height: 8vw;
       }
+
+      i {
+        font-size: 6vw;
+      }
     }
   }
 
@@ -85,8 +89,9 @@ export const ConnectWalletButton = () => {
             <span> {account ? formatAddress(account) : "Connect Wallet"}</span>
             <button onClick={() => account ? disconnectWallet() : setIsWalletModal(true)}>
                 {account ?
-                    <img src={theme === "dark" ? disconnect_icon_white : disconnect_icon} alt="disconnect-connect"/> :
-                    <i className="fas fa-plug"/>}
+                  <img src={theme === "dark" ? disconnect_icon_white : disconnect_icon} alt="disconnect-connect"/> :
+                  <i className="fas fa-plug"/>
+                }
             </button>
         </ConnectWallet>
     )

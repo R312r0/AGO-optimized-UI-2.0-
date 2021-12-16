@@ -1,89 +1,129 @@
 .walletModal-bg{
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #000000a8;
   width: 100%;
   height: 100%;
+
+  position: absolute;
   z-index: 1000;
+  top: 0;
+  left: 0;
+
+  background: rgba(0, 0, 0, 0.75);
+
   display: flex;
   justify-content: center;
-
   align-items: center;
+
   cursor: pointer;
+
+  .walletModal-margin {
+    margin-left: 0.625vw;
+
+    @media screen and (max-width: 1024px) {
+      margin-left: 0;
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    align-items: flex-start;
+  }
 }
 
 .walletModal{
-  width: clamp(1000px, 75%, 1400px);
-  height: clamp(375px, 75%, 775px);
+  width: 72.917vw;
+  height: 40.365vw;
 
-  cursor: initial;
+  position: relative;
+  padding: 3.854vw 4.167vw;
+  margin: 2vw;
+  
   background: #292A2D;
-  padding: 3.5% 5%;
-  box-sizing: border-box;
   color: #444;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 50px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 7.5% 7.5% 5% 15% 65%;
+  box-shadow: 0 0.208vw 0.521vw rgba(0, 0, 0, 0.25);
+  border-radius: 2.604vw;
+  cursor: initial;
 
-  .walletModal-close{
+  display: flex;
+  flex-direction: column;
 
+  .walletModal-close {
     display: flex;
     justify-content: flex-end;
 
-
-    & svg{
+    svg {
+      width: 1.771vw;
+      height: 1.771vw;
+      
+      position: absolute;
+      top: 2.083vw;
+      right: 2.083vw;
+      
       justify-content: flex-end;
       cursor: pointer;
     }
-  }
-
-  .walletModal-h3{
-    font-style: normal;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 28px;
-    color: white;
-    @media only screen and (max-width: 1500px) {
-        font-size: 20px;
+    
+    @media screen and (max-width: 1024px) {
+      svg {
+        width: 2.604vw;
+        height: 2.604vw;
+      }
     }
   }
 
-  .walletModal-h4{
+  .walletModal-h3 {
+    font-weight: bold;
+
+    font-size: 1.250vw;
+    margin-bottom: 0.469vw;
+
+    color: white;
+
+    @media screen and (max-width: 1024px) {
+      font-size: 2.344vw;
+      text-align: center;
+
+      margin-top: 2vw;
+
+      margin-bottom: 3.255vw;
+    }
+  }
+
+  .walletModal-h4 {
     font-style: normal;
     font-weight: 300;
-    font-size: 20px;
-    @media only screen and (max-width: 1500px) {
-        font-size: 18px;
-    }
-    line-height: 23px;
+    font-size: 1.042vw;
+    margin-bottom: 2.604vw;
 
     color: #40BA93;
+
+    @media screen and (max-width: 1024px) {
+      font-size: 1.823vw;
+      margin: 0 0 0.781vw 3.255vw;
+    }
   }
 
-  .walletModal-terms{
+  .walletModal-terms {
+    display: flex;
+    align-items: center;
+
     font-style: normal;
     font-weight: 300;
-    font-size: 18px;
+    font-size: 0.938vw;
     color: white;
-    @media only screen and (max-width: 1500px) {
-      font-size: 14px;
-  }
-    line-height: 21px;
-    display: grid;
-    grid-template-columns: 1fr 10fr;
-    align-items: center;
+
+    line-height: 1.094vw;
 
     .container {
       display: block;
       position: relative;
-      padding-left: 15px;
-      margin: 0 0 17px;
-      max-width: 20px;
+
+      width: 0.885vw;
+      height: 0.885vw;
+
+      margin-right: 0.573vw;
+
       cursor: pointer;
-      font-size: 22px;
+      font-size: 1.146vw;
+
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -102,10 +142,10 @@
       position: absolute;
       top: 0;
       left: 0;
-      height: 17px;
-      width: 17px;
+      height: inherit;
+      width: inherit;
       background: none;
-      border: 1px solid #40BA93;
+      border: 0.052vw solid #40BA93;
     }
 
     .checkmark:after {
@@ -119,105 +159,196 @@
     }
 
     .container .checkmark:after {
-      left: 5px;
-      top: 1px;
-      width: 5px;
-      height: 10px;
+      width: 0.260vw;
+      height: 0.521vw;
+      
+      left: 0.260vw;
+      top: 0.052vw;
+
       border: solid #40BA93;
-      border-width: 0 1px 1px 0;
+      border-width: 0 0.052vw 0.052vw 0;
+
       -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       transform: rotate(45deg);
     }
 
-    & p{
+    p {
       margin: 0;
+      font-size: 0.938vw;
+      font-weight: 300;
     }
 
-    & a{
+    a {
       color: inherit;
-      text-decoration: underline!important;
-      cursor: pointer!important;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    @media screen and (max-width: 1024px) {
+      font-size: 2.344vw;
+      margin-bottom: 4.036vw;
+
+      .container {
+        width: 2.214vw;
+        height: 2.214vw;
+      }
+
+      .container .checkmark:after {
+        width: 1.432vw;
+        height: 1.042vw;
+        
+        left: 0.25vw;
+        top: 0.2vw;
+
+        border-width: 0 0.130vw 0.130vw 0;
+      }
+
+      .checkmark {
+        border: 0.130vw solid #40BA93;
+      }
+
+      p {
+        font-size: 1.563vw;
+      }
     }
   }
 
-  .walletModal-list{
-    padding: 2.5% 4%;
-    box-sizing: border-box;
+  .walletModal-list {
+    margin-top: auto;
+
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    column-gap: 5px;
-    row-gap: 25px;
+    grid-gap: 1.250vw;
+    padding: 1.979vw 2.396vw;
+
+    box-sizing: border-box;
+    overflow-y: auto;
+    
     background: #1F1E20;
-    border-radius: 30px;
+    border-radius: 1.563vw;
     color: #000;
 
-    &__item{
-      display: grid;
-      grid-template-columns: 20% 1fr;
-      padding: 10px 15px;
-      box-sizing: border-box;
-      align-items: center;
-      width: clamp(169px ,100%, 269px);
-      column-gap: 5%;
-      cursor: pointer;
-      height: clamp(72px ,100%, 72px);
-      background: #292A2D;
-      border-radius: 30px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
-      @media only screen and (max-width: 1500px) {
-        h5 {
-          font-size: 16px;
-        }
+    &__item {
+      width: auto;
+      height: auto;
+
+      display: flex;
+      align-items: center;
+
+      padding: 0.521vw 0.833vw;
+
+      cursor: pointer;
+      background: #292A2D;
+      border-radius: 1.563vw;
+
+      h5 {
+        color: white;
+        font-size: 1.042vw;
+        font-weight: 500;
       }
+
       &:hover {
         transition: 0.3s;
         background-color: #40BA93;
-        color: white;
-      }
-
-      &__figure{
-        margin: 0;
-        width: 49px;
-        height: 49px;
-        border-radius: 50%;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #1F1E20;
-      }
-
-      &__h5{
-        margin: 0;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 23px;
-        color: white;
       }
     }
+
+    &__img-wrapper {
+      width: 2.604vw;
+      height: 2.604vw;
+
+      margin-right: 0.938vw;
+      border-radius: 50%;
+    }
+
+    &__figuren {
+      width: 2.604vw;
+      height: 2.604vw;
+
+      margin: 0;
+      border-radius: 50%;
+      overflow: hidden;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #1F1E20;
+    }
+
+    h5 {
+      margin: 0;
+
+      font-style: normal;
+      font-weight: 500;
+      font-size: 1.042vw;
+      line-height: 1.198vw;
+
+      color: white;
+    }
+
+    @media screen and (max-width: 1024px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: 1fr;
+      grid-gap: 1.432vw;
+
+      padding: 0;
+
+      background: #F3F5F9 !important;
+
+      &__item {
+        background-color: white !important;
+        padding: 1.302vw 2.083vw;
+
+        border-radius: 3.906vw;
+      }
+
+      &__img-wrapper {
+        width: 6.510vw;
+        height: 6.510vw;
+      }
+
+      h5 {
+        font-size: 2.604vw;
+      }
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    height: fit-content;
+    margin: 3.385vw 2vw 0;
+    
+    padding: 0 3.776vw 7.813vw;
+
+    background: #F3F5F9 !important;
   }
 }
 
 .walletModal-light {
   background: #FFFFFF;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0.208vw 0.521vw rgba(0, 0, 0, 0.25);
   .walletModal-h3 {
     color: black;
   }
   .walletModal-terms {
     p {
-      color: black;
+      color: #828282;
     }
   }
   .walletModal-list {
     background: #F2F2F2;
     &__item {
-      background: #BDBDBD;
-      &__h5{
-        color: black;
+      background: #E0E0E0;
+      h5 {
+        color: #333;
       }
     }
   }

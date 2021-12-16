@@ -420,8 +420,11 @@
         flex-direction: column;
 
         &__assets-chart-info {
+            height: 100%;
+
             display: flex;
             flex-direction: column;
+            justify-content: space-around;
 
             .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list {
                 display: flex;

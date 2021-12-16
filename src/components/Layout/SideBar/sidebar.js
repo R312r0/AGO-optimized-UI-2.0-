@@ -25,6 +25,8 @@ const SideBarWrapper = styled.div`
   }
 
   .document_icon {
+    margin-top: 1.4vw;
+
     width: 1.563vw;
     height: 2.083vw;
   }
@@ -165,8 +167,9 @@ const BottomLinks = styled.div`
   margin-top: 1.4vw;
 
   a {
-    margin-left: 2vw;
-    font-size: 0.8vw;
+    margin-left: 2.083vw;
+    font-size: 0.729vw;
+    font-weight: 300;
     color: white;
     
     @media screen and (max-width: 750px) {
