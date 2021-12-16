@@ -78,7 +78,7 @@ export const PortfolioPerfomance = () => {
 
         const currentTime = new Date().getMinutes()
 
-        newData.push({value:  currentPortfolio.reduce((a, b) => a + b), time: currentTime})
+        newData.push({value:  currentPortfolio.reduce((a, b) => a + b), time: currentTime});
 
         setFormattedData(newData);
         setPortfolioPerfValue(newData[newData.length - 1].value)
@@ -88,7 +88,7 @@ export const PortfolioPerfomance = () => {
     useEffect(() => {
 
         if (formattedData?.length > 0) {
-            setPortfolioPerfValue(formattedData[formattedData.length - 1])
+            setPortfolioPerfValue(formattedData[formattedData.length - 1].value)
         }
 
     }, [formattedData])
