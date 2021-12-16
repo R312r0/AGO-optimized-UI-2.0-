@@ -314,7 +314,7 @@ export const BalancesTab = () => {
             });
 
             const filteredRes = res.filter((item) => {
-                if (item.name === "USDC" || item.name === "DAI" || item.name === "CNUSD") {
+                if (item.name === "USDC" || item.name === "DAI") {
                     return false;
                 }
                 else {

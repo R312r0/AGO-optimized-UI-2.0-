@@ -152,7 +152,7 @@ export const PORTFOLIO_PERFOMANCE = gql(`
     
     query userPortfolioPerformance($id: String!) {
         user(id: $id) {
-            portfolioPerfomance(orderBy: timestamp, orderDirection: asc) {
+            portfolioPerfomance(first: 200, orderBy: timestamp, orderDirection: asc) {
               value {
                 AGOBalance
                 AGOPrice
@@ -167,6 +167,10 @@ export const PORTFOLIO_PERFOMANCE = gql(`
               }
               timestamp
             }
+        }
+        tokens(first: 5, where: {isProtocolMain: true}) {
+            symbol
+            priceUSD
         }
     }
 `)

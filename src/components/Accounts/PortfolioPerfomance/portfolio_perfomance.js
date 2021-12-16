@@ -12,6 +12,7 @@ import {Spin} from "antd";
 export const PortfolioPerfomance = () => {
 
     const {account} = useWeb3React();
+    const {userProtfolio} = useSystemContext();
     const {data, loading} = useQuery(PORTFOLIO_PERFOMANCE, {
         variables: {id: account.toLowerCase()}
     })
@@ -67,11 +68,17 @@ export const PortfolioPerfomance = () => {
 
             const newTime = new Date(item.timestamp * 1000).getMinutes();
 
-            console.log(new Date(item.timestamp * 1000))
-
             return {value: parseFloat((AgoToDollar + AgoUsdToDollar + CnUsdToDollart + WmaticToDollart +  USDTToDollar).toFixed(2)), time: newTime}
         })
 
+        const currentPortfolio = data.tokens.map((item) => {
+            const userBal = userProtfolio.find(pf => pf.name === item.symbol).userNativeBalance
+            return userBal * item.priceUSD
+        })
+
+        const currentTime = new Date().getMinutes()
+
+        newData.push({value:  currentPortfolio.reduce((a, b) => a + b), time: currentTime})
 
         setFormattedData(newData);
         setPortfolioPerfValue(newData[newData.length - 1].value)
