@@ -8,6 +8,7 @@ import TREASURY_ABI from './abi/TREASURY.json';
 import STABLE_ABI from './abi/STABLE.json';
 import SHARE_ABI from './abi/SHARE.json';
 import STABLE_POOL_ABI from './abi/STABLE_POOL.json';
+import MASTER_CHEF_ABI from './abi/MasterChef.json';
 import TOKEN_ORACLE_ABI from './abi/TOKEN_ORACLE.json';
 import { CONTRACT_ADRESESS } from './constants';
 import { formatFromDecimal } from './utils/helpers';
@@ -132,27 +133,27 @@ export const SystemProvider = ({children}) => {
 
         const AGO = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.AGO);
         const AGOUSD = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOUSD);
-        // const AGOBTC = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOBTC);
+        const AGOBTC = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOBTC);
         const CNUSD = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNUSD);
-        // const CNBTC = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNBTC);
+        const CNBTC = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNBTC);
         const USDT = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.USDT);
         const USDC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.USDC);
         const DAI = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.DAI);
         const WMATIC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.WMATIC);
-        // const WBTC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.WBTC)
+        const WBTC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.WBTC)
 
 
         setTokens({
             AGO: {name: "AGO",instance: AGO, decimals: await AGO.methods.decimals().call(), totalSupply: await AGO.methods.totalSupply().call()},
             AGOUSD: {name: "AGOUSD",instance: AGOUSD, decimals: await AGOUSD.methods.decimals().call(), totalSupply: await AGOUSD.methods.totalSupply().call()},
-            // AGOBTC: {name: "AGOBTC",instance: AGOBTC, decimals: await AGOBTC.methods.decimals().call()},
-            CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call(),totalSupply: await CNUSD.methods.totalSupply().call() },
-            // CNBTC: {name: "CNBTC",instance: CNBTC, decimals: await CNBTC.methods.decimals().call()},
+            AGOBTC: {name: "AGOBTC",instance: AGOBTC, decimals: await AGOBTC.methods.decimals().call(), totalSupply: await AGOBTC.methods.totalSupply().call()},
+            CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call(), totalSupply: await CNUSD.methods.totalSupply().call()},
+            CNBTC: {name: "CNBTC",instance: CNBTC, decimals: await CNBTC.methods.decimals().call(), totalSupply: await CNBTC.methods.totalSupply().call()},
             USDT: {name: "USDT",instance: USDT, decimals: await USDT.methods.decimals().call(), totalSupply: await USDT.methods.totalSupply().call()},
             USDC: {name: "USDC",instance: USDC, decimals: await USDC.methods.decimals().call(), totalSupply: await USDC.methods.totalSupply().call()},
             DAI: {name: "DAI",instance: DAI, decimals: await DAI.methods.decimals().call(), totalSupply: await DAI.methods.totalSupply().call()},
-            WMATIC: {name: "WMATIC",instance: WMATIC, decimals: await WMATIC.methods.decimals().call(), totalSupply: await WMATIC.methods.totalSupply().call()}
-            // WBTC: {name: "WBTC",instance: WBTC, decimals: await WBTC.methods.decimals().call()}
+            WMATIC: {name: "WMATIC",instance: WMATIC, decimals: await WMATIC.methods.decimals().call(), totalSupply: await WMATIC.methods.totalSupply().call()},
+            WBTC: {name: "WBTC",instance: WBTC, decimals: await WBTC.methods.decimals().call(), totalSupply: await WBTC.methods.totalSupply().call()}
         });
 
     }
@@ -160,11 +161,12 @@ export const SystemProvider = ({children}) => {
     const initContracts = () => {
         const POOL_AGOUSD = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOUSD);
         const TREASURY_AGOUSD = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOUSD);
-        // const POOL_AGOBTC = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOBTC);
-        // const TREASURY_AGOBTC = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOBTC);
+        const POOL_AGOBTC = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOBTC);
+        const TREASURY_AGOBTC = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOBTC);
         const ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.ROUTER)
+        const MASTER_CHEF = new library.eth.Contract(MASTER_CHEF_ABI, CONTRACT_ADRESESS.MASTER_CHEF);
         // setContracts({POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC});
-        setContracts({ROUTER, POOL_AGOUSD, TREASURY_AGOUSD})
+        setContracts({ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, MASTER_CHEF})
     }
 
     const connectWallet = (wallet) => {

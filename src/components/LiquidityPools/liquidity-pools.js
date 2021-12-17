@@ -47,14 +47,12 @@ export const LiquidityPools = () => {
     const {account, library} = useWeb3React();
     const {theme} = useSystemContext();
     const {data, loading} = useQuery(LIQUIDITY_POOLS);
-    const [pools, setPools] = useState([]);
-    const [earnPools, setEarnPools] = useState([]);
+    const [pools, setPools] = useState(null);
+    const [earnPools, setEarnPools] = useState(null);
     const [poolsFormatted, setPoolsFormatted] = useState([]);
     const [earnPoolsFormatted, setEarnPoolsFormatted] = useState([]);
     const [poolsPreparing, setPoolsPreparing] = useState(true);
     const [isCreatePairModal, setIsCreatePairModal] = useState(false);
-
-    console.log(data);
 
     useEffect(() => {
 
@@ -67,7 +65,7 @@ export const LiquidityPools = () => {
 
     useEffect(() => {
 
-        if (pools.length > 0 && earnPools.length > 0) {
+        if ( pools && earnPools ) {
             setPoolsFormatted(pools);
             setEarnPoolsFormatted(earnPools);
         }
@@ -106,6 +104,7 @@ export const LiquidityPools = () => {
 
         const trading = (await Promise.all(res)).filter((item) => !item.isEarnAgo);
         const earnAgo = (await Promise.all(res)).filter((item) => item.isEarnAgo);
+
 
         setPools(trading);
         setEarnPools(earnAgo);

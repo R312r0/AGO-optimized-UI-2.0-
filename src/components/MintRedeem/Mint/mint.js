@@ -28,7 +28,8 @@ export const Mint = ({info}) => {
         if (account) {
             getAllowance()
         }
-    }, [account])
+    }, [account, mintRedeemCurrency])
+
 
 
     useEffect(() => {
@@ -111,6 +112,7 @@ export const Mint = ({info}) => {
 
     const handleMint = async () => {
 
+
         if (collateralInput > 0) {
             if (mintRedeemCurrency === "AGOUSD") {
                 try {
@@ -130,7 +132,7 @@ export const Mint = ({info}) => {
                 try {
                     setMintButtonDisabled(true);
                     message.loading({content: "Mint in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
-                    await contracts.POOL_AGOBTC.methods.mint(formatToDecimal(collateralInput, tokens.WBTC.decimals), formatToDecimal(catenaInput, tokens.CNBTC.decimals), formatToDecimal(collateralInput, tokens.AGOBTC.decimals)).send({from: account});
+                    await contracts.POOL_AGOBTC.methods.mint(formatToDecimal(collateralInput, tokens.WBTC.decimals), formatToDecimal(catenaInput, tokens.CNBTC.decimals), 0).send({from: account});
                     message.success({content: `Succsessfully minted ${mintRedeemCurrency}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5})
                     setMintButtonDisabled(false);
     
@@ -169,7 +171,13 @@ export const Mint = ({info}) => {
     }
 
     const handleRefreshCollateralRatio = async () => {
-        await contracts.TREASURY_AGOUSD.methods.refreshCollateralRatio().send({from: account});
+        if (mintRedeemCurrency === "AGOUSD") {
+            await contracts.TREASURY_AGOUSD.methods.refreshCollateralRatio().send({from: account});
+        }
+        else {
+            await contracts.TREASURY_AGOBTC.methods.refreshCollateralRatio().send({from: account});
+        }
+
     }
 
     return (

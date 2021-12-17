@@ -20,6 +20,7 @@ export const Redeem = ({info}) => {
     const [redeemBalances, setRedeemBalances] = useState(null)
 
 
+
     useEffect(() => {
         getAllowance()
         getRedemption()
@@ -36,7 +37,8 @@ export const Redeem = ({info}) => {
             token = await tokens.AGOBTC.instance.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOBTC).call();
         }
 
-        setApproved(token === "0")
+
+        setApproved(token.length === MAX_INT.length)
 
     }
 
@@ -59,6 +61,7 @@ export const Redeem = ({info}) => {
 
     }
 
+
     const handleRedeem = async () => {
         if (input === "0" || !input) {
             message.error({content: `Please enter amount greather than 0`, key: MINT_REDEEM_KEY, duration: 3, className: "ant-argano-message"})
@@ -70,7 +73,7 @@ export const Redeem = ({info}) => {
                 await contracts.POOL_AGOUSD.methods.redeem(formatToDecimal(input, tokens.AGOUSD.decimals), 0, 0).send({from: account}) 
             }
             else {
-                await contracts.POOL_AGOBTC.methods.redeem(formatFromDecimal(input, tokens.AGOBTC.decimals), 0, 0).send({from: account})
+                await contracts.POOL_AGOBTC.methods.redeem(formatToDecimal(input, tokens.AGOBTC.decimals), 0, 0).send({from: account})
             }
             message.success({content: `Successfully redeemed ${mintRedeemCurrency} !`, key: MINT_REDEEM_KEY, duration: 3, className: "ant-argano-message"})
         }
@@ -98,8 +101,8 @@ export const Redeem = ({info}) => {
 
     const handleStableInput = (value) => {
 
-        const collateralOutput = ((value / info.stablePrice) - ((value / info.stablePrice) * (info.redeemFee / 100))) * (info.targetCollateralRatio / 100);
-        const shareOutput = ((value / info.sharePrice) - ((value / info.sharePrice) * (info.redeemFee / 100))) * ((100 - info.targetCollateralRatio) / 100);
+        const collateralOutput = ((value / info.stablePrice) - ((value / info.stablePrice) * (info.redeemFee / 100))) * (info.effectiveCollateralRatio / 100);
+        const shareOutput = ((value / info.sharePrice) - ((value / info.sharePrice) * (info.redeemFee / 100))) * ((100 - info.effectiveCollateralRatio) / 100);
 
         setCollateralOutput(collateralOutput);
         setCatenaOutput(shareOutput);
@@ -173,7 +176,7 @@ export const Redeem = ({info}) => {
                 <i className="fas fa-plus"/>
             </div>
             <div className='general-window-input-row'> 
-                <span> <h3> Output USDT - <b> {info.targetCollateralRatio}% </b> </h3> </span>
+                <span> <h3> Output USDT - <b> {info.effectiveCollateralRatio}% </b> </h3> </span>
                 <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC")} </h3> </span>
                 <input disabled type='number' placeholder="0.00" value={collateralOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
@@ -182,9 +185,9 @@ export const Redeem = ({info}) => {
                 <i className="fas fa-arrow-down"/>
             </div>
             <div className='general-window-input-row output'> 
-                <span> <h3> Output CNUSD - <b> {100 - info.targetCollateralRatio}% </b> </h3> </span>
+                <span> <h3> Output CNUSD - <b> {100 - info.effectiveCollateralRatio}% </b> </h3> </span>
                 <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC")} </h3> </span>
-                <input disabled type='number' placeholder={info.targetCollateralRatio === 100 ? "TCR is 100%" : "0.00"} value={info.targetCollateralRatio === 100 ? null : catenaOutput}/>
+                <input disabled type='number' placeholder={info.effectiveCollateralRatio === 100 ? "ECR is 100%" : "0.00"} value={info.effectiveCollateralRatio === 100 ? null : catenaOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} </span>
             </div>
             <div className='general-btn-wrapper'>

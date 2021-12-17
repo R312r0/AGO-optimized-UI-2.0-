@@ -308,9 +308,14 @@ export const BalancesTab = () => {
             const res = userProtfolio.map((item) => {
                const name = item.name;
                const nativeBalance = item.userNativeBalance;
-               const usdBalance = data.tokens.find(tok => tok.symbol === name);
+               let usdBalance = data.tokens.find(tok => tok.symbol === name)?.priceUSD;
 
-               return {name, nativeBalance, usdBalance: usdBalance.priceUSD * nativeBalance}
+               if (!usdBalance) {
+                    usdBalance = 0;
+               }
+
+               return {name, nativeBalance, usdBalance: usdBalance * nativeBalance}
+
             });
 
             const filteredRes = res.filter((item) => {
@@ -338,6 +343,7 @@ export const BalancesTab = () => {
         },
         preventDefaultTouchmoveEvent: true,
     })
+
 
     return (
         <BalancesTabWrapper 

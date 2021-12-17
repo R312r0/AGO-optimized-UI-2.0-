@@ -174,7 +174,6 @@ export const Trading = () => {
     }, [data, loading])
 
 
-    console.log(data);
 
 
     useEffect(() => {

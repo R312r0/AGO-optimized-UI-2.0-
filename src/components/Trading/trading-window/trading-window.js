@@ -42,7 +42,6 @@ const TradingWindow = () => {
 
         if (activeToken) {
 
-            console.log(data.tokens.find(item => item.symbol === activeToken).lineChartUSD)
 
             setLineChart(data.tokens.find(item => item.symbol === activeToken).lineChartUSD);
         }

@@ -158,7 +158,6 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
     // TODO: check user balance when he paste a input
     // TODO: maybe addLiquidityETH too as well
 
-    console.log(pools);
 
     const {userProtfolio, tokens, contracts} = useSystemContext();
     const {account, library} = useWeb3React();
@@ -206,6 +205,7 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
     }, [token0Select, token1Select])
 
 
+
     const CreatePairButton = () => {
 
         const findPool = pools.find(item => {
@@ -223,6 +223,8 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
         if (!token0Select || !token1Select) {
             return <CreatePairButtonWrapper disabled={true}> Please choose tokens from list </CreatePairButtonWrapper>
         }
+
+        console.log(token0Balance, token0Input)
 
         if (token0Balance < token0Input) {
             return <CreatePairButtonWrapper disabled={true}> Insufficient {token0Select.symbol} balance </CreatePairButtonWrapper>
@@ -254,7 +256,6 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
         const bal = await tokenContr.methods.balanceOf(account).call();
         const tokenDecimals = await tokenContr.methods.decimals().call();
 
-        console.log(tokenDecimals);
 
         if (tokenNum === 0) {
             setToken0Balance(formatFromDecimal(bal, tokenDecimals));
@@ -272,8 +273,6 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
         const token0AmountFormatted = formatToDecimal(token0Amount, token0.decimals);
         const token1AmountFormatted = formatToDecimal(token1Amount, token1.decimals);
 
-        console.log(token0AmountFormatted);
-        console.log(token1AmountFormatted);
 
         await contracts.ROUTER.methods.addLiquidity(token0.id, token1.id, token0AmountFormatted, token1AmountFormatted, 0, 0, account, 9999999999).send({from: account});
 
@@ -289,6 +288,7 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
             setToken1Allowance(allowance.length === MAX_INT.length);
         }
     }
+
 
     const approveForRouter = async (tokenObj) => {
 
@@ -326,8 +326,6 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
 
     const handleMaxInput = async (inputNum) => {
 
-        console.log(token0Balance);
-        console.log(token1Balance);
 
         if (inputNum === 0) {
             setToken0Input(token0Balance);

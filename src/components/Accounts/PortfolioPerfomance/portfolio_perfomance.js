@@ -23,7 +23,6 @@ export const PortfolioPerfomance = () => {
     useEffect(() => {
 
         if (data?.user && !loading) {
-            console.log(data);
             formatUserPortfolioData(data.user.portfolioPerfomance)
         }
         else {

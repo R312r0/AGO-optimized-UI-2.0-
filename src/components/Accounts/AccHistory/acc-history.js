@@ -35,7 +35,6 @@ export const AccHistory = ({isOpened, setIsOpened}) => {
         fetchData();
     }, [])
 
-    console.log(data);
 
     return (
         <div className={`acc-hisotry ${isOpened ? " acc-history-opened" : ""} ${theme === "light" ? " acc-history-light" : ""}`}>

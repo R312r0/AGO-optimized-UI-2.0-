@@ -5,7 +5,6 @@ import { useSystemContext } from '../../../systemProvider';
 
 export const TradingChart = ({candleData, lineData, chartType }) => {
 
-    console.log(lineData);
 
     const ref = useRef();
     const parentRef = useRef(null);
