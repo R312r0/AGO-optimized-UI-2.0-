@@ -27,7 +27,7 @@ export const Volume = ({data}) => {
         <div className="vol-chart">
             <ResponsiveContainer className="vol-chart" width={"100%"} height={"100%"}>
                 <BarChart
-                    margin="0.260vw 1.563vw 0.052vw 1.042vw"
+                    // margin="0.260vw 1.563vw 0.052vw 1.042vw"
                     data={data}
                     >
                     <defs>
@@ -64,10 +64,11 @@ export const Volume = ({data}) => {
                         <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)" />
                         </linearGradient>
                     </defs>
-                <CartesianGrid stroke={theme === "light" ? "white" : "#3A3C45"}   strokeDasharray="7 7"/>
+                <CartesianGrid stroke={theme === "light" ? "white" : "#3A3C45"} strokeDasharray="7 7"/>
                 <Bar
                     dataKey="value"
-                    radius={[10, 10, 10, 10]}
+                    radius={20}
+                    
                     // shape={<CustomBar/>} // TODO: when we will have more data then return this staff back
                 >
                     {data.map((entry, _ind )=> {

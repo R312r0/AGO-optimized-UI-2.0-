@@ -44,15 +44,15 @@ export const RemoveLiquidityModal = ({visible, setVisible, token0, token1, lpTok
 
     return (
         <Modal visible={visible}
-               onCancel={() => setVisible(false)}
-               wrapClassName={"remove-liquidity-modal"}
-               footer={null}
+            onCancel={() => setVisible(false)}
+            wrapClassName={"remove-liquidity-modal"}
+            footer={null}
         >
             <ModalHeader> Remove Liquidity </ModalHeader>
             <h3>Pair <TokenIcon iconName={token0.symbol}/>{token0.symbol} <TokenIcon iconName={token1.symbol}/>{token1.symbol}</h3>
-           <h3>LP balance: {lpUserBalance}</h3>
-           <p>Enter amount to remove liquidity</p>
-           <input type={"number"} onChange={(e) => setRemoveValue(e.target.value)}/>
+            <h3>LP balance: {lpUserBalance}</h3>
+            <p>Enter amount to remove liquidity</p>
+            <input type={"number"} onChange={(e) => setRemoveValue(e.target.value)}/>
             <button onClick={() => allowance ? handleRemove(removeValue) : handleApprove()}>{allowance ? "Submit" : "Approve LP for Router"}</button>
         </Modal>
     )

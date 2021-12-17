@@ -4,12 +4,10 @@ import styled from 'styled-components';
 
 const CustomToolTipWrapper = styled.div`
     background: #171717;
-    box-shadow: -8px -8px 20px rgba(28, 27, 27, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
-    border-radius: 16px;
+    box-shadow: -0.417vw -0.417vw 1.042vw rgba(28, 27, 27, 0.25), 0.208vw 0.208vw 0.521vw rgba(0, 0, 0, 0.25);
+    border-radius: 0.833vw;
     color: white;
-    display: grid;
-    width: 120px;
-    height: 50px;
+    padding: 0.5vw 1vw;
     place-items: center;
 `
 

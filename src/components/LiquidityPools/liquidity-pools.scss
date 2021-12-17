@@ -347,15 +347,20 @@
                         border-radius: 2.083vw;
 
                         .chart-block {
-                            width: 10.417vw;
-                            height: 10.417vw;
+                            width: 13.021vw;
+                            height: 13.021vw;
 
                             overflow: hidden;
+
+                            &__block {
+                                position: absolute;
+                                top: 0;
+                            }
                         }
 
                         .buttons {
                             display: flex;
-                            margin: 0.8vw 0;
+                            margin: 0 0 1.563vw;
                             
                             button {
                                 margin: 0 auto;
@@ -443,6 +448,7 @@
 
                                     .provide-liq-white {
                                         color: white;
+                                        font-size: 0.938vw;
 
                                         &::placeholder {
                                             color: white;
@@ -502,8 +508,8 @@
                     }
 
                     .liq-chart {
-                        width: 45.083vw;
-                        height: 10.104vw;
+                        width: 45.083vw !important;
+                        height: 10.104vw !important;
 
                         margin-top: auto;
                         overflow: hidden;
