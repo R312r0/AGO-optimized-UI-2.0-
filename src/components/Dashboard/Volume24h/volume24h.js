@@ -10,7 +10,7 @@ const Volume24hChartWrapper = styled.div`
   box-shadow: ${props => props.mobile ? "none" : "0px 4px 16px rgba(0, 0, 0, 0.25)"};
   border-radius: 2vw;
   width: 100%;
-  height: 28vw;
+  height: 21.5vw;
   display: grid;
   align-self: center;
   box-sizing: border-box;

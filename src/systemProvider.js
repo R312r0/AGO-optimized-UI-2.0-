@@ -144,11 +144,11 @@ export const SystemProvider = ({children}) => {
 
 
         setTokens({
-            AGO: {name: "AGO",instance: AGO, decimals: await AGO.methods.decimals().call(), totalSupply: await AGO.methods.totalSupply().call()},
-            AGOUSD: {name: "AGOUSD",instance: AGOUSD, decimals: await AGOUSD.methods.decimals().call(), totalSupply: await AGOUSD.methods.totalSupply().call()},
             AGOBTC: {name: "AGOBTC",instance: AGOBTC, decimals: await AGOBTC.methods.decimals().call(), totalSupply: await AGOBTC.methods.totalSupply().call()},
-            CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call(), totalSupply: await CNUSD.methods.totalSupply().call()},
             CNBTC: {name: "CNBTC",instance: CNBTC, decimals: await CNBTC.methods.decimals().call(), totalSupply: await CNBTC.methods.totalSupply().call()},
+            AGOUSD: {name: "AGOUSD",instance: AGOUSD, decimals: await AGOUSD.methods.decimals().call(), totalSupply: await AGOUSD.methods.totalSupply().call()},
+            CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call(), totalSupply: await CNUSD.methods.totalSupply().call()},
+            AGO: {name: "AGO",instance: AGO, decimals: await AGO.methods.decimals().call(), totalSupply: await AGO.methods.totalSupply().call()},
             USDT: {name: "USDT",instance: USDT, decimals: await USDT.methods.decimals().call(), totalSupply: await USDT.methods.totalSupply().call()},
             USDC: {name: "USDC",instance: USDC, decimals: await USDC.methods.decimals().call(), totalSupply: await USDC.methods.totalSupply().call()},
             DAI: {name: "DAI",instance: DAI, decimals: await DAI.methods.decimals().call(), totalSupply: await DAI.methods.totalSupply().call()},

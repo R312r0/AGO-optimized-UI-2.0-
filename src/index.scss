@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 1.2em;
@@ -13,8 +13,7 @@ body {
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 * {
@@ -24,7 +23,12 @@ code {
     text-decoration: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin: 0;
 }
 
@@ -49,38 +53,47 @@ input {
 }
 
 .main__heading__page {
-    
-    font-size: 1.875vw;
-    font-weight: 500;
     color: white;
 
     text-align: left;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+
+    color: #ffffff;
 }
 
 .ant-argano-message {
     margin-top: 20px;
-    
+
     div {
-        background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient( 90.99deg, #272727 2.18%, #1C1C1C 104.4%);
+        background: radial-gradient(
+                61.16% 3404.86% at 48.28% 79.61%,
+                rgba(30, 117, 89, 0.3) 0%,
+                rgba(9, 33, 25, 0.3) 100%
+            ),
+            linear-gradient(90.99deg, #272727 2.18%, #1c1c1c 104.4%);
         border-radius: 20px;
         box-sizing: border-box;
         padding-right: 25px;
         padding-left: 25px;
         color: white;
-        .ant-message-error  {
+        .ant-message-error {
             .anticon {
-                color: #EF3725;
+                color: #ef3725;
             }
         }
-        .ant-message-success  {
+        .ant-message-success {
             .anticon {
-                color: #40BA93;
+                color: #40ba93;
             }
         }
 
-        .ant-message-loading  {
+        .ant-message-loading {
             .anticon {
-                color: #40BA93;
+                color: #40ba93;
             }
         }
     }

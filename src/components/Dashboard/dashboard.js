@@ -1,24 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {TokenPricesCharts} from './TokenPricesCharts/token-prices-charts';
-import {TVLChart} from './TVLChart/TVLChart';
-import {Volume24h} from './Volume24h/volume24h';
-import {TokenTransactionTable} from './TokenTransactionsTable/token-transaction-table';
-import {useSystemContext} from '../../systemProvider';
+import React, { useEffect, useState } from 'react';
+import { TokenPricesCharts } from './TokenPricesCharts/token-prices-charts';
+import { TVLChart } from './TVLChart/TVLChart';
+import { Volume24h } from './Volume24h/volume24h';
+import { TokenTransactionTable } from './TokenTransactionsTable/token-transaction-table';
+import { useSystemContext } from '../../systemProvider';
 import styled from 'styled-components';
-import {useMediaQuery} from 'react-responsive';
-import {DashboardMobile} from './dashboard-mobile';
-import {useQuery} from "@apollo/client";
-import {DASHBOARD_QUERY} from "../../api/client";
-import {calculateTimeDifference, formatAddress, formattedNum} from "../../utils/helpers";
-import {TXS_NAME} from "../../constants";
+import { useMediaQuery } from 'react-responsive';
+import { DashboardMobile } from './dashboard-mobile';
+import { useQuery } from "@apollo/client";
+import { DASHBOARD_QUERY } from "../../api/client";
+import { calculateTimeDifference, formatAddress, formattedNum } from "../../utils/helpers";
+import { TXS_NAME } from "../../constants";
 
 const DashboardWrapper = styled.div`
   display: grid;
   width: 100%;
-  padding: 1vw 1.771vw 0;
+  padding: 1vw 4vw 0 1.771vw;
+  row-gap: 20px;
 
   position: relative;
-  grid-template-rows: 4vw auto auto auto;
+  grid-template-rows: auto auto auto auto;
   justify-items: center;
 
   &::-webkit-scrollbar {
@@ -31,7 +32,7 @@ const DashboardWrapper = styled.div`
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 4.167vw;
 
-    margin-bottom: 3.646vw;
+    /* margin-bottom: 3.646vw; */
     
     @media only screen and (max-width: 1024px){
       grid-column-gap: 2.5vw;
@@ -52,11 +53,11 @@ const Heading = styled.div`
 
 export const Dashboard = () => {
 
-    const {theme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
-    const {data, loading, error} = useQuery(DASHBOARD_QUERY);
+    const { theme } = useSystemContext();
+    const isMobileScreen = useMediaQuery({ query: '(max-width: 750px)' })
+    const { data, loading, error } = useQuery(DASHBOARD_QUERY);
 
-    const [projCharts, setProjCharts] = useState({tvl: [], volume: []});
+    const [projCharts, setProjCharts] = useState({ tvl: [], volume: [] });
     const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
@@ -68,7 +69,7 @@ export const Dashboard = () => {
             const txs = convertTransactionsData(data.transactions)
             setProjCharts({
                 tvl: tvlChart,
-                volume:volumeChart
+                volume: volumeChart
             })
             setTransactions(txs);
         }
@@ -82,14 +83,14 @@ export const Dashboard = () => {
             const time = `${dateFromItem.getHours()}:${dateFromItem.getMinutes()}:${dateFromItem.getSeconds()}`
             const date = dateFromItem.toDateString();
             const uv = +item.value > 0 ? +item.value : 0;
-            return {time, uv, date};
+            return { time, uv, date };
         })
 
         return res;
     }
 
     const convertTransactionsData = (data) => {
-        const {SWAP, ADD, BURN} = TXS_NAME;
+        const { SWAP, ADD, BURN } = TXS_NAME;
 
         const res = data.map(item => {
             let txName;
@@ -109,7 +110,7 @@ export const Dashboard = () => {
                     txName = `${item.name} ${item.token0} and ${item.token1}`
                     break;
             }
-            return {txName, totalValue, token0Amount, token1Amount, acc, time}
+            return { txName, totalValue, token0Amount, token1Amount, acc, time }
         })
         return res;
     }
@@ -118,16 +119,16 @@ export const Dashboard = () => {
     return (
         <>
             {isMobileScreen ?
-                <DashboardMobile tvl={projCharts.tvl} volume={projCharts.volume} txs={transactions}/>
+                <DashboardMobile tvl={projCharts.tvl} volume={projCharts.volume} txs={transactions} />
                 :
                 <DashboardWrapper>
                     <Heading className='main__heading__page'>Dashboard</Heading>
-                    <TokenPricesCharts/>
+                    <TokenPricesCharts />
                     <div className='tvl-volume'>
-                        <TVLChart data={projCharts.tvl}/>
-                        <Volume24h data={projCharts.volume}/>
+                        <TVLChart data={projCharts.tvl} />
+                        <Volume24h data={projCharts.volume} />
                     </div>
-                    <TokenTransactionTable data={transactions}/>
+                    <TokenTransactionTable data={transactions} />
                 </DashboardWrapper>
             }
         </>

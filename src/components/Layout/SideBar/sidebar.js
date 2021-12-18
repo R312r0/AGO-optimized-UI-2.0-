@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {useHistory} from 'react-router';
-import {NavLink} from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import comments_black from '../../../assets/icons/nav-links/dark-theme/comment-black.svg';
 import document_icon from './../../../assets/icons/sidebar-documents.svg';
-import {PAGES} from '../../../constants';
-import {useSystemContext} from '../../../systemProvider';
+import { PAGES } from '../../../constants';
+import { useSystemContext } from '../../../systemProvider';
 import styled from 'styled-components';
-import {ThemeSwitcher} from '../ThemeSwitcher/theme-switcher';
+import { ThemeSwitcher } from '../ThemeSwitcher/theme-switcher';
 import { useMediaQuery } from 'react-responsive';
 
 
@@ -181,51 +181,51 @@ const BottomLinks = styled.div`
 
 export const SideBar = () => {
 
-    const history = useHistory();
-    const [expandSocMedias, setExpandSocMedias] = useState(false);
-    const [activeTab, setActiveTab] = useState(history.location.pathname);
-    const isTabletScreen = useMediaQuery({query: '(max-width: 1024px)'});
-    const {theme, setTheme} = useSystemContext();
+  const history = useHistory();
+  const [expandSocMedias, setExpandSocMedias] = useState(false);
+  const [activeTab, setActiveTab] = useState(history.location.pathname);
+  const isTabletScreen = useMediaQuery({ query: '(max-width: 1024px)' });
+  const { theme, setTheme } = useSystemContext();
 
 
-    return (
-        <SideBarWrapper>
-            <LinkList>
-                <SocialMediasList 
-                  opened={expandSocMedias} 
-                  onMouseEnter={() => setExpandSocMedias(true)}
-                  onMouseLeave={() => setExpandSocMedias(false)}
-                  >
-                    <a href="mailto:email@argano.io" target="_blank" rel="noreferrer"><i class="fas fa-envelope"></i></a>
-                    <a href="https://t.me/ARGANO_DEFI" target="_blank" rel="noreferrer"><i class="fab fa-telegram-plane"></i></a>
-                    <a href="https://discord.com/invite/mH7PJnNCWP" target="_blank" rel="noreferrer"><i class="fab fa-discord"></i></a>
-                    <a href="https://twitter.com/argano_io" target="_blank" rel="noreferrer"><i class="fab fa-twitter"></i></a>
-                    <a href="https://argano.medium.com/" target="_blank" rel="noreferrer"><i class="fab fa-medium"></i></a>
-                    <a href="https://github.com/Argano-DEX/Argano-Contracts" target="_blank" rel="noreferrer"><i class="fab fa-github"></i></a>
-                </SocialMediasList>
-                {PAGES.map((item) => {
-                    return (
-                        <NavLink to={item.path} onClick={() => setActiveTab(item.path)}>
-                          <LinkListItem active={item.path === history.location.pathname}>
-                                <img src={activeTab === item.path ? item.imgActive : item.img} alt={`${item.path}`}/>
-                          </LinkListItem>
-                        </NavLink>
-                    )
-                })}
-                <LinkListItem className='link-message-item' onMouseEnter={() => setExpandSocMedias(true)}>
-                    <img src={comments_black} alt={'comments'}/>
-                </LinkListItem>
-            </LinkList>
-            {isTabletScreen 
-              ? <img className="document_icon" src={document_icon}></img> 
-              : <BottomLinks>
-                  <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
-                  <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
-                  <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
-                  <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
-                </BottomLinks>
-            }
-            <ThemeSwitcher/>
-        </SideBarWrapper>
-    )
+  return (
+    <SideBarWrapper>
+      <LinkList>
+        <SocialMediasList
+          opened={expandSocMedias}
+          onMouseEnter={() => setExpandSocMedias(true)}
+          onMouseLeave={() => setExpandSocMedias(false)}
+        >
+          <a href="mailto:email@argano.io" target="_blank" rel="noreferrer"><i className="fas fa-envelope"></i></a>
+          <a href="https://t.me/ARGANO_DEFI" target="_blank" rel="noreferrer"><i className="fab fa-telegram-plane"></i></a>
+          <a href="https://discord.com/invite/mH7PJnNCWP" target="_blank" rel="noreferrer"><i className="fab fa-discord"></i></a>
+          <a href="https://twitter.com/argano_io" target="_blank" rel="noreferrer"><i className="fab fa-twitter"></i></a>
+          <a href="https://argano.medium.com/" target="_blank" rel="noreferrer"><i className="fab fa-medium"></i></a>
+          <a href="https://github.com/Argano-DEX/Argano-Contracts" target="_blank" rel="noreferrer"><i className="fab fa-github"></i></a>
+        </SocialMediasList>
+        {PAGES.map((item, index) => {
+          return (
+            <NavLink to={item.path} onClick={() => setActiveTab(item.path)} key={`side_bar_${index}`}>
+              <LinkListItem active={item.path === history.location.pathname}>
+                <img src={activeTab === item.path ? item.imgActive : item.img} alt={`${item.path}`} />
+              </LinkListItem>
+            </NavLink>
+          )
+        })}
+        <LinkListItem className='link-message-item' onMouseEnter={() => setExpandSocMedias(true)}>
+          <img src={comments_black} alt={'comments'} />
+        </LinkListItem>
+      </LinkList>
+      {isTabletScreen
+        ? <img className="document_icon" src={document_icon}></img>
+        : <BottomLinks>
+          <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
+          <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
+          <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
+          <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
+        </BottomLinks>
+      }
+      <ThemeSwitcher />
+    </SideBarWrapper>
+  )
 }

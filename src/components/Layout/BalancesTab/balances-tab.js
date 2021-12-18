@@ -16,7 +16,7 @@ const BalancesTabWrapper = styled.div`
   transition: 0.3s all;
   width: fit-content;
   align-self: center;
-  height: 2.969vw;
+  height: 52px;
 
   padding: 0.4vw ${props => props.account ? "0.8vw 0.4vw 0.5vw" : "1.2vw"};;
   margin: 0.4vw 0 0.45vw 0.5vw;

@@ -227,12 +227,12 @@ export const SideBarMobile = ({showMobileSideBar, setShowMobileSideBar}) => {
                 <SocialMediasListButton opened={socialOpened} onClick={() => setSocialsOpened(true)}>
                     <img src={comments_black} alt={"social-medias"}/>
                     <SocialMediasList ref={innerRef} opened={socialOpened}> 
-                        <a href="mailto:email@argano.io" target="_blank" rel="noreferrer"> <i class="fas fa-envelope"></i> </a>
-                        <a href="https://t.me/ARGANO_DEFI" target="_blank" rel="noreferrer"> <i class="fab fa-telegram-plane"></i> </a>
-                        <a href="https://discord.com/invite/mH7PJnNCWP" target="_blank" rel="noreferrer"> <i class="fab fa-discord"></i> </a>
-                        <a href="https://twitter.com/argano_io" target="_blank" rel="noreferrer"> <i class="fab fa-twitter"></i> </a>
-                        <a href="https://argano.medium.com/" target="_blank" rel="noreferrer"> <i class="fab fa-medium"></i> </a>
-                        <a href="https://github.com/Argano-DEX/Argano-Contracts" target="_blank" rel="noreferrer"> <i class="fab fa-github"></i> </a>
+                        <a href="mailto:email@argano.io" target="_blank" rel="noreferrer"> <i className="fas fa-envelope"></i> </a>
+                        <a href="https://t.me/ARGANO_DEFI" target="_blank" rel="noreferrer"> <i className="fab fa-telegram-plane"></i> </a>
+                        <a href="https://discord.com/invite/mH7PJnNCWP" target="_blank" rel="noreferrer"> <i className="fab fa-discord"></i> </a>
+                        <a href="https://twitter.com/argano_io" target="_blank" rel="noreferrer"> <i className="fab fa-twitter"></i> </a>
+                        <a href="https://argano.medium.com/" target="_blank" rel="noreferrer"> <i className="fab fa-medium"></i> </a>
+                        <a href="https://github.com/Argano-DEX/Argano-Contracts" target="_blank" rel="noreferrer"> <i className="fab fa-github"></i> </a>
                     </SocialMediasList>
                 </SocialMediasListButton>
             </Footer>

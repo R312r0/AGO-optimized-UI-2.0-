@@ -90,9 +90,9 @@ const TradingFilters = () => {
 
                 <div className="trading-wrapper-filter__item__spliter">
                     <div className="trading-wrapper-filter__item__spliter__switcher">
-                        <div class="switch-wrapper">
+                        <div className="switch-wrapper">
                             <label>
-                                <input class="switch" type="checkbox" />
+                                <input className="switch" type="checkbox" />
                                 <div>
                                     <div></div>
                                 </div>
@@ -271,9 +271,9 @@ const TradingFilters = () => {
 
                 <div className="trading-wrapper-filter__item__spliter">
                     <div className="trading-wrapper-filter__item__spliter__switcher">
-                        <div class="switch-wrapper">
+                        <div className="switch-wrapper">
                             <label>
-                                <input class="switch" type="checkbox" />
+                                <input className="switch" type="checkbox" />
                                 <div>
                                     <div></div>
                                 </div>
@@ -391,9 +391,9 @@ const TradingFilters = () => {
 
                 <div className="trading-wrapper-filter__item__spliter">
                     <div className="trading-wrapper-filter__item__spliter__switcher">
-                        <div class="switch-wrapper">
+                        <div className="switch-wrapper">
                             <label>
-                                <input class="switch" type="checkbox" />
+                                <input className="switch" type="checkbox" />
                                 <div>
                                     <div></div>
                                 </div>
@@ -473,9 +473,9 @@ const TradingFilters = () => {
 
             <div className="trading-wrapper-filter__switch-wrapper">
                 <h3 className="trading-wrapper-filter__heading">Stop Loss</h3>
-                <div class="switch-wrapper">
+                <div className="switch-wrapper">
                     <label>
-                        <input class="switch" type="checkbox" />
+                        <input className="switch" type="checkbox" />
                         <div>
                             <div></div>
                         </div>

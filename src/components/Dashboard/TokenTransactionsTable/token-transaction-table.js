@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {useSystemContext} from '../../../systemProvider';
 import styled from 'styled-components';
 import {Spin} from "antd";
@@ -252,17 +252,17 @@ export const TokenTransactionTable = ({data}) => {
                     <Spin size={"default"} indicator={LOADER_INDICATOR}/>
                     :
                     <TableBody>
-                        {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item) => {
+                        {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item, index) => {
 
                             return (
-                                <>
+                                <Fragment key={`table_${index}`}>
                                     <div className='operation'>{item.txName}</div>
                                     <div>{item.totalValue}$</div>
                                     <div>{item.token0Amount}</div>
                                     <div>{item.token1Amount}</div>
                                     <div className='acc'>{item.acc}</div>
                                     <div className='time'>{item.time}</div>
-                                </>
+                                </Fragment>
                             );
                         })}
                     </TableBody>

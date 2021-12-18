@@ -1,17 +1,17 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
-import {formatFromDecimal, formattedNum} from '../../../utils/helpers';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { formatFromDecimal, formattedNum } from '../../../utils/helpers';
 import arrowUp from './arrow-up.svg';
 import arrowDown from './arrow-down.svg';
 import chart from './../../../assets/charts/chart.svg'
 import demoChart from './../../../assets/charts/demo-chart.svg'
-import {LineChart, XAxis, YAxis, Line, ResponsiveContainer, Tooltip} from 'recharts';
-import {} from '../../App/App';
-import {useSystemContext} from '../../../systemProvider';
-import {useDashboardContext} from '../../../providers/dashboard-provider';
-import {CustomToolTip} from "../../ChartCustomTooltip/chart-custom-tooltip";
+import { LineChart, XAxis, YAxis, Line, ResponsiveContainer, Tooltip } from 'recharts';
+import { } from '../../App/App';
+import { useSystemContext } from '../../../systemProvider';
+import { useDashboardContext } from '../../../providers/dashboard-provider';
+import { CustomToolTip } from "../../ChartCustomTooltip/chart-custom-tooltip";
 import styled from 'styled-components';
-import {useQuery} from "@apollo/client";
-import {MAIN_TOKENS_DATA_QUERY} from "../../../api/client";
+import { useQuery } from "@apollo/client";
+import { MAIN_TOKENS_DATA_QUERY } from "../../../api/client";
 
 
 const TokenPriceChartWrapper = styled.div`
@@ -27,7 +27,7 @@ const TokenPriceChartWrapper = styled.div`
 
   height: ${props => props.isWindowExpanded ? "28vw" : "10.5vw"};
   padding: 1.823vw 2.084vw;
-  margin-bottom: 3.646vw;
+  /* margin-bottom: 3.646vw; */
   
   background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
   box-shadow: 0px 0.208vw 0.833vw rgba(0, 0, 0, 0.25);
@@ -78,12 +78,27 @@ const TokenPriceChartWrapper = styled.div`
   }
 
   .single-price-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    overflow-x: scroll;
+    overflow-y: hidden;
     justify-content: space-between;
     transition: 0.3s all;
+    padding-bottom: 10px;
+    
+
+    &::-webkit-scrollbar {
+      height:0px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: darkgrey;
+      outline: 1px solid slategrey;
+    }
 
     .price-block-wrapper {
       display: flex;
@@ -94,6 +109,12 @@ const TokenPriceChartWrapper = styled.div`
       padding: 0 1.0415vw 0 1vw;
 
       margin-bottom: auto;
+
+      border-right: 1px solid #40BA93;
+
+    &:last-child{
+      border-right: none;
+    }
 
       .price-block-chart {
         display: flex;
@@ -262,156 +283,166 @@ const SinglePriceBlock = styled.div`
 
 export const TokenPricesCharts = () => {
 
-    const [expandWindow, setExpandWindow] = useState(false);
-    const {theme, tokens} = useSystemContext();
+  const [expandWindow, setExpandWindow] = useState(false);
+  const { theme, tokens } = useSystemContext();
 
-    const {data, error} = useQuery(MAIN_TOKENS_DATA_QUERY);
+  const { data, error } = useQuery(MAIN_TOKENS_DATA_QUERY);
 
-    // const Chart = ({data}) => {
-    //   const tickColor = theme === "light" ? "black" : "white"
-    //   return (
-    //       <ResponsiveContainer width={"100%"} height={"100%"}>
-    //           <LineChart
-    //               data={data}
-    //           >
-    //               <Line
-    //                   type="basis"
-    //                   dataKey="value"
-    //                   stroke="#40BA93"
-    //                   strokeWidth={5}
-    //                   dot={false}
-    //                   activeDot={true}
-    //               />
-    //               <Tooltip
-    //                   content={<CustomToolTip/>}
-    //               />
-    //                   <XAxis
-    //                       dataKey="time"
-    //                       axisLine={false}
-    //                       tickLine={false}
-    //                       stroke={tickColor}
-    //                       minTickGap={5}
-    //                   />
-    //               }
-    //
-    //           </LineChart>
-    //       </ResponsiveContainer>
-    //     )
-    // }
+  // const Chart = ({data}) => {
+  //   const tickColor = theme === "light" ? "black" : "white"
+  //   return (
+  //       <ResponsiveContainer width={"100%"} height={"100%"}>
+  //           <LineChart
+  //               data={data}
+  //           >
+  //               <Line
+  //                   type="basis"
+  //                   dataKey="value"
+  //                   stroke="#40BA93"
+  //                   strokeWidth={5}
+  //                   dot={false}
+  //                   activeDot={true}
+  //               />
+  //               <Tooltip
+  //                   content={<CustomToolTip/>}
+  //               />
+  //                   <XAxis
+  //                       dataKey="time"
+  //                       axisLine={false}
+  //                       tickLine={false}
+  //                       stroke={tickColor}
+  //                       minTickGap={5}
+  //                   />
+  //               }
+  //
+  //           </LineChart>
+  //       </ResponsiveContainer>
+  //     )
+  // }
 
-    const [showChart, setShowChart] = useState({active: true, index: 0})
+  const [showChart, setShowChart] = useState({ active: true, index: 0 })
 
-    return (
-        <TokenPriceChartWrapper isWindowExpanded={expandWindow} onClick={() => setExpandWindow(!expandWindow)}>
-          <h1 className="token-heading">Total Value Locked</h1>
-          <div className="single-price-wrapper">
-            {data?.tokens.map((item, _ind) => {
+  const scroll = () => {
+    const scrollContainer = document.querySelector("#chartWrapper");
 
-                if (item.symbol === "USDC" || item.symbol === "DAI" || item.symbol === "CNUSD") {
-                    return;
-                }
-                const currentDate = new Date().getTime();
-                const reverseLineChartArr = [...item.lineChartUSD].reverse();
-                const latestRecordChange = reverseLineChartArr.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
+    scrollContainer.addEventListener("wheel", (evt) => {
+      evt.preventDefault();
+      scrollContainer.scrollLeft += evt.deltaY;
+    });
+  }
 
-                let change24h = !latestRecordChange || +latestRecordChange.valueUSD === 0 ? 0 : ((item.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
+  const handleShiftKey = () => {
+    scroll();
+  }
 
-                const newLineChartData = item.lineChartUSD.map(item => {
-                    const date = new Date(item.timestamp * 1000);
-                    const time = `${date.getHours()}:${date.getMinutes()}`
+  return (
+    <TokenPriceChartWrapper isWindowExpanded={expandWindow} onClick={() => setExpandWindow(!expandWindow)} onMouseEnter={handleShiftKey}>
+      <h1 className="token-heading">Total Value Locked</h1>
+      <div className="single-price-wrapper" id='chartWrapper'>
+        {data?.tokens.map((item, _ind) => {
 
-                    return ({
-                        value: item.valueUSD,
-                        time
-                    })
-                })
+          if (item.symbol === "USDC" || item.symbol === "DAI" || item.symbol === "CNUSD") {
+            return;
+          }
+          const currentDate = new Date().getTime();
+          const reverseLineChartArr = [...item.lineChartUSD].reverse();
+          const latestRecordChange = reverseLineChartArr.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
 
-                const Arrow = change24h.toString().charAt(0) === "-"
-                ? <img src={arrowDown} alt="arrow-down-percent"/>
-                : <img src={arrowUp} alt="arrow-up-percent"/>
+          let change24h = !latestRecordChange || +latestRecordChange.valueUSD === 0 ? 0 : ((item.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
 
-                const supply = formatFromDecimal(tokens[item.symbol].totalSupply, tokens[item.symbol].decimals);
+          const newLineChartData = item.lineChartUSD.map(item => {
+            const date = new Date(item.timestamp * 1000);
+            const time = `${date.getHours()}:${date.getMinutes()}`
 
-                return (
-                  <>
-                    <div className="price-block-wrapper">
-                      <main>
-                        <SinglePriceBlock
-                          onMouseEnter={() => expandWindow ? null : setShowChart({active: true, index: _ind})}
-                          onMouseLeave={() => expandWindow ? null : setShowChart({active: false, index: null})}
-                          key={_ind}
-                          isShowDivider={_ind === 1}
-                          isWindowExpanded={expandWindow}
-                        >
-                          <h3> {item.symbol} </h3>
-                          <h1> ${(+item.priceUSD).toFixed(2)} </h1>
-                          <span> {Arrow} { change24h === Infinity ? 0 : change24h}% <span>(24h)</span> </span>
-                          <img src={demoChart} className='demo-chart' />
-                        </SinglePriceBlock>
-                        <div className="price-block-chart">
-                            <div className='chart-wrapper'>
-                                <ResponsiveContainer className='responsive-container-chart' width={"100%"} height={"100%"}>
-                                    <LineChart
-                                        data={newLineChartData}
-                                        // onMouseLeave={() => setChartValue({
-                                        //     time: data[data.length - 1].date,
-                                        //     value: data[data.length - 1].uv
-                                        // })}
-                                    >
-                                        <Line
-                                            type="monotone"
-                                            dataKey="value"
-                                            stroke="rgba(64, 186, 147, 0.05)"
-                                            strokeWidth={"1vw"}
-                                            dot={false}
-                                            activeDot={true}
-                                        />
-                                        <Line
-                                            type="monotone"
-                                            dataKey="value"
-                                            stroke="#40BA93"
-                                            strokeWidth={"0.25vw"}
-                                            dot={false}
-                                            activeDot={true}
-                                        />
-                                        <Tooltip
-                                            content={CustomToolTip}
-                                            // contentStyle={{display: 'none'}}
-                                            // formatter={(value, name, props) => {
-                                            //     const {payload: {date, uv}} = props;
-                                            //     if (chartValue.value !== uv) {
-                                            //         setChartValue({time: date, value: uv})
-                                            //     }
-                                            // }}
-                                        />
-                                        <XAxis
-                                            dataKey="time"
-                                            axisLine={false}
-                                            tickLine={false}
-                                            tick={{fontSize: "0.7vw"}}
-                                            stroke={theme === "light" ? "black" : "white"}
-                                        />
-                                    </LineChart>
-                                </ResponsiveContainer>
-                            </div>
-                          <main>
-                            <div className="token-data">
-                              <p>Supply:</p>
-                              <span>{formattedNum(supply)}</span>
-                            </div>
-                            <div className="token-data">
-                              <p>Market cap:</p>
-                              <span>${formattedNum(supply * item.priceUSD)}</span>
-                            </div>
-                          </main>
-                        </div>
-                      </main>
+            return ({
+              value: item.valueUSD,
+              time
+            })
+          })
+
+          const Arrow = change24h.toString().charAt(0) === "-"
+            ? <img src={arrowDown} alt="arrow-down-percent" />
+            : <img src={arrowUp} alt="arrow-up-percent" />
+
+          const supply = formatFromDecimal(tokens[item.symbol].totalSupply, tokens[item.symbol].decimals);
+
+          return (
+            <div className="price-block-wrapper" key={`price_block_${_ind}`}>
+              <main>
+                <SinglePriceBlock
+                  onMouseEnter={() => expandWindow ? null : setShowChart({ active: true, index: _ind })}
+                  onMouseLeave={() => expandWindow ? null : setShowChart({ active: false, index: null })}
+                  key={_ind}
+                  isShowDivider={_ind === 1}
+                  isWindowExpanded={expandWindow}
+                >
+                  <h3> {item.symbol} </h3>
+                  <h1> ${(+item.priceUSD).toFixed(2)} </h1>
+                  <span> {Arrow} {change24h === Infinity ? 0 : change24h}% <span>(24h)</span> </span>
+                  <img src={demoChart} className='demo-chart' />
+                </SinglePriceBlock>
+                <div className="price-block-chart">
+                  <div className='chart-wrapper'>
+                    <ResponsiveContainer className='responsive-container-chart' width={"100%"} height={"100%"}>
+                      <LineChart
+                        data={newLineChartData}
+                      // onMouseLeave={() => setChartValue({
+                      //     time: data[data.length - 1].date,
+                      //     value: data[data.length - 1].uv
+                      // })}
+                      >
+                        <Line
+                          type="monotone"
+                          dataKey="value"
+                          stroke="rgba(64, 186, 147, 0.05)"
+                          strokeWidth={"1vw"}
+                          dot={false}
+                          activeDot={true}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="value"
+                          stroke="#40BA93"
+                          strokeWidth={"0.25vw"}
+                          dot={false}
+                          activeDot={true}
+                        />
+                        <Tooltip
+                          content={CustomToolTip}
+                        // contentStyle={{display: 'none'}}
+                        // formatter={(value, name, props) => {
+                        //     const {payload: {date, uv}} = props;
+                        //     if (chartValue.value !== uv) {
+                        //         setChartValue({time: date, value: uv})
+                        //     }
+                        // }}
+                        />
+                        <XAxis
+                          dataKey="time"
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fontSize: "0.7vw" }}
+                          stroke={theme === "light" ? "black" : "white"}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <main>
+                    <div className="token-data">
+                      <p>Supply:</p>
+                      <span>{formattedNum(supply)}</span>
                     </div>
-                    <div className="separator"></div>
-                  </>
-                )
-            })}
-          </div>
-        </TokenPriceChartWrapper>
-    )
+                    <div className="token-data">
+                      <p>Market cap:</p>
+                      <span>${formattedNum(supply * item.priceUSD)}</span>
+                    </div>
+                  </main>
+                </div>
+              </main>
+            </div>
+          )
+        })}
+      </div>
+    </TokenPriceChartWrapper>
+  )
 }

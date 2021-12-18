@@ -93,10 +93,10 @@ export const ThemeSwitcher = () => {
                 </div>
             </label> */}
 
-            <div class="switch-wrapper">
+            <div className="switch-wrapper">
                 <label>
                     <input 
-                    class="switch" 
+                    className="switch" 
                     type="checkbox" 
                     onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
                     />
