@@ -224,13 +224,11 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
             return <CreatePairButtonWrapper disabled={true}> Please choose tokens from list </CreatePairButtonWrapper>
         }
 
-        console.log(token0Balance, token0Input)
-
-        if (token0Balance < token0Input) {
+        if (+token0Balance < token0Input) {
             return <CreatePairButtonWrapper disabled={true}> Insufficient {token0Select.symbol} balance </CreatePairButtonWrapper>
         }
 
-        if (token1Balance < token1Input) {
+        if (+token1Balance < token1Input) {
             return <CreatePairButtonWrapper disabled={true}> Insufficient {token1Select.symbol} balance </CreatePairButtonWrapper>
         }
 

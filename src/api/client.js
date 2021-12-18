@@ -12,7 +12,7 @@ export const client = new ApolloClient({
 
 export const DASHBOARD_QUERY = gql(`
     query dashboard {
-        uniswapFactory(id: "0xcaf4fa9103ef5f4832dfcac40a0d66c4202de377") {
+        uniswapFactory(id: "0xd97c98cce28353a2efbb41b9f13b3a7229b02b92") {
           totalValueLocked(orderBy: timestamp, orderDirection: asc) {
             value
             timestamp
