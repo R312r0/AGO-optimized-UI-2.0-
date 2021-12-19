@@ -1,18 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {useSystemContext} from '../../../systemProvider';
-import {formattedNum} from '../../../utils/helpers';
-import {TokenIcon} from '../../TokenIcon/token_icon';
+import { useSystemContext } from '../../../systemProvider';
+import { formattedNum } from '../../../utils/helpers';
+import { TokenIcon } from '../../TokenIcon/token_icon';
 import pig_icon from '../../../assets/icons/pig-balances.svg';
 import pig_icon_light from '../../../assets/icons/pig-balances-light.svg';
-import {useWeb3React} from '@web3-react/core';
-import {useMediaQuery} from 'react-responsive';
-import {useSwipeable} from 'react-swipeable';
+import { useWeb3React } from '@web3-react/core';
+import { useMediaQuery } from 'react-responsive';
+import { useSwipeable } from 'react-swipeable';
 import vector from '../../../assets/icons/whiteVector.svg';
-import {useQuery} from "@apollo/client";
-import {TOKENS_FOR_USER_BALANCES} from "../../../api/client";
+import { useQuery } from "@apollo/client";
+import { TOKENS_FOR_USER_BALANCES } from "../../../api/client";
 
 const BalancesTabWrapper = styled.div`
+  max-width: 100%;
   transition: 0.3s all;
   width: fit-content;
   align-self: center;
@@ -31,7 +32,22 @@ const BalancesTabWrapper = styled.div`
   justify-content: center;
 
   font-size: 0.65vw;
+  overflow: hidden;
+  overflow-x: auto;
   cursor: pointer;
+
+  &::-webkit-scrollbar {
+      height:0px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: darkgrey;
+      outline: 1px solid slategrey;
+    }
 
   @media screen and (max-width: 1024px) {
     font-size: 0.9vw;
@@ -201,10 +217,12 @@ const BalanceOverall = styled.div`
 `
 
 const BalanceList = styled.ul`
+  max-width: 100%;
   width: 100%;
   margin-left: auto;
   box-sizing: border-box;
   padding: 2.083vw;
+  overflow: hidden;
 `
 
 const BalanceSwipeStripe = styled.div`
@@ -242,10 +260,12 @@ const BalanceListItem = styled.li`
   img {
     width: 1.042vw;
     height: 1.042vw;
+    
   }
 `
 
 const BalanceListDesktop = styled.ul`
+  max-width: 80%;
   display: ${props => props.opened ? "flex" : "none !important"};
   height: 100%;
 
@@ -254,10 +274,26 @@ const BalanceListDesktop = styled.ul`
 
   display: flex;
   align-items: center;
+  column-gap: 15px;
   color: white;
 
   opacity: ${props => props.opened ? "1" : "0"};
   transition: ${props => props.opened ? "1s ease" : "0"};
+  overflow: hidden;
+  overflow-x: auto;
+
+    &::-webkit-scrollbar {
+        height:0px;
+      }
+    
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: darkgrey;
+      outline: 1px solid slategrey;
+    }
   
   @media screen and (max-width: 750px) {
     display: none;
@@ -267,145 +303,153 @@ const BalanceListDesktop = styled.ul`
 const BalanceListItemDesktop = styled.li`
   display: flex;
   align-items: center;
-
-  padding-right: 1.042vw;
+  column-gap: 5px;
+  padding-right: 5px;
 
   img {
-    width: 1.563vw;
-    height: 1.563vw;
+    max-width:23px;
+    width: 100%;
   }
 
   span {
     color: #828282;
     font-size: 0.729vw;
-    padding-left: 0.5vw;
-  }
-
-  &:not(:first-child) {
-    padding-left: 1.042vw;
   }
 
   &:not(:last-child) {
-    border-right: 0.104vw solid #4F4F4F;
+    border-right:1px solid #4F4F4F;
   }
 `
 
 
 export const BalancesTab = () => {
 
-    const [balancesExpanded, setBalancesExpaned] = useState(false);
-    const [balancesMobileExpanded, setBalancesMobileExpanded] = useState(false)
-    const {data, loading} = useQuery(TOKENS_FOR_USER_BALANCES);
-    const [balances, setBalances] = useState(null)
-    const {account} = useWeb3React();
-    const {theme, userProtfolio} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'});
+  const [balancesExpanded, setBalancesExpaned] = useState(false);
+  const [balancesMobileExpanded, setBalancesMobileExpanded] = useState(false)
+  const { data, loading } = useQuery(TOKENS_FOR_USER_BALANCES);
+  const [balances, setBalances] = useState(null)
+  const { account } = useWeb3React();
+  const { theme, userProtfolio } = useSystemContext();
+  const isMobileScreen = useMediaQuery({ query: '(max-width: 750px)' });
 
-    useEffect(() => {
+  useEffect(() => {
 
-        if(!loading && data.tokens && userProtfolio) {
+    if (!loading && data.tokens && userProtfolio) {
 
-            const res = userProtfolio.map((item) => {
-               const name = item.name;
-               const nativeBalance = item.userNativeBalance;
-               let usdBalance = data.tokens.find(tok => tok.symbol === name)?.priceUSD;
+      const res = userProtfolio.map((item) => {
+        const name = item.name;
+        const nativeBalance = item.userNativeBalance;
+        let usdBalance = data.tokens.find(tok => tok.symbol === name)?.priceUSD;
 
-               if (!usdBalance) {
-                    usdBalance = 0;
-               }
-
-               return {name, nativeBalance, usdBalance: usdBalance * nativeBalance}
-
-            });
-
-            const filteredRes = res.filter((item) => {
-                if (item.name === "USDC" || item.name === "DAI") {
-                    return false;
-                }
-                else {
-                    return true;
-                }
-
-            })
-
-            setBalances(filteredRes);
+        if (!usdBalance) {
+          usdBalance = 0;
         }
 
-    }, [data, userProtfolio, loading])
+        return { name, nativeBalance, usdBalance: usdBalance * nativeBalance }
+
+      });
+
+      const filteredRes = res.filter((item) => {
+        if (item.name === "USDC" || item.name === "DAI") {
+          return false;
+        }
+        else {
+          return true;
+        }
+
+      })
+
+      setBalances(filteredRes);
+    }
+
+  }, [data, userProtfolio, loading])
 
 
 
 
 
-    const handlersMobileBalancesExpanded = useSwipeable({
-        onSwipedUp: () => {
-            setBalancesMobileExpanded(false)
-        },
-        preventDefaultTouchmoveEvent: true,
-    })
+  const handlersMobileBalancesExpanded = useSwipeable({
+    onSwipedUp: () => {
+      setBalancesMobileExpanded(false)
+    },
+    preventDefaultTouchmoveEvent: true,
+  })
+
+  const scroll = () => {
+    const scrollContainer = document.querySelector("#balanceList");
+
+    scrollContainer.addEventListener("wheel", (evt) => {
+      evt.preventDefault();
+      scrollContainer.scrollLeft += evt.deltaY;
+    });
+  }
+
+  const handleShiftKey = () => {
+    scroll();
+  }
 
 
-    return (
-        <BalancesTabWrapper 
-          opened={balancesExpanded} mobile={isMobileScreen} account={account}
-          onClick={() => isMobileScreen ? setBalancesMobileExpanded(true) : setBalancesExpaned(!balancesExpanded)}
-          >
-            <>
-                {account ?
-                    <>
-                        <div className="balance-tab-wrapper">
-                          <img className='balance-tab-wrapper__pig' src={theme === "light" ? pig_icon_light : pig_icon} alt="balance"/>
-                          <p className='balance'> Balance </p>
-                          <div className="balance-arrow-wrapper">
-                            <p> {balances ? formattedNum(balances.reduce((a, {usdBalance}) => a + usdBalance, 0)) : 0.00}$ </p>
-                              <svg className="vector" width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.901211 1.07468e-08L6 5L0.901211 10L1.05386e-08 9.11625L4.19758 5L1.0871e-07 0.88375" fill="white"/>
-                              </svg>
-                          </div>
-                        </div>
+  return (
+    <BalancesTabWrapper
+      opened={balancesExpanded} mobile={isMobileScreen} account={account}
+      onClick={() => isMobileScreen ? setBalancesMobileExpanded(true) : setBalancesExpaned(!balancesExpanded)}
+    >
+      <>
+        {account ?
+          <>
+            <div className="balance-tab-wrapper">
+              <img className='balance-tab-wrapper__pig' src={theme === "light" ? pig_icon_light : pig_icon} alt="balance" />
+              <p className='balance'> Balance </p>
+              <div className="balance-arrow-wrapper">
+                <p> {balances ? formattedNum(balances.reduce((a, { usdBalance }) => a + usdBalance, 0)) : 0.00}$ </p>
+                <svg className="vector" width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.901211 1.07468e-08L6 5L0.901211 10L1.05386e-08 9.11625L4.19758 5L1.0871e-07 0.88375" fill="white" />
+                </svg>
+              </div>
+            </div>
 
-                        <BalanceListDesktop opened={balancesExpanded}>
-                            {balances && balances.map((item) => {
-                                return (
-                                    <BalanceListItemDesktop key={"token-" + item.name}>
-                                        <TokenIcon iconName={item.name}/>
-                                        <span> {formattedNum(item.nativeBalance)}{item.name}/{formattedNum(item.usdBalance)}$ </span>
-                                    </BalanceListItemDesktop>
-                                )
-                            })}
-                        </BalanceListDesktop>
-                    </>
-                    :
-                    <p> No balance, connect wallet! </p>
-                }
-            </>
-            {isMobileScreen ?
-                <>
-                    <BalancesMobileExpandWrapper opened={balancesMobileExpanded}>
-                    </BalancesMobileExpandWrapper>
-                    <BalanceExpand opened={balancesMobileExpanded}>
-                        <BalanceOverall>
-                            <img src={theme === "light" ? pig_icon_light : pig_icon} alt="balance"/>
-                            <h5> Balance </h5>
-                            <h5> {userProtfolio ? formattedNum(userProtfolio.reduce((a, {userUsdBalance}) => a + userUsdBalance, 0)) : 0.00}$ </h5>
-                        </BalanceOverall>
-                        <BalanceList>
-                            {userProtfolio?.map(item => {
-                                return (
-                                    <BalanceListItem>
-                                        <TokenIcon iconName={item.name}/>
-                                        <span> {formattedNum(+item.userNativeBalance)}{item.name}/{formattedNum(item.userUsdBalance)}$ </span>
-                                    </BalanceListItem>
-                                )
-                            })}
-                        </BalanceList>
-                        <BalanceSwipeStripe {...handlersMobileBalancesExpanded}>
-                        </BalanceSwipeStripe>
-                    </BalanceExpand>
-                </>
-                :
-                null
-            }
-        </BalancesTabWrapper>
-    )
+            <BalanceListDesktop opened={balancesExpanded} onMouseEnter={handleShiftKey} id='balanceList'>
+              {balances && balances.map((item) => {
+                return (
+                  <BalanceListItemDesktop key={"token-" + item.name}>
+                    <TokenIcon iconName={item.name} />
+                    <span> {formattedNum(item.nativeBalance)}{item.name}/{formattedNum(item.usdBalance)}$ </span>
+                  </BalanceListItemDesktop>
+                )
+              })}
+            </BalanceListDesktop>
+          </>
+          :
+          <p> No balance, connect wallet! </p>
+        }
+      </>
+      {isMobileScreen ?
+        <>
+          <BalancesMobileExpandWrapper opened={balancesMobileExpanded}>
+          </BalancesMobileExpandWrapper>
+          <BalanceExpand opened={balancesMobileExpanded}>
+            <BalanceOverall>
+              <img src={theme === "light" ? pig_icon_light : pig_icon} alt="balance" />
+              <h5> Balance </h5>
+              <h5> {userProtfolio ? formattedNum(userProtfolio.reduce((a, { userUsdBalance }) => a + userUsdBalance, 0)) : 0.00}$ </h5>
+            </BalanceOverall>
+            <BalanceList >
+              {userProtfolio?.map(item => {
+                return (
+                  <BalanceListItem>
+                    <TokenIcon iconName={item.name} />
+                    <span> {formattedNum(+item.userNativeBalance)}{item.name}/{formattedNum(item.userUsdBalance)}$ </span>
+                  </BalanceListItem>
+                )
+              })}
+            </BalanceList>
+            <BalanceSwipeStripe {...handlersMobileBalancesExpanded}>
+            </BalanceSwipeStripe>
+          </BalanceExpand>
+        </>
+        :
+        null
+      }
+    </BalancesTabWrapper>
+  )
 }

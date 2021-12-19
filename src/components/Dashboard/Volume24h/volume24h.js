@@ -15,7 +15,7 @@ const Volume24hChartWrapper = styled.div`
   align-self: center;
   box-sizing: border-box;
   justify-self: flex-start;
-  grid-template-rows: 30% 70%;
+  grid-template-rows: 40% 60%;
   padding: ${props => props.mobile ? "0" : "4.5% 11.5%"};
   
   // Responsive || Height

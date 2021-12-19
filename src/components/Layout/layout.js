@@ -27,9 +27,11 @@ const LayoutWrapper = styled.div`
 const Header = styled.div`
   display: grid;
   grid-column: 1/5;
-  grid-template-columns: ${props => props.mobile ? "1fr 3fr 1fr" : "0.4fr 3fr 0.5fr"};
+  /* grid-template-columns: ${props => props.mobile ? "1fr 3fr 1fr" : "0.4fr 3fr 0.5fr"}; */
+  grid-template-columns: ${props => props.mobile ? "1fr 3fr 1fr" : "10% 75% 15%"};
   grid-template-rows: ${props => props.mobile ? "1fr 1fr" : "none"};
   box-sizing: border-box;
+  column-gap:10px;
 `
 
 const Content = styled.div`

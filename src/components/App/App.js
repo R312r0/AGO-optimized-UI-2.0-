@@ -1,6 +1,6 @@
-import React from 'react'
-import {BrowserRouter as Router, Route, Switch}  from "react-router-dom"
-import {WalletModal} from "../WalletModal/wallet_modal"
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import { WalletModal } from "../WalletModal/wallet_modal"
 import { CurrencySwitchModal } from '../MintRedeem/CurrencySwitchModal/currency-switch-modal';
 
 // Pages
@@ -12,27 +12,39 @@ import { Trading } from '../Trading/trading';
 import { Layout } from '../Layout/layout';
 import { Accounts } from '../Accounts/accounts';
 import 'antd/dist/antd.css';
-import {Foundry} from "../Foundry/foundry";
+import { Foundry } from "../Foundry/foundry";
+import { useSystemContext } from '../../systemProvider'
 
 export const App = () => {
+    const { connectWallet } = useSystemContext()
+    useEffect(() => {
+        setTimeout(() => {
+
+            const connectedWallet = localStorage.getItem('connected Wallet');
+            if (connectedWallet) {
+                connectWallet(connectedWallet);
+            }
+        }, 0)
+
+    }, [])
 
     return (
         <>
             <Router>
                 <Switch>
                     <Layout>
-                        <Route path="/" component={Dashboard} exact/>
-                        <Route path="/mint-redeem" component={MintRedeem} exact/>
-                        <Route path="/foundry" component={Foundry} exact/>
-                        <Route path="/staking" component={StakingRewards} exact/>
-                        <Route path="/liqudity-pools" component={LiquidityPools} exact/>
-                        <Route path="/trading" component={Trading} exact/>
-                        <Route path="/accounts" component={Accounts} exact/>
+                        <Route path="/" component={Dashboard} exact />
+                        <Route path="/mint-redeem" component={MintRedeem} exact />
+                        <Route path="/foundry" component={Foundry} exact />
+                        <Route path="/staking" component={StakingRewards} exact />
+                        <Route path="/liqudity-pools" component={LiquidityPools} exact />
+                        <Route path="/trading" component={Trading} exact />
+                        <Route path="/accounts" component={Accounts} exact />
                     </Layout>
                 </Switch>
             </Router>
-            <WalletModal/>
-            <CurrencySwitchModal/>
+            <WalletModal />
+            <CurrencySwitchModal />
         </>
     )
 }

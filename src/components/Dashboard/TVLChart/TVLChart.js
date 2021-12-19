@@ -1,9 +1,9 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import {AreaChart, Area, LineChart, Line, Tooltip, XAxis, ResponsiveContainer} from 'recharts';
-import {useSystemContext} from '../../../systemProvider';
-import {formattedNum} from '../../../utils/helpers';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { AreaChart, Area, LineChart, Line, Tooltip, XAxis, ResponsiveContainer, Bar } from 'recharts';
+import { useSystemContext } from '../../../systemProvider';
+import { formattedNum } from '../../../utils/helpers';
 import styled from 'styled-components';
-import {useMediaQuery} from 'react-responsive';
+import { useMediaQuery } from 'react-responsive';
 
 const TVLChartWrapper = styled.div`
   background: ${props => props.mobile ? "transparent" : " radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%)"};
@@ -78,100 +78,117 @@ const TVLChartWrapper = styled.div`
       margin-bottom: 24px;
     }
   }
+
+  .recharts-cartesian-axis{
+    margin-top:10px;
+  }
+  
 `
 
-export const TVLChart = ({data}) => {
-    const {theme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
-    const [chartValue, setChartValue] = useState({time: undefined, value: undefined});
-    const [loading, setLoading] = useState(true);
+export const TVLChart = ({ data }) => {
+  const { theme } = useSystemContext();
+  const isMobileScreen = useMediaQuery({ query: '(max-width: 750px)' })
+  const [chartValue, setChartValue] = useState({ time: undefined, value: undefined });
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if(data.length > 0) {
-            setChartValue({
-                time: data[data.length - 1].date,
-                value: data[data.length - 1].uv
-            })
-            setLoading(false);
-        }
-    }, [data])
+  useEffect(() => {
+    if (data.length > 0) {
+      setChartValue({
+        time: data[data.length - 1].date,
+        value: data[data.length - 1].uv
+      })
+      setLoading(false);
+    }
+  }, [data])
 
+  return (
+    <>
+      {loading ? <h5> Loading </h5> :
+        <TVLChartWrapper mobile={isMobileScreen}>
+          <div className={'tvl-info'}>
+            {!isMobileScreen ? <p>Total Value Locked</p> : null}
+            <h1>${formattedNum(chartValue.value)}</h1>
+            <p>{chartValue.time}</p>
+          </div>
+          <div className={'tvl-chart'}>
+            <ResponsiveContainer className='responsive-container-chart' width={"100%"} height={"100%"}>
+              {isMobileScreen ?
+                <AreaChart data={data}>
+                  <defs>
+                    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#129a74" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#129a74" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    contentStyle={{ padding: '10px 0' }}
+                    dataKey="time"
+                    axisLine={false}
+                    tickLine={false}
+                    stroke={theme === "light" ? "black" : "white"}
+                  />
+                  <Area type="monotone" strokeWidth={1} dataKey="uv" stroke="#40BA93" fillOpacity={1} fill="url(#colorUv)" />
+                </AreaChart>
+                :
+                <LineChart
 
-    return (
-        <>
-        {loading ? <h5> Loading </h5> :
-                <TVLChartWrapper mobile={isMobileScreen}>
-                    <div className={'tvl-info'}>
-                        {!isMobileScreen ? <p>Total Value Locked</p> : null}
-                        <h1>${formattedNum(chartValue.value)}</h1>
-                        <p>{chartValue.time}</p>
-                    </div>
-                    <div className={'tvl-chart'}>
-                        <ResponsiveContainer className='responsive-container-chart' width={"100%"} height={"100%"}>
-                            {isMobileScreen ?
-                                <AreaChart data={data}>
-                                    <defs>
-                                        <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="10%" stopColor="#40BA93" stopOpacity={1}/>
-                                            <stop offset="90%" stopColor="rgba(64, 186, 147, 0)" stopOpacity={0}/>
-                                        </linearGradient>
-                                    </defs>
-                                    <XAxis
-                                        dataKey="time"
-                                        axisLine={false}
-                                        tickLine={false}
-                                        stroke={theme === "light" ? "black" : "white"}
-                                    />
-                                    <Area type="monotone" strokeWidth={1} dataKey="uv" stroke="#40BA93" fill="url(#colorUv)"/>
-                                </AreaChart>
-                                :
-                                <LineChart
+                  data={data}
+                  onMouseLeave={() => setChartValue({
+                    time: data[data.length - 1].date,
+                    value: data[data.length - 1].uv
+                  })}
 
-                                    data={data}
-                                    onMouseLeave={() => setChartValue({
-                                        time: data[data.length - 1].date,
-                                        value: data[data.length - 1].uv
-                                    })}
-                                >
-                                    <Line
-                                        type="monotone"
-                                        dataKey="uv"
-                                        stroke="rgba(64, 186, 147, 0.05)"
-                                        strokeWidth={"1vw"}
-                                        dot={false}
-                                        activeDot={true}
-                                    />
-                                    <Line
-                                        type="monotone"
-                                        dataKey="uv"
-                                        stroke="#40BA93"
-                                        strokeWidth={"0.25vw"}
-                                        dot={false}
-                                        activeDot={true}
-                                    />
-                                    <Tooltip
-                                        contentStyle={{display: 'none'}}
-                                        formatter={(value, name, props) => {
-                                            const {payload: {date, uv}} = props;
-                                            if (chartValue.value !== uv) {
-                                                setChartValue({time: date, value: uv})
-                                            }
-                                        }}
-                                    />
-                                    <XAxis
-                                        dataKey="time"
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{fontSize: "1vw"}}
-                                        stroke={theme === "light" ? "black" : "white"}
-                                    />
-                                </LineChart>
-                            }
-                        </ResponsiveContainer>
-                    </div>
-                </TVLChartWrapper>
-            }
-        </>
-    )
+                >
+                  <defs>
+                    <filter id="shadow" height="200%">
+                      <feDropShadow dx="0" dy="10" stdDeviation="10" />
+                    </filter>
+                  </defs>
+                  <Line
+                    filter="url(#shadow)"
+                    type="monotone"
+                    dataKey="uv"
+                    stroke="#40BA93"
+                    strokeWidth={"0.25vw"}
+                    dot={false}
+                    activeDot={true}
+                    margin={{
+                      top: 0,
+                      right: 0,
+                      left: 0,
+                      bottom: 20,
+                    }}
+                  />
+                  <Tooltip
+                    contentStyle={{ display: 'none' }}
+                    formatter={(value, name, props) => {
+                      const { payload: { date, uv } } = props;
+                      if (chartValue.value !== uv) {
+                        setChartValue({ time: date, value: uv })
+                      }
+                    }}
+
+                  />
+                  <XAxis
+                    dataKey="time"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fontSize: "1vw" }}
+                    stroke={theme === "light" ? "black" : "white"}
+                    margin={{
+                      top: 10,
+                      right: 0,
+                      left: 0,
+                      bottom: 0,
+                    }}
+                  />
+                </LineChart>
+              }
+            </ResponsiveContainer>
+          </div>
+        </TVLChartWrapper>
+      }
+    </>
+  )
 
 }

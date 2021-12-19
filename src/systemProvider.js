@@ -174,9 +174,11 @@ export const SystemProvider = ({children}) => {
         switch (wallet) {
             case "MetaMask":
                 activate(metaMask);
+                localStorage.setItem('connected Wallet', wallet);
                 break;
             default: 
-                activate(network)
+                activate(network);
+                localStorage.setItem('connected Wallet', wallet);
                 break;
         }
         setIsWalletModal(false)
