@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 
 import { ResponsiveContainer, LineChart, Line, Tooltip, XAxis} from 'recharts';
 import { useSystemContext } from '../../../systemProvider';
-import {formatFromDecimal, formattedNum} from '../../../utils/helpers';
+import {
+    findNearestPorfolioTokenPrice,
+    findNearestPortfolioTokenPrice,
+    formatFromDecimal,
+    formattedNum
+} from '../../../utils/helpers';
 import {useQuery} from "@apollo/client";
 import {PORTFOLIO_PERFOMANCE} from "../../../api/client";
 import {useWeb3React} from "@web3-react/core";
@@ -20,10 +25,12 @@ export const PortfolioPerfomance = () => {
     const [portfolioPerfValue, setPortfolioPerfValue] = useState(0);
     const [readyDataLoading, setReadyDataLoading] = useState(true);
 
+    console.log(data);
+
     useEffect(() => {
 
         if (data?.user && !loading) {
-            formatUserPortfolioData(data.user.portfolioPerfomance)
+            formatUserPortfolioData(data.user.portfolioPerfomance, data.tokens)
         }
         else {
             setFormattedData([]);
@@ -41,43 +48,36 @@ export const PortfolioPerfomance = () => {
 
     }, [formattedData])
 
-    const formatUserPortfolioData = (arr) => {
+    const formatUserPortfolioData = (arr, tokens) => {
 
         const newData = arr.map((item) => {
 
             const {value: {
                 AGOBalance,
-                AGOPrice,
                 AGOUSDBalance,
-                AGOUSDPrice,
+                AGOBTCBalance,
                 CNUSDBalance,
-                CNUSDPrice,
+                CNBTCBalance,
                 WMATICBalance,
-                WMATICPrice,
                 USDTBalance,
-                USDTPrice
+                WBTCBalance
             }} = item;
 
-            const AgoToDollar = parseFloat(formatFromDecimal(AGOBalance, 18)) * parseFloat(AGOPrice);
-            const AgoUsdToDollar =  parseFloat(formatFromDecimal(AGOUSDBalance, 18)) * parseFloat(AGOUSDPrice)
-            const CnUsdToDollart =  parseFloat(formatFromDecimal(CNUSDBalance, 18)) * parseFloat(CNUSDPrice)
-            const WmaticToDollart =  parseFloat(formatFromDecimal(WMATICBalance, 18)) * parseFloat(WMATICPrice)
-            const USDTToDollar = parseFloat(formatFromDecimal(USDTBalance, 18)) * parseFloat(USDTPrice);
+            console.log(item);
 
+            const AgoToDollar = parseFloat(formatFromDecimal(AGOBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "AGO");
+            const AgoUsdToDollar =  parseFloat(formatFromDecimal(AGOUSDBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "AGOUSD")
+            const AgoBtcToDollar =  parseFloat(formatFromDecimal(AGOBTCBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "AGOBTC")
+            const CnUsdToDollar =  parseFloat(formatFromDecimal(CNUSDBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "CNUSD")
+            const CnBtcToDollar =  parseFloat(formatFromDecimal(CNBTCBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "CNBTC")
+            const WmaticToDollar =  parseFloat(formatFromDecimal(WMATICBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "WMATIC")
+            const USDTToDollar = parseFloat(formatFromDecimal(USDTBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "USDT");
+            const WBTCToDollar = parseFloat(formatFromDecimal(WBTCBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "WBTC");
 
             const newTime = new Date(item.timestamp * 1000).getMinutes();
-
-            return {value: parseFloat((AgoToDollar + AgoUsdToDollar + CnUsdToDollart + WmaticToDollart +  USDTToDollar).toFixed(2)), time: newTime}
+            const sum = parseFloat((AgoToDollar + AgoUsdToDollar + AgoBtcToDollar + CnUsdToDollar + CnBtcToDollar + WmaticToDollar +  USDTToDollar +  WBTCToDollar).toFixed(2))
+            return {value: sum, time: newTime}
         })
-
-        const currentPortfolio = data.tokens.map((item) => {
-            const userBal = userProtfolio.find(pf => pf.name === item.symbol).userNativeBalance
-            return userBal * item.priceUSD
-        })
-
-        const currentTime = new Date().getMinutes()
-
-        newData.push({value:  currentPortfolio.reduce((a, b) => a + b), time: currentTime});
 
         setFormattedData(newData);
         setPortfolioPerfValue(newData[newData.length - 1].value)

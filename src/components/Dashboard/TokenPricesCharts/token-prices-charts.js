@@ -286,7 +286,64 @@ export const TokenPricesCharts = () => {
   const [expandWindow, setExpandWindow] = useState(false);
   const { theme, tokens } = useSystemContext();
 
-  const { data, error } = useQuery(MAIN_TOKENS_DATA_QUERY);
+  const { data, loading, error } = useQuery(MAIN_TOKENS_DATA_QUERY);
+  const [tokenPricesData, setTokenPricesData] = useState(null);
+
+  useEffect(() => {
+
+    if (data && !loading) {
+      const filteredData = data.tokens.filter((item) => {
+        if (item.symbol === "AGOUSD" || item.symbol === "CNUSD" || item.symbol === "AGOBTC" || item.symbol === "CNBTC") {
+          return item
+        }
+        else {
+          return false
+        }
+      })
+
+     const readyData = convertFilteredData(filteredData);
+
+      setTokenPricesData(readyData)
+
+    }
+
+  }, [data, loading])
+
+
+  const convertFilteredData = (arr) => {
+
+    const res = arr.map((item) => {
+
+      const name = item.symbol;
+      const price = (+item.priceUSD).toFixed(2)
+      const currentDate = new Date().getTime();
+      const reverseLineChartArr = [...item.lineChartUSD].reverse();
+      const latestRecordChange = reverseLineChartArr.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
+
+      let change24h = !latestRecordChange || +latestRecordChange.valueUSD === 0 ? 0 : ((item.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
+
+      const newLineChartData = item.lineChartUSD.map(item => {
+        const date = new Date(item.timestamp * 1000);
+        const time = `${date.getHours()}:${date.getMinutes()}`
+
+        return ({
+          value: item.valueUSD,
+          time
+        })
+      })
+
+
+
+      const supply = formatFromDecimal(tokens[item.symbol].totalSupply, tokens[item.symbol].decimals);
+      const market = item.priceUSD * supply;
+      return {name, price, chartData: newLineChartData, change24h, supply: formattedNum(supply), marketCap: formattedNum(market)}
+
+    })
+
+
+    return res;
+
+  }
 
   // const Chart = ({data}) => {
   //   const tickColor = theme === "light" ? "black" : "white"
@@ -339,32 +396,12 @@ export const TokenPricesCharts = () => {
     <TokenPriceChartWrapper isWindowExpanded={expandWindow} onClick={() => setExpandWindow(!expandWindow)} onMouseEnter={handleShiftKey}>
       <h1 className="token-heading">Total Value Locked</h1>
       <div className="single-price-wrapper" id='chartWrapper'>
-        {data?.tokens.map((item, _ind) => {
-
-          if (item.symbol === "USDC" || item.symbol === "DAI" || item.symbol === "CNUSD") {
-            return;
-          }
-          const currentDate = new Date().getTime();
-          const reverseLineChartArr = [...item.lineChartUSD].reverse();
-          const latestRecordChange = reverseLineChartArr.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
-
-          let change24h = !latestRecordChange || +latestRecordChange.valueUSD === 0 ? 0 : ((item.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
-
-          const newLineChartData = item.lineChartUSD.map(item => {
-            const date = new Date(item.timestamp * 1000);
-            const time = `${date.getHours()}:${date.getMinutes()}`
-
-            return ({
-              value: item.valueUSD,
-              time
-            })
-          })
+        {tokenPricesData && tokenPricesData.map(({name, price, chartData, change24h, supply, marketCap}, _ind) => {
 
           const Arrow = change24h.toString().charAt(0) === "-"
-            ? <img src={arrowDown} alt="arrow-down-percent" />
-            : <img src={arrowUp} alt="arrow-up-percent" />
+              ? <img src={arrowDown} alt="arrow-down-percent" />
+              : <img src={arrowUp} alt="arrow-up-percent" />
 
-          const supply = formatFromDecimal(tokens[item.symbol].totalSupply, tokens[item.symbol].decimals);
 
           return (
             <div className="price-block-wrapper" key={`price_block_${_ind}`}>
@@ -376,8 +413,8 @@ export const TokenPricesCharts = () => {
                   isShowDivider={_ind === 1}
                   isWindowExpanded={expandWindow}
                 >
-                  <h3> {item.symbol} </h3>
-                  <h1> ${(+item.priceUSD).toFixed(2)} </h1>
+                  <h3> {name} </h3>
+                  <h1> ${price} </h1>
                   <span> {Arrow} {change24h === Infinity ? 0 : change24h}% <span>(24h)</span> </span>
                   <img src={demoChart} className='demo-chart' />
                 </SinglePriceBlock>
@@ -385,7 +422,7 @@ export const TokenPricesCharts = () => {
                   <div className='chart-wrapper'>
                     <ResponsiveContainer className='responsive-container-chart' width={"100%"} height={"100%"}>
                       <LineChart
-                        data={newLineChartData}
+                        data={chartData}
                       // onMouseLeave={() => setChartValue({
                       //     time: data[data.length - 1].date,
                       //     value: data[data.length - 1].uv
@@ -428,11 +465,11 @@ export const TokenPricesCharts = () => {
                   <main>
                     <div className="token-data">
                       <p>Supply:</p>
-                      <span>{formattedNum(supply)}</span>
+                      <span>{supply}</span>
                     </div>
                     <div className="token-data">
                       <p>Market cap:</p>
-                      <span>${formattedNum(supply * item.priceUSD)}</span>
+                      <span>${marketCap}</span>
                     </div>
                   </main>
                 </div>

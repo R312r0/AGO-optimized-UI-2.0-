@@ -26,8 +26,10 @@ export const DASHBOARD_QUERY = gql(`
             name
             from
             token0
+            tokenShare
             token1
             amount0
+            amountShare
             amount1
             amountTotalUSD
             timestamp
@@ -155,22 +157,24 @@ export const PORTFOLIO_PERFOMANCE = gql(`
             portfolioPerfomance(first: 200, orderBy: timestamp, orderDirection: asc) {
               value {
                 AGOBalance
-                AGOPrice
                 AGOUSDBalance
-                AGOUSDPrice
+                AGOBTCBalance
                 CNUSDBalance
-                CNUSDPrice
+                CNBTCBalance
                 WMATICBalance
-                WMATICPrice
                 USDTBalance
-                USDTPrice
+                WBTCBalance
               }
               timestamp
             }
         }
-        tokens(first: 5, where: {isProtocolMain: true}) {
+        tokens(first: 15) {
             symbol
             priceUSD
+            lineChartUSD(orderBy: timestamp, orderDirection: desc) {
+             valueUSD
+             timestamp
+           }
         }
     }
 `)
