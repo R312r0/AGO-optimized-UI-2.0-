@@ -78,10 +78,21 @@ export const PortfolioPerfomance = () => {
             return {value: sum, time: newTime}
         })
 
-        const currentPortfolio = tokens.map(item => {
+
+        const filterTokens = tokens.filter(item => {
+            if (item.symbol === "USDC" || item.symbol === "DAI") {
+                return false
+            }
+            else {
+                return true
+            }
+        })
+
+        const currentPortfolio = filterTokens.map(item => {
             const userBalance = userProtfolio.find((userBal) => userBal.name === item.symbol);
             return item.priceUSD * userBalance.userNativeBalance;
         })
+
 
         const newPortfolioValue = currentPortfolio.reduce((a, b) => a + b)
         newData.push({value: newPortfolioValue, time: new Date().getMinutes()});

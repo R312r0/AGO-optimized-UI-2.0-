@@ -335,8 +335,6 @@ export const BalancesTab = () => {
 
     if (!loading && data.tokens && userProtfolio) {
 
-      // FIXME: FIX CALCULATIONS
-
       const res = userProtfolio.map((item) => {
         const name = item.name;
         const nativeBalance = item.userNativeBalance;
@@ -356,12 +354,12 @@ export const BalancesTab = () => {
 
       })
 
+      console.log(filteredRes.reduce((a, { usdBalance }) => a + usdBalance, 0))
+
       setBalances(filteredRes);
     }
 
   }, [data, userProtfolio, loading])
-
-
 
 
 
@@ -384,7 +382,6 @@ export const BalancesTab = () => {
   const handleShiftKey = () => {
     scroll();
   }
-
 
   return (
     <BalancesTabWrapper
