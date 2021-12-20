@@ -8,17 +8,19 @@ import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
 import {DEX_ADDRESESS, MAX_INT} from "../../../constants";
 import {Transactions} from "../Transactions/transactions";
+import {StakeLp} from "../StakeLp/stake-lp";
 
 const TABS = {
     PROVIDE_LIQUIDITY: "Provide liquidity",
     VOLUME: "Volume",
     LIQUIDITY: "Liquidity",
-    TRANSACTIONS: "Transactions"
+    TRANSACTIONS: "Transactions",
+    STAKE_LP: "Stake LP"
 }
 
-export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD, myLiquidity, volChart, liqChart, lpTokenContract, lpUserBalance }}) => {
+export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD, isEarnAgo, myLiquidity, volChart, liqChart, lpTokenContract, lpUserBalance }}) => {
 
-    const { PROVIDE_LIQUIDITY, VOLUME, LIQUIDITY, TRANSACTIONS } = TABS;
+    const { PROVIDE_LIQUIDITY, VOLUME, LIQUIDITY, TRANSACTIONS, STAKE_LP } = TABS;
     const [windowExpanded, setWindowExpanded] = useState(false);
     const [chosenWindow, setChosenWindow] = useState(PROVIDE_LIQUIDITY);
     const [removeLiquidityModal, setRemoveLiquidityModal] = useState(false);
@@ -33,6 +35,8 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
                 return (<Liquidity data={liqChart}/>)
             case TRANSACTIONS:
                 return (<Transactions token0={token0} token1={token1}/>)
+            case STAKE_LP:
+                return (<StakeLp token0={token0} token1={token1} lpTokenContract={lpTokenContract} lpUserBalance={lpUserBalance}/>)
             default:
                 return (<ProvideLiquidity/>)
         };
@@ -70,6 +74,13 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
                         <button onClick={() => setChosenWindow(TRANSACTIONS)}
                                 className={`${chosenWindow === TRANSACTIONS ? "active" : ""}`}> Transactions
                         </button>
+                        {isEarnAgo ?
+                            <button onClick={() => setChosenWindow(STAKE_LP)}
+                                    className={`${chosenWindow === STAKE_LP ? "active" : ""}`}> Stake Lp
+                            </button>
+                            :
+                            null
+                        }
                     </div>
                     <div className="control-panel__content">
                         <ExpandedTab/>

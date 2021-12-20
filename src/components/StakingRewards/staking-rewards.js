@@ -6,16 +6,18 @@ import vector from '../../assets/icons/vector.svg';
 import claimRewardIcon from './claim-reward.svg';
 import './staking-rewards.scss';
 import {StakingItem} from "./StakingItem/staking-item";
+import {CONTRACT_ADRESESS} from "../../constants";
 
 export const StakingRewards = () => {
 
     const {theme} = useSystemContext();
 
+
+
     const stakingPools = [
-        {name: "Argano", symbol: "AGO", roi: "30%", contract: "0x213fsar124f12f1r31fsdfg34t9"},
-        {name: "Argano", symbol: "AGOUSD", roi: "20%", contract: "0x213fsar124f12f1r31fsdfg34t9"},
-        {name: "Argano", symbol: "AGO", roi: "30%", contract: "0x213fsar124f12f1r31fsdfg34t9"},
-        {name: "Argano", symbol: "AGO", roi: "40%", contract: "0x213fsar124f12f1r31fsdfg34t9"},
+        {name: "Argano", symbol: "AGO", roi: "30%", contract: CONTRACT_ADRESESS.MASTER_CHEF, pid: 0},
+        {name: "Argano Dollar Token", symbol: "AGOUSD", roi: "20%", contract: CONTRACT_ADRESESS.MASTER_CHEF, pid: 1},
+        {name: "Argano Bitcoin Token", symbol: "AGOBTC", roi: "30%", contract: CONTRACT_ADRESESS.MASTER_CHEF, pid: 2},
     ]
 
     return (
