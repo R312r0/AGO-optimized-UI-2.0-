@@ -80,7 +80,7 @@ export const Dashboard = () => {
     const convertProjChartData = (data) => {
         const res = data.map((item, _ind) => {
             const dateFromItem = new Date(item.timestamp * 1000);
-            const time = `${dateFromItem.getHours()}:${dateFromItem.getMinutes()}:${dateFromItem.getSeconds()}`
+            const time = dateFromItem.getDate() < 10 ? "0"+dateFromItem.getDate() : dateFromItem.getDate()
             const date = dateFromItem.toDateString();
             const uv = +item.value > 0 ? +item.value : 0;
             return { time, uv, date };
@@ -90,7 +90,7 @@ export const Dashboard = () => {
     }
 
     const convertTransactionsData = (data) => {
-        const { SWAP, ADD, BURN } = TXS_NAME;
+        const { SWAP, ADD, BURN, MINT, REDEEM, COLLECT_REDEMPTION } = TXS_NAME;
 
         const res = data.map(item => {
             let txName;
@@ -108,6 +108,17 @@ export const Dashboard = () => {
                     break;
                 case BURN:
                     txName = `${item.name} ${item.token0} and ${item.token1}`
+                    break;
+                case MINT:
+                    txName = `${item.name} ${item.token1} for ${item.token0} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
+                    break;
+                case REDEEM:
+                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
+                    break;
+                case COLLECT_REDEMPTION:
+                    console.log(+item.amountShare)
+                    txName = `${item.name} ${+item.amountShare !== 0 ?  item.tokenShare + " and" : ""} ${item.token1}`
+                    token0Amount = `${+item.amountShare !== 0 ? item.amountShare: "0.00" + " " + item.tokenShare}`
                     break;
             }
             return { txName, totalValue, token0Amount, token1Amount, acc, time }

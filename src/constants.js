@@ -61,7 +61,7 @@ export const CONTRACT_ADRESESS = {
     POOL_AGOBTC: "0x7c2f93fBE7ec3ee75778D013bb813478efe22b64",
     TREASURY_AGOBTC: "0x4ba0780Eb663BceDC58d1C18b0b08c920ea5D08f",
 
-    MASTER_CHEF: "0xa4151074358F8D3dE2786102CbC90ea3c0ED7B7A"
+    MASTER_CHEF: "0xe3b49f1382e146b6C2c7E497d4A32b39D2AD07B6"
 }
 
 
@@ -92,5 +92,8 @@ export const PAGES = [
 export const TXS_NAME = {
     SWAP: "Swap",
     ADD: "Add liquidity",
-    BURN: "Remove liquidity"
+    BURN: "Remove liquidity",
+    MINT: "Mint",
+    REDEEM: "Redeem",
+    COLLECT_REDEMPTION: "Collect redemption"
 }

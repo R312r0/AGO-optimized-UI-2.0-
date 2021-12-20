@@ -64,8 +64,8 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
         await contracts.ROUTER.methods.addLiquidity(
             token0.address,
             token1.address,
-            formatToDecimal(input0, 18),
-            formatToDecimal(input1, 18),
+            formatToDecimal(1, 18),
+            formatToDecimal(20000, 18),
             0,
             0,
             account,

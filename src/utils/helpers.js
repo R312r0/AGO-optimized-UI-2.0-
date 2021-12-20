@@ -60,6 +60,40 @@ export const getCoinGeckoCurrentPrice = (tokenName) => {
 
 }
 
+export const findNearestPortfolioTokenPrice = (tokensArr, balanceTimeStamp, symbol) => {
+
+    const tok = tokensArr.find(item => item.symbol === symbol)
+    const chart = tok.lineChartUSD
+    let priceItem;
+    const chartFiltered = chart.filter(itemC => itemC.timestamp <= balanceTimeStamp);
+
+    let deltaArrs = []
+
+    if (chartFiltered.length > 0) {
+        chartFiltered.forEach((line, _ind) => {
+            deltaArrs.push(balanceTimeStamp - line.timestamp)
+        })
+
+        const minDelta = Math.min(...deltaArrs);
+
+        priceItem = chartFiltered.find(chart => balanceTimeStamp - chart.timestamp === minDelta).valueUSD;
+    }
+
+    else {
+        chart.forEach((line, _ind) => {
+            deltaArrs.push(line.timestamp - balanceTimeStamp)
+        })
+
+        const minDelta = Math.min(...deltaArrs);
+
+        priceItem = chart.find(chart => chart.timestamp - balanceTimeStamp === minDelta).valueUSD;
+    }
+
+
+    return priceItem;
+
+};
+
 
 export const formatToDecimal = (value, decimals) => {
     if (value === "MAX") return MAX_INT;
