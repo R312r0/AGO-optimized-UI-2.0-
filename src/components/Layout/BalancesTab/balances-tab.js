@@ -344,19 +344,7 @@ export const BalancesTab = () => {
 
       });
 
-      const filteredRes = res.filter((item) => {
-        if (item.name === "USDC" || item.name === "DAI") {
-          return false;
-        }
-        else {
-          return true;
-        }
-
-      })
-
-      console.log(filteredRes.reduce((a, { usdBalance }) => a + usdBalance, 0))
-
-      setBalances(filteredRes);
+      setBalances(res);
     }
 
   }, [data, userProtfolio, loading])

@@ -150,8 +150,6 @@ export const SystemProvider = ({children}) => {
             CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call(), totalSupply: await CNUSD.methods.totalSupply().call()},
             AGO: {name: "AGO",instance: AGO, decimals: await AGO.methods.decimals().call(), totalSupply: await AGO.methods.totalSupply().call()},
             USDT: {name: "USDT",instance: USDT, decimals: await USDT.methods.decimals().call(), totalSupply: await USDT.methods.totalSupply().call()},
-            USDC: {name: "USDC",instance: USDC, decimals: await USDC.methods.decimals().call(), totalSupply: await USDC.methods.totalSupply().call()},
-            DAI: {name: "DAI",instance: DAI, decimals: await DAI.methods.decimals().call(), totalSupply: await DAI.methods.totalSupply().call()},
             WMATIC: {name: "WMATIC",instance: WMATIC, decimals: await WMATIC.methods.decimals().call(), totalSupply: await WMATIC.methods.totalSupply().call()},
             WBTC: {name: "WBTC",instance: WBTC, decimals: await WBTC.methods.decimals().call(), totalSupply: await WBTC.methods.totalSupply().call()}
         });

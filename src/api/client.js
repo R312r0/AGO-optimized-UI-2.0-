@@ -64,7 +64,7 @@ export const TOKENS_FOR_LIQUIDITY_POOLS = gql(`
 export const TOKENS_FOR_USER_BALANCES = gql(`
 
     query userBalanceTokens {
-        tokens(first: 100, orderBy: symbol, orderDirection: asc) {
+        tokens(first: 100, orderBy: symbol, orderDirection: asc, where: {isProtocolMain: true}) {
             id
             symbol
             priceUSD
@@ -168,7 +168,7 @@ export const PORTFOLIO_PERFOMANCE = gql(`
               timestamp
             }
         }
-        tokens(first: 15) {
+        tokens(first: 15, where: {isProtocolMain: true}) {
             symbol
             priceUSD
             lineChartUSD(orderBy: timestamp, orderDirection: desc) {

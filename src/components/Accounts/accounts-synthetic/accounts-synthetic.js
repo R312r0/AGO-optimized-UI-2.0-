@@ -1,5 +1,6 @@
 import React from 'react';
 import { TokenIcon } from './../../TokenIcon/token_icon';
+import {formattedNum} from "../../../utils/helpers";
 
 const AccountsSynthetic = ({sytheticAssets}) => {
 
@@ -22,7 +23,7 @@ const AccountsSynthetic = ({sytheticAssets}) => {
                                 <p> {item.name} </p>
                             </div>
                             <span> {item.nativeBalance} </span>
-                            <span> {item.usdBalance} </span>
+                            <span> ${formattedNum(item.usdBalance)} </span>
                         </li>
                     )
                 })}
