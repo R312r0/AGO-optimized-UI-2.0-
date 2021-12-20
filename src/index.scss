@@ -101,3 +101,9 @@ input {
         }
     }
 }
+
+body{
+    .ant-switch-checked .ant-switch-handle{
+        left: calc(100% - 36px - 2px);
+    }
+}

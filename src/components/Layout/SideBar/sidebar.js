@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import comments_black from '../../../assets/icons/nav-links/dark-theme/comment-black.svg';
+import  { ReactComponent as Comments_black } from '../../../assets/icons/nav-links/dark-theme/comment-black.svg';
 import document_icon from './../../../assets/icons/sidebar-documents.svg';
 import { PAGES } from '../../../constants';
 import { useSystemContext } from '../../../systemProvider';
@@ -17,8 +17,7 @@ const SideBarWrapper = styled.div`
   justify-items: center;
   
   margin-top: 0.5vw;
-
-  overflow-y: auto;
+  overflow: visible;
 
   &::-webkit-scrollbar {
     display: none;
@@ -80,6 +79,7 @@ const LinkList = styled.ul`
   
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .soc-list-light {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #40BA93;
@@ -130,6 +130,8 @@ const LinkListItem = styled.li`
   
   padding: 1.4vw 0.9vw;
   margin: 0.3vw 0;
+ 
+  transition: all .3s;
 
   img {
     width: 0.9vw;
@@ -147,9 +149,28 @@ const LinkListItem = styled.li`
 
   background-color: ${props => props.active ? "#40BA93" : "transparent"};
 
+
+  & .hover_title{
+    position: absolute;
+    left: -300%;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: rgba(255, 255, 255, 0.61);
+    max-width: 110px;
+    width: 100%;
+    text-align: left;
+  }
+
   &:hover {
-    background-color: ${props => props.active ? "#40BA93" : "#E0E0E0"};
+    background-color: ${props => props.active ? "#40BA93" : "#2D2C2C"};
     transition: 0.3s background-color;
+    border-radius: 12px;
+
+    & .hover_title{
+    left: 95px;
+    z-index: 2;
+  }
   }
 
   &:last-child {
@@ -157,6 +178,13 @@ const LinkListItem = styled.li`
     // margin-top: 4vw;
     border-radius: 0.6vw;
   }
+
+  & svg{
+    max-width: 22px;
+    width: 100%;
+    fill:  ${props => props.active ? "#fff" : "#4F4F4F"};
+  }
+ 
 `
 
 
@@ -206,14 +234,18 @@ export const SideBar = () => {
         {PAGES.map((item, index) => {
           return (
             <NavLink to={item.path} onClick={() => setActiveTab(item.path)} key={`side_bar_${index}`}>
-              <LinkListItem active={item.path === history.location.pathname}>
-                <img src={activeTab === item.path ? item.imgActive : item.img} alt={`${item.path}`} />
+              <LinkListItem active={item.path === history.location.pathname} name={item.name}>
+                {React.createElement(item.component, {})}
+                <div className='hover_title'>{item.name}</div>
+                {/* {item.component} */}
+                {/* <img src={item.img} alt={`${item.path}`} className={activeTab === item.path && 'active__page'}/> */}
+                {/* <img src={activeTab === item.path ? item.imgActive : item.img} alt={`${item.path}`} /> */}
               </LinkListItem>
             </NavLink>
           )
         })}
         <LinkListItem className='link-message-item' onMouseEnter={() => setExpandSocMedias(true)}>
-          <img src={comments_black} alt={'comments'} />
+          <Comments_black />
         </LinkListItem>
       </LinkList>
       {isTabletScreen

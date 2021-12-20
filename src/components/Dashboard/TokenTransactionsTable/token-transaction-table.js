@@ -67,6 +67,12 @@ const TokenTransactionTableWrapper = styled.div`
 
         border: none;
         cursor: pointer;
+        transition: all .3s;
+
+        &:hover{
+          /* opacity: 0.8; */
+          color: #fff;
+        }
       }
     }
 
@@ -78,7 +84,8 @@ const TokenTransactionTableWrapper = styled.div`
   }
 
   .transactions-heading {
-    font-size: 1.5vw;
+    font-size: 24px;
+    line-height: 36px;
     color: white;
   }
 `
@@ -163,6 +170,7 @@ const TablePagination = styled.div`
   div {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
+    column-gap: 15px;
 
     span {
       color: white;

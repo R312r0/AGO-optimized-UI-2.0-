@@ -10,6 +10,17 @@ import trading_black from './assets/icons/nav-links/dark-theme/trading-black.svg
 import accounts_black from './assets/icons/nav-links/dark-theme/accounts-black.svg';
 // Light theme icons.
 
+
+//component svg
+
+import { ReactComponent as Dashboard_black } from './assets/icons/nav-links/dark-theme/dashboard-black.svg';
+import { ReactComponent as Mint_redeem_black } from './assets/icons/nav-links/dark-theme/mint-redeem-black.svg';
+import { ReactComponent as Foundry_black } from './assets/icons/nav-links/dark-theme/foundry-active.svg';
+import { ReactComponent as Staking_black } from './assets/icons/nav-links/dark-theme/staking-black.svg';
+import { ReactComponent as Liquidity_pools_black } from './assets/icons/nav-links/dark-theme/liquidity-pools-black.svg';
+import { ReactComponent as Trading_black } from './assets/icons/nav-links/dark-theme/trading-black.svg';
+import { ReactComponent as Accounts_black } from './assets/icons/nav-links/dark-theme/accounts-black.svg';
+
 // Active icons.
 import dashboard_active from './assets/icons/nav-links/active/dashboard-active.svg';
 import mint_redeem_active from './assets/icons/nav-links/active/mint-redeem-active.svg';
@@ -18,7 +29,7 @@ import staking_active from './assets/icons/nav-links/active/staking-active.svg';
 import liquidity_pools_active from './assets/icons/nav-links/active/liq-pools-active.svg';
 import trading_active from './assets/icons/nav-links/active/trading-active.svg';
 import accounts_acitve from './assets/icons/nav-links/active/accounts-active.svg';
-import {LoadingOutlined} from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 
 
 
@@ -65,9 +76,9 @@ export const CONTRACT_ADRESESS = {
 }
 
 
-export const LOADER_INDICATOR = <LoadingOutlined style={{fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%"}}/>
+export const LOADER_INDICATOR = <LoadingOutlined style={{ fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%" }} />
 
-export const LOADER_INDICATOR_LOCAL = <LoadingOutlined style={{fontSize: "3vw", color: "#40BA93", position: "absolute", top: "50%", left: "50%"}}/>
+export const LOADER_INDICATOR_LOCAL = <LoadingOutlined style={{ fontSize: "3vw", color: "#40BA93", position: "absolute", top: "50%", left: "50%" }} />
 
 // Connectors
 export const metaMask = new InjectedConnector({ supportedChainIds: [80001] });
@@ -80,13 +91,13 @@ export const MINT_REDEEM_KEY = "MINT_REDEEM_KEY";
 export const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 
 export const PAGES = [
-    {path: "/", name: "Dashboard", img: dashboard_black, imgActive: dashboard_active},
-    {path: "/mint-redeem", name: "Mint/Redeem", img: mint_redeem_black, imgActive: mint_redeem_active},
-    {path: "/foundry", name: "Foundry", img: foundry_black, imgActive: foundry_active},
-    {path: "/staking", name: "Staking rewards", img: staking_black, imgActive: staking_active},
-    {path: "/liqudity-pools", name: "Liquidity-Pools", img: liquidity_pools_black, imgActive: liquidity_pools_active},
-    {path: "/trading", name: "Trading", img: trading_black, imgActive: trading_active},
-    {path: "/accounts", name: "Accounts", img: accounts_black, imgActive: accounts_acitve},
+    { path: "/", name: "Dashboard", img: dashboard_black, imgActive: dashboard_active, component: Dashboard_black },
+    { path: "/mint-redeem", name: "Mint/Redeem", img: mint_redeem_black, imgActive: mint_redeem_active, component: Mint_redeem_black },
+    { path: "/foundry", name: "Foundry", img: foundry_black, imgActive: foundry_active, component: Foundry_black },
+    { path: "/staking", name: "Staking rewards", img: staking_black, imgActive: staking_active, component: Staking_black },
+    { path: "/liqudity-pools", name: "Liquidity-Pools", img: liquidity_pools_black, imgActive: liquidity_pools_active, component: Liquidity_pools_black },
+    { path: "/trading", name: "Trading", img: trading_black, imgActive: trading_active, component: Trading_black },
+    { path: "/accounts", name: "Accounts", img: accounts_black, imgActive: accounts_acitve, component: Accounts_black },
 ]
 
 export const TXS_NAME = {

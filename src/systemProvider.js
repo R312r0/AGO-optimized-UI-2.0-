@@ -26,7 +26,7 @@ export const SystemProvider = ({children}) => {
 
     const {account, activate, active, library, deactivate} = useWeb3React();
 
-    const [theme, setTheme] = useState("dark");
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || "dark");
 
     const [mintRedeemCurrency, setMintRedeemCurrency] = useState("AGOUSD");
     const [mintRedeemCurrencyModal, setMintRedeemCurrencyModal] = useState(false);

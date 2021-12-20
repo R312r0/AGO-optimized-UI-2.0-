@@ -63,14 +63,16 @@ const TVLChartWrapper = styled.div`
 
     p {
       font-weight: 500;
-      font-size: ${props => props.mobile ? "3.6vw" : "1.1vw"};
+      font-size: ${props => props.mobile ? "3.6vw" : "14px"};
       color: ${props => props.mobile ? "#BDBDBD" : "white"};
+      line-height: 27px;
     }
 
     h1 {
       color: ${props => props.mobile ? "white" : "#40BA93"};
       font-weight: ${props => props.mobile ? "600" : "500"};
-      font-size: ${props => props.mobile ? "6.6vw" : "2.1vw"};
+      font-size: ${props => props.mobile ? "6.6vw" : "24px"};
+      line-height: 36px;
       align-self: flex-end;
     }
 

@@ -15,11 +15,12 @@ import { TOKENS_FOR_USER_BALANCES } from "../../../api/client";
 const BalancesTabWrapper = styled.div`
   max-width: 100%;
   transition: 0.3s all;
-  width: fit-content;
+  width: ${props => props.opened ? "100%" : "20%"};
   align-self: center;
   height: 52px;
+  transition: all .5s ease;
 
-  padding: 0.4vw ${props => props.account ? "0.8vw 0.4vw 0.5vw" : "1.2vw"};;
+  padding: 0.4vw ${props => props.account ? "0.8vw 0.4vw 0.5vw" : "1.2vw"};
   margin: 0.4vw 0 0.45vw 0.5vw;
 
   background: ${props => props.mobile ? "transparent" : "linear-gradient(95.07deg, rgba(58, 58, 58, 0.4) -21.03%, rgba(0, 0, 0, 0.4) 139.31%), rgba(51, 51, 51, 0.1)"};
@@ -266,19 +267,17 @@ const BalanceListItem = styled.li`
 
 const BalanceListDesktop = styled.ul`
   max-width: 80%;
-  display: ${props => props.opened ? "flex" : "none !important"};
+  display: flex;
   height: 100%;
-
+  transition: all .5s ease;
+  width:  ${props => props.opened ? "100%" : "0"};
   margin-left: ${props => props.opened ? "20px" : "0"};
   margin-bottom: 0;
-
-  display: flex;
   align-items: center;
   column-gap: 15px;
   color: white;
 
   opacity: ${props => props.opened ? "1" : "0"};
-  transition: ${props => props.opened ? "1s ease" : "0"};
   overflow: hidden;
   overflow-x: auto;
 

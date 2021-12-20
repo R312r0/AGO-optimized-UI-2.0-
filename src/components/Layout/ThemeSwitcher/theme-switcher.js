@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import {useSystemContext} from '../../../systemProvider';
 import {useMediaQuery} from 'react-responsive';
@@ -76,6 +76,11 @@ export const ThemeSwitcher = () => {
     const {theme, setTheme} = useSystemContext();
     const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'});
 
+    const setNewTheme = () => {
+      const trueTheme = theme === "dark" ? "light" : "dark";
+      localStorage.setItem('theme', trueTheme);
+      setTheme(trueTheme);
+    }
     return (
         <ThemeSwitcherWrapper theme={theme} mobile={isMobileScreen}>
             <svg width="9" height="14" viewBox="0 0 9 14" fill={theme === "dark" ? '#40BA93' : '#333'} xmlns="http://www.w3.org/2000/svg">
@@ -97,8 +102,9 @@ export const ThemeSwitcher = () => {
                 <label>
                     <input 
                     className="switch" 
+                    checked={theme !== "dark"}
                     type="checkbox" 
-                    onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    onChange={setNewTheme}
                     />
                     <div>
                       <div></div>

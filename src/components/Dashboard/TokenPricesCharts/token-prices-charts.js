@@ -391,15 +391,13 @@ export const TokenPricesCharts = () => {
                       //     value: data[data.length - 1].uv
                       // })}
                       >
+                        <defs>
+                          <filter id="shadow" height="200%">
+                            <feDropShadow dx="0" dy="10" stdDeviation="10" />
+                          </filter>
+                        </defs>
                         <Line
-                          type="monotone"
-                          dataKey="value"
-                          stroke="rgba(64, 186, 147, 0.05)"
-                          strokeWidth={"1vw"}
-                          dot={false}
-                          activeDot={true}
-                        />
-                        <Line
+                          filter="url(#shadow)"
                           type="monotone"
                           dataKey="value"
                           stroke="#40BA93"

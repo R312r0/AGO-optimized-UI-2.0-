@@ -89,7 +89,8 @@ export const Accounts = () => {
             </ResponsiveContainer>
         )
     }
-
+    
+    console.log('balances',balances)
     return (
         <>
         {
@@ -118,7 +119,7 @@ export const Accounts = () => {
 
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info__bars'>
                                     <ul>
-                                        {balances && balances.map((item, _ind) => {
+                                        {balances && balances.filter(data => data.nativeBalance > 0).map((item, _ind) => {
 
                                             let percentDiff;
                                             if (item.usdBalance === 0) {
