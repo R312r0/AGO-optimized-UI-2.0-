@@ -63,8 +63,6 @@ export const PortfolioPerfomance = () => {
                 WBTCBalance
             }} = item;
 
-            console.log(item);
-
             const AgoToDollar = parseFloat(formatFromDecimal(AGOBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "AGO");
             const AgoUsdToDollar =  parseFloat(formatFromDecimal(AGOUSDBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "AGOUSD")
             const AgoBtcToDollar =  parseFloat(formatFromDecimal(AGOBTCBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "AGOBTC")
@@ -76,8 +74,17 @@ export const PortfolioPerfomance = () => {
 
             const newTime = new Date(item.timestamp * 1000).getMinutes();
             const sum = parseFloat((AgoToDollar + AgoUsdToDollar + AgoBtcToDollar + CnUsdToDollar + CnBtcToDollar + WmaticToDollar +  USDTToDollar +  WBTCToDollar).toFixed(2))
+
             return {value: sum, time: newTime}
         })
+
+        const currentPortfolio = tokens.map(item => {
+            const userBalance = userProtfolio.find((userBal) => userBal.name === item.symbol);
+            return item.priceUSD * userBalance.userNativeBalance;
+        })
+
+        const newPortfolioValue = currentPortfolio.reduce((a, b) => a + b)
+        newData.push({value: newPortfolioValue, time: new Date().getMinutes()});
 
         setFormattedData(newData);
         setPortfolioPerfValue(newData[newData.length - 1].value)
