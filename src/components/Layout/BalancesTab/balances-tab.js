@@ -340,11 +340,7 @@ export const BalancesTab = () => {
       const res = userProtfolio.map((item) => {
         const name = item.name;
         const nativeBalance = item.userNativeBalance;
-        let usdBalance = data.tokens.find(tok => tok.symbol === name)?.priceUSD;
-
-        if (!usdBalance) {
-          usdBalance = 0;
-        }
+        let usdBalance = data.tokens.find(tok => tok.symbol === name).priceUSD;
 
         return { name, nativeBalance, usdBalance: usdBalance * nativeBalance }
 
