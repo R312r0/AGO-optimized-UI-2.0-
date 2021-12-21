@@ -5,6 +5,7 @@ import {DEX_ADDRESESS, metaMask, network} from './constants';
 import ERC20_ABI from './abi/ERC20.json';
 import ROUTER_ABI from './abi/Router.json';
 import TREASURY_ABI from './abi/TREASURY.json';
+import FOUNDRY_ABI from './abi/Foundry.json';
 import STABLE_ABI from './abi/STABLE.json';
 import SHARE_ABI from './abi/SHARE.json';
 import STABLE_POOL_ABI from './abi/STABLE_POOL.json';
@@ -159,12 +160,14 @@ export const SystemProvider = ({children}) => {
     const initContracts = () => {
         const POOL_AGOUSD = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOUSD);
         const TREASURY_AGOUSD = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOUSD);
+        const FOUNDRY_AGOUSD = new library.eth.Contract(FOUNDRY_ABI, CONTRACT_ADRESESS.FOUNDRY_AGOUSD);
         const POOL_AGOBTC = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOBTC);
         const TREASURY_AGOBTC = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOBTC);
+        const FOUNDRY_AGOBTC = new library.eth.Contract(FOUNDRY_ABI, CONTRACT_ADRESESS.FOUNDRY_AGOBTC);
         const ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.ROUTER)
         const MASTER_CHEF = new library.eth.Contract(MASTER_CHEF_ABI, CONTRACT_ADRESESS.MASTER_CHEF);
         // setContracts({POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC});
-        setContracts({ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, MASTER_CHEF})
+        setContracts({ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, MASTER_CHEF, FOUNDRY_AGOUSD, FOUNDRY_AGOBTC})
     }
 
     const connectWallet = (wallet) => {
