@@ -100,6 +100,8 @@ export const PAGES = [
     { path: "/accounts", name: "Accounts", img: accounts_black, imgActive: accounts_acitve, component: Accounts_black },
 ]
 
+export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
 export const TXS_NAME = {
     SWAP: "Swap",
     ADD: "Add liquidity",

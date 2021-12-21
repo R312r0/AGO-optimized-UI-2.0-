@@ -24,13 +24,9 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
 
     const getUserPools = async (tokensSub, lpTokens) => {
 
-        console.log("We Are here")
-
         const poolLength = await contracts.MASTER_CHEF.methods.poolLength().call();
         let userPools = []
         for (let i = 0; i < poolLength - 1; i++) {
-
-            console.log(i)
 
             let amountStaked = (await contracts.MASTER_CHEF.methods.userInfo(i, account).call()).amount;
 

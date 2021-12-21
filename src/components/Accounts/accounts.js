@@ -29,7 +29,6 @@ export const Accounts = () => {
     const [syntheticAssets, setSyntheticAssets] = useState(null);
     const {account} = useWeb3React();
 
-    console.log(data);
 
     useEffect(() => {
 
@@ -92,7 +91,6 @@ export const Accounts = () => {
         )
     }
     
-    console.log('balances',balances)
     return (
         <>
         {

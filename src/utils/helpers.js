@@ -3,6 +3,7 @@ import BigNumber from "bignumber.js";
 import fromExponential from "from-exponential";
 
 import Numeral from 'numeral';
+import {MONTHS} from "../constants";
 
 
 export const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
@@ -199,6 +200,29 @@ export const formatDollarAmount = (num, digits) => {
 // Addition for "formattedNum"
 export const toK = (num) => {
     return Numeral(num).format('0.[00]a')
+}
+
+export const formatDateUnixTxs = (dateUnix) => {
+
+
+    const date = new Date(dateUnix * 1000)
+    const month = MONTHS[date.getMonth()]
+    const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+    const year = date.getFullYear();
+
+    return `${month} ${day}, ${year}`
+
+}
+
+export const formatAMPM = (date) => {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    let strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
 }
 
 // Format date for chart

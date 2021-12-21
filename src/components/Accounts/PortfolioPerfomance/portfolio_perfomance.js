@@ -25,7 +25,6 @@ export const PortfolioPerfomance = () => {
     const [portfolioPerfValue, setPortfolioPerfValue] = useState(0);
     const [readyDataLoading, setReadyDataLoading] = useState(true);
 
-    console.log(data);
 
     useEffect(() => {
 

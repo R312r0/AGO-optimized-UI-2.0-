@@ -189,6 +189,25 @@ export const PORTFOLIO_PERFOMANCE = gql(`
     }
 `)
 
+export const USER_TXS_HISTORY = gql(`
+    
+    query userTxs($id: String!) {
+        transactions(first: 200, orderBy: timestamp, orderDirection: desc, where: {from: $id}) {
+            name
+            from
+            token0
+            tokenShare
+            token1
+            amount0
+            amountShare
+            amount1
+            amountTotalUSD
+            timestamp
+        }
+    }
+
+`)
+
 export const LIQ_POOLS_TRADING = gql(`
 
     query tradingPairs {

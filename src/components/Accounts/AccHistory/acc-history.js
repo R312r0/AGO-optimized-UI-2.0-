@@ -18,22 +18,13 @@ import upArrowIcon from '../../../assets/icons/down-arrow-history.svg';
 import downloadIcon from '../../../assets/icons/download-history.svg';
 import documentIcon from '../../../assets/icons/document-history.svg';
 import { AccHistoryTable } from './acc-history-table';
+import {useQuery} from "@apollo/client";
+import {USER_TXS_HISTORY} from "../../../api/client";
 
 export const AccHistory = ({isOpened, setIsOpened}) => {
     const {account} = useWeb3React();
     const {theme, tokens} = useSystemContext()
 
-    const [history, setHistory] = useState(null);
-    const [data, setData] = useState(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const {data} = await axios.get(`https://argano-rest-api-sever.herokuapp.com/api/userActions/?address=${account}`)
-            setData(data)
-        }
-
-        fetchData();
-    }, [])
 
 
     return (

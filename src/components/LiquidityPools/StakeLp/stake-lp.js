@@ -24,8 +24,6 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance}) => {
     const [staked, setStaked] = useState(0);
     const [earned, setEarned] = useState(0);
 
-    console.log(token0)
-    console.log(token1)
 
     useEffect(() => {
         const searchString = `${token0.symbol}_${token1.symbol}`
@@ -70,7 +68,6 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance}) => {
 
     const handleStake = async () => {
         const lpDec = await lpTokenContract.methods.decimals().call()
-        console.log(lpDec);
 
         await contracts.MASTER_CHEF.methods.deposit(pid, formatToDecimal(depositWithdrawInput, lpDec)).send({from: account});
         await getStakeInfo()
@@ -79,7 +76,6 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance}) => {
     const handleUnstake = async () => {
         const lpDec = await lpTokenContract.methods.decimals().call()
 
-        console.log(lpDec);
 
         await contracts.MASTER_CHEF.methods.withdraw(pid, formatToDecimal(depositWithdrawInput, lpDec)).send({from: account});
         await getStakeInfo()
