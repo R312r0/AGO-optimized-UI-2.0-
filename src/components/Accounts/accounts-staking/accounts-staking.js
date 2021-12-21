@@ -12,6 +12,9 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
     const {account} = useWeb3React();
     const {contracts, tokens} = useSystemContext();
     const [userStake, setUserStake] = useState(null);
+    const [totalPages, setTotalPages] = useState(0);
+    const [dataPaginated, setDataPaginated] = useState(0);
+    const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
 
     useEffect(() => {
 
@@ -21,6 +24,28 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
 
     }, [account, tokensSub, lpTokens])
 
+
+    const determineNumberOfPages = (arr) => {
+        const itemsPerPage = 3;
+
+        let paginatedDataObject = {};
+
+        let index = 0;
+        let dataLength = arr.length;
+        let chunkArray = [];
+
+        for (index = 0; index < dataLength; index += itemsPerPage) {
+            let newChunk = arr.slice(index, index + itemsPerPage);
+            chunkArray.push(newChunk);
+        }
+
+        chunkArray.forEach((chunk, i) => {
+            paginatedDataObject[i + 1] = chunk;
+        });
+
+        setTotalPages(chunkArray.length);
+        setDataPaginated(paginatedDataObject);
+    };
 
     const getUserPools = async (tokensSub, lpTokens) => {
 
@@ -51,6 +76,7 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
             }
         }
 
+        determineNumberOfPages(userPools)
         setUserStake(userPools);
 
     }
@@ -65,8 +91,8 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
                 <span> Reward </span>
             </div>
 
-            <ul>
-                {userStake ? userStake.map((item) => {
+            <ul style={{position: "relative"}}>
+                {dataPaginated && dataPaginated[`${currentClickedNumber}`] ? dataPaginated[`${currentClickedNumber}`].map((item) => {
                     if (item.poolName.indexOf("-") !== -1) {
                         const symbols = item.poolName.split("-")
                         return (
@@ -101,7 +127,9 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
             </ul>
 
             <div className='accounts-wrapper-use-staking-pools__pagination'>
-                <span className='active'>1</span>
+                {dataPaginated && Object.entries(dataPaginated).map((item) => {
+                    return <span onClick={() => setCurrentClickedNumber(item[0])} className={item[0] === currentClickedNumber ? "active" : ""}>{item[0]}</span>
+                })}
             </div>
             
             <div className='accounts-wrapper-use-staking-pools__buttons'>
