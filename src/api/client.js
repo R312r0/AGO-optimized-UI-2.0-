@@ -66,8 +66,18 @@ export const TOKENS_FOR_USER_BALANCES = gql(`
     query userBalanceTokens {
         tokens(first: 100, orderBy: symbol, orderDirection: asc, where: {isProtocolMain: true}) {
             id
+            decimals
             symbol
             priceUSD
+        }
+        pairs(first: 100, where: {isRewardPool: true}) {
+            id
+            token0 {
+                symbol
+            }
+            token1 {
+                symbol
+            }
         }
     }
 
