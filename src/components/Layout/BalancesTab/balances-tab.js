@@ -345,32 +345,16 @@ export const BalancesTab = () => {
       const res = userProtfolio.map((item) => {
         const name = item.name;
         const nativeBalance = item.userNativeBalance;
-        let usdBalance = data.tokens.find(tok => tok.symbol === name)?.priceUSD;
-
-        if (!usdBalance) {
-          usdBalance = 0;
-        }
+        let usdBalance = data.tokens.find(tok => tok.symbol === name).priceUSD;
 
         return { name, nativeBalance, usdBalance: usdBalance * nativeBalance }
 
       });
 
-      const filteredRes = res.filter((item) => {
-        if (item.name === "USDC" || item.name === "DAI") {
-          return false;
-        }
-        else {
-          return true;
-        }
-
-      })
-
-      setBalances(filteredRes);
+      setBalances(res);
     }
 
   }, [data, userProtfolio, loading])
-
-
 
 
 
@@ -393,7 +377,6 @@ export const BalancesTab = () => {
   const handleShiftKey = () => {
     scroll();
   }
-
 
   return (
     <BalancesTabWrapper

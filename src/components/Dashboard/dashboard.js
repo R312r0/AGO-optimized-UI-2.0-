@@ -116,7 +116,6 @@ export const Dashboard = () => {
                     txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
                     break;
                 case COLLECT_REDEMPTION:
-                    console.log(+item.amountShare)
                     txName = `${item.name} ${+item.amountShare !== 0 ?  item.tokenShare + " and" : ""} ${item.token1}`
                     token0Amount = `${+item.amountShare !== 0 ? item.amountShare: "0.00" + " " + item.tokenShare}`
                     break;

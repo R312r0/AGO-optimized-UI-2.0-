@@ -64,10 +64,20 @@ export const TOKENS_FOR_LIQUIDITY_POOLS = gql(`
 export const TOKENS_FOR_USER_BALANCES = gql(`
 
     query userBalanceTokens {
-        tokens(first: 100, orderBy: symbol, orderDirection: asc) {
+        tokens(first: 100, orderBy: symbol, orderDirection: asc, where: {isProtocolMain: true}) {
             id
+            decimals
             symbol
             priceUSD
+        }
+        pairs(first: 100, where: {isRewardPool: true}) {
+            id
+            token0 {
+                symbol
+            }
+            token1 {
+                symbol
+            }
         }
     }
 
@@ -168,7 +178,7 @@ export const PORTFOLIO_PERFOMANCE = gql(`
               timestamp
             }
         }
-        tokens(first: 15) {
+        tokens(first: 15, where: {isProtocolMain: true}) {
             symbol
             priceUSD
             lineChartUSD(orderBy: timestamp, orderDirection: desc) {
@@ -177,6 +187,25 @@ export const PORTFOLIO_PERFOMANCE = gql(`
            }
         }
     }
+`)
+
+export const USER_TXS_HISTORY = gql(`
+    
+    query userTxs($id: String!) {
+        transactions(first: 200, orderBy: timestamp, orderDirection: desc, where: {from: $id}) {
+            name
+            from
+            token0
+            tokenShare
+            token1
+            amount0
+            amountShare
+            amount1
+            amountTotalUSD
+            timestamp
+        }
+    }
+
 `)
 
 export const LIQ_POOLS_TRADING = gql(`

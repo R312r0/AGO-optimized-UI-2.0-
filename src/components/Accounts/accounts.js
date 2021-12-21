@@ -29,6 +29,7 @@ export const Accounts = () => {
     const [syntheticAssets, setSyntheticAssets] = useState(null);
     const {account} = useWeb3React();
 
+
     useEffect(() => {
 
         if (userProtfolio && data && !loading) {
@@ -90,7 +91,6 @@ export const Accounts = () => {
         )
     }
     
-    console.log('balances',balances)
     return (
         <>
         {
@@ -154,7 +154,7 @@ export const Accounts = () => {
                     </div>
 
                     <div className='accounts-container-duo'>
-                        <AccountsStaking />
+                        <AccountsStaking tokensSub={data?.tokens} lpTokens={data?.pairs}/>
                         <AccountsPools />
                     </div>
                 </div>
