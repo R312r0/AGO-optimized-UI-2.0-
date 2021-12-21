@@ -1,8 +1,8 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {BarChart, XAxis, Bar, Tooltip, ResponsiveContainer} from 'recharts';
-import {useSystemContext} from '../../../systemProvider';
-import {formattedNum} from '../../../utils/helpers';
-import {useMediaQuery} from 'react-responsive';
+import React, { useState, useRef, useEffect } from 'react';
+import { BarChart, XAxis, Bar, Tooltip, ResponsiveContainer } from 'recharts';
+import { useSystemContext } from '../../../systemProvider';
+import { formattedNum } from '../../../utils/helpers';
+import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 const Volume24hChartWrapper = styled.div`
@@ -76,17 +76,17 @@ const Volume24hChartWrapper = styled.div`
   }
 `
 
-export const Volume24h = ({data}) => {
+export const Volume24h = ({ data }) => {
 
-    const {theme} = useSystemContext();
-    const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
-    const [chartValue, setChartValue] = useState({time: undefined, value: undefined})
+    const { theme } = useSystemContext();
+    const isMobileScreen = useMediaQuery({ query: '(max-width: 750px)' })
+    const [chartValue, setChartValue] = useState({ time: undefined, value: undefined })
 
 
     useEffect(() => {
 
         if (data.length > 0) {
-            setChartValue({time: data[data.length - 1].date, value: data[data.length - 1].uv})
+            setChartValue({ time: data[data.length - 1].date, value: data[data.length - 1].uv })
         }
 
     }, [data])
@@ -94,15 +94,15 @@ export const Volume24h = ({data}) => {
     const block = useRef(null)
 
     const CustomBar = ({
-                           x,
-                           y,
-                           width,
-                           height,
-                           fill,
-                       }) => {
+        x,
+        y,
+        width,
+        height,
+        fill,
+    }) => {
         return (
             <g>
-                <rect x={x} y={y} fill={fill} width={width} height={height} rx="1%"/>
+                <rect x={x} y={y} fill={fill} width={width} height={height} rx="1%" />
             </g>
         )
     }
@@ -133,24 +133,25 @@ export const Volume24h = ({data}) => {
                             dataKey="uv"
                             shape={(props) => {
                                 return <CustomBar height={props.height} width={props.width} x={props.x} y={props.y}
-                                                  fill={"#40BA93"}/>
+                                    fill={"#40BA93"} />
                             }}
                         />
                         <Tooltip
-                            contentStyle={{display: 'none'}}
-                            cursor={{fill: "rgba(255, 255, 255, 0.15)"}}
+                            contentStyle={{ display: 'none' }}
+                            cursor={{ fill: "rgba(255, 255, 255, 0.15)" }}
                             formatter={(value, name, props) => {
-                                const {payload: {date, uv}} = props;
+                                const { payload: { date, uv } } = props;
                                 if (chartValue.value !== uv) {
-                                    setChartValue({time: date, value: uv})
+                                    setChartValue({ time: date, value: uv })
                                 }
                             }}
                         />
                         <XAxis
+                            dy={10}
                             dataKey="time"
                             axisLine={false}
                             tickLine={false}
-                            tick={{fontSize: isMobileScreen ? "14px" : "1vw"}}
+                            tick={{ fontSize: isMobileScreen ? "14px" : "1vw" }}
                             stroke={theme === "light" ? "black" : "white"}
                             minTickGap={isMobileScreen ? 0 : 15}
                         />

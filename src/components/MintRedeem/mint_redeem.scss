@@ -291,7 +291,7 @@
           cursor: pointer;
   
           box-shadow: -0.313vw -0.313vw 1.563vw rgba(51, 51, 51, 0.25), 0.208vw 0.208vw 1.042vw rgba(0, 0, 0, 0.25);
-          border-radius: 1.563vw;
+          border-radius: 30px;
           border: 0;
   
           &:disabled {
@@ -311,6 +311,11 @@
             background-color: #1E1E1E;
             color: #40BA93;
           }
+        }
+        & .withoutBg{
+          background-color: transparent;
+          border: 1px solid #40BA93;
+          
         }
       }
     }

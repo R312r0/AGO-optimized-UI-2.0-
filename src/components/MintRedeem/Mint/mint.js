@@ -152,15 +152,15 @@ export const Mint = ({info}) => {
     const MintButton = () => {
 
         if (approved.collateral === "0") {
-            return <button disabled={mintButtonDisabled} className='mint-window-run-mint' onClick={() => handleApprove("collateral")}> Approve {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</button>
+            return <button disabled={mintButtonDisabled} className='mint-window-run-mint withoutBg' onClick={() => handleApprove("collateral")}> Approve {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</button>
         }
 
         if (approved.share === "0" & approved.collateral !== "0") {
-            return <button disabled={mintButtonDisabled} className='mint-window-run-mint' onClick={() => handleApprove("share")}> Approve {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</button>
+            return <button disabled={mintButtonDisabled} className='mint-window-run-mint withoutBg' onClick={() => handleApprove("share")}> Approve {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</button>
         }
 
         else {
-            return <button disabled={mintButtonDisabled} className='mint-window-run-mint' onClick={handleMint}> Mint </button>
+            return <button disabled={mintButtonDisabled} className='mint-window-run-mint withoutBg' onClick={handleMint}> Mint </button>
         }
 
     }
@@ -206,7 +206,7 @@ export const Mint = ({info}) => {
                     <button className='general-window-settings-btn' onClick={() => setMintRedeemCurrencyModal(true)}> <img src={setting_cog} alt="settings"/> </button>
                 </div>
                 <div className='general-window-input-row'>
-                    <span> <h3> Input <b> -{info.targetCollateralRatio}% </b> </h3> </span>
+                    <span> <h3> Input: <b> {info.targetCollateralRatio}% </b> </h3> </span>
                     <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC")}  </h3> </span>
                     <input type='number' placeholder="0.00" onChange={(e) => handleCollateralInput(e.target.value)} value={collateralInput}/>
                     <span className='currency'> <TokenIcon iconName={ mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
@@ -215,7 +215,7 @@ export const Mint = ({info}) => {
                     <i className="fas fa-plus"/>
                 </div>
                 <div className='general-window-input-row'> 
-                    <span> <h3> Input <b> -{info.targetCollateralRatio - 100}% </b> </h3> </span>
+                    <span> <h3> Input: <b>{info.targetCollateralRatio - 100}% </b> </h3> </span>
                     <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC")} </h3> </span>
                     <input type='number' disabled={info.targetCollateralRatio === 100} placeholder={info.targetCollateralRatio === 100 ? "TCR is 100%" : "0.00"} onChange={(e) => handleCatenaInput(e.target.value)} value={info.targetCollateralRatio === 100 ? "" : catenaInput}/>
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</span>

@@ -453,6 +453,7 @@ export const TokenPricesCharts = () => {
                         // }}
                         />
                         <XAxis
+                        dy={10}
                           dataKey="time"
                           axisLine={false}
                           tickLine={false}

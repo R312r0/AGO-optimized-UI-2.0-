@@ -69,21 +69,22 @@
         padding-right: 2.5vw;
 
         .create-btn {
-            width: 13.208vw;
+            width: 226px;
+            padding: 14px 37px;
+            border: 1px solid #4F4F4F;
+            box-sizing: border-box;
+            border-radius: 40px; 
+            font-size: 18px;
+            line-height: 27px;
+            text-align: center;
+
+            color: #FFFFFF;
             margin: 0 auto;
-            padding: 0.573vw 1vw;
-
-            font-size: 0.938vw;
-            border-radius: 1.042vw;
-            transition: .4s ease;
-
-            background-color: #40BA93;
-            border: 0.052vw solid #40BA93;
-            color: white;
-
-            &:hover {
-                background-color: transparent;
-            }
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            column-gap: 28px;
+            cursor: pointer;
         }
 
     }
@@ -144,6 +145,7 @@
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
             transition: all .2s ease-in-out;
             transform: scale(1);
+            cursor: pointer;
 
             &:hover{
                 transform: scale(1.01)
@@ -336,6 +338,11 @@
 
                                 border: none;
                                 cursor: pointer;
+                                transition: all .3s;
+
+                                &:hover{
+                                    color: #fff;
+                                }
                             }
                         }
                     }

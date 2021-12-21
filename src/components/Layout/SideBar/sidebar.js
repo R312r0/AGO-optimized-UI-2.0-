@@ -18,6 +18,8 @@ const SideBarWrapper = styled.div`
   
   margin-top: 0.5vw;
   overflow: visible;
+  position: relative;
+  z-index: 10;
 
   &::-webkit-scrollbar {
     display: none;
@@ -69,7 +71,6 @@ const SocialMediasList = styled.div`
 `
 
 const LinkList = styled.ul`
-  position: relative;
   text-align: center;
 
   padding: 0.521vw 0.665vw;
@@ -79,7 +80,6 @@ const LinkList = styled.ul`
   
   display: flex;
   flex-direction: column;
-  position: relative;
 
   .soc-list-light {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #40BA93;
@@ -157,9 +157,11 @@ const LinkListItem = styled.li`
     line-height: 16px;
 
     color: rgba(255, 255, 255, 0.61);
-    max-width: 110px;
+    max-width: 120px;
     width: 100%;
     text-align: left;
+    transition: all .3s;
+    z-index: 10;
   }
 
   &:hover {
@@ -167,10 +169,10 @@ const LinkListItem = styled.li`
     transition: 0.3s background-color;
     border-radius: 12px;
 
-    & .hover_title{
-    left: 95px;
-    z-index: 2;
-  }
+      & .hover_title{
+      left: 145px;
+      
+    }
   }
 
   &:last-child {

@@ -15,7 +15,8 @@ import { TOKENS_FOR_USER_BALANCES } from "../../../api/client";
 const BalancesTabWrapper = styled.div`
   max-width: 100%;
   transition: 0.3s all;
-  width: ${props => props.opened ? "100%" : "20%"};
+  /* width: ${props => props.opened ? "fit-content" : "20%"}; */
+  width: fit-content;
   align-self: center;
   height: 52px;
   transition: all .5s ease;
@@ -164,6 +165,12 @@ const BalancesTabWrapper = styled.div`
         justify-content: start;
       }
     }
+
+    transition: all .3s;
+
+    &:hover{
+      opacity: 0.6;
+    }
   }
 `
 
@@ -270,7 +277,7 @@ const BalanceListDesktop = styled.ul`
   display: flex;
   height: 100%;
   transition: all .5s ease;
-  width:  ${props => props.opened ? "100%" : "0"};
+  width:  ${props => props.opened ? "fit-content" : "0"};
   margin-left: ${props => props.opened ? "20px" : "0"};
   margin-bottom: 0;
   align-items: center;
@@ -408,7 +415,7 @@ export const BalancesTab = () => {
             </div>
 
             <BalanceListDesktop opened={balancesExpanded} onMouseEnter={handleShiftKey} id='balanceList'>
-              {balances && balances.map((item) => {
+              {balances && balances.filter(b => b.nativeBalance > 0).map((item) => {
                 return (
                   <BalanceListItemDesktop key={"token-" + item.name}>
                     <TokenIcon iconName={item.name} />

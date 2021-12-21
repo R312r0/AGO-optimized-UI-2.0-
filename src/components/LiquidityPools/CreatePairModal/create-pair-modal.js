@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {Modal, Spin} from "antd";
+import React, { useEffect, useState } from 'react';
+import { Modal, Spin } from "antd";
 import styled from "styled-components";
-import {TokenIcon} from "../../TokenIcon/token_icon";
-import {useQuery} from "@apollo/client";
-import {TOKENS_FOR_LIQUIDITY_POOLS} from "../../../api/client";
-import {CONTRACT_ADRESESS, DEX_ADDRESESS, LOADER_INDICATOR_LOCAL, MAX_INT} from "../../../constants";
-import {useSystemContext} from "../../../systemProvider";
-import {useWeb3React} from "@web3-react/core";
+import { TokenIcon } from "../../TokenIcon/token_icon";
+import { useQuery } from "@apollo/client";
+import { TOKENS_FOR_LIQUIDITY_POOLS } from "../../../api/client";
+import { CONTRACT_ADRESESS, DEX_ADDRESESS, LOADER_INDICATOR_LOCAL, MAX_INT } from "../../../constants";
+import { useSystemContext } from "../../../systemProvider";
+import { useWeb3React } from "@web3-react/core";
 import ERC20_ABI from '../../../abi/ERC20.json';
-import {formatFromDecimal, formatToDecimal} from "../../../utils/helpers";
+import { formatFromDecimal, formatToDecimal } from "../../../utils/helpers";
 
 const ModalWrapper = styled.div`
   display: grid;
@@ -153,15 +153,15 @@ const CancelSelection = styled.button`
   place-self: center;
 `
 
-export const CreatePairModal = ({visible, setVisible, pools}) => {
+export const CreatePairModal = ({ visible, setVisible, pools }) => {
 
     // TODO: check user balance when he paste a input
     // TODO: maybe addLiquidityETH too as well
 
 
-    const {userProtfolio, tokens, contracts} = useSystemContext();
-    const {account, library} = useWeb3React();
-    const [token0Select, setToken0Select] = useState({id: CONTRACT_ADRESESS.WMATIC, symbol: "WMATIC", decimals: 18});
+    const { userProtfolio, tokens, contracts } = useSystemContext();
+    const { account, library } = useWeb3React();
+    const [token0Select, setToken0Select] = useState({ id: CONTRACT_ADRESESS.WMATIC, symbol: "WMATIC", decimals: 18 });
     const [token1Select, setToken1Select] = useState(null);
     const [token0Input, setToken0Input] = useState(null);
     const [token1Input, setToken1Input] = useState(null);
@@ -272,7 +272,7 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
         const token1AmountFormatted = formatToDecimal(token1Amount, token1.decimals);
 
 
-        await contracts.ROUTER.methods.addLiquidity(token0.id, token1.id, token0AmountFormatted, token1AmountFormatted, 0, 0, account, 9999999999).send({from: account});
+        await contracts.ROUTER.methods.addLiquidity(token0.id, token1.id, token0AmountFormatted, token1AmountFormatted, 0, 0, account, 9999999999).send({ from: account });
 
     }
 
@@ -294,7 +294,7 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
 
         if (!searchContract) {
             const contr = new library.eth.Contract(ERC20_ABI, tokenObj.id);
-            await contr.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account});
+            await contr.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({ from: account });
             const allowance = await contr.methods.allowance(account, DEX_ADDRESESS.ROUTER).call();
 
             if (tokenObj.id === token0Select.id) {
@@ -305,7 +305,7 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
             }
         }
         else {
-            await searchContract.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account});
+            await searchContract.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({ from: account });
             const allowance = await searchContract.methods.allowance(account, DEX_ADDRESESS.ROUTER).call();
 
             if (tokenObj.id === token0Select.id) {
@@ -336,9 +336,9 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
 
     return (
         <Modal visible={visible}
-               onCancel={() => setVisible(false)}
-               wrapClassName={"create-pair-modal"}
-               footer={null}
+            onCancel={() => setVisible(false)}
+            wrapClassName={"create-pair-modal"}
+            footer={null}
         >
             {tokenSelectWindow ?
                 <SelectTokenWindow
@@ -359,7 +359,7 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
                             <input placeholder={"0.0"} onChange={(e) => setToken0Input(e.target.value)} value={token0Input} />
                             <button onClick={() => handleMaxInput(0)} className={'max'}>MAX</button>
                             <button onClick={() => handleTokenSelectWindow(0)} className={'token-sel'}>
-                                <TokenIcon iconName={token0Select.symbol}/>
+                                <TokenIcon iconName={token0Select.symbol} />
                                 <span>{token0Select.symbol}</span>
                             </button>
                         </div>
@@ -367,12 +367,12 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
                     <TokenSelectBlock>
                         <p> Input </p>
                         <div>
-                            <input placeholder={"0.0"} onChange={(e) => setToken1Input(e.target.value)} value={token1Input}/>
+                            <input placeholder={"0.0"} onChange={(e) => setToken1Input(e.target.value)} value={token1Input} />
                             <button onClick={() => handleMaxInput(1)} className={`max ${!token1Select ? "disabled" : ""}`}>MAX</button>
                             <button onClick={() => handleTokenSelectWindow(1)} className={'token-sel'}>
                                 {token1Select ?
                                     <>
-                                        <TokenIcon iconName={token1Select.symbol}/>
+                                        <TokenIcon iconName={token1Select.symbol} />
                                         <span>{token1Select.symbol}</span>
                                     </>
                                     :
@@ -384,7 +384,7 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
                             </button>
                         </div>
                     </TokenSelectBlock>
-                    <CreatePairButton/>
+                    <CreatePairButton />
                 </ModalWrapper>
             }
         </Modal>
@@ -392,10 +392,10 @@ export const CreatePairModal = ({visible, setVisible, pools}) => {
 }
 
 
-const SelectTokenWindow = ({setWindow, token0Select, setToken0Select, token1Select, setToken1Select, selectedInput}) => {
+const SelectTokenWindow = ({ setWindow, token0Select, setToken0Select, token1Select, setToken1Select, selectedInput }) => {
 
-    const {data, loading} = useQuery(TOKENS_FOR_LIQUIDITY_POOLS);
-    const {library} = useWeb3React();
+    const { data, loading } = useQuery(TOKENS_FOR_LIQUIDITY_POOLS);
+    const { library } = useWeb3React();
     const [tokensArr, setTokensArr] = useState(null);
 
     useEffect(() => {
@@ -424,9 +424,9 @@ const SelectTokenWindow = ({setWindow, token0Select, setToken0Select, token1Sele
                         const contr = new library.eth.Contract(ERC20_ABI, value);
                         const symbol = await contr.methods.symbol().call();
                         const decimals = await contr.methods.decimals().call()
-                        res = [{id: value, symbol, decimals}];
+                        res = [{ id: value, symbol, decimals }];
                     }
-                    catch(e) {
+                    catch (e) {
                         res = []
                     }
                 }
@@ -459,7 +459,7 @@ const SelectTokenWindow = ({setWindow, token0Select, setToken0Select, token1Sele
             <h1> Select token</h1>
             <input type={"text"} onChange={(e) => handleSearchToken(e.target.value)} placeholder={"0x or token name"} />
             <SelectionWindow>
-                {!tokensArr ? <Spin indicator={LOADER_INDICATOR_LOCAL}/> :
+                {!tokensArr ? <Spin indicator={LOADER_INDICATOR_LOCAL} /> :
                     <>
                         {tokensArr.map((item, _ind) => {
 
@@ -468,8 +468,8 @@ const SelectTokenWindow = ({setWindow, token0Select, setToken0Select, token1Sele
                             }
 
                             return (
-                                <li onClick={() => handleTokenSelect({id: item.id, symbol: item.symbol, decimals: item.decimals})} key={`${item.symbol}_${_ind}`}>
-                                    <TokenIcon iconName={item.symbol}/>
+                                <li onClick={() => handleTokenSelect({ id: item.id, symbol: item.symbol, decimals: item.decimals })} key={`${item.symbol}_${_ind}`}>
+                                    <TokenIcon iconName={item.symbol} />
                                     <h5>{item.symbol}</h5>
                                     <h5>{item.id}</h5>
                                 </li>

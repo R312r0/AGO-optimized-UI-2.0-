@@ -2,7 +2,7 @@
 
 html {
     scroll-behavior: smooth;
-  }
+}
 body {
     margin: 0;
     padding: 0;
@@ -47,6 +47,11 @@ button {
     cursor: pointer;
     border: none;
     background-color: transparent;
+    transition: all 0.3s;
+    &:hover {
+        color: #fff !important;
+        opacity: 0.8;
+    }
 }
 
 input {
@@ -102,8 +107,34 @@ input {
     }
 }
 
-body{
-    .ant-switch-checked .ant-switch-handle{
+body {
+    .ant-switch-checked .ant-switch-handle {
         left: calc(100% - 36px - 2px);
+    }
+}
+
+a {
+    transition: all 0.3s;
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.connect-wallet-to-view-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    color: #fff;
+    row-gap: 20px;
+    & h3 {
+        color: #fff;
+    }
+
+    & button {
+        background: #40ba93;
+        border-radius: 30px;
+        padding: 14px 47px;
     }
 }

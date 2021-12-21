@@ -16,7 +16,7 @@
             width: 100%;
             padding-left: 1.25vw;
 
-            margin: 0.625vw 0 2.083vw;
+            margin: 0 0 2.083vw;
 
             display: flex;
             align-items: center;
@@ -26,6 +26,15 @@
                 font-size: 0.938vw;
                 font-weight: 500;
                 color: #4F4F4F;
+
+                &:first-child{
+                        margin-top: 0.26vw;
+        
+                        font-size: 1.25vw;
+                        font-weight: 300;
+        
+                        color: #40ba93;
+                }
             }
         }
 

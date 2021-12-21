@@ -22,7 +22,7 @@ const tokenColors = ["#40BA93", "#DB1BB1", "#DB1BB1", "#EAD200", "#DB1B60", "#90
 
 
 export const Accounts = () => {
-    const {theme, userProtfolio} = useSystemContext();
+    const {theme, userProtfolio, setIsWalletModal} = useSystemContext();
     const {data, loading} = useQuery(TOKENS_FOR_USER_BALANCES);
     const [sumUserBalances, setSumUserBalances] = useState(0.00);
     const [balances, setBalances] = useState(null);
@@ -161,7 +161,10 @@ export const Accounts = () => {
                 
             </div>
             :
-            <h1 className='connect-wallet-alert'> Please connect wallet to use Accounts page. </h1>
+            <div className='connect-wallet-to-view-page'>
+                <h3>Please connect wallet to view this page!</h3>
+                <button onClick={()=>setIsWalletModal(true)}>Connect Wallet</button>
+            </div> 
         }       
         </>
     )

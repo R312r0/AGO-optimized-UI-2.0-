@@ -176,7 +176,7 @@ export const Redeem = ({info}) => {
                 <i className="fas fa-plus"/>
             </div>
             <div className='general-window-input-row'> 
-                <span> <h3> Output USDT - <b> {info.effectiveCollateralRatio}% </b> </h3> </span>
+                <span> <h3> Output USDT : <b> {info.effectiveCollateralRatio}% </b> </h3> </span>
                 <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC")} </h3> </span>
                 <input disabled type='number' placeholder="0.00" value={collateralOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
@@ -185,7 +185,7 @@ export const Redeem = ({info}) => {
                 <i className="fas fa-arrow-down"/>
             </div>
             <div className='general-window-input-row output'> 
-                <span> <h3> Output CNUSD - <b> {100 - info.effectiveCollateralRatio}% </b> </h3> </span>
+                <span> <h3> Output CNUSD : <b> {100 - info.effectiveCollateralRatio}% </b> </h3> </span>
                 <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC")} </h3> </span>
                 <input disabled type='number' placeholder={info.effectiveCollateralRatio === 100 ? "ECR is 100%" : "0.00"} value={info.effectiveCollateralRatio === 100 ? null : catenaOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} </span>

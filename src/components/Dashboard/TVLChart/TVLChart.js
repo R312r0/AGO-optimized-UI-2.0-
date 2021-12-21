@@ -124,6 +124,7 @@ export const TVLChart = ({ data }) => {
                   </defs>
                   <XAxis
                     contentStyle={{ padding: '10px 0' }}
+                    dy={10}
                     dataKey="time"
                     axisLine={false}
                     tickLine={false}
@@ -177,12 +178,14 @@ export const TVLChart = ({ data }) => {
                     tickLine={false}
                     tick={{ fontSize: "1vw" }}
                     stroke={theme === "light" ? "black" : "white"}
+                    dy={10}
                     margin={{
                       top: 10,
                       right: 0,
                       left: 0,
                       bottom: 0,
                     }}
+                    padding={20}
                   />
                 </LineChart>
               }

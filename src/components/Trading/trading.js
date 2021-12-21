@@ -21,12 +21,6 @@ const ContentHeader = styled.div`
 
   padding: 0 2.5vw;
   height: 46px;
-
-  h1 {
-    font-weight: 500;
-    font-size: 1.8vw;
-    color: white;
-  }
 `
 
 const TradingBar = styled.div`

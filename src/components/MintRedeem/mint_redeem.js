@@ -13,7 +13,7 @@ export const MintRedeem = () => {
     const [activeTab, setActiveTab] = useState("Mint");
     const [mintRedeemInfo, setMintRedeemInfo] = useState(null);
     const { account } = useWeb3React();
-    const { theme, mintRedeemCurrency, mintRedeemSlipage, contracts } = useSystemContext();
+    const { theme, mintRedeemCurrency, mintRedeemSlipage, contracts, setIsWalletModal } = useSystemContext();
 
     useEffect(() => {
         getMintRedeemInfo(mintRedeemCurrency);
@@ -76,7 +76,10 @@ export const MintRedeem = () => {
                 {activeTab === "Mint" ? <Mint info={mintRedeemInfo}/> : <Redeem info={mintRedeemInfo}/>}
             </div>
             :
-            <h1 className='connect-wallet-alert'> Please connect wallet to use Mint/Redeem page </h1>            
+            <div className='connect-wallet-to-view-page'>
+                <h3>Please connect wallet to view this page!</h3>
+                <button onClick={()=>setIsWalletModal(true)}>Connect Wallet</button>
+            </div>          
             }
         </>
     )

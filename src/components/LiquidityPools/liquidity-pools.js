@@ -11,6 +11,7 @@ import {Spin} from "antd";
 import {LOADER_INDICATOR} from "../../constants";
 import styled from "styled-components";
 import {CreatePairModal} from "./CreatePairModal/create-pair-modal";
+import { ReactComponent as CreatePairPlus } from '../../assets/icons/plus_create.svg';
 
 const SearchBar = styled.div`
   width: 39.271vw;
@@ -169,7 +170,7 @@ export const LiquidityPools = () => {
                       <path d="M16.0027 15.0048L22.3384 21.3405L21.3408 22.3381L15.0051 16.0024L16.0027 15.0048Z" fill="#333333"/>
                     </svg>
                   </SearchBar>
-                <button className='create-btn' onClick={() => setIsCreatePairModal(true)}> Create Pair </button>
+                <button className='create-btn' onClick={() => setIsCreatePairModal(true)}> <CreatePairPlus /> Create Pair </button>
             </div>
             <h3 className='luqidity-pools-wrapper-heading'> Earn AGO pools </h3>
             <div className='luqidity-pools-wrapper__list-header'>
