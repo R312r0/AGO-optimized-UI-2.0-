@@ -28,9 +28,16 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
     }, [account])
 
     const handleInput0 = (value) => {
+
+
         setInput0(value);
-        const priceForEquality = value * token0.price;
-        const token1Amount = priceForEquality / token1.price;
+        console.log(token0.price);
+        const priceForEquality = value * parseFloat(token0.price);
+        const token1Amount = priceForEquality / parseFloat(token1.price);
+
+        console.log(priceForEquality);
+        console.log(token1Amount);
+
         setInput1(token1Amount);
         setUsdValue(priceForEquality * 2);
     }
@@ -173,8 +180,8 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
                 </div>
 
                 <div className='provide-liquidity-block__item__data'>
-                    <p>0.236956852637269</p>
-                    <p>=${token0.price}</p>
+                    <p> </p>
+                    <p>=${formattedNum(token0.price)}</p>
                 </div>
             </div>
 
@@ -190,8 +197,8 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
                 </div>
 
                 <div className='provide-liquidity-block__item__data'>
-                    <p>0.236956852637269</p>
-                    <p>=${token1.price}</p>
+                    <p> </p>
+                    <p>=${formattedNum(token1.price)}</p>
                 </div>
             </div>
 
@@ -199,7 +206,7 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
                 <div className='provide-liquidity-block__item__input-wrapper'> 
                     <p className='provide-liq-heading'>USD Value</p>
                     <div className='provide-liquidity-block__item__input-wrapper__token'>
-                        <span className="provide-liq-white"> {usdValue}$ </span>
+                        <span className="provide-liq-white"> {formattedNum(usdValue)}$ </span>
                     </div>
                 </div>
 

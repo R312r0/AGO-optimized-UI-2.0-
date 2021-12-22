@@ -49,6 +49,8 @@ export const MintRedeem = () => {
 
 
 
+    console.log(mintRedeemInfo);
+
     return (
         <>
             {account && mintRedeemInfo ? 

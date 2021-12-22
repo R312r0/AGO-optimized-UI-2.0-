@@ -49,7 +49,7 @@ export const Redeem = ({info}) => {
 
         if (mintRedeemCurrency === "AGOUSD") {
             redemptionCollateral = formatFromDecimal(await contracts.POOL_AGOUSD.methods.redeem_collateral_balances(account).call(), tokens.USDT.decimals);
-            redemptionShare = formatFromDecimal(await contracts.POOL_AGOUSD.methods.redeem_share_balances(account).call(), tokens.CNUSD.decimals); 
+            redemptionShare = formatFromDecimal(await contracts.POOL_AGOUSD.methods.redeem_share_balances(account).call(), tokens.CNUSD.decimals);
         }
 
         else {

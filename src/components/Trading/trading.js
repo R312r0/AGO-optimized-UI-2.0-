@@ -230,7 +230,7 @@ export const Trading = () => {
 
           <div className="buttons">
             <TradingTabButton onClick={() => setTradingTab(SIMPLE_SWAP)} active={tradingTab === SIMPLE_SWAP}>Simple Swap</TradingTabButton>
-            <TradingTabButton onClick={() => setTradingTab(TRADING)} active={tradingTab === TRADING}>Trading</TradingTabButton>
+            <TradingTabButton disabled onClick={() => setTradingTab(TRADING)} active={tradingTab === TRADING}>Trading </TradingTabButton>
           </div>
         </TradingBar>
       </ContentHeader>

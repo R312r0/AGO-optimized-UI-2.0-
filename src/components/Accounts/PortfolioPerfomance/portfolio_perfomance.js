@@ -107,11 +107,12 @@ export const PortfolioPerfomance = () => {
                     <div className='accounts-wrapper-portoflio-perf__header-control-panel'>
                         <h1> Portfolio perfomance </h1>
                         <div className='accounts-wrapper-portoflio-perf__header-control-panel__time-frame-list'>
-                            <button className='active-frame'> 1H </button>
-                            <button> 1D </button>
-                            <button> 1W </button>
-                            <button> 1M </button>
-                            <button> 1Y </button>
+                            {/*FIXME: Unlock when */}
+                            {/*<button className='active-frame'> 1H </button>*/}
+                            {/*<button> 1D </button>*/}
+                            {/*<button> 1W </button>*/}
+                            {/*<button> 1M </button>*/}
+                            {/*<button> 1Y </button>*/}
                         </div>
                     </div>
                     <div className='accounts-wrapper-portoflio-perf__price-change'>

@@ -326,7 +326,7 @@ export const TokenPricesCharts = () => {
         const time = `${date.getHours()}:${date.getMinutes()}`
 
         return ({
-          value: item.valueUSD,
+          value: +item.valueUSD,
           time
         })
       })
