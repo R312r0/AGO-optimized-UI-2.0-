@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSystemContext } from '../../../systemProvider';
 import { formattedNum } from '../../../utils/helpers';
 import { TokenIcon } from '../../TokenIcon/token_icon';
-import pig_icon from '../../../assets/icons/pig-balances.svg';
+import { ReactComponent as Pig_icon } from '../../../assets/icons/pig-balances.svg';
 import pig_icon_light from '../../../assets/icons/pig-balances-light.svg';
 import { useWeb3React } from '@web3-react/core';
 import { useMediaQuery } from 'react-responsive';
@@ -24,8 +24,8 @@ const BalancesTabWrapper = styled.div`
   padding: 0.4vw ${props => props.account ? "0.8vw 0.4vw 0.5vw" : "1.2vw"};
   margin: 0.4vw 0 0.45vw 0.5vw;
 
-  background: ${props => props.mobile ? "transparent" : "linear-gradient(95.07deg, rgba(58, 58, 58, 0.4) -21.03%, rgba(0, 0, 0, 0.4) 139.31%), rgba(51, 51, 51, 0.1)"};
-  border: ${props => props.mobile ? "0" : "0.052vw solid #333333"};
+  background: ${props => props.mobile ? "transparent" : props.light ? "#40BA93" : "linear-gradient(95.07deg, rgba(58, 58, 58, 0.4) -21.03%, rgba(0, 0, 0, 0.4) 139.31%), rgba(51, 51, 51, 0.1)"};
+  border: ${props => props.mobile ? "0" : props.light ? "1px solid #BDBDBD" : "0.052vw solid #333333"};
   box-sizing: border-box;
   border-radius: 1.302vw;
 
@@ -105,7 +105,7 @@ const BalancesTabWrapper = styled.div`
     }
 
     .balance {
-      color: #40BA93;
+      color:  ${props => props.light ? '#fff' : "#40BA93"};
   
       @media screen and (max-width: 750px) {
         grid-area: 1 / 2 / 2 / 3;
@@ -122,6 +122,26 @@ const BalancesTabWrapper = styled.div`
       height: 2.083vw;
 
       grid-area: 1 / 1 / 3 / 2;
+
+      & path{
+        &:nth-child(1){
+          fill: ${props => props.light ? '#fff' : "#4F4F4F"}
+        }
+      }
+
+      & circle{
+        &:nth-child(2){
+          fill: ${props => props.light ? '#40BA93' : "#4F4F4F"}
+        }
+        &:nth-child(3){
+          fill: ${props => props.light ? '#fff' : "#4F4F4F"}
+        }
+        &:nth-child(4){
+          fill: ${props => props.light ? '#BDBDBD' : "#4F4F4F"}
+        }
+       
+        
+      }
 
       @media screen and (max-width: 750px) {
         width: 9.067vw;
@@ -315,10 +335,13 @@ const BalanceListItemDesktop = styled.li`
   img {
     max-width:23px;
     width: 100%;
+    background: ${props => props.light ? "#fff" : "transpered"};
+    border-radius: 50%;
+    padding: 1px;
   }
 
   span {
-    color: #828282;
+    color: ${props => props.light ? "#fff" : "#828282"};
     font-size: 0.729vw;
   }
 
@@ -382,12 +405,15 @@ export const BalancesTab = () => {
     <BalancesTabWrapper
       opened={balancesExpanded} mobile={isMobileScreen} account={account}
       onClick={() => isMobileScreen ? setBalancesMobileExpanded(true) : setBalancesExpaned(!balancesExpanded)}
+      light={theme === "light"}
     >
       <>
         {account ?
           <>
             <div className="balance-tab-wrapper">
-              <img className='balance-tab-wrapper__pig' src={theme === "light" ? pig_icon_light : pig_icon} alt="balance" />
+              <Pig_icon className='balance-tab-wrapper__pig' />
+              {/* <img className='balance-tab-wrapper__pig' src={pig_icon} alt="balance" /> */}
+              {/* <img className='balance-tab-wrapper__pig' src={theme === "light" ? pig_icon_light : pig_icon} alt="balance" /> */}
               <p className='balance'> Balance </p>
               <div className="balance-arrow-wrapper">
                 <p> {balances ? formattedNum(balances.reduce((a, { usdBalance }) => a + usdBalance, 0)) : 0.00}$ </p>
@@ -400,7 +426,7 @@ export const BalancesTab = () => {
             <BalanceListDesktop opened={balancesExpanded} onMouseEnter={handleShiftKey} id='balanceList'>
               {balances && balances.filter(b => b.nativeBalance > 0).map((item) => {
                 return (
-                  <BalanceListItemDesktop key={"token-" + item.name}>
+                  <BalanceListItemDesktop key={"token-" + item.name} light={theme === "light"}>
                     <TokenIcon iconName={item.name} />
                     <span> {formattedNum(item.nativeBalance)}{item.name}/{formattedNum(item.usdBalance)}$ </span>
                   </BalanceListItemDesktop>
@@ -418,7 +444,7 @@ export const BalancesTab = () => {
           </BalancesMobileExpandWrapper>
           <BalanceExpand opened={balancesMobileExpanded}>
             <BalanceOverall>
-              <img src={theme === "light" ? pig_icon_light : pig_icon} alt="balance" />
+              {/* <img src={theme === "light" ? pig_icon_light : pig_icon} alt="balance" /> */}
               <h5> Balance </h5>
               <h5> {userProtfolio ? formattedNum(userProtfolio.reduce((a, { userUsdBalance }) => a + userUsdBalance, 0)) : 0.00}$ </h5>
             </BalanceOverall>

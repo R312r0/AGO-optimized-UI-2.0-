@@ -14,7 +14,7 @@ const ConnectWallet = styled.div`
   text-align: right;
 
   span {
-    color: white;
+    color: ${props => props.light ? "#000" : "#fff"};
     align-self: center;
     justify-self: flex-end;
     white-space: nowrap;
@@ -34,7 +34,7 @@ const ConnectWallet = styled.div`
     background-color: transparent;
     border: 0.104vw solid #40BA93;
     border-radius: 50%;
-    color: white;
+    color: ${props => props.light ? "#000" : "#fff"};
 
     font-size: 1.250vw;
 
@@ -85,7 +85,7 @@ export const ConnectWalletButton = () => {
     const {theme, disconnectWallet, setIsWalletModal} = useSystemContext();
 
     return (
-        <ConnectWallet mobile={isMobileScreen}>
+        <ConnectWallet mobile={isMobileScreen} light={theme === "light"}>
             <span> {account ? formatAddress(account) : "Connect Wallet"}</span>
             <button onClick={() => account ? disconnectWallet() : setIsWalletModal(true)}>
                 {account ?

@@ -138,3 +138,72 @@ a {
         padding: 14px 47px;
     }
 }
+
+body {
+    &.light-theme {
+        .main__heading__page {
+            color: #333333;
+        }
+
+        button {
+            &:hover {
+                color: #b0b0b0 !important;
+            }
+        }
+
+        .connect-wallet-to-view-page {
+            color: #333;
+            & h3 {
+                color: #333;
+            }
+        }
+
+        .collect-redemption {
+            background: #ffffff;
+
+            div {
+                border-bottom: 1px solid #f2f2f2;
+                h3 {
+                    font-size: 0.729vw;
+                    color: #333;
+
+                    &:first-child {
+                        color: #333;
+                    }
+                }
+            }
+
+            .collect-redemption-data {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.729vw;
+
+                padding: 0.729vw 0 !important;
+                color: #828282;
+
+                p:last-child {
+                    color: #333;
+                }
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid #f2f2f2;
+                }
+            }
+        }
+        .mint-redeem-wrapper {
+            .collect-redemption div button{
+                color: #333;
+            }
+            .general-wrapper .general-window{
+                .general-window-header button{
+                    background: #F2F2F2;
+                }
+                
+                .general-btn-wrapper .withoutBg{
+                    color: #333;
+                }
+            } 
+        }
+        
+    }
+}

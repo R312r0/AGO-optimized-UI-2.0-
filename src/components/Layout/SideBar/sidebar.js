@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import  { ReactComponent as Comments_black } from '../../../assets/icons/nav-links/dark-theme/comment-black.svg';
+import { ReactComponent as Comments_black } from '../../../assets/icons/nav-links/dark-theme/comment-black.svg';
 import document_icon from './../../../assets/icons/sidebar-documents.svg';
 import { PAGES } from '../../../constants';
 import { useSystemContext } from '../../../systemProvider';
@@ -44,10 +44,10 @@ const SocialMediasList = styled.div`
   z-index: ${props => props.opened ? "1000" : "-1000"};
 
   transition: 0.3s all;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(60.68% 60.68% at 50.88% 47.73%, #265041 0%, #222121 100%);
+  background: ${props => props.light ? "linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #40BA93;" : "linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), radial-gradient(60.68% 60.68% at 50.88% 47.73%, #265041 0%, #222121 100%)"};
   transform: translateX(-50%);
 
-  border: 0.052vw solid #4F4F4F;
+  border:${props => props.light ? "0.052vw solid #BDBDBD" : "0.052vw solid #4F4F4F"};
   border-radius: 0.8vw;
   font-size: 1vw;
   
@@ -75,11 +75,12 @@ const LinkList = styled.ul`
 
   padding: 0.521vw 0.665vw;
   
-  border: 0.052vw solid #4F4F4F;
+  border: ${props => props.light ? "0.052vw solid #E0E0E0" : "0.052vw solid #4F4F4F"};
   border-radius: 1vw;
   
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .soc-list-light {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #40BA93;
@@ -93,7 +94,7 @@ const LinkList = styled.ul`
   }
 
   .link-message-item {
-    border: 0.052vw solid #4F4F4F;
+    border: ${props => props.light ? '1px solid #E0E0E0': '1px solid #4F4F4F'};
     margin-top: 4vw;
 
     &:hover {
@@ -152,27 +153,31 @@ const LinkListItem = styled.li`
 
   & .hover_title{
     position: absolute;
-    left: -300%;
+    left: 95px;
     font-size: 14px;
     line-height: 16px;
 
-    color: rgba(255, 255, 255, 0.61);
+    color: ${props => props.light ? "#000" : " rgba(255, 255, 255, 0.61)"};
     max-width: 120px;
     width: 100%;
     text-align: left;
     transition: all .3s;
     z-index: 10;
+    opacity:0;
+    white-space:nowrap;
   }
 
   &:hover {
-    background-color: ${props => props.active ? "#40BA93" : "#2D2C2C"};
+    background-color: ${props => props.active ? "#40BA93" : (props.light ? "#E0E0E0" : "#2D2C2C")};
     transition: 0.3s background-color;
     border-radius: 12px;
 
       & .hover_title{
-      left: 145px;
+        opacity: 1;
       
     }
+
+    
   }
 
   &:last-child {
@@ -184,7 +189,8 @@ const LinkListItem = styled.li`
   & svg{
     max-width: 22px;
     width: 100%;
-    fill:  ${props => props.active ? "#fff" : "#4F4F4F"};
+    fill:  ${props => props.active ? "#fff" : (props.light ? "#828282" : "#4F4F4F")};
+    /* stroke:  ${props => props.active ? "#fff" : "#4F4F4F"}; */
   }
  
 `
@@ -200,7 +206,7 @@ const BottomLinks = styled.div`
     margin-left: 2.083vw;
     font-size: 0.729vw;
     font-weight: 300;
-    color: white;
+    color: ${props => props.light ? '#4F4F4F' : '#fff'};
     
     @media screen and (max-width: 750px) {
       display: none;
@@ -219,12 +225,13 @@ export const SideBar = () => {
 
 
   return (
-    <SideBarWrapper>
-      <LinkList>
+    <SideBarWrapper light={theme === "light"}>
+      <LinkList light={theme === "light"}>
         <SocialMediasList
           opened={expandSocMedias}
           onMouseEnter={() => setExpandSocMedias(true)}
           onMouseLeave={() => setExpandSocMedias(false)}
+          light={theme === "light"}
         >
           <a href="mailto:email@argano.io" target="_blank" rel="noreferrer"><i className="fas fa-envelope"></i></a>
           <a href="https://t.me/ARGANO_DEFI" target="_blank" rel="noreferrer"><i className="fab fa-telegram-plane"></i></a>
@@ -236,7 +243,7 @@ export const SideBar = () => {
         {PAGES.map((item, index) => {
           return (
             <NavLink to={item.path} onClick={() => setActiveTab(item.path)} key={`side_bar_${index}`}>
-              <LinkListItem active={item.path === history.location.pathname} name={item.name}>
+              <LinkListItem active={item.path === history.location.pathname} name={item.name} light={theme === "light"}>
                 {React.createElement(item.component, {})}
                 <div className='hover_title'>{item.name}</div>
                 {/* {item.component} */}
@@ -246,13 +253,13 @@ export const SideBar = () => {
             </NavLink>
           )
         })}
-        <LinkListItem className='link-message-item' onMouseEnter={() => setExpandSocMedias(true)}>
+        <LinkListItem className='link-message-item' onMouseEnter={() => setExpandSocMedias(true)} light={theme === "light"}>
           <Comments_black />
         </LinkListItem>
       </LinkList>
       {isTabletScreen
         ? <img className="document_icon" src={document_icon}></img>
-        : <BottomLinks>
+        : <BottomLinks light={theme === "light"}>
           <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
           <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
           <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>

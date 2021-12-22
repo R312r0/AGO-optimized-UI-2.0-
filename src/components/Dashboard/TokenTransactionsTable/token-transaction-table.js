@@ -1,13 +1,13 @@
-import React, {Fragment, useEffect, useState} from 'react';
-import {useSystemContext} from '../../../systemProvider';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useSystemContext } from '../../../systemProvider';
 import styled from 'styled-components';
-import {Spin} from "antd";
-import {LOADER_INDICATOR} from "../../../constants";
+import { Spin } from "antd";
+import { LOADER_INDICATOR } from "../../../constants";
 
 const TokenTransactionTableWrapper = styled.div`
   width: 100%;
   height: 40vw;
-  background: radial-gradient(34.28% 208.17% at 30.1% 58.42%, rgba(30, 91, 72, 0.2) 0%, rgba(9, 33, 25, 0.2) 100%), linear-gradient(97.95deg, #272727 -6.91%, #1C1C1C 101.49%);
+  background: ${props => props.light ? "#fff" : "radial-gradient(34.28% 208.17% at 30.1% 58.42%, rgba(30, 91, 72, 0.2) 0%, rgba(9, 33, 25, 0.2) 100%), linear-gradient(97.95deg, #272727 -6.91%, #1C1C1C 101.49%)"};
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
   border-radius: 2vw;
   box-sizing: border-box;
@@ -63,15 +63,14 @@ const TokenTransactionTableWrapper = styled.div`
 
         background: transparent;
         border-radius: 1.302vw;
-        color: #B0B0B0;
+        color: ${props => props.light ? "#828282" : '#B0B0B0'};
 
         border: none;
         cursor: pointer;
         transition: all .3s;
 
         &:hover{
-          /* opacity: 0.8; */
-          color: #fff;
+          color: ${props => props.light ? "#B0B0B0" : '#fff'};
         }
       }
     }
@@ -86,7 +85,7 @@ const TokenTransactionTableWrapper = styled.div`
   .transactions-heading {
     font-size: 24px;
     line-height: 36px;
-    color: white;
+    color: ${props => props.light ? "#333" : '#fff'};
   }
 `
 const Table = styled.div`
@@ -94,7 +93,7 @@ const Table = styled.div`
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 0.5fr 15fr 0.1fr;
   row-gap: 1.1vw;
-  color: white;
+  color: ${props => props.light ? "#333" : '#fff'};
 
   .token-transaction-separator {
     width: 100%;
@@ -141,7 +140,7 @@ const TableBody = styled.div`
     font-style: normal;
     font-weight: 300;
     font-size: 0.8vw;
-    color: #BDBDBD;
+    color: ${props => props.light ? "#4F4F4F" : '#BDBDBD'};
     line-height: 1.2vw;
     
     @media only screen and (max-width: 1024px) {
@@ -173,14 +172,16 @@ const TablePagination = styled.div`
     column-gap: 15px;
 
     span {
-      color: white;
+      color: ${props => props.light ? "#333" : '#fff'};
       font-size: 1vw;
     }
 
     button {
       background: transparent;
       font-size: 0.8vw;
-      color: #4F4F4F;
+      font-size: 14px;
+      line-height: 21px;  
+      color: ${props => props.light ? "#828282" : '#4F4F4F'};
       border: none;
       cursor: pointer;
 
@@ -193,102 +194,102 @@ const TablePagination = styled.div`
   }
 `
 
-export const TokenTransactionTable = ({data}) => {
+export const TokenTransactionTable = ({ data }) => {
 
-    const {theme} = useSystemContext();
-    const [totalPages, setTotalPages] = useState(null);
-    const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
-    const [dataPaginated, setDataPaginated] = useState(null);
+  const { theme } = useSystemContext();
+  const [totalPages, setTotalPages] = useState(null);
+  const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
+  const [dataPaginated, setDataPaginated] = useState(null);
 
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+  useEffect(() => {
 
-        if (data.length > 0) {
-            setLoading(false);
-            determineNumberOfPages();
+    if (data.length > 0) {
+      setLoading(false);
+      determineNumberOfPages();
+    }
+
+  }, [data])
+
+  const determineNumberOfPages = () => {
+    const itemsPerPage = 10;
+
+    let paginatedDataObject = {};
+
+    let index = 0;
+    let dataLength = data.length;
+    let chunkArray = [];
+
+    for (index = 0; index < dataLength; index += itemsPerPage) {
+      let newChunk = data.slice(index, index + itemsPerPage);
+      chunkArray.push(newChunk);
+    }
+
+    chunkArray.forEach((chunk, i) => {
+      paginatedDataObject[i + 1] = chunk;
+    });
+
+    setTotalPages(chunkArray.length);
+    setDataPaginated(paginatedDataObject);
+  };
+
+
+  return (
+    <TokenTransactionTableWrapper light={theme === "light"}>
+      <div className="transanction-tabs-wrapper">
+        <h2 className={'transactions-heading'}>Transactions</h2>
+        <div>
+          <button className="transanction-tabs-wrapper-active">All</button>
+          <button>Swaps</button>
+          <button>Adds</button>
+          <button>Removes</button>
+        </div>
+      </div>
+      <Table light={theme === "light"}>
+        <TableHead light={theme === "light"}>
+          <span></span>
+          <span>Total Value</span>
+          <span>Token Amount</span>
+          <span>Token Amount</span>
+          <span>Account</span>
+          <span>Time</span>
+        </TableHead>
+        <div className="token-transaction-separator"></div>
+        {loading
+          ?
+          <Spin size={"default"} indicator={LOADER_INDICATOR} />
+          :
+          <TableBody light={theme === "light"}>
+            {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item, index) => {
+
+              return (
+                <Fragment key={`table_${index}`}>
+                  <div className='operation'>{item.txName}</div>
+                  <div>{item.totalValue}$</div>
+                  <div>{item.token0Amount}</div>
+                  <div>{item.token1Amount}</div>
+                  <div className='acc'>{item.acc}</div>
+                  <div className='time'>{item.time}</div>
+                </Fragment>
+              );
+            })}
+          </TableBody>
         }
-
-    }, [data])
-
-    const determineNumberOfPages = () => {
-        const itemsPerPage = 10;
-
-        let paginatedDataObject = {};
-
-        let index = 0;
-        let dataLength = data.length;
-        let chunkArray = [];
-
-        for (index = 0; index < dataLength; index += itemsPerPage) {
-            let newChunk = data.slice(index, index + itemsPerPage);
-            chunkArray.push(newChunk);
-        }
-
-        chunkArray.forEach((chunk, i) => {
-            paginatedDataObject[i + 1] = chunk;
-        });
-
-        setTotalPages(chunkArray.length);
-        setDataPaginated(paginatedDataObject);
-    };
-
-
-    return (
-        <TokenTransactionTableWrapper>
-            <div className="transanction-tabs-wrapper">
-              <h2 className={'transactions-heading'}>Transactions</h2>
-              <div>
-                <button className="transanction-tabs-wrapper-active">All</button>
-                <button>Swaps</button>
-                <button>Adds</button>
-                <button>Removes</button>
-              </div>
-            </div>
-            <Table>
-                <TableHead>
-                    <span></span>
-                    <span>Total Value</span>
-                    <span>Token Amount</span>
-                    <span>Token Amount</span>
-                    <span>Account</span>
-                    <span>Time</span>
-                </TableHead>
-                <div className="token-transaction-separator"></div>
-                {loading
-                    ?
-                    <Spin size={"default"} indicator={LOADER_INDICATOR}/>
-                    :
-                    <TableBody>
-                        {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item, index) => {
-
-                            return (
-                                <Fragment key={`table_${index}`}>
-                                    <div className='operation'>{item.txName}</div>
-                                    <div>{item.totalValue}$</div>
-                                    <div>{item.token0Amount}</div>
-                                    <div>{item.token1Amount}</div>
-                                    <div className='acc'>{item.acc}</div>
-                                    <div className='time'>{item.time}</div>
-                                </Fragment>
-                            );
-                        })}
-                    </TableBody>
-                }
-            </Table>
-            <TablePagination>
-                <div>
-                    <button
-                        onClick={() => setCurrentClickedNumber(prevNum => prevNum !== 1 ? prevNum - 1 : prevNum)}>
-                        Prev
-                    </button>
-                    <span>Page {currentClickedNumber} of {totalPages} </span>
-                    <button
-                        onClick={() => setCurrentClickedNumber(prevNum => prevNum < totalPages ? prevNum + 1 : prevNum)}>
-                        Next
-                    </button>
-                </div>
-            </TablePagination>
-        </TokenTransactionTableWrapper>
-    )
+      </Table>
+      <TablePagination light={theme === "light"}>
+        <div>
+          <button
+            onClick={() => setCurrentClickedNumber(prevNum => prevNum !== 1 ? prevNum - 1 : prevNum)}>
+            Prev
+          </button>
+          <span>Page {currentClickedNumber} of {totalPages} </span>
+          <button
+            onClick={() => setCurrentClickedNumber(prevNum => prevNum < totalPages ? prevNum + 1 : prevNum)}>
+            Next
+          </button>
+        </div>
+      </TablePagination>
+    </TokenTransactionTableWrapper>
+  )
 }

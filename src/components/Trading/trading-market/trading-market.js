@@ -144,18 +144,15 @@ const TradingMarket = ({pool}) => {
                             <h5> =${formattedNum(token0.token.priceUSD)} </h5>
                         </div>
                         <main>
-                    <span onClick={() => handleChangeTokens()}>
+                    <span>
                         <TokenIcon iconName={token0.token.symbol}/>
                         <h3> {token0.token.symbol} </h3>
-                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.41 0L6 4.94879L10.59 0L12 1.531L6 8L0 1.531L1.41 0Z" fill="white"/>
-                        </svg>
                     </span>
                             <input type="numbe" placeholder="Enter amount" value={token0Input} onChange={(e) => handleInput(e.target.value)}/>
                         </main>
                     </div>
 
-                    <img className="arrow-swap" src={ theme === "light" ? swap_trading_dark : swap_trading} alt="swap"/>
+                    <img className="arrow-swap" src={ theme === "light" ? swap_trading_dark : swap_trading} alt="swap"  onClick={() => handleChangeTokens()}/>
 
                     <h4 className='trading-wrapper-exchange__title'>You Receive</h4>
                     <div className="trading-wrapper-exchange__swap-input">
@@ -167,9 +164,6 @@ const TradingMarket = ({pool}) => {
                     <span>
                         <TokenIcon iconName={token1.token.symbol}/>
                         <h3> {token1.token.symbol} </h3>
-                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.41 0L6 4.94879L10.59 0L12 1.531L6 8L0 1.531L1.41 0Z" fill="white"/>
-                        </svg>
                     </span>
                             <input type="numbe" placeholder="Enter amount" value={token1Input}/>
                         </main>

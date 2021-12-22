@@ -42,10 +42,13 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
         };
     };
 
+    const openItem = () => {
+        setWindowExpanded(!windowExpanded)
+    }
     return (
         <>
-        <li className={`luqidity-pools-wrapper-list-item ${windowExpanded ? "liq-item-opened" : ""}`} onClick={() => setWindowExpanded(!windowExpanded)}>
-            <div className='luqidity-pools-wrapper-list-item__header'>
+        <li className={`luqidity-pools-wrapper-list-item ${windowExpanded ? "liq-item-opened" : ""}`} id={`item_${address}`}>
+            <div className='luqidity-pools-wrapper-list-item__header'  onClick={openItem}>
                 <div className='pair'>
                     <TokenIcon iconName={token0.symbol}/>
                     <TokenIcon iconName={token1.symbol}/>

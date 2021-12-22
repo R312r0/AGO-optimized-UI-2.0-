@@ -81,6 +81,17 @@ export const ThemeSwitcher = () => {
       localStorage.setItem('theme', trueTheme);
       setTheme(trueTheme);
     }
+
+    useEffect(()=>{
+      setTimeout(()=>{
+          const themeValue = localStorage.getItem('theme');
+          if(themeValue === "light"){
+            document.body.classList.add('light-theme')
+          }else{
+            document.body.classList.remove('light-theme')
+          }
+      },0)
+    },[theme])
     return (
         <ThemeSwitcherWrapper theme={theme} mobile={isMobileScreen}>
             <svg width="9" height="14" viewBox="0 0 9 14" fill={theme === "dark" ? '#40BA93' : '#333'} xmlns="http://www.w3.org/2000/svg">

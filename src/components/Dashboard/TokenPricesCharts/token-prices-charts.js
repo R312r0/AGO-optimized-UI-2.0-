@@ -29,7 +29,7 @@ const TokenPriceChartWrapper = styled.div`
   padding: 1.823vw 2.084vw;
   /* margin-bottom: 3.646vw; */
   
-  background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
+  background: ${props => props.light ? 'radial-gradient(225.24% 9617% at -0.8% -6.31%, rgba(95, 234, 190, 0.3) 0%, rgba(95, 234, 190, 0.057) 100%);' : 'radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%)'};
   box-shadow: 0px 0.208vw 0.833vw rgba(0, 0, 0, 0.25);
   border-radius: 2vw;
   box-sizing: border-box;
@@ -84,7 +84,6 @@ const TokenPriceChartWrapper = styled.div`
     overflow-y: hidden;
     justify-content: space-between;
     transition: 0.3s all;
-    padding-bottom: 10px;
     
 
     &::-webkit-scrollbar {
@@ -140,8 +139,8 @@ const TokenPriceChartWrapper = styled.div`
             display: flex;
             margin-right: auto;
 
-            color: white;
-            background: #1E1E1E;
+            color: ${props => props.light ? '#333' : '#1E1E1E'};
+            background: ${props => props.light ? '#fff' : '#1E1E1E'};
             border-radius: 0.625vw;
 
             &:not(:last-child) {
@@ -149,7 +148,7 @@ const TokenPriceChartWrapper = styled.div`
             }
 
             p {
-              color: #4F4F4F;
+              color: ${props => props.light ? '#828282' : '#4F4F4F'};
             }
 
             span {
@@ -219,10 +218,10 @@ const SinglePriceBlock = styled.div`
 
   h3 {
     font-size: 1vw;
-    margin-bottom: 0.938vw;
+    /* margin-bottom: 0.938vw; */
     transition: .4s ease;
 
-    color: white;
+    color: ${props => props.light ? '#333333' : '#fff'};
 
     @media only screen and (max-width: 1024px){
       font-size: 1.5vw;
@@ -254,7 +253,7 @@ const SinglePriceBlock = styled.div`
     align-items: center;
 
     font-size: 0.729vw;
-    color: white;
+    color: ${props => props.light ? '#333333' : '#fff'};
 
     @media only screen and (max-width: 1024px){
       font-size: 1vw;
@@ -301,7 +300,7 @@ export const TokenPricesCharts = () => {
         }
       })
 
-     const readyData = convertFilteredData(filteredData);
+      const readyData = convertFilteredData(filteredData);
 
       setTokenPricesData(readyData)
 
@@ -336,7 +335,7 @@ export const TokenPricesCharts = () => {
 
       const supply = formatFromDecimal(tokens[item.symbol].totalSupply, tokens[item.symbol].decimals);
       const market = item.priceUSD * supply;
-      return {name, price, chartData: newLineChartData, change24h, supply: formattedNum(supply), marketCap: formattedNum(market)}
+      return { name, price, chartData: newLineChartData, change24h, supply: formattedNum(supply), marketCap: formattedNum(market) }
 
     })
 
@@ -392,16 +391,16 @@ export const TokenPricesCharts = () => {
     scroll();
   }
 
+
   return (
-    <TokenPriceChartWrapper isWindowExpanded={expandWindow} onClick={() => setExpandWindow(!expandWindow)} onMouseEnter={handleShiftKey}>
+    <TokenPriceChartWrapper isWindowExpanded={expandWindow} onClick={() => setExpandWindow(!expandWindow)} onMouseEnter={handleShiftKey} light={theme === "light"}>
       <h1 className="token-heading">Total Value Locked</h1>
       <div className="single-price-wrapper" id='chartWrapper'>
-        {tokenPricesData && tokenPricesData.map(({name, price, chartData, change24h, supply, marketCap}, _ind) => {
+        {tokenPricesData && tokenPricesData.map(({ name, price, chartData, change24h, supply, marketCap }, _ind) => {
 
           const Arrow = change24h.toString().charAt(0) === "-"
-              ? <img src={arrowDown} alt="arrow-down-percent" />
-              : <img src={arrowUp} alt="arrow-up-percent" />
-
+            ? <img src={arrowDown} alt="arrow-down-percent" />
+            : <img src={arrowUp} alt="arrow-up-percent" />
 
           return (
             <div className="price-block-wrapper" key={`price_block_${_ind}`}>
@@ -412,6 +411,7 @@ export const TokenPricesCharts = () => {
                   key={_ind}
                   isShowDivider={_ind === 1}
                   isWindowExpanded={expandWindow}
+                  light={theme === "light"}
                 >
                   <h3> {name} </h3>
                   <h1> ${price} </h1>
@@ -438,22 +438,15 @@ export const TokenPricesCharts = () => {
                           type="monotone"
                           dataKey="value"
                           stroke="#40BA93"
-                          strokeWidth={"0.25vw"}
+                          strokeWidth={"0.2vw"}
                           dot={false}
                           activeDot={true}
                         />
                         <Tooltip
                           content={CustomToolTip}
-                        // contentStyle={{display: 'none'}}
-                        // formatter={(value, name, props) => {
-                        //     const {payload: {date, uv}} = props;
-                        //     if (chartValue.value !== uv) {
-                        //         setChartValue({time: date, value: uv})
-                        //     }
-                        // }}
                         />
                         <XAxis
-                        dy={10}
+                          // dy={1}
                           dataKey="time"
                           axisLine={false}
                           tickLine={false}
