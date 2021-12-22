@@ -446,7 +446,7 @@ export const TokenPricesCharts = () => {
                           content={CustomToolTip}
                         />
                         <XAxis
-                          // dy={1}
+                          dy={10}
                           dataKey="time"
                           axisLine={false}
                           tickLine={false}
