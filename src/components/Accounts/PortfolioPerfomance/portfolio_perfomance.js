@@ -15,7 +15,7 @@ import {LOADER_INDICATOR_LOCAL} from "../../../constants";
 import {Spin} from "antd";
 
 export const PortfolioPerfomance = () => {
-
+    const { theme } = useSystemContext();
     const {account} = useWeb3React();
     const {userProtfolio} = useSystemContext();
     const {data, loading} = useQuery(PORTFOLIO_PERFOMANCE, {
@@ -101,7 +101,7 @@ export const PortfolioPerfomance = () => {
 
 
     return (
-        <div className="accounts-wrapper-portoflio-perf cosmetical-wrapper">
+        <div className={`accounts-wrapper-portoflio-perf cosmetical-wrapper ${theme === "light" && "light-acc-warapper"}`}>
             {!readyDataLoading && formattedData?.length > 0  ?
                 <>
                     <div className='accounts-wrapper-portoflio-perf__header-control-panel'>

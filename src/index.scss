@@ -204,6 +204,41 @@ body {
                 }
             } 
         }
+
+        .accounts-wrapper {
+            .cosmetical-wrapper{
+                background: linear-gradient(90.99deg, #FFFFFF 2.18%, #FFFFFF 104.4%);
+                border-radius: 40px;
+                box-shadow: none;
+
+                
+            }
+            .light-acc-warapper{
+                background: radial-gradient(113.47% 7561.36% at -5.76% -16.06%, rgba(95, 234, 190, 0.56) 0%, rgba(95, 234, 190, 0) 100%);
+                border: 0.5px solid #40BA93;
+            }
+            .accounts-wrapper-portoflio-assets__assets-chart-info__bars ul li p{
+                color: #333333;
+            }
+            .accounts-wrapper-portoflio-assets__assets-chart-info .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list ul li{
+                background: #FBFBFB;
+                color: #333333;
+            }
+
+            .accounts-wrapper-portoflio-assets__assets-chart-info .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list ul::-webkit-scrollbar-thumb{
+                background: #E0E0E0;
+            }
+
+            .accounts-wrapper-portoflio-assets__assets-chart-info .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list ul::-webkit-scrollbar{
+                background: #F2F2F2;
+            }
+
+            .accounts-wrapper-portoflio-assets__assets-chart-info__bars button{
+                color: #828282;
+                background: #FBFBFB;
+            }
+        }
+        
         
     }
 }

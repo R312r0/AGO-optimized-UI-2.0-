@@ -6,17 +6,18 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 const Volume24hChartWrapper = styled.div`
- background: ${props => props.mobile ? "transparent" : props.light ? "radial-gradient(113.47% 7561.36% at -5.76% -16.06%, rgba(95, 234, 190, 0.56) 0%, rgba(95, 234, 190, 0) 100%);":" radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%)"};
-  box-shadow: ${props => props.mobile ? "none" : "0px 4px 16px rgba(0, 0, 0, 0.25)"};
-  border-radius: 2vw;
-  width: 100%;
-  height: 21.5vw;
-  display: grid;
-  align-self: center;
-  box-sizing: border-box;
-  justify-self: flex-start;
-  grid-template-rows: 30% 70%;
-  padding: ${props => props.mobile ? "0" : "4.5% 11.5%"};
+background: ${props => props.mobile ? "transparent" : props.light ? "radial-gradient(113.47% 7561.36% at -5.76% -16.06%, rgba(95, 234, 190, 0.56) 0%, rgba(95, 234, 190, 0) 100%);" : " radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%)"};
+box-shadow: ${props => props.mobile || props.light ? "none" : "0px 4px 16px rgba(0, 0, 0, 0.25)"};
+border-radius: ${props => props.mobile ? "40px" : "2vw"};
+border:  ${props => props.light ? "0.5px solid #40BA93;" : "none"};
+width: 100%;
+height: 21.5vw;
+display: grid;
+align-self: center;
+box-sizing: border-box;
+justify-self: flex-start;
+grid-template-rows: 30% 70%;
+padding: ${props => props.mobile ? "0" : "4.5% 11.5%"};
   
   // Responsive || Height
   
@@ -62,11 +63,11 @@ const Volume24hChartWrapper = styled.div`
     p {
       font-weight: 500;
       font-size: ${props => props.mobile ? "3.6vw" : "14px"};
-      color: ${props => props.mobile ? "#BDBDBD" : props.light ? "#333": "white"};
+      color: ${props => props.mobile ? "#BDBDBD" : props.light ? "#333" : "white"};
       line-height: 27px;
 
       &:last-child{
-        color: ${props => props.mobile ? "#BDBDBD" : props.light ? "#828282": "white"};
+        color: ${props => props.mobile ? "#BDBDBD" : props.light ? "#828282" : "white"};
       }
     }
 

@@ -8,7 +8,7 @@ const TokenTransactionTableWrapper = styled.div`
   width: 100%;
   height: 40vw;
   background: ${props => props.light ? "#fff" : "radial-gradient(34.28% 208.17% at 30.1% 58.42%, rgba(30, 91, 72, 0.2) 0%, rgba(9, 33, 25, 0.2) 100%), linear-gradient(97.95deg, #272727 -6.91%, #1C1C1C 101.49%)"};
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: ${props => props.light ? "none" : "0px 4px 16px rgba(0, 0, 0, 0.25)"};
   border-radius: 2vw;
   box-sizing: border-box;
   padding: 2.5% 5.5% 2%;

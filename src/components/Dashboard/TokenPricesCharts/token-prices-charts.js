@@ -30,8 +30,9 @@ const TokenPriceChartWrapper = styled.div`
   /* margin-bottom: 3.646vw; */
   
   background: ${props => props.light ? 'radial-gradient(225.24% 9617% at -0.8% -6.31%, rgba(95, 234, 190, 0.3) 0%, rgba(95, 234, 190, 0.057) 100%);' : 'radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%)'};
-  box-shadow: 0px 0.208vw 0.833vw rgba(0, 0, 0, 0.25);
-  border-radius: 2vw;
+  box-shadow: ${props => props.light ? "none" : "0px 0.208vw 0.833vw rgba(0, 0, 0, 0.25)"};
+  border-radius: ${props => props.light ? "40px" : "2vw"};
+  border:  ${props => props.light ? "0.5px solid #40BA93;" : "none"};
   box-sizing: border-box;
   
   // Responsive || Width

@@ -27,6 +27,8 @@
     "from-exponential": "^1.1.1",
     "graphql": "^15.5.1",
     "graphql-tag": "^2.12.5",
+    "highcharts": "^9.3.2",
+    "highcharts-react-official": "^3.1.0",
     "kaktana-react-lightweight-charts": "^2.0.0",
     "lightweight-charts": "^3.6.0",
     "node-sass": "^6.0.0",

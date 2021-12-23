@@ -17,6 +17,7 @@ import AccountsStaking from './accounts-staking/accounts-staking';
 import AccountsPools from './accounts-pools/accounts-pools';
 import {useQuery} from "@apollo/client";
 import {TOKENS_FOR_USER_BALANCES} from "../../api/client";
+import AccountPieChart from './AccountPieChart';
 
 const tokenColors = ["#40BA93", "#DB1BB1", "#DB1BB1", "#EAD200", "#DB1B60", "#9018EE", "#1BB8DB", "#EA8C00", "#DB1B60"]
 
@@ -105,8 +106,7 @@ export const Accounts = () => {
                             <div className='accounts-wrapper-portoflio-assets__assets-chart-info'> 
                                 
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
-                                    {/* <PortfolioPieChart assetsList={userProtfolio}/> */}
-                                    <img className='round-chart-img' src={roundChart} />
+                                    <AccountPieChart />
                                     <ul> 
                                         {balances && balances.map((item, _ind) => {
                                             return <li key={item.name}>
@@ -130,7 +130,7 @@ export const Accounts = () => {
                                             }
 
                                             return (
-                                                <li>
+                                                <li key={`li_${_ind}`}>
                                                     <p>{percentDiff.toFixed(2)}%</p>
                                                     <span style={{ height: `${(percentDiff * 0.1) + 1}vh`, backgroundColor: tokenColors[_ind] }}/>
                                                     <p>{item.name}</p>
