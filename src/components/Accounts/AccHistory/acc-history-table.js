@@ -86,6 +86,9 @@ export const AccHistoryTable = ({searchPattern}) => {
                     <>
                         <data className={_ind === 0 ? 'dark' : "light"}>{item.date}</data>
                         {item.txs.map((itemTX) => {
+
+                            const symbols = itemTX.token0.split("-")
+
                             return (
                             <li>
                                 <div className='action-container'>
@@ -97,38 +100,44 @@ export const AccHistoryTable = ({searchPattern}) => {
                                         <b>{formatAMPM(new Date(itemTX.timestamp  * 1000))}</b>
                                     </div>
                                 </div>
+                                    <div className='action-currency'>
+                                        {symbols.length < 2 ?
+                                            <TokenIcon iconName={itemTX.token0}/>
+                                            :
+                                            <>
+                                                <TokenIcon iconName={symbols[0]}/>
+                                                <TokenIcon iconName={symbols[1]}/>
+                                            </>
 
-                                <div className='action-currency'>
-                                    <TokenIcon iconName={itemTX.token0}/>
-                                    <div className={'text'}>
-                                        <p>{itemTX.token0}</p>
+                                        }
+                                        <div className={'text'}>
+                                            <p>{itemTX.token0}</p>
+                                        </div>
+                                        {itemTX.name !== TXS_NAME.COLLECT_REDEMPTION && itemTX.name !== TXS_NAME.STAKE && itemTX.name !== TXS_NAME.UNSTAKE  ?
+                                            <>
+                                                <svg className='arrow'
+                                                     viewBox="0 0 13 21"
+                                                     fill="none">
+                                                    <path d="M0 18.515L8.03509 10.5L0 2.4675L2.47368 0L13 10.5L2.47368 21L0 18.515Z" fill="white"/>
+                                                </svg>
+                                                <TokenIcon iconName={itemTX.token1}/>
+                                                <div className={'text'}>
+                                                    <p>{itemTX.token1}</p>
+                                                </div>
+                                            </>
+                                            :
+                                            null
+                                        }
+                                        {+itemTX.amountShare > 0 ?
+                                            <>
+                                                <TokenIcon iconName={itemTX.tokenShare}/>
+                                                <div className={'text'}>
+                                                    <p>{itemTX.tokenShare}</p>
+                                                </div>
+                                            </>
+                                            : null
+                                        }
                                     </div>
-                                    <svg className='arrow'
-                                         viewBox="0 0 13 21"
-                                         fill="none">
-                                        <path d="M0 18.515L8.03509 10.5L0 2.4675L2.47368 0L13 10.5L2.47368 21L0 18.515Z" fill="white"/>
-                                    </svg>
-                                    {itemTX.name !== TXS_NAME.COLLECT_REDEMPTION ?
-                                        <>
-                                            <TokenIcon iconName={itemTX.token1}/>
-                                            <div className={'text'}>
-                                                <p>{itemTX.token1}</p>
-                                            </div>
-                                        </>
-                                        :
-                                        null
-                                    }
-                                    {+itemTX.amountShare > 0 ?
-                                        <>
-                                            <TokenIcon iconName={itemTX.tokenShare}/>
-                                            <div className={'text'}>
-                                                <p>{itemTX.tokenShare}</p>
-                                            </div>
-                                        </>
-                                        : null
-                                    }
-                                </div>
-
                                 <div className='action-transaction-data'>
                                     <p>Aplication</p>
                                     <div className='account-key'>

@@ -319,6 +319,9 @@ export const TokenPricesCharts = () => {
       const reverseLineChartArr = [...item.lineChartUSD].reverse();
       const latestRecordChange = reverseLineChartArr.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
 
+      console.log(latestRecordChange)
+      console.log(reverseLineChartArr)
+
       let change24h = !latestRecordChange || +latestRecordChange.valueUSD === 0 ? 0 : ((item.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
 
       const newLineChartData = item.lineChartUSD.map(item => {
@@ -331,14 +334,11 @@ export const TokenPricesCharts = () => {
         })
       })
 
-
-
       const supply = formatFromDecimal(tokens[item.symbol].totalSupply, tokens[item.symbol].decimals);
       const market = item.priceUSD * supply;
       return { name, price, chartData: newLineChartData, change24h, supply: formattedNum(supply), marketCap: formattedNum(market) }
 
     })
-
 
     return res;
 

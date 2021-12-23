@@ -108,5 +108,7 @@ export const TXS_NAME = {
     BURN: "Remove liquidity",
     MINT: "Mint",
     REDEEM: "Redeem",
-    COLLECT_REDEMPTION: "Collect redemption"
+    COLLECT_REDEMPTION: "Collect redemption",
+    STAKE: "Stake",
+    UNSTAKE: "Unstake"
 }

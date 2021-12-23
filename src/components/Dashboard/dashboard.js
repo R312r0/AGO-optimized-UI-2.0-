@@ -90,7 +90,7 @@ export const Dashboard = () => {
     }
 
     const convertTransactionsData = (data) => {
-        const { SWAP, ADD, BURN, MINT, REDEEM, COLLECT_REDEMPTION } = TXS_NAME;
+        const { SWAP, ADD, BURN, MINT, REDEEM, COLLECT_REDEMPTION, STAKE, UNSTAKE } = TXS_NAME;
 
         const res = data.map(item => {
             let txName;
@@ -110,7 +110,7 @@ export const Dashboard = () => {
                     txName = `${item.name} ${item.token0} and ${item.token1}`
                     break;
                 case MINT:
-                    txName = `${item.name} ${item.token1} for ${item.token0} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
+                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
                     break;
                 case REDEEM:
                     txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
@@ -119,6 +119,11 @@ export const Dashboard = () => {
                     txName = `${item.name} ${+item.amountShare !== 0 ?  item.tokenShare + " and" : ""} ${item.token1}`
                     token0Amount = `${+item.amountShare !== 0 ? item.amountShare: "0.00" + " " + item.tokenShare}`
                     break;
+                case STAKE:
+                    txName = `${item.name} ${item.token0}`
+                    break;
+                case UNSTAKE:
+                    txName = `${item.name} ${item.token0}`
             }
             return { txName, totalValue, token0Amount, token1Amount, acc, time }
         })
