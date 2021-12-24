@@ -7,7 +7,6 @@ import demoChart from './../../../assets/charts/demo-chart.svg'
 import { LineChart, XAxis, YAxis, Line, ResponsiveContainer, Tooltip } from 'recharts';
 import { } from '../../App/App';
 import { useSystemContext } from '../../../systemProvider';
-import { useDashboardContext } from '../../../providers/dashboard-provider';
 import { CustomToolTip } from "../../ChartCustomTooltip/chart-custom-tooltip";
 import styled from 'styled-components';
 import { useQuery } from "@apollo/client";

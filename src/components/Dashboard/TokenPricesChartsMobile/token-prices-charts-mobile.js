@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useSwipeable, UP, DOWN, SwipeEventData } from 'react-swipeable';
-import { useDashboardContext } from '../../../providers/dashboard-provider';
 import { SingleTokenPriceItem } from './SIngleTokenPriceItem/single-token-price-item';
 import {useQuery} from "@apollo/client";
 import {MAIN_TOKENS_DATA_QUERY} from "../../../api/client";

@@ -6,7 +6,6 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from './api/client';
 import { Web3ReactProvider } from '@web3-react/core';
 import {SystemProvider} from './systemProvider';
-import { DashboardProvider } from './providers/dashboard-provider';
 import './index.scss';
 
 
@@ -20,9 +19,7 @@ ReactDOM.render(
       <ApolloProvider client={client}>
           <Web3ReactProvider getLibrary={getLibrary}>
               <SystemProvider>
-                  <DashboardProvider>
-                      <App/>
-                  </DashboardProvider>
+                  <App/>
               </SystemProvider>
           </Web3ReactProvider>
       </ApolloProvider>
