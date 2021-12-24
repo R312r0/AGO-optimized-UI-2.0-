@@ -11,6 +11,8 @@ import { CustomToolTip } from "../../ChartCustomTooltip/chart-custom-tooltip";
 import styled from 'styled-components';
 import { useQuery } from "@apollo/client";
 import { MAIN_TOKENS_DATA_QUERY } from "../../../api/client";
+import {LOADER_INDICATOR_LOCAL} from "../../../constants";
+import {Spin} from "antd";
 
 
 const TokenPriceChartWrapper = styled.div`
@@ -287,10 +289,11 @@ export const TokenPricesCharts = () => {
 
   const { data, loading, error } = useQuery(MAIN_TOKENS_DATA_QUERY);
   const [tokenPricesData, setTokenPricesData] = useState(null);
+  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
 
-    if (data && !loading) {
+    if (data && tokens && !loading) {
       const filteredData = data.tokens.filter((item) => {
         if (item.symbol === "AGOUSD" || item.symbol === "CNUSD" || item.symbol === "AGOBTC" || item.symbol === "CNBTC") {
           return item
@@ -303,10 +306,11 @@ export const TokenPricesCharts = () => {
       const readyData = convertFilteredData(filteredData);
 
       setTokenPricesData(readyData)
+      setDataLoading(false)
 
     }
 
-  }, [data, loading])
+  }, [data, loading, tokens])
 
 
   const convertFilteredData = (arr) => {
@@ -396,7 +400,7 @@ export const TokenPricesCharts = () => {
     <TokenPriceChartWrapper isWindowExpanded={expandWindow} onClick={() => setExpandWindow(!expandWindow)} onMouseEnter={handleShiftKey} light={theme === "light"}>
       <h1 className="token-heading">Total Value Locked</h1>
       <div className="single-price-wrapper" id='chartWrapper'>
-        {tokenPricesData && tokenPricesData.map(({ name, price, chartData, change24h, supply, marketCap }, _ind) => {
+        {dataLoading ?  <Spin indicator={LOADER_INDICATOR_LOCAL}/> :  tokenPricesData.map(({ name, price, chartData, change24h, supply, marketCap }, _ind) => {
 
           const Arrow = change24h.toString().charAt(0) === "-"
             ? <img src={arrowDown} alt="arrow-down-percent" />

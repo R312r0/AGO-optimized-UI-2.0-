@@ -4,8 +4,11 @@ import { useSystemContext } from '../../../systemProvider';
 import { formattedNum } from '../../../utils/helpers';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
+import {Spin} from "antd";
+import {LOADER_INDICATOR_LOCAL} from "../../../constants";
 
 const Volume24hChartWrapper = styled.div`
+position: relative;
 background: ${props => props.mobile ? "transparent" : props.light ? "radial-gradient(113.47% 7561.36% at -5.76% -16.06%, rgba(95, 234, 190, 0.56) 0%, rgba(95, 234, 190, 0) 100%);" : " radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%)"};
 box-shadow: ${props => props.mobile || props.light ? "none" : "0px 4px 16px rgba(0, 0, 0, 0.25)"};
 border-radius: ${props => props.mobile ? "40px" : "2vw"};
@@ -86,12 +89,13 @@ export const Volume24h = ({ data }) => {
     const { theme } = useSystemContext();
     const isMobileScreen = useMediaQuery({ query: '(max-width: 750px)' })
     const [chartValue, setChartValue] = useState({ time: undefined, value: undefined })
-
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
 
         if (data.length > 0) {
             setChartValue({ time: data[data.length - 1].date, value: data[data.length - 1].uv })
+            setLoading(false);
         }
 
     }, [data])
@@ -114,55 +118,62 @@ export const Volume24h = ({ data }) => {
 
     return (
         <Volume24hChartWrapper mobile={isMobileScreen} light={theme === "light"}>
-            <div className={'volume24-info'}>
-                {!isMobileScreen ? <p>Volume 24h</p> : null}
-                <h1>${formattedNum(chartValue.value)}</h1>
-                <p>{chartValue.time}</p>
-            </div>
-            <div className={'volume24-chart'}>
-                <ResponsiveContainer width={"100%"} height={'100%'}>
-                    <BarChart
-                        margin={{
-                            top: 5,
-                            bottom: 1,
-                        }}
-                        width={block?.current?.clientWidth - 200}
-                        height={block?.current?.clientHeight - 50}
-                        data={data}
-                        onMouseLeave={() => setChartValue({
-                            time: data[data.length - 1].date,
-                            value: data[data.length - 1].uv
-                        })}
-                    >
-                        <Bar
-                            dataKey="uv"
-                            shape={(props) => {
-                                return <CustomBar height={props.height} width={props.width} x={props.x} y={props.y}
-                                    fill={"#40BA93"} />
+            {!loading ?
+                <>
+                <div className={'volume24-info'}>
+                    {!isMobileScreen ? <p>Volume 24h</p> : null}
+                    <h1>${formattedNum(chartValue.value)}</h1>
+                    <p>{chartValue.time}</p>
+                </div>
+                <div className={'volume24-chart'}>
+                    <ResponsiveContainer width={"100%"} height={'100%'}>
+                        <BarChart
+                            margin={{
+                                top: 5,
+                                bottom: 1,
                             }}
-                        />
-                        <Tooltip
-                            contentStyle={{ display: 'none' }}
-                            cursor={{ fill: "rgba(255, 255, 255, 0.15)" }}
-                            formatter={(value, name, props) => {
-                                const { payload: { date, uv } } = props;
-                                if (chartValue.value !== uv) {
-                                    setChartValue({ time: date, value: uv })
-                                }
-                            }}
-                        />
-                        <XAxis
-                            dy={10}
-                            dataKey="time"
-                            axisLine={false}
-                            tickLine={false}
-                            tick={{ fontSize: isMobileScreen ? "14px" : "1vw" }}
-                            stroke={theme === "light" ? "black" : "white"}
-                            minTickGap={isMobileScreen ? 0 : 15}
-                        />
-                    </BarChart>
-                </ResponsiveContainer>
-            </div>
+                            width={block?.current?.clientWidth - 200}
+                            height={block?.current?.clientHeight - 50}
+                            data={data}
+                            onMouseLeave={() => setChartValue({
+                                time: data[data.length - 1].date,
+                                value: data[data.length - 1].uv
+                            })}
+                        >
+                            <Bar
+                                dataKey="uv"
+                                shape={(props) => {
+                                    return <CustomBar height={props.height} width={props.width} x={props.x} y={props.y}
+                                                      fill={"#40BA93"} />
+                                }}
+                            />
+                            <Tooltip
+                                contentStyle={{ display: 'none' }}
+                                cursor={{ fill: "rgba(255, 255, 255, 0.15)" }}
+                                formatter={(value, name, props) => {
+                                    const { payload: { date, uv } } = props;
+                                    if (chartValue.value !== uv) {
+                                        setChartValue({ time: date, value: uv })
+                                    }
+                                }}
+                            />
+                            <XAxis
+                                dy={10}
+                                dataKey="time"
+                                axisLine={false}
+                                tickLine={false}
+                                tick={{ fontSize: isMobileScreen ? "14px" : "1vw" }}
+                                stroke={theme === "light" ? "black" : "white"}
+                                minTickGap={isMobileScreen ? 0 : 15}
+                            />
+                        </BarChart>
+                    </ResponsiveContainer>
+                    </div>
+
+                </>
+               : <Spin indicator={LOADER_INDICATOR_LOCAL}/>
+            }
+
         </Volume24hChartWrapper>
     )
 

@@ -41,8 +41,6 @@ export const SystemProvider = ({children}) => {
     const [mintRedeemInfo, setMintRedeemInfo] = useState(null);
     const [mintRedeemSlipage, setMintRedeemSlipage] = useState(3);
 
-    const [loading, setLoading] = useState(true);
-
     // 1. Check if user are already connected trough MetaMask if yes then connect him again.
     useEffect(() => {
         metaMask.isAuthorized()
@@ -102,33 +100,11 @@ export const SystemProvider = ({children}) => {
 
         if (contracts && tokens) {
             if (account) {
-                try {
-                    getUserPortfolio();
-                    setLoading(false);
-                }
-
-                catch(e) {
-                    alert("Some error due get user portfolio!")
-                }
-                
-                
-            }
-            else {
-                setLoading(false);
+                getUserPortfolio();
             }
         }
 
     }, [account, contracts, tokens])
-
-    useEffect(() => {
-
-        if (userProtfolio) {
-            setLoading(false);
-        }
-
-
-    }, [userProtfolio])
-
 
     const initTokens = async () => {
 
@@ -235,7 +211,6 @@ export const SystemProvider = ({children}) => {
         setMintRedeemCurrency,
         connectWallet,
         disconnectWallet,
-        loading,
         isWalletModal,
         setIsWalletModal,
         tokens,

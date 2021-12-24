@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useSystemContext } from '../../../systemProvider';
 import styled from 'styled-components';
 import { Spin } from "antd";
-import { LOADER_INDICATOR } from "../../../constants";
+import {LOADER_INDICATOR, LOADER_INDICATOR_LOCAL} from "../../../constants";
 
 const TokenTransactionTableWrapper = styled.div`
   width: 100%;
@@ -90,6 +90,7 @@ const TokenTransactionTableWrapper = styled.div`
 `
 const Table = styled.div`
   display: grid;
+  position: relative;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 0.5fr 15fr 0.1fr;
   row-gap: 1.1vw;
@@ -258,7 +259,7 @@ export const TokenTransactionTable = ({ data }) => {
         <div className="token-transaction-separator"></div>
         {loading
           ?
-          <Spin size={"default"} indicator={LOADER_INDICATOR} />
+          <Spin indicator={LOADER_INDICATOR_LOCAL} />
           :
           <TableBody light={theme === "light"}>
             {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item, index) => {

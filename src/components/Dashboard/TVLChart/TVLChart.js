@@ -4,8 +4,11 @@ import { useSystemContext } from '../../../systemProvider';
 import { formattedNum } from '../../../utils/helpers';
 import styled from 'styled-components';
 import { useMediaQuery } from 'react-responsive';
+import {Spin} from "antd";
+import {LOADER_INDICATOR_LOCAL} from "../../../constants";
 
 const TVLChartWrapper = styled.div`
+  position: relative;
   background: ${props => props.mobile ? "transparent" : props.light ? "radial-gradient(113.47% 7561.36% at -5.76% -16.06%, rgba(95, 234, 190, 0.56) 0%, rgba(95, 234, 190, 0) 100%);" : " radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%)"};
   box-shadow: ${props => props.mobile || props.light ? "none" : "0px 4px 16px rgba(0, 0, 0, 0.25)"};
   border-radius: ${props => props.mobile ? "40px" : "2vw"};
@@ -110,94 +113,99 @@ export const TVLChart = ({ data }) => {
 
   return (
     <>
-      {loading ? <h5> Loading </h5> :
         <TVLChartWrapper light={theme === "light"} mobile={isMobileScreen} >
-          <div className={'tvl-info'}>
-            {!isMobileScreen ? <p>Total Value Locked</p> : null}
-            <h1>${formattedNum(chartValue.value)}</h1>
-            <p>{chartValue.time}</p>
-          </div>
-          <div className={'tvl-chart'}>
-            <ResponsiveContainer className='responsive-container-chart' width={"100%"} height={"100%"}>
-              {isMobileScreen ?
-                <AreaChart data={data}>
-                  <defs>
-                    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#129a74" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#129a74" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis
-                    contentStyle={{ padding: '10px 0' }}
-                    dy={10}
-                    dataKey="time"
-                    axisLine={false}
-                    tickLine={false}
-                    stroke={theme === "light" ? "black" : "white"}
-                  />
-                  <Area type="monotone" strokeWidth={1} dataKey="uv" stroke="#40BA93" fillOpacity={1} fill="url(#colorUv)" />
-                </AreaChart>
-                :
-                <LineChart
+          {!loading ?
+            <>
+              <div className={'tvl-info'}>
+                {!isMobileScreen ? <p>Total Value Locked</p> : null}
+                <h1>${formattedNum(chartValue.value)}</h1>
+                <p>{chartValue.time}</p>
+              </div>
+              <div className={'tvl-chart'}>
+                <ResponsiveContainer className='responsive-container-chart' width={"100%"} height={"100%"}>
+                  {isMobileScreen ?
+                      <AreaChart data={data}>
+                        <defs>
+                          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#129a74" stopOpacity={0.8} />
+                            <stop offset="95%" stopColor="#129a74" stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <XAxis
+                            contentStyle={{ padding: '10px 0' }}
+                            dy={10}
+                            dataKey="time"
+                            axisLine={false}
+                            tickLine={false}
+                            stroke={theme === "light" ? "black" : "white"}
+                        />
+                        <Area type="monotone" strokeWidth={1} dataKey="uv" stroke="#40BA93" fillOpacity={1} fill="url(#colorUv)" />
+                      </AreaChart>
+                      :
+                      <LineChart
 
-                  data={data}
-                  onMouseLeave={() => setChartValue({
-                    time: data[data.length - 1].date,
-                    value: data[data.length - 1].uv
-                  })}
+                          data={data}
+                          onMouseLeave={() => setChartValue({
+                            time: data[data.length - 1].date,
+                            value: data[data.length - 1].uv
+                          })}
 
-                >
-                  <defs>
-                    <filter id="shadow" height="200%">
-                      <feDropShadow dx="0" dy="10" stdDeviation="10" />
-                    </filter>
-                  </defs>
-                  <Line
-                    filter="url(#shadow)"
-                    type="monotone"
-                    dataKey="uv"
-                    stroke="#40BA93"
-                    strokeWidth={"0.25vw"}
-                    dot={false}
-                    activeDot={true}
-                    margin={{
-                      top: 0,
-                      right: 0,
-                      left: 0,
-                      bottom: 20,
-                    }}
-                  />
-                  <Tooltip
-                    contentStyle={{ display: 'none' }}
-                    formatter={(value, name, props) => {
-                      const { payload: { date, uv } } = props;
-                      if (chartValue.value !== uv) {
-                        setChartValue({ time: date, value: uv })
-                      }
-                    }}
+                      >
+                        <defs>
+                          <filter id="shadow" height="200%">
+                            <feDropShadow dx="0" dy="10" stdDeviation="10" />
+                          </filter>
+                        </defs>
+                        <Line
+                            filter="url(#shadow)"
+                            type="monotone"
+                            dataKey="uv"
+                            stroke="#40BA93"
+                            strokeWidth={"0.25vw"}
+                            dot={false}
+                            activeDot={true}
+                            margin={{
+                              top: 0,
+                              right: 0,
+                              left: 0,
+                              bottom: 20,
+                            }}
+                        />
+                        <Tooltip
+                            contentStyle={{ display: 'none' }}
+                            formatter={(value, name, props) => {
+                              const { payload: { date, uv } } = props;
+                              if (chartValue.value !== uv) {
+                                setChartValue({ time: date, value: uv })
+                              }
+                            }}
 
-                  />
-                  <XAxis
-                    dataKey="time"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fontSize: "1vw" }}
-                    stroke={theme === "light" ? "black" : "white"}
-                    dy={10}
-                    margin={{
-                      top: 10,
-                      right: 0,
-                      left: 0,
-                      bottom: 0,
-                    }}
-                    padding={20}
-                  />
-                </LineChart>
-              }
-            </ResponsiveContainer>
-          </div>
+                        />
+                        <XAxis
+                            dataKey="time"
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{ fontSize: "1vw" }}
+                            stroke={theme === "light" ? "black" : "white"}
+                            dy={10}
+                            margin={{
+                              top: 10,
+                              right: 0,
+                              left: 0,
+                              bottom: 0,
+                            }}
+                            padding={20}
+                        />
+                      </LineChart>
+                  }
+                </ResponsiveContainer>
+              </div>
+            </>
+              :
+              <Spin indicator={LOADER_INDICATOR_LOCAL}/>
+          }
+
         </TVLChartWrapper>
-      }
     </>
   )
 

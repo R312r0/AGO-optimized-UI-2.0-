@@ -147,7 +147,7 @@ export const Layout = ({children}) => {
                   }
 
                 <Content mobile={isMobileScreen}>
-                    {loading ? <Spin size="large" indicator={LOADER_INDICATOR}/> : children}
+                    {children}
                 </Content>
             </LayoutWrapper>
         </>
