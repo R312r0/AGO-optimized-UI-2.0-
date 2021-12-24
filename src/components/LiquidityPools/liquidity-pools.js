@@ -21,19 +21,25 @@ const SearchBar = styled.div`
   
   display: flex;
   align-items: center;
-  background: #1A1A1A;
+  background: ${props => props.light ? "#F2F2F2" : "#1A1A1A"};
   border-radius: 2.083vw;
   
+  & svg{
+      & path{
+        fill: ${props => props.light &&  "#BDBDBD"}
+      }
+  }
   input {
     width: 100%;
     font-size: 0.938vw;
     font-weight: 300;
 
-    color: white;
+    color:${props => props.light ? "#BDBDBD" : "#fff"} ;
 
     border: none;
     background: none;
     outline: none;
+
 
     &:focus {
       &::placeholder {
@@ -163,7 +169,7 @@ export const LiquidityPools = () => {
         <div className={`luqidity-pools-wrapper ${theme === "light" ? " luqidity-pools-wrapper-light" : ""}`}>
             <div className={'luqidity-pools-wrapper-page-header'}>
                 <h1 className='main__heading__page'> Liquidity pools </h1>
-                  <SearchBar>
+                  <SearchBar light={theme === "light"}>
                     <input onChange={(e) => handleChangePool(e.target.value)} type="text" placeholder="Search pool" />
                     <svg width="23" height="23" viewBox="0 0 23 23">
                       <path d="M9.17198 18.344C4.09212 18.344 0 14.2519 0 9.17198C0 4.09212 4.09212 0 9.17198 0C14.2519 0 18.344 4.09212 18.344 9.17198C18.344 14.2519 14.2519 18.344 9.17198 18.344ZM9.17198 1.41107C4.86821 1.41107 1.41107 4.86821 1.41107 9.17198C1.41107 13.4758 4.86821 16.9329 9.17198 16.9329C13.4758 16.9329 16.9329 13.4758 16.9329 9.17198C16.9329 4.86821 13.4758 1.41107 9.17198 1.41107Z" fill="#333333"/>

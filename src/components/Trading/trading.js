@@ -28,7 +28,7 @@ const TradingBar = styled.div`
 
   position: relative;
   display: flex;
-  color: white;
+  color:${props => props.light ? "#333333": "#fff"};
   margin-left: 4.583vw;
   height: 46px;
 
@@ -52,7 +52,7 @@ const TradingBar = styled.div`
     
     border: 0.052vw solid #4F4F4F;
     border-radius: 1.302vw;
-    background: linear-gradient(94.62deg, rgba(150, 17, 255, 0.4) 0%, rgba(61, 27, 87, 0.4) 116.74%), #212121;
+    background: ${props => props.light ? "#fff": "linear-gradient(94.62deg, rgba(150, 17, 255, 0.4) 0%, rgba(61, 27, 87, 0.4) 116.74%), #212121"};
 
     img {
       &:not(:first-child) {
@@ -73,6 +73,11 @@ const TradingBar = styled.div`
       margin: ${props => props.listExapned ? "0 auto" : "0 0.625vw"};
       width: 0.052vw;
       height: 100%;
+      & path, & line{
+        fill:${props => props.light ? "#333333": "#fff"};
+        stroke:${props => props.light ? "#333333": "#fff"};
+      }
+      
 
       &:last-child {
         width: 0.521vw;
@@ -83,7 +88,7 @@ const TradingBar = styled.div`
     span {
       font-weight: 400;
       font-size: 0.938vw;
-      color: #828282;
+      color: ${props => props.light ? "#333333": "#828282"};
     }
 
     b {
@@ -93,7 +98,7 @@ const TradingBar = styled.div`
       font-size: 0.938vw;
       font-weight: 500;
 
-      color: white;
+      color:${props => props.light ? "#333333": "#fff"};
     }
 
     .expanded-liquidity-list {
@@ -129,7 +134,7 @@ const TradingTabButton = styled.button`
   padding: 0.417vw 1.875vw;
   font-size: 0.729vw;
   cursor: pointer;
-
+  color: ${props => props.active && props.light && "#fff" };
   border: none;
   border-radius: 25px;
   background: ${props => props.active ? "#40BA93" : "transparent"};
@@ -193,9 +198,9 @@ export const Trading = () => {
 
   return (
     <>
-      <ContentHeader>
+      <ContentHeader light={theme === "light"}>
         <h1 className='main__heading__page'>Trading</h1>
-        <TradingBar listExapned={expandLiqPoolsList}>
+        <TradingBar listExapned={expandLiqPoolsList} light={theme === "light"}>
           <main onClick={() => setExpandLiqPoolsList(!expandLiqPoolsList)} ref={pools}>
             {expandLiqPoolsList ?
               <ul className='expanded-liquidity-list'>
@@ -229,14 +234,14 @@ export const Trading = () => {
           </main>
 
           <div className="buttons">
-            <TradingTabButton onClick={() => setTradingTab(SIMPLE_SWAP)} active={tradingTab === SIMPLE_SWAP}>Simple Swap</TradingTabButton>
-            <TradingTabButton disabled onClick={() => setTradingTab(TRADING)} active={tradingTab === TRADING}>Trading </TradingTabButton>
+            <TradingTabButton light={theme === "light"} onClick={() => setTradingTab(SIMPLE_SWAP)} active={tradingTab === SIMPLE_SWAP}>Simple Swap</TradingTabButton>
+            <TradingTabButton light={theme === "light"} disabled onClick={() => setTradingTab(TRADING)} active={tradingTab === TRADING}>Trading </TradingTabButton>
           </div>
         </TradingBar>
       </ContentHeader>
       <div className={`trading-wrapper ${theme === "light" ? " trading-wrapper-light" : ""}`}>
         <div className='trading-container'>
-          <TradingWindow />
+          <TradingWindow light={theme === "light"}/>
           <div className='trading-window-box trading-wrapper-txs'>
             <div className='trading-wrapper-txs__header'>
               <p>Pairs</p>

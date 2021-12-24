@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
-import calculate_txs from '../../../assets/icons/calculate-txs.svg';
-import downloadCsv from '../../../assets/icons/download-csv.svg';
+import { ReactComponent as Calculate_txs } from '../../../assets/icons/calculate-txs.svg';
+import { ReactComponent as DownloadCsv } from '../../../assets/icons/download-csv.svg';
 import { useSystemContext } from '../../../systemProvider';
 import { useWeb3React } from '@web3-react/core';
 import axios from 'axios';
@@ -42,8 +42,8 @@ export const AccHistory = ({isOpened, setIsOpened}) => {
                         </svg>
                     </div>
                     <div className='acc-hisotry-buttons'>
-                        <button> <img src={downloadCsv} /> Download CSV </button>
-                        <button> <img src={calculate_txs} /> Calculate Taxes </button>
+                        <button> <DownloadCsv /> Download CSV </button>
+                        <button> <Calculate_txs /> Calculate Taxes </button>
                     </div>
                 </div>
                 <div className='acc-hisotry-body'>

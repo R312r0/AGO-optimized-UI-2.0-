@@ -191,54 +191,188 @@ body {
             }
         }
         .mint-redeem-wrapper {
-            .collect-redemption div button{
+            .collect-redemption div button {
                 color: #333;
             }
-            .general-wrapper .general-window{
-                .general-window-header button{
-                    background: #F2F2F2;
+            .general-wrapper .general-window {
+                .general-window-header button {
+                    background: #f2f2f2;
                 }
-                
-                .general-btn-wrapper .withoutBg{
+
+                .general-btn-wrapper .withoutBg {
                     color: #333;
                 }
-            } 
+            }
         }
 
         .accounts-wrapper {
-            .cosmetical-wrapper{
-                background: linear-gradient(90.99deg, #FFFFFF 2.18%, #FFFFFF 104.4%);
+            .cosmetical-wrapper {
+                background: linear-gradient(90.99deg, #ffffff 2.18%, #ffffff 104.4%);
                 border-radius: 40px;
                 box-shadow: none;
-
-                
             }
-            .light-acc-warapper{
-                background: radial-gradient(113.47% 7561.36% at -5.76% -16.06%, rgba(95, 234, 190, 0.56) 0%, rgba(95, 234, 190, 0) 100%);
-                border: 0.5px solid #40BA93;
+            .light-acc-warapper {
+                background: radial-gradient(
+                    113.47% 7561.36% at -5.76% -16.06%,
+                    rgba(95, 234, 190, 0.56) 0%,
+                    rgba(95, 234, 190, 0) 100%
+                );
+                border: 0.5px solid #40ba93;
             }
-            .accounts-wrapper-portoflio-assets__assets-chart-info__bars ul li p{
+            .accounts-wrapper-portoflio-assets__assets-chart-info__bars ul li p {
                 color: #333333;
             }
-            .accounts-wrapper-portoflio-assets__assets-chart-info .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list ul li{
-                background: #FBFBFB;
+            .accounts-wrapper-portoflio-assets__assets-chart-info
+                .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list
+                ul
+                li {
+                background: #fbfbfb;
                 color: #333333;
             }
 
-            .accounts-wrapper-portoflio-assets__assets-chart-info .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list ul::-webkit-scrollbar-thumb{
-                background: #E0E0E0;
+            .accounts-wrapper-portoflio-assets__assets-chart-info
+                .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list
+                ul::-webkit-scrollbar-thumb {
+                background: #e0e0e0;
             }
 
-            .accounts-wrapper-portoflio-assets__assets-chart-info .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list ul::-webkit-scrollbar{
-                background: #F2F2F2;
+            .accounts-wrapper-portoflio-assets__assets-chart-info
+                .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list
+                ul::-webkit-scrollbar {
+                background: #f2f2f2;
             }
 
-            .accounts-wrapper-portoflio-assets__assets-chart-info__bars button{
+            .accounts-wrapper-portoflio-assets__assets-chart-info__bars button {
                 color: #828282;
-                background: #FBFBFB;
+                background: #fbfbfb;
+            }
+            .acc-hisotry {
+                .acc-hisotry-header .search__input input {
+                    color: #40524c;
+                }
+                .acc-hisotry-buttons button {
+                    background: #f2f2f2;
+                    border: none;
+                    border-radius: 25px;
+                    color: #333333;
+
+                    & svg {
+                        path {
+                            fill: #333333;
+                        }
+                    }
+                }
             }
         }
-        
-        
+
+        .trading-wrapper {
+            .trading-window-box {
+                box-shadow: none;
+            }
+
+            &.trading-wrapper-light .trading-wrapper-chart {
+                border: 0.5px solid #40ba93;
+            }
+            .trading-wrapper-chart__control-panel select {
+                border: 1px solid #40ba93;
+                border-radius: 10px;
+                color: #333;
+            }
+            .trading-wrapper-exchange__header h1 {
+                color: #333;
+            }
+
+            .trading-wrapper-exchange__header__buttons button {
+                background: #e0e0e0;
+            }
+            .trading-wrapper-exchange__title {
+                color: #333;
+            }
+        }
+
+        .foundry .foundry__wrapper {
+            .foundry__details p {
+                color: #828282;
+                font-size: 18px;
+                line-height: 27px;
+                &:first-child {
+                    color: #828282;
+                }
+            }
+            .foundry__data .foundry__data-item {
+                background: linear-gradient(84.78deg, #40ba93 -6.91%, #05fcad 161.21%);
+                border-radius: 40px;
+            }
+            .foundry__data {
+                .foundry__data-item__heading {
+                    color: #fff;
+                }
+                .foundry__data-item__icon {
+                    path {
+                        fill: #fff;
+                    }
+                }
+            }
+            .foundry__actions-item {
+                background: #ffffff;
+                border-radius: 40px;
+                .amount {
+                    color: #4f4f4f;
+                }
+            }
+            .foundry__actions-item__token {
+                color: #333;
+            }
+            .foundry__actions-item button {
+                color: #4f4f4f;
+                border: 1px solid #4f4f4f;
+                &:disabled {
+                    opacity: 0.6;
+                }
+            }
+        }
+
+        .luqidity-pools-wrapper {
+            .luqidity-pools-wrapper-heading {
+                color: #333;
+            }
+            .earn-ago .luqidity-pools-wrapper-list-item .control-panel__header button {
+                color: #4f4f4f;
+                &:hover {
+                    color: #fff !important;
+                }
+                &.active {
+                    color: #fff;
+                    &:hover {
+                        color: #4f4f4f !important;
+                    }
+                }
+            }
+        }
+        .luqidity-pools-wrapper-light .luqidity-pools-wrapper-list .luqidity-pools-wrapper-list-item .chart-expand {
+            background: #e0e0e0;
+            border: 1px solid #bdbdbd;
+            border-radius: 20px;
+        }
+
+        .staking-wrapper .staking-list__item .token .token-main {
+            & b {
+                color: #333;
+            }
+        }
+        .staking-wrapper .head-wrapper .hide-btn {
+            color: #333;
+        }
+
+        .staking-wrapper-light .staking-list ul li .info-control-panel .info {
+            background: #fbfbfb;
+            border-radius: 40px;
+        }
+
+        .staking-wrapper .staking-list__item__opened .info-control-panel .info__row{
+            & input{
+                color: #000;
+            }
+        }
     }
 }

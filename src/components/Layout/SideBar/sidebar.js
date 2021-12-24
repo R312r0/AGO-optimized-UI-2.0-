@@ -19,7 +19,7 @@ const SideBarWrapper = styled.div`
   margin-top: 0.5vw;
   overflow: visible;
   position: relative;
-  z-index: 10;
+  z-index: 100;
 
   &::-webkit-scrollbar {
     display: none;
@@ -162,7 +162,7 @@ const LinkListItem = styled.li`
     width: 100%;
     text-align: left;
     transition: all .3s;
-    z-index: 10;
+    z-index: 100;
     opacity:0;
     white-space:nowrap;
   }

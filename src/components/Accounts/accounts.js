@@ -108,7 +108,7 @@ export const Accounts = () => {
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
                                     <AccountPieChart />
                                     <ul> 
-                                        {balances && balances.map((item, _ind) => {
+                                        {balances && balances.filter((item) => item.nativeBalance > 0).map((item, _ind) => {
                                             return <li key={item.name}>
                                                 <span><TokenIcon iconName={item.name}/> {item.name} </span>
                                                 <b className={_ind === 4 ? "negative-change" : ""}> {formattedNum(item.nativeBalance)} </b>
