@@ -15,8 +15,8 @@ export const Redeem = ({info}) => {
     const { setMintRedeemCurrencyModal, mintRedeemCurrency, contracts, tokens, getTokenBalance } = useSystemContext();
     const [approved, setApproved] = useState(null);
     const [input, setInput] = useState(null);
-    const [collateralOutput, setCollateralOutput] = useState(0);
-    const [catenaOutput, setCatenaOutput] = useState(0);
+    const [collateralOutput, setCollateralOutput] = useState(null);
+    const [catenaOutput, setCatenaOutput] = useState(null);
     const [redeemBalances, setRedeemBalances] = useState(null)
 
 

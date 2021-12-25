@@ -13,9 +13,9 @@ export const Mint = ({info}) => {
     const {account} = useWeb3React();
     const { setMintRedeemCurrencyModal, mintRedeemCurrency, contracts, tokens, userProtfolio, getTokenBalance } = useSystemContext();
 
-    const [collateralInput, setCollateralInput] = useState(0);
-    const [catenaInput, setCatenaInput] = useState(0);
-    const [outputInput, setOutputInput] = useState(0);
+    const [collateralInput, setCollateralInput] = useState(null);
+    const [catenaInput, setCatenaInput] = useState(null);
+    const [outputInput, setOutputInput] = useState(null);
 
     const [approved, setApproved] = useState({
         collateral: null,

@@ -181,14 +181,14 @@ const SinglePriceBlock = styled.div`
     transition: .4s ease;
 
     .demo-chart {
-      transition: ${props => props.isWindowExpanded ? "0.1s ease" : ".5s ease"};
+      transition: ${props => props.isWindowExpanded ? "none" : ".5s ease"};
 
       height: ${props => props.isWindowExpanded ? "0" : "3vw"};
       opacity: 1;
     }
 
     h3 {
-      margin-bottom: ${props => props.isWindowExpanded ? "0.938vw" : "0"};
+      margin-bottom: ${props => props.isWindowExpanded ? "0" : "0"};
     }
 
     h1 {
@@ -410,7 +410,7 @@ export const TokenPricesCharts = () => {
             <div className="price-block-wrapper" key={`price_block_${_ind}`}>
               <main>
                 <SinglePriceBlock
-                  onMouseEnter={() => expandWindow ? null : setShowChart({ active: true, index: _ind })}
+                  onMouseEnter={() => expandWindow ? setShowChart({ active: false, index: null }) : setShowChart({ active: true, index: _ind })}
                   onMouseLeave={() => expandWindow ? null : setShowChart({ active: false, index: null })}
                   key={_ind}
                   isShowDivider={_ind === 1}

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { ReactComponent as Comments_black } from '../../../assets/icons/nav-links/dark-theme/comment-black.svg';
+import { ReactComponent as Documentsvg } from '../../../assets/icons/nav-links/document.svg';
 import document_icon from './../../../assets/icons/sidebar-documents.svg';
 import { PAGES } from '../../../constants';
 import { useSystemContext } from '../../../systemProvider';
@@ -94,7 +95,7 @@ const LinkList = styled.ul`
   }
 
   .link-message-item {
-    border: ${props => props.light ? '1px solid #E0E0E0': '1px solid #4F4F4F'};
+    border: ${props => props.light ? '1px solid #E0E0E0' : '1px solid #4F4F4F'};
     margin-top: 4vw;
 
     &:hover {
@@ -200,10 +201,10 @@ const BottomLinks = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin-top: 1.4vw;
+  /* margin-top: 1.4vw; */
 
   a {
-    margin-left: 2.083vw;
+    /* margin-left: 2.083vw; */
     font-size: 0.729vw;
     font-weight: 300;
     color: ${props => props.light ? '#4F4F4F' : '#fff'};
@@ -219,9 +220,24 @@ export const SideBar = () => {
 
   const history = useHistory();
   const [expandSocMedias, setExpandSocMedias] = useState(false);
+  const [openDoc, setOpenDoc] = useState(false);
   const [activeTab, setActiveTab] = useState(history.location.pathname);
   const isTabletScreen = useMediaQuery({ query: '(max-width: 1024px)' });
   const { theme, setTheme } = useSystemContext();
+  const links = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (links.current && !links.current.contains(event.target)) {
+      setOpenDoc(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  });
 
 
   return (
@@ -257,7 +273,19 @@ export const SideBar = () => {
           <Comments_black />
         </LinkListItem>
       </LinkList>
-      {isTabletScreen
+      <div className='document__box' onClick={() => setOpenDoc(!openDoc)} ref={links} >
+      <div className={`document__box__links ${openDoc && 'document__box__links__open'}`}>
+        <BottomLinks light={theme === "light"}>
+          <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
+          <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
+          <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
+          <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
+        </BottomLinks>
+      </div>
+      <Documentsvg />
+    </div>
+     
+      {/* {!isTabletScreen
         ? <img className="document_icon" src={document_icon}></img>
         : <BottomLinks light={theme === "light"}>
           <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
@@ -265,8 +293,8 @@ export const SideBar = () => {
           <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
           <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
         </BottomLinks>
-      }
-      <ThemeSwitcher />
-    </SideBarWrapper>
+      } */}
+  <ThemeSwitcher />
+    </SideBarWrapper >
   )
 }

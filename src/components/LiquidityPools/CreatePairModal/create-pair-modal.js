@@ -174,8 +174,8 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
 
     useEffect(() => {
 
-        setToken0Input(0);
-        setToken1Input(0);
+        // setToken0Input(0);
+        // setToken1Input(0);
 
         const searchToken0 = tokens[token0Select?.symbol];
         const searchToken1 = tokens[token1Select?.symbol];

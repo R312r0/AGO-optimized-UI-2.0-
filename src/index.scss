@@ -139,8 +139,60 @@ a {
     }
 }
 
+
+.document__box{
+    padding: 20px;
+    margin: 0 auto;
+    border: 1px solid #4F4F4F;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 25px;
+    cursor: pointer;
+
+    &__links{
+        display: none;
+        transition: all .3s;
+        visibility: hidden;
+        position: absolute;
+        top: -115px;
+
+        &__open{
+            display: block;
+            visibility: visible;
+            background: #202020;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid #4F4F4F;
+            & a{
+                white-space: nowrap;
+                margin: 0;
+            }
+        }
+    }
+}
 body {
     &.light-theme {
+
+        .document__box{
+            border-color: #E0E0E0;
+
+            & svg{
+                fill: #828282;
+
+                & path{
+                    fill: #828282;
+                }
+            }
+
+            &__links__open{
+                background: #E0E0E0;
+                border-color: #E0E0E0;
+            }
+        }
+        
         .main__heading__page {
             color: #333333;
         }
@@ -228,6 +280,7 @@ body {
                 li {
                 background: #fbfbfb;
                 color: #333333;
+                
             }
 
             .accounts-wrapper-portoflio-assets__assets-chart-info
@@ -263,7 +316,20 @@ body {
                     }
                 }
             }
+            .accounts-wrapper-use-staking-pools__buttons button{
+                color: #333;
+                &:hover{
+                    color: #fff!important;
+                }
+                &.active{
+                    color: #fff;
+                    &:hover{
+                        color: #333!important;
+                    }
+                }
+            }
         }
+
 
         .trading-wrapper {
             .trading-window-box {

@@ -19,7 +19,7 @@ import {useQuery} from "@apollo/client";
 import {TOKENS_FOR_USER_BALANCES} from "../../api/client";
 import AccountPieChart from './AccountPieChart';
 
-const tokenColors = ["#40BA93", "#DB1BB1", "#DB1BB1", "#EAD200", "#DB1B60", "#9018EE", "#1BB8DB", "#EA8C00", "#DB1B60"]
+const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#9018EE", "#1BB8DB", "#EA8C00"]
 
 
 export const Accounts = () => {
@@ -120,15 +120,7 @@ export const Accounts = () => {
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info__bars'>
                                     <ul>
                                         {balances && balances.filter(data => data.nativeBalance > 0).map((item, _ind) => {
-
-                                            let percentDiff;
-                                            if (item.usdBalance === 0) {
-                                                percentDiff = 0;
-                                            }
-                                            else {
-                                                percentDiff = ((item.usdBalance / sumUserBalances) * 100)
-                                            }
-
+                                            const percentDiff = item.usdBalance !== 0 ? ((item.usdBalance / sumUserBalances) * 100) : 0;
                                             return (
                                                 <li key={`li_${_ind}`}>
                                                     <p>{percentDiff.toFixed(2)}%</p>

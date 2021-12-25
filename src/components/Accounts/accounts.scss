@@ -503,6 +503,11 @@
                         &:not(:last-child) {
                             margin-bottom: 0.417vw;
                         }
+
+                        transition: all .3s;
+                        &:hover{
+                            transform: scale(1.01);
+                        }
                     }
                 }
             }
@@ -519,8 +524,6 @@
                     margin-bottom: 0;
                     
                     li {
-                        margin-top: auto;
-
                         display: flex;
                         flex-direction: column;
                         align-items: center;
@@ -540,6 +543,12 @@
 
                         &:not(:last-child) {
                             margin-right: 0.721vw;
+                        }
+
+                        transition: all .3s;
+
+                        &:hover{
+                            transform: scale(1.01);
                         }
                     }
                 }

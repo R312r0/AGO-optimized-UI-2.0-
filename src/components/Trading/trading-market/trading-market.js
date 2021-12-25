@@ -40,8 +40,8 @@ const TradingMarket = ({pool}) => {
     const [token0Allowance, setToken0Allowance] = useState(false);
     const [token1Allowance, setToken1Allowance] = useState(false);
 
-    const [token0Input, setToken0Input] = useState(0);
-    const [token1Input, setToken1Input] = useState(0);
+    const [token0Input, setToken0Input] = useState(null);
+    const [token1Input, setToken1Input] = useState(null);
 
     useEffect(() => {
 
