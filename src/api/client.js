@@ -110,6 +110,8 @@ export const LIQUIDITY_POOLS = gql(`
             symbol
             priceUSD
           }
+          token0Price
+          token1Price
           reserve0
           reserve1
         }

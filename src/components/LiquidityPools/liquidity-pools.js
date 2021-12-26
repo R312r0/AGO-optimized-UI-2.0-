@@ -87,8 +87,8 @@ export const LiquidityPools = () => {
             const lpTotalSupply = formatFromDecimal(await lp.methods.totalSupply().call(), 18);
             const lpUserBalance = formatFromDecimal(await lp.methods.balanceOf(account).call(), 18);
 
-            const token0 = {symbol: item.token0.symbol, address: item.token0.id, price: item.token0.priceUSD}
-            const token1 = {symbol: item.token1.symbol, address: item.token1.id, price: item.token1.priceUSD}
+            const token0 = {symbol: item.token0.symbol, address: item.token0.id, price: item.token0.priceUSD, priceInToken1: item.token1Price}
+            const token1 = {symbol: item.token1.symbol, address: item.token1.id, price: item.token1.priceUSD, priceInToken0: item.token0Price}
             const liquidityUSD = item.reserveUSD;
             const myLiquidity = (liquidityUSD / lpTotalSupply) * lpUserBalance;
 
@@ -252,7 +252,7 @@ export const LiquidityPools = () => {
                 }
             </ul>
         </div>
-            <CreatePairModal visible={isCreatePairModal} setVisible={setIsCreatePairModal} pools={pools}/>
+            {/* <CreatePairModal visible={isCreatePairModal} setVisible={setIsCreatePairModal} pools={pools}/> */}
         </>
     )
 

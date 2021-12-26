@@ -16,7 +16,7 @@ export const MintRedeem = () => {
     const [activeTab, setActiveTab] = useState("Mint");
     const [mintRedeemInfo, setMintRedeemInfo] = useState(null);
     const { account } = useWeb3React();
-    const { contracts, setIsWalletModal } = useSystemContext();
+    const { contracts, setIsWalletModal, balances } = useSystemContext();
     const { theme } = useThemeContext();
     // const [connectWalletThumb, setConnectWalletThumb] = useState()
     const [mintRedeemCurrencyModal, setMintRedeemCurrencyModal] = useState(false);
@@ -25,13 +25,13 @@ export const MintRedeem = () => {
 
     useEffect(() => {
 
-        if (account && contracts) {
+        if (account && contracts && balances) {
             getMintRedeemInfo(mintRedeemCurrency);
         }
         else {
 
         }
-    }, [mintRedeemCurrency, account, contracts]);
+    }, [mintRedeemCurrency, account, contracts, balances]);
 
     const getMintRedeemInfo = useCallback(async (currency) => {
 

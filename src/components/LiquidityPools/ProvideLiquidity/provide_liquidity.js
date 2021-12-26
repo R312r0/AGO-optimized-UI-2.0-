@@ -32,7 +32,7 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
 
         setInput0(value);
         const priceForEquality = value * parseFloat(token0.price);
-        const token1Amount = priceForEquality / parseFloat(token1.price);
+        const token1Amount = value * parseFloat(token0.priceInToken1);
 
 
         setInput1(token1Amount);
