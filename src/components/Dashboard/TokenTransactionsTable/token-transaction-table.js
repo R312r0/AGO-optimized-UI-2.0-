@@ -3,227 +3,94 @@ import { useSystemContext } from '../../../systemProvider';
 import styled from 'styled-components';
 import { Spin } from "antd";
 import {LOADER_INDICATOR, LOADER_INDICATOR_LOCAL} from "../../../constants";
+import { useThemeContext } from '../../Layout/layout';
+import { useQuery } from '@apollo/client';
+import { DASHBOAR_TXS } from '../../../api/queries';
+import { TokenTransactionTableWrapper, Table, TableHead, TableBody, TablePagination } from './styles';
+import { formattedNum, formatAddress, calculateTimeDifference } from '../../../utils/helpers';
+import { TXS_NAME } from '../../../constants';
 
-const TokenTransactionTableWrapper = styled.div`
-  width: 100%;
-  height: 40vw;
-  background: ${props => props.light ? "#fff" : "radial-gradient(34.28% 208.17% at 30.1% 58.42%, rgba(30, 91, 72, 0.2) 0%, rgba(9, 33, 25, 0.2) 100%), linear-gradient(97.95deg, #272727 -6.91%, #1C1C1C 101.49%)"};
-  box-shadow: ${props => props.light ? "none" : "0px 4px 16px rgba(0, 0, 0, 0.25)"};
-  border-radius: 2vw;
-  box-sizing: border-box;
-  padding: 2.5% 5.5% 2%;
-  display: grid;
-  grid-template-rows: 1fr 10fr 1fr;
+export const TokenTransactionTable = () => {
 
-  margin-bottom: 3vw;
-
-  // Responsive || Width
-
-  @media only screen and (max-width: 1024px){
-    padding: 2% 2.5% 1%;
-  }
-
-  @media only screen and (max-width: 750px) {
-    height: 49vh !important;
-    width: 95%;
-    grid-template-rows: 1fr 8fr 1fr;
-  }
-
-  // Responsive || Height
-
-  @media only screen and (max-width: 1880px) {
-    height 40vw;
-  }
-
-  @media only screen and (max-width: 900px) {
-    height: 45vw;
-  }
-
-  .transanction-tabs-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding-bottom: 2vw;
-
-    @media only screen and (max-width: 1024px) {
-      padding-bottom: 1.3vw;
-    }
-
-    div {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      button {
-        font-size: 0.9vw;
-        font-weight: 300;
-
-        padding: 0.3vw 1.5vw;
-
-        background: transparent;
-        border-radius: 1.302vw;
-        color: ${props => props.light ? "#828282" : '#B0B0B0'};
-
-        border: none;
-        cursor: pointer;
-        transition: all .3s;
-
-        &:hover{
-          color: ${props => props.light ? "#B0B0B0" : '#fff'};
-        }
-      }
-    }
-
-    .transanction-tabs-wrapper-active {
-      color: white;
-      background: #40BA93;
-      font-weight: 700;
-    }
-  }
-
-  .transactions-heading {
-    font-size: 24px;
-    line-height: 36px;
-    color: ${props => props.light ? "#333" : '#fff'};
-  }
-`
-const Table = styled.div`
-  display: grid;
-  position: relative;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 0.5fr 15fr 0.1fr;
-  row-gap: 1.1vw;
-  color: ${props => props.light ? "#333" : '#fff'};
-
-  .token-transaction-separator {
-    width: 100%;
-    height: 0.052vw;
-    background-color: #333;
-    border: 0.052vw solid #333;
-    border-radius: 0.260vw;
-  }
-`
-const TableHead = styled.div`
-  display: grid;
-  grid-template-columns: 20% 11.5% 13% 13% 27% 15%;
-
-  position: relative !important;
-
-  span {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 0.8vw;
-
-    &:last-child {
-      justify-self: flex-end;
-      padding-right: 2.344vw;
-    }
-
-    @media only screen and (max-width: 1024px) {
-      font-size: 0.9vw;
-    }
-  }
-`
-
-const TableBody = styled.div`
-  display: grid;
-  grid-template-columns: 20% 11.5% 13% 13% 27% 15%;
-
-  & * {
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    padding-right: 1vw;
-  }
-
-  div {
-    font-style: normal;
-    font-weight: 300;
-    font-size: 0.8vw;
-    color: ${props => props.light ? "#4F4F4F" : '#BDBDBD'};
-    line-height: 1.2vw;
-    
-    @media only screen and (max-width: 1024px) {
-      font-size: 1vw;
-    }
-  }
-
-  .operation {
-    color: #40BA93;
-  }
-
-  .acc {
-    color: #40BA93;
-  }
-
-  .time {
-    justify-self: flex-end;
-  }
-`
-
-const TablePagination = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  div {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    column-gap: 15px;
-
-    span {
-      color: ${props => props.light ? "#333" : '#fff'};
-      font-size: 1vw;
-    }
-
-    button {
-      background: transparent;
-      font-size: 0.8vw;
-      font-size: 14px;
-      line-height: 21px;  
-      color: ${props => props.light ? "#828282" : '#4F4F4F'};
-      border: none;
-      cursor: pointer;
-
-      &:active {
-        outline: none;
-        border: none;
-        box-shadow: none;
-      }
-    }
-  }
-`
-
-export const TokenTransactionTable = ({ data }) => {
-
-  const { theme } = useSystemContext();
+  const { theme } = useThemeContext();
+  const { data, loading, error } = useQuery(DASHBOAR_TXS);
   const [totalPages, setTotalPages] = useState(null);
+  const [convertedTxs, setConvertedTxs] = useState(null);
   const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
   const [dataPaginated, setDataPaginated] = useState(null);
 
-  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (data && !loading) {
+      setConvertedTxs(convertTransactionsData(data.transactions));
+    }
+
+  }, [data, loading])
 
   useEffect(() => {
 
-    if (data.length > 0) {
-      setLoading(false);
-      determineNumberOfPages();
+    if (convertedTxs) {
+      determineNumberOfPages(convertedTxs);  
+    }
+  
+  }, [convertedTxs])
+
+
+      const convertTransactionsData = (data) => {
+        const { SWAP, ADD, BURN, MINT, REDEEM, COLLECT_REDEMPTION, STAKE, UNSTAKE } = TXS_NAME;
+
+        const res = data.map(item => {
+            let txName;
+            let totalValue = formattedNum((+item.amountTotalUSD).toFixed(2));
+            let token0Amount = `${(+item.amount0).toFixed(2)} ${item.token0}`
+            let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`
+            let acc = formatAddress(item.from);
+            let time = calculateTimeDifference(item.timestamp);
+            switch (item.name) {
+                case SWAP:
+                    txName = `${item.name} ${item.token0} for ${item.token1}`
+                    break;
+                case ADD:
+                    txName = `${item.name} ${item.token0} and ${item.token1}`
+                    break;
+                case BURN:
+                    txName = `${item.name} ${item.token0} and ${item.token1}`
+                    break;
+                case MINT:
+                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
+                    break;
+                case REDEEM:
+                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
+                    break;
+                case COLLECT_REDEMPTION:
+                    txName = `${item.name} ${+item.amountShare !== 0 ?  item.tokenShare + " and" : ""} ${item.token1}`
+                    token0Amount = `${+item.amountShare !== 0 ? item.amountShare: "0.00" + " " + item.tokenShare}`
+                    break;
+                case STAKE:
+                    txName = `${item.name} ${item.token0}`
+                    break;
+                case UNSTAKE:
+                    txName = `${item.name} ${item.token0}`
+                    break;
+                default: 
+                  txName = "Transaction";
+                  break;
+            }
+            return { txName, totalValue, token0Amount, token1Amount, acc, time }
+        })
+        return res;
     }
 
-  }, [data])
-
-  const determineNumberOfPages = () => {
+  const determineNumberOfPages = (arr) => {
     const itemsPerPage = 10;
 
     let paginatedDataObject = {};
 
     let index = 0;
-    let dataLength = data.length;
+    let dataLength = arr.length;
     let chunkArray = [];
 
     for (index = 0; index < dataLength; index += itemsPerPage) {
-      let newChunk = data.slice(index, index + itemsPerPage);
+      let newChunk = arr.slice(index, index + itemsPerPage);
       chunkArray.push(newChunk);
     }
 
@@ -257,7 +124,7 @@ export const TokenTransactionTable = ({ data }) => {
           <span>Time</span>
         </TableHead>
         <div className="token-transaction-separator"></div>
-        {loading
+        {!dataPaginated
           ?
           <Spin indicator={LOADER_INDICATOR_LOCAL} />
           :

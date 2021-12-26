@@ -21,7 +21,7 @@ export const StakingItem = ({pool}) => {
 
     useEffect(() => {
 
-        if (account) {
+        if (account && contracts) {
             getAllowance()
             getStakignData()
         }
@@ -31,8 +31,8 @@ export const StakingItem = ({pool}) => {
 
 
     const getStakignData = async () => {
-        const rewardTokenDecimals = tokens["AGO"].decimals
-        const tokenDecimals = tokens[symbol].decimals
+        const rewardTokenDecimals = tokens.find(item => item.symbol === "AGO").decimals
+        const tokenDecimals = tokens.find(item => item.symbol === symbol).decimals
 
         const earned = await contracts.MASTER_CHEF.methods.pendingAgo(pid, account).call();
         const staked = await contracts.MASTER_CHEF.methods.userInfo(pid, account).call();
@@ -63,7 +63,7 @@ export const StakingItem = ({pool}) => {
     }
 
     const handleApprove = async () => {
-        const tok = tokens[symbol].instance;
+        const tok = contracts[symbol];
         await tok.methods.approve(CONTRACT_ADRESESS.MASTER_CHEF, MAX_INT).send({from: account});
 
         await getAllowance();
@@ -71,7 +71,7 @@ export const StakingItem = ({pool}) => {
     }
 
     const getAllowance = async () => {
-        const tok = tokens[symbol].instance;
+        const tok = contracts[symbol];
         const allowance = await tok.methods.allowance(account, CONTRACT_ADRESESS.MASTER_CHEF).call()
 
         setAllowance(allowance.length === MAX_INT.length)

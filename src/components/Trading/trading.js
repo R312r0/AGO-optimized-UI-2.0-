@@ -189,9 +189,6 @@ export const Trading = () => {
     };
   });
 
-
-
-
   useEffect(() => {
     setChartDimensions()
   }, [chartBlockRef])

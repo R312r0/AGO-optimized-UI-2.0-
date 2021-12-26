@@ -268,3 +268,8 @@ export default function useWindowDimensions() {
 
     return windowDimensions;
 }
+
+
+export const checkDashboardToken = (token) => {
+    return token === "AGOUSD" || token === "CNUSD" || token === "AGOBTC" || token === "CNBTC";
+}

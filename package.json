@@ -75,8 +75,12 @@
       "last 1 safari version"
     ]
   },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
+  },
   "devDependencies": {
     "numeral": "^2.0.6",
+    "react-error-overlay": "^6.0.9",
     "walletlink": "^2.1.6"
   }
 }

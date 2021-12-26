@@ -7,17 +7,28 @@ import { Redeem } from './Redeem/redeem'
 import { useSystemContext } from '../../systemProvider';
 import { formattedNum, formatFromDecimal } from '../../utils/helpers';
 import { useWeb3React } from '@web3-react/core';
+import { Spin } from 'antd';
+import { LOADER_INDICATOR_LOCAL } from '../../constants';
 
 export const MintRedeem = () => {
 
     const [activeTab, setActiveTab] = useState("Mint");
     const [mintRedeemInfo, setMintRedeemInfo] = useState(null);
     const { account } = useWeb3React();
-    const { theme, mintRedeemCurrency, mintRedeemSlipage, contracts, setIsWalletModal } = useSystemContext();
+    const { theme, contracts, setIsWalletModal } = useSystemContext();
+    // const [connectWalletThumb, setConnectWalletThumb] = useState()
+    const [mintRedeemCurrency, setMintRedeemCurrency] = useState("AGOUSD");
+    const [mintRedeemSlipage, setMintRedeemSlipage] = useState(0.3);
 
     useEffect(() => {
-        getMintRedeemInfo(mintRedeemCurrency);
-    }, [mintRedeemCurrency]);
+
+        if (account && contracts) {
+            getMintRedeemInfo(mintRedeemCurrency);
+        }
+        else {
+
+        }
+    }, [mintRedeemCurrency, account, contracts]);
 
     const getMintRedeemInfo = useCallback(async (currency) => {
 
@@ -45,44 +56,50 @@ export const MintRedeem = () => {
             poolBalance,
         })
 
-    }, [mintRedeemCurrency]);
+    }, [account, contracts]);
 
 
-
-    console.log(mintRedeemInfo);
 
     return (
         <>
-            {account && mintRedeemInfo ? 
-                <div className={`mint-redeem-wrapper ${theme === "light" ? " mint-redeem-wrapper-light" : ""}`}>
-                <h1 className='main__heading__page'>Minting/Redeeming</h1>
-                <div className='mint-redeem-tx-info'> 
-                    <div>
-                        <span> {activeTab === "Mint" ? "Minting" : "Redeem"} fee: <b>{activeTab === "Mint" ?  mintRedeemInfo.mintFee : mintRedeemInfo.redeemFee}%</b></span>
-                        <i className="fas fa-circle"></i>
-                        <span> Pool balance: <b>${formattedNum(mintRedeemInfo.poolBalance)}</b></span>
-                        <i className="fas fa-circle"></i>
-                        <span> Slippage: <b>{mintRedeemSlipage}%</b></span>
-                        <i className="fas fa-circle"></i>
-                        <span> Rates: <span> 1 <b>{mintRedeemCurrency}</b> = {mintRedeemInfo.stablePrice} <b> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b> </span> </span>
-                    
-                        <span className='contract__link-polygon'> <a href="https://polygonscan.com/" target="_blank"> View contracts on PolygonScan </a> <i className="fas fa-external-link-alt"></i> </span>
-                    </div>
-                </div>
-                <div className='mint-redeem-switcher'> 
-                    <div> 
-                        <button className={activeTab === "Mint" ? "active-switcher-button" : ""} onClick={() => setActiveTab("Mint")}> Mint </button>
-                        <button className={activeTab === "Redeem" ? "active-switcher-button" : ""} onClick={() => setActiveTab("Redeem")}> Redeem </button>
-                    </div>
-                </div>
-                {activeTab === "Mint" ? <Mint info={mintRedeemInfo}/> : <Redeem info={mintRedeemInfo}/>}
-            </div>
-            :
+        {!account ?
             <div className='connect-wallet-to-view-page'>
                 <h3>Please connect wallet to view this page!</h3>
                 <button onClick={()=>setIsWalletModal(true)}>Connect Wallet</button>
-            </div>          
-            }
+            </div>
+            :
+            <>
+                {
+                    mintRedeemInfo ?
+                        <div className={`mint-redeem-wrapper ${theme === "light" ? " mint-redeem-wrapper-light" : ""}`}>
+                            <h1 className='main__heading__page'>Minting/Redeeming</h1>
+                            <div className='mint-redeem-tx-info'>
+                                <div>
+                                    <span> {activeTab === "Mint" ? "Minting" : "Redeem"} fee: <b>{activeTab === "Mint" ?  mintRedeemInfo.mintFee : mintRedeemInfo.redeemFee}%</b></span>
+                                    <i className="fas fa-circle"></i>
+                                    <span> Pool balance: <b>${formattedNum(mintRedeemInfo.poolBalance)}</b></span>
+                                    <i className="fas fa-circle"></i>
+                                    <span> Slippage: <b>{mintRedeemSlipage}%</b></span>
+                                    <i className="fas fa-circle"></i>
+                                    <span> Rates: <span> 1 <b>{mintRedeemCurrency}</b> = {mintRedeemInfo.stablePrice} <b> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b> </span> </span>
+
+                                    <span className='contract__link-polygon'> <a href="https://polygonscan.com/"> View contracts on PolygonScan </a> <i className="fas fa-external-link-alt"></i> </span>
+                                </div>
+                            </div>
+                            <div className='mint-redeem-switcher'>
+                                <div>
+                                    <button className={activeTab === "Mint" ? "active-switcher-button" : ""} onClick={() => setActiveTab("Mint")}> Mint </button>
+                                    <button className={activeTab === "Redeem" ? "active-switcher-button" : ""} onClick={() => setActiveTab("Redeem")}> Redeem </button>
+                                </div>
+                            </div>
+                            {activeTab === "Mint" ?
+                            <Mint info={mintRedeemInfo} mintRedeemCurrency={mintRedeemCurrency}/>
+                            : <Redeem info={mintRedeemInfo} mintRedeemCurrency={mintRedeemCurrency}/>}
+                        </div>
+                    : <Spin indicator={LOADER_INDICATOR_LOCAL}/>
+                }
+            </>
+        }
         </>
     )
 }

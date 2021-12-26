@@ -1,79 +1,11 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import {useSystemContext} from '../../../systemProvider';
 import {useMediaQuery} from 'react-responsive';
-
-const ThemeSwitcherWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin: ${props => props.mobile ? "0" : "2vw 0 4vw 0.7vw"};
-  
-  width: 100%;
-
-  svg {
-    width: ${props => props.mobile ? "3.733vw" : "0.729vw"};
-    height : ${props => props.mobile ? "3.733vw" : "0.729vw"};
-
-    &:first-child {
-      width: ${props => props.mobile ? "2.4vw" : "0.469vw"};
-    }
-  }
-
-  .acitve-daytime {
-    color: #40BA93;
-  }
-
-  .switch-wrapper {
-    width: fit-content;
-    padding: ${props => props.mobile ? " 0 2.667vw " : "0 0.521vw"};
-
-    .switch {
-      display: none;
-    }
-    
-    .switch + div {
-      width: ${props => props.mobile ? "13.333vw" : "2.604vw"};
-      height: ${props => props.mobile ? "6.933vw" : "1.354vw"};
-
-      border-radius: ${props => props.mobile ? "26.667vw" : "1.042vw"};
-      border: ${props => props.mobile ? "0.400vw" : "0.052vw"} solid #F2F2F2;
-
-      background: #F2F2F2;
-      transition: background-color 200ms;
-      cursor: pointer;
-    }
-    
-    .switch + div > div {
-      width: 50%;
-      height: ${props => props.mobile ? "100%" : "100%"};
-
-      border-radius: 100%;
-      background: #333;
-
-      transition: transform 250ms;
-      pointer-events: none;
-    }
-
-    .switch:checked + div > div {
-      background-color: white;
-    }
-    
-    .switch:checked + div {
-      border: ${props => props.mobile ? "0.400vw" : "0.052vw"} solid #40BA93;
-      background-color: #40BA93;
-    }
-    
-    .switch:checked + div > div {
-      transform: ${props => props.mobile ? "translateX(100%)" : "translateX(100%)"};
-    }
-  }
-`
+import { useThemeContext } from '../layout';
+import { ThemeSwitcherWrapper } from './styles';
 
 export const ThemeSwitcher = () => {
 
-    const {theme, setTheme} = useSystemContext();
+    const {theme, setTheme} = useThemeContext();
     const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'});
 
     const setNewTheme = () => {
@@ -97,18 +29,6 @@ export const ThemeSwitcher = () => {
             <svg width="9" height="14" viewBox="0 0 9 14" fill={theme === "dark" ? '#40BA93' : '#333'} xmlns="http://www.w3.org/2000/svg">
             <path d="M6.92308 0C7.65 0 8.34231 0.112 9 0.322C6.18923 1.211 4.15385 3.864 4.15385 7C4.15385 10.136 6.18923 12.789 9 13.678C8.34231 13.888 7.65 14 6.92308 14C3.10154 14 0 10.864 0 7C0 3.136 3.10154 0 6.92308 0Z" />
             </svg>
-
-            {/* <label className="label">
-                <div className={theme === "light" ? 'toggle active-theme-switch' : 'toggle'}>
-                    <input 
-                    className="toggle-state" 
-                    onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-                    type="checkbox" name="check"
-                    />
-                    <div className="indicator"></div>
-                </div>
-            </label> */}
-
             <div className="switch-wrapper">
                 <label>
                     <input 

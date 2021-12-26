@@ -12,8 +12,6 @@ export const StakingRewards = () => {
 
     const { theme } = useSystemContext();
 
-
-
     const stakingPools = [
         { name: "Argano", symbol: "AGO", roi: "30%", contract: CONTRACT_ADRESESS.MASTER_CHEF, pid: 0 },
         { name: "Argano Dollar Token", symbol: "AGOUSD", roi: "20%", contract: CONTRACT_ADRESESS.MASTER_CHEF, pid: 1 },

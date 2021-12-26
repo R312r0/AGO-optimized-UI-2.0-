@@ -10,29 +10,14 @@ export const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
-export const DASHBOARD_QUERY = gql(`
-    query dashboard {
-        uniswapFactory(id: "0xd97c98cce28353a2efbb41b9f13b3a7229b02b92") {
-          totalValueLocked(orderBy: timestamp, orderDirection: asc) {
-            value
-            timestamp
-          }
-          totalVolume(orderBy: timestamp, orderDirection: asc) {
-            value
-            timestamp
-          }
-        }
-        transactions(orderBy: timestamp, orderDirection: desc) {
-            name
-            from
-            token0
-            tokenShare
-            token1
-            amount0
-            amountShare
-            amount1
-            amountTotalUSD
-            timestamp
+export const TOKENS = gql(`
+    query tokens {
+        tokens(first: 100) {
+            id
+            symbol
+            decimals
+            priceUSD
+            isProtocolMain
         }
     }
 `)
