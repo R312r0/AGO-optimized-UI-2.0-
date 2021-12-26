@@ -117,14 +117,17 @@
   }
 
   .general-wrapper {
-    display: flex;
-    justify-content: start;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    // justify-content: start;
 
     .general-window {
       background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
       box-shadow: 0 0.208vw 0.833vw rgba(0, 0, 0, 0.25);
       border-radius: 2.083vw;    
       padding: 1.094vw 2.969vw 2.083vw 2.656vw;
+      max-width: 600px;
+      justify-self: center;
 
       .fas {
         font-weight: 200;
@@ -172,7 +175,7 @@
       }
 
       .general-window-input-row {
-        width: 35.625vw;
+        // width: 35.625vw;
 
         display: grid;
         grid-template-columns: 60% 40%;
@@ -323,7 +326,7 @@
 
 .collect-redemption {
   width: 20.5vw;
-  margin-right: 2.083vw;
+  // margin-right: 2.083vw;
   margin-bottom: auto;
 
   display: flex;

@@ -64,9 +64,9 @@ export const Dashboard = () => {
 
         if (!loading && data) {
 
-            const tvlChart = convertProjChartData(data.uniswapFactory.totalValueLocked);
-            const volumeChart = convertProjChartData(data.uniswapFactory.totalVolume);
-            const txs = convertTransactionsData(data.transactions)
+            const tvlChart = convertProjChartData(data?.uniswapFactory?.totalValueLocked);
+            const volumeChart = convertProjChartData(data?.uniswapFactory?.totalVolume);
+            const txs = convertTransactionsData(data?.transactions)
             setProjCharts({
                 tvl: tvlChart,
                 volume: volumeChart
@@ -78,7 +78,7 @@ export const Dashboard = () => {
 
 
     const convertProjChartData = (data) => {
-        const res = data.map((item, _ind) => {
+        const res = data?.map((item, _ind) => {
             const dateFromItem = new Date(item.timestamp * 1000);
             const time = dateFromItem.getDate() < 10 ? "0"+dateFromItem.getDate() : dateFromItem.getDate()
             const date = dateFromItem.toDateString();

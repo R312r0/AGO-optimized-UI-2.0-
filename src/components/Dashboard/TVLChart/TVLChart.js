@@ -102,7 +102,7 @@ export const TVLChart = ({ data }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (data && data.length > 0) {
       setChartValue({
         time: data[data.length - 1].date,
         value: data[data.length - 1].uv

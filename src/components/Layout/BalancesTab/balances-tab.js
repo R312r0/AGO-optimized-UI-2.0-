@@ -331,17 +331,19 @@ const BalanceListItemDesktop = styled.li`
   align-items: center;
   column-gap: 5px;
   padding-right: 5px;
+  background: ${props => props.light ? "#fff" : "transpered"};
+  border-radius: 10px;
 
   img {
     max-width:23px;
     width: 100%;
-    background: ${props => props.light ? "#fff" : "transpered"};
-    border-radius: 50%;
-    padding: 1px;
+    /* background: ${props => props.light ? "#fff" : "transpered"}; */
+    /* border-radius: 50%;
+    padding: 1px; */
   }
 
   span {
-    color: ${props => props.light ? "#fff" : "#828282"};
+    color: ${props => props.light ? "#333" : "#828282"};
     font-size: 0.729vw;
   }
 
