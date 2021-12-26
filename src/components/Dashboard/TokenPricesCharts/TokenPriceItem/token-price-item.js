@@ -97,7 +97,7 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                   <h3> {tokenPriceItem.symbol} </h3>
                   <h1> ${tokenPriceItem.price} </h1>
                   <span> <Arrow/> {tokenPriceItem.change24h === Infinity ? 0 : tokenPriceItem.change24h}% <span>(24h)</span> </span>
-                  {/* <ResponsiveContainer className='responsive-container-chart demo-chart' width={"100%"} height={"100%"}>
+                  <ResponsiveContainer className='responsive-container-chart demo-chart' width={"100%"} height={"100%"}>
                       <LineChart
                         data={tokenPriceItem.chart}
                       >
@@ -115,7 +115,7 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                           dot={false}
                           activeDot={true}
                         />
-                        <Tooltip
+                        {/* <Tooltip
                           content={CustomToolTip}
                         />
                         <XAxis
@@ -125,10 +125,10 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                           tickLine={false}
                           tick={{ fontSize: "0.7vw" }}
                           stroke={theme === "light" ? "black" : "white"}
-                        />
+                        /> */}
                       </LineChart>
-                    </ResponsiveContainer> */}
-                  <img src={demoChart} className='demo-chart' alt="chart-demo"/>
+                    </ResponsiveContainer>
+                  {/* <img src={demoChart} className='demo-chart' alt="chart-demo"/> */}
                 </SinglePriceBlock>
                 <div className="price-block-chart">
                   <div className='chart-wrapper'>
