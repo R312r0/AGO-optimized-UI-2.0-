@@ -8,10 +8,10 @@ import { formatFromDecimal, formatToDecimal } from '../../../utils/helpers';
 import { TokenIcon } from '../../TokenIcon/token_icon';
 
 
-export const Mint = ({info, mintRedeemCurrency}) => {
+export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => {
 
     const {account} = useWeb3React();
-    const { setMintRedeemCurrencyModal, contracts, tokens, balances } = useSystemContext();
+    const { contracts, tokens, balances } = useSystemContext();
 
     const [collateralInput, setCollateralInput] = useState(null);
     const [catenaInput, setCatenaInput] = useState(null);

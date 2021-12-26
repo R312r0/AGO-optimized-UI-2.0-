@@ -101,8 +101,6 @@ const TableBody = styled.ul`
 
 export const Transactions = ({ token0, token1 }) => {
 
-  const { theme } = useSystemContext();
-
   const { data, loading } = useQuery(GET_PAIR_TXS, {
     variables: { token0: token0.symbol, token1: token1.symbol }
   });

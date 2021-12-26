@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react'
-import {Layout} from "../Layout/layout"
+import {Layout, useThemeContext} from "../Layout/layout"
 import './mint_redeem.scss'
 import {TokenIcon} from "../TokenIcon/token_icon"
 import Mint from './Mint/mint';
@@ -9,14 +9,17 @@ import { formattedNum, formatFromDecimal } from '../../utils/helpers';
 import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
 import { LOADER_INDICATOR_LOCAL } from '../../constants';
+import { CurrencySwitchModal } from './CurrencySwitchModal/currency-switch-modal';
 
 export const MintRedeem = () => {
 
     const [activeTab, setActiveTab] = useState("Mint");
     const [mintRedeemInfo, setMintRedeemInfo] = useState(null);
     const { account } = useWeb3React();
-    const { theme, contracts, setIsWalletModal } = useSystemContext();
+    const { contracts, setIsWalletModal } = useSystemContext();
+    const { theme } = useThemeContext();
     // const [connectWalletThumb, setConnectWalletThumb] = useState()
+    const [mintRedeemCurrencyModal, setMintRedeemCurrencyModal] = useState(false);
     const [mintRedeemCurrency, setMintRedeemCurrency] = useState("AGOUSD");
     const [mintRedeemSlipage, setMintRedeemSlipage] = useState(0.3);
 
@@ -93,13 +96,21 @@ export const MintRedeem = () => {
                                 </div>
                             </div>
                             {activeTab === "Mint" ?
-                            <Mint info={mintRedeemInfo} mintRedeemCurrency={mintRedeemCurrency}/>
-                            : <Redeem info={mintRedeemInfo} mintRedeemCurrency={mintRedeemCurrency}/>}
+                            <Mint info={mintRedeemInfo} mintRedeemCurrency={mintRedeemCurrency} setMintRedeemCurrencyModal={setMintRedeemCurrencyModal}/>
+                            : <Redeem info={mintRedeemInfo} mintRedeemCurrency={mintRedeemCurrency} setMintRedeemCurrencyModal={setMintRedeemCurrencyModal}/>}
                         </div>
                     : <Spin indicator={LOADER_INDICATOR_LOCAL}/>
                 }
             </>
         }
+        <CurrencySwitchModal 
+            mintRedeemCurrency={mintRedeemCurrency}
+            setMintRedeemCurrency={setMintRedeemCurrency}
+            mintRedeemSlipage={mintRedeemSlipage}
+            setMintRedeemSlipage={setMintRedeemSlipage}
+            mintRedeemCurrencyModal={mintRedeemCurrencyModal}
+            setMintRedeemCurrencyModal={setMintRedeemCurrencyModal}
+            />
         </>
     )
 }

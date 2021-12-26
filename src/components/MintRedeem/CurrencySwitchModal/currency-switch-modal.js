@@ -2,10 +2,12 @@ import React from 'react';
 import { Switch } from 'antd';
 import './currency-switch-modal.scss';
 import { useSystemContext } from '../../../systemProvider';
+import { useThemeContext } from '../../Layout/layout';
 
-export const CurrencySwitchModal = () => {
+export const CurrencySwitchModal = ({mintRedeemCurrency, setMintRedeemCurrency, mintRedeemSlipage, setMintRedeemSlipage, mintRedeemCurrencyModal, setMintRedeemCurrencyModal }) => {
 
-    const {setMintRedeemCurrencyModal, mintRedeemCurrencyModal, setMintRedeemCurrency, mintRedeemCurrency, theme, setMintRedeemSlipage, mintRedeemSlipage} = useSystemContext();
+    const {theme} = useThemeContext();
+    
 
     // TODO: Should be slippage here.
 

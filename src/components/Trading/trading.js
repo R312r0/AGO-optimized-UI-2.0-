@@ -12,6 +12,7 @@ import { TokenIcon } from "../TokenIcon/token_icon";
 import { useQuery } from "@apollo/client";
 import { LIQ_POOLS_TRADING } from "../../api/client";
 import { formattedNum } from "../../utils/helpers";
+import { useThemeContext } from '../Layout/layout';
 
 const ContentHeader = styled.div`
   width: 100%;
@@ -158,7 +159,7 @@ export const Trading = () => {
 
   const { SIMPLE_SWAP, TRADING } = TRADING_TABS;
 
-  const { theme } = useSystemContext();
+  const { theme } = useThemeContext();
   const { data, loading } = useQuery(LIQ_POOLS_TRADING);
 
   const chartBlockRef = useRef(null);

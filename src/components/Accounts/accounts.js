@@ -18,18 +18,20 @@ import AccountsPools from './accounts-pools/accounts-pools';
 import {useQuery} from "@apollo/client";
 import {TOKENS_FOR_USER_BALANCES} from "../../api/client";
 import AccountPieChart from './AccountPieChart';
+import { useThemeContext } from '../Layout/layout';
 
 const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#9018EE", "#1BB8DB", "#EA8C00"]
 
 
 export const Accounts = () => {
-    const {theme, balances, setIsWalletModal} = useSystemContext();
+    const { balances, setIsWalletModal} = useSystemContext();
     const {data, loading} = useQuery(TOKENS_FOR_USER_BALANCES);
     const [sumUserBalances, setSumUserBalances] = useState(0.00);
     const [syntheticAssets, setSyntheticAssets] = useState(null);
     const [userPortfolio, setUserPortfolio] = useState(null);
     const {account} = useWeb3React();
 
+    const {theme} = useThemeContext();
 
     useEffect(() => {
 

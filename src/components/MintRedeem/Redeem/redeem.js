@@ -8,11 +8,11 @@ import { MAX_INT } from '../../../constants';
 import { formatFromDecimal, formatToDecimal } from '../../../utils/helpers';
 import { message } from 'antd';
 
-export const Redeem = ({info, mintRedeemCurrency}) => {
+export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => {
 
 
     const { account } = useWeb3React();
-    const { setMintRedeemCurrencyModal, contracts, tokens, balances } = useSystemContext();
+    const { contracts, tokens, balances } = useSystemContext();
     const [approved, setApproved] = useState(null);
     const [input, setInput] = useState(null);
     const [collateralOutput, setCollateralOutput] = useState(null);

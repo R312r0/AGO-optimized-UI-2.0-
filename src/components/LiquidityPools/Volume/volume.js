@@ -3,10 +3,11 @@ import { BarChart, XAxis, Bar, Tooltip, ResponsiveContainer, Cell, YAxis, Cartes
 import { useSystemContext } from '../../../systemProvider';
 import { formattedNum } from '../../../utils/helpers';
 import {CustomToolTip} from "../../ChartCustomTooltip/chart-custom-tooltip";
+import { useThemeContext } from '../../Layout/layout';
 
 export const Volume = ({data}) => {
 
-    const {theme} = useSystemContext();
+    const {theme} = useThemeContext();
     const block = useRef(null)
 
     const CustomBar = ({

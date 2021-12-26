@@ -13,9 +13,10 @@ import {PORTFOLIO_PERFOMANCE} from "../../../api/client";
 import {useWeb3React} from "@web3-react/core";
 import {LOADER_INDICATOR_LOCAL} from "../../../constants";
 import {Spin} from "antd";
+import { useThemeContext } from '../../Layout/layout';
 
 export const PortfolioPerfomance = () => {
-    const { theme } = useSystemContext();
+    const { theme } = useThemeContext();
     const {account} = useWeb3React();
     const {userProtfolio} = useSystemContext();
     const {data, loading} = useQuery(PORTFOLIO_PERFOMANCE, {

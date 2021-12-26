@@ -35,6 +35,8 @@ export const SystemProvider = ({children}) => {
 
     const {tokens} = useDataContext();
 
+    const [mintRedeemCurrencyModal, setMintRedeemCurrencyModal] = useState(false);
+
     const [web3Loading, setWeb3Loading] = useState(true);
 
     // 1. Check if user are already connected trough MetaMask if yes then connect him again.
@@ -167,6 +169,8 @@ export const SystemProvider = ({children}) => {
 
     const systemValue = {
         connectWallet,
+        mintRedeemCurrencyModal,
+        setMintRedeemCurrencyModal,
         disconnectWallet,
         isWalletModal,
         setIsWalletModal,

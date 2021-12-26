@@ -20,10 +20,13 @@ import documentIcon from '../../../assets/icons/document-history.svg';
 import { AccHistoryTable } from './acc-history-table';
 import {useQuery} from "@apollo/client";
 import {USER_TXS_HISTORY} from "../../../api/client";
+import { useThemeContext } from '../../Layout/layout';
 
 export const AccHistory = ({isOpened, setIsOpened}) => {
     const {account} = useWeb3React();
-    const {theme, tokens} = useSystemContext()
+    const {tokens} = useSystemContext();
+    const {theme} = useThemeContext();
+    
     const [searchPattern, setSearchPattern] = useState("")
 
 

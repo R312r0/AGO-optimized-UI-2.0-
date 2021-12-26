@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useSystemContext } from '../../../systemProvider';
 import {CustomToolTip} from "../../ChartCustomTooltip/chart-custom-tooltip";
+import { useThemeContext } from '../../Layout/layout';
 
 export const Liquidity = ({data}) => {
 
-  const {theme} = useSystemContext();
+  const {theme} = useThemeContext();
 
     return( 
       <ResponsiveContainer className='liq-chart'>

@@ -60,7 +60,6 @@ const Layout = ({children}) => {
                 <Content mobile={isMobileScreen}>
                   {web3Loading ? <Spin indicator={LOADER_INDICATOR}/> : children}                    
                 </Content>
-                <CurrencySwitchModal />
                 <WalletModal />
             </LayoutWrapper>
         </ThemeContext.Provider>
