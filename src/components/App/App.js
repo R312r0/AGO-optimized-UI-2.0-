@@ -9,24 +9,24 @@ import MintRedeem from '../MintRedeem/mint_redeem';
 import { StakingRewards } from '../StakingRewards/staking-rewards';
 import LiquidityPools from '../LiquidityPools/liquidity-pools';
 import { Trading } from '../Trading/trading';
-import { Layout } from '../Layout/layout';
+import Layout from '../Layout/layout';
 import { Accounts } from '../Accounts/accounts';
 import 'antd/dist/antd.css';
 import { Foundry } from "../Foundry/foundry";
 import { useSystemContext } from '../../systemProvider'
 
 export const App = () => {
-    const { connectWallet } = useSystemContext()
-    useEffect(() => {
-        setTimeout(() => {
+    // const { connectWallet } = useSystemContext()
+    // useEffect(() => {
+    //     setTimeout(() => {
 
-            const connectedWallet = localStorage.getItem('connected Wallet');
-            if (connectedWallet) {
-                connectWallet(connectedWallet);
-            }
-        }, 0)
+    //         const connectedWallet = localStorage.getItem('connected Wallet');
+    //         if (connectedWallet) {
+    //             connectWallet(connectedWallet);
+    //         }
+    //     }, 0)
 
-    }, [])
+    // }, [])
 
     return (
         <>
@@ -43,8 +43,6 @@ export const App = () => {
                     </Layout>
                 </Switch>
             </Router>
-            <WalletModal />
-            <CurrencySwitchModal />
         </>
     )
 }

@@ -18,36 +18,38 @@ import AccountsPools from './accounts-pools/accounts-pools';
 import {useQuery} from "@apollo/client";
 import {TOKENS_FOR_USER_BALANCES} from "../../api/client";
 import AccountPieChart from './AccountPieChart';
+import { useThemeContext } from '../Layout/layout';
 
 const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#9018EE", "#1BB8DB", "#EA8C00"]
 
 
 export const Accounts = () => {
-    const {theme, userProtfolio, setIsWalletModal} = useSystemContext();
+    const { balances, setIsWalletModal} = useSystemContext();
     const {data, loading} = useQuery(TOKENS_FOR_USER_BALANCES);
     const [sumUserBalances, setSumUserBalances] = useState(0.00);
-    const [balances, setBalances] = useState(null);
     const [syntheticAssets, setSyntheticAssets] = useState(null);
+    const [userPortfolio, setUserPortfolio] = useState(null);
     const {account} = useWeb3React();
 
+    const {theme} = useThemeContext();
 
     useEffect(() => {
 
-        if (userProtfolio && data && !loading) {
-            const res = userProtfolio.map((item) => {
-                const name = item.name;
+        if (balances && data && !loading) {
+            const res = balances.map((item) => {
+                const name = item.symbol;
                 const nativeBalance = item.userNativeBalance;
                 const usdBalance = data.tokens.find(tok => tok.symbol === name);
 
                 return {name, nativeBalance, usdBalance: usdBalance.priceUSD * nativeBalance}
             });
 
-            setBalances(res);
+            setUserPortfolio(res);
             setSyntheticAssets(res.filter(item => item.name === "AGOUSD" || item.name === "CNUSD" || item.name === "AGOBTC" || item.name === "CNBTC"))
             setSumUserBalances(res.reduce((a, {usdBalance}) => a + usdBalance, 0))
         }
     
-    }, [userProtfolio])
+    }, [balances])
  
     const [historyOpened, setHistoryOpened] = useState(false);
 
@@ -95,7 +97,7 @@ export const Accounts = () => {
     return (
         <>
         {
-            account && userProtfolio && data ?
+            account && balances && data ?
             <div className={`accounts-wrapper ${theme === "light" ? " accounts-wrapper-light" : ""}`}> 
                 <AccHistory isOpened={historyOpened} setIsOpened={setHistoryOpened}/>
         
@@ -108,7 +110,7 @@ export const Accounts = () => {
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
                                     <AccountPieChart />
                                     <ul> 
-                                        {balances && balances.filter((item) => item.nativeBalance > 0).map((item, _ind) => {
+                                        {userPortfolio && userPortfolio.map((item, _ind) => {
                                             return <li key={item.name}>
                                                 <span><TokenIcon iconName={item.name}/> {item.name} </span>
                                                 <b className={_ind === 4 ? "negative-change" : ""}> {formattedNum(item.nativeBalance)} </b>
@@ -119,8 +121,10 @@ export const Accounts = () => {
 
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info__bars'>
                                     <ul>
-                                        {balances && balances.filter(data => data.nativeBalance > 0).map((item, _ind) => {
+                                        {userPortfolio && userPortfolio.filter(data => data.nativeBalance > 0).map((item, _ind) => {
+
                                             const percentDiff = item.usdBalance !== 0 ? ((item.usdBalance / sumUserBalances) * 100) : 0;
+                                            
                                             return (
                                                 <li key={`li_${_ind}`}>
                                                     <p>{percentDiff.toFixed(2)}%</p>

@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { formatDate } from '../../../utils/helpers';
 import { useSystemContext } from '../../../systemProvider';
+import { useThemeContext } from '../../Layout/layout';
 
 export const TradingChart = ({candleData, lineData, chartType }) => {
 
 
     const ref = useRef();
     const parentRef = useRef(null);
-    const {theme} = useSystemContext();
+    const {theme} = useThemeContext();
     const [chart, setChart] = useState(null);
     const [lineSeries, setLineSeries] = useState(null);
     // const [candleSeries, setCandleSeries] = useState(null);

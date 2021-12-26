@@ -8,11 +8,11 @@ import { MAX_INT } from '../../../constants';
 import { formatFromDecimal, formatToDecimal } from '../../../utils/helpers';
 import { message } from 'antd';
 
-export const Redeem = ({info}) => {
+export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => {
 
 
     const { account } = useWeb3React();
-    const { setMintRedeemCurrencyModal, mintRedeemCurrency, contracts, tokens, getTokenBalance } = useSystemContext();
+    const { contracts, tokens, balances } = useSystemContext();
     const [approved, setApproved] = useState(null);
     const [input, setInput] = useState(null);
     const [collateralOutput, setCollateralOutput] = useState(null);
@@ -31,10 +31,10 @@ export const Redeem = ({info}) => {
         let token;
 
         if (mintRedeemCurrency === "AGOUSD") {
-            token = await tokens.AGOUSD.instance.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOUSD).call();
+            token = await contracts.AGOUSD.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOUSD).call();
         }
         else {
-            token = await tokens.AGOBTC.instance.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOBTC).call();
+            token = await contracts.AGOBTC.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOBTC).call();
         }
 
 
@@ -48,13 +48,13 @@ export const Redeem = ({info}) => {
         let redemptionShare;
 
         if (mintRedeemCurrency === "AGOUSD") {
-            redemptionCollateral = formatFromDecimal(await contracts.POOL_AGOUSD.methods.redeem_collateral_balances(account).call(), tokens.USDT.decimals);
-            redemptionShare = formatFromDecimal(await contracts.POOL_AGOUSD.methods.redeem_share_balances(account).call(), tokens.CNUSD.decimals);
+            redemptionCollateral = formatFromDecimal(await contracts.POOL_AGOUSD.methods.redeem_collateral_balances(account).call(), tokens.find(item => item.symbol === "USDT").decimals);
+            redemptionShare = formatFromDecimal(await contracts.POOL_AGOUSD.methods.redeem_share_balances(account).call(), tokens.find(item => item.symbol === "CNUSD").decimals);
         }
 
         else {
-            redemptionCollateral = formatFromDecimal(await contracts.POOL_AGOBTC.methods.redeem_collateral_balances(account).call(), tokens.WBTC.decimals);
-            redemptionShare = formatFromDecimal(await contracts.POOL_AGOBTC.methods.redeem_share_balances(account).call(), tokens.CNBTC.decimals); 
+            redemptionCollateral = formatFromDecimal(await contracts.POOL_AGOBTC.methods.redeem_collateral_balances(account).call(), tokens.find(item => item.symbol === "WBTC").decimals);
+            redemptionShare = formatFromDecimal(await contracts.POOL_AGOBTC.methods.redeem_share_balances(account).call(), tokens.find(item => item.symbol === "CNBTC").decimals); 
         }
 
         setRedeemBalances({redemptionCollateral, redemptionShare})
@@ -168,7 +168,7 @@ export const Redeem = ({info}) => {
             </div>
             <div className='general-window-input-row'> 
                 <span> <h3> Input </h3> </span>
-                <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency)} </h3> </span>
+                <span className='balance'> <h3> Balance: {tokens.find(item => item.symbol === mintRedeemCurrency).nativeBalance} </h3> </span>
                 <input onChange={(e) => handleStableInput(e.target.value)} className='inpunt-redeem' type='number' placeholder="0.00" value={input}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency}/> {mintRedeemCurrency} </span>
             </div>
@@ -177,7 +177,7 @@ export const Redeem = ({info}) => {
             </div>
             <div className='general-window-input-row'> 
                 <span> <h3> Output USDT : <b> {info.effectiveCollateralRatio}% </b> </h3> </span>
-                <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC")} </h3> </span>
+                <span className='balance'> <h3> Balance: {tokens.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "USDT" : item.symbol === "WBTC").nativeBalance} </h3> </span>
                 <input disabled type='number' placeholder="0.00" value={collateralOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
             </div>
@@ -186,7 +186,7 @@ export const Redeem = ({info}) => {
             </div>
             <div className='general-window-input-row output'> 
                 <span> <h3> Output CNUSD : <b> {100 - info.effectiveCollateralRatio}% </b> </h3> </span>
-                <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC")} </h3> </span>
+                <span className='balance'> <h3> Balance: {tokens.find((item) => mintRedeemCurrency === "AGOUSD" ? item.symbol === "CNUSD" : item.symbol === "CNBTC").nativeBalance} </h3> </span>
                 <input disabled type='number' placeholder={info.effectiveCollateralRatio === 100 ? "ECR is 100%" : "0.00"} value={info.effectiveCollateralRatio === 100 ? null : catenaOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} </span>
             </div>

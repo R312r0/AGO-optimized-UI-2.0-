@@ -7,6 +7,7 @@ import chartBgImage from '../../../assets/charts/pieChartBg.svg';
 import { useSystemContext } from '../../../systemProvider';
 
 import styled from 'styled-components';
+import { useThemeContext } from '../../Layout/layout';
 
 const PieCartWrapper = styled.div`
     max-width: 260px;
@@ -36,7 +37,7 @@ const PieCartWrapper = styled.div`
 
 const AccountPieChart = () => {
 
-    const { theme } = useSystemContext();
+    const { theme } = useThemeContext();
 
     const options = {
         chart: {

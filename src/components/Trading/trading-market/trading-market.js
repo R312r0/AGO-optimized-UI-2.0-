@@ -31,7 +31,7 @@ const SwapButtonWrapper = styled.button`
 
 const TradingMarket = ({pool}) => {
 
-    const {contracts, tokens, userProtfolio, theme} = useSystemContext();
+    const {contracts, tokens, balances, theme} = useSystemContext();
     const {account} = useWeb3React();
 
     const [token0, setToken0] = useState(null);
@@ -45,19 +45,19 @@ const TradingMarket = ({pool}) => {
 
     useEffect(() => {
 
-        if (pool && userProtfolio) {
+        if (pool && balances) {
             checkAllowance();
             setToken0({token: pool.token0, poolPrice: pool.token0Price})
             setToken1({token: pool.token1, poolPrice: pool.token1Price})
         }
 
-    }, [pool, userProtfolio])
+    }, [pool, balances])
 
 
     const checkAllowance = async () => {
 
-        const tok0 = tokens[pool.token0.symbol].instance;
-        const tok1 = tokens[pool.token1.symbol].instance;
+        const tok0 = contracts[pool.token0.symbol];
+        const tok1 = contracts[pool.token1.symbol];
 
         setToken0Allowance((await tok0.methods.allowance(account, DEX_ADDRESESS.ROUTER).call()).length === MAX_INT.length)
         setToken1Allowance((await tok1.methods.allowance(account, DEX_ADDRESESS.ROUTER).call()).length === MAX_INT.length)
@@ -97,7 +97,7 @@ const TradingMarket = ({pool}) => {
     const SwapButtonFunc = () => {
 
         const zeroInputCheck = token0Input === 0 || token1Input === 0;
-        const insuficientBalance = token0Input > userProtfolio.find(item => item.name === token0.token.symbol).userNativeBalance;
+        const insuficientBalance = token0Input > balances.find(item => item.symbol === token0.token.symbol).nativeBalance;
 
         if (!token0Allowance) {
             return <SwapButtonWrapper onClick={() => handleApprove(pool.token0)}> Approve {pool.token0.symbol} </SwapButtonWrapper>

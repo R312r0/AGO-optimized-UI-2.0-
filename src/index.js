@@ -7,6 +7,7 @@ import { client } from './api/client';
 import { Web3ReactProvider } from '@web3-react/core';
 import {SystemProvider} from './systemProvider';
 import './index.scss';
+import { DataProvider } from './dataProvider';
 
 
 const getLibrary = (provider) => {
@@ -18,9 +19,11 @@ ReactDOM.render(
   <React.StrictMode>
       <ApolloProvider client={client}>
           <Web3ReactProvider getLibrary={getLibrary}>
-              <SystemProvider>
-                  <App/>
-              </SystemProvider>
+              <DataProvider>
+                <SystemProvider>
+                    <App/>
+                </SystemProvider>
+              </DataProvider>
           </Web3ReactProvider>
       </ApolloProvider>
   </React.StrictMode>,

@@ -7,12 +7,11 @@ import claimRewardIcon from './claim-reward.svg';
 import './staking-rewards.scss';
 import { StakingItem } from "./StakingItem/staking-item";
 import { CONTRACT_ADRESESS } from "../../constants";
+import { useThemeContext } from '../Layout/layout';
 
 export const StakingRewards = () => {
 
-    const { theme } = useSystemContext();
-
-
+    const { theme } = useThemeContext();
 
     const stakingPools = [
         { name: "Argano", symbol: "AGO", roi: "30%", contract: CONTRACT_ADRESESS.MASTER_CHEF, pid: 0 },

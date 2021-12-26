@@ -8,10 +8,10 @@ import { formatFromDecimal, formatToDecimal } from '../../../utils/helpers';
 import { TokenIcon } from '../../TokenIcon/token_icon';
 
 
-export const Mint = ({info}) => {
+export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => {
 
     const {account} = useWeb3React();
-    const { setMintRedeemCurrencyModal, mintRedeemCurrency, contracts, tokens, userProtfolio, getTokenBalance } = useSystemContext();
+    const { contracts, tokens, balances } = useSystemContext();
 
     const [collateralInput, setCollateralInput] = useState(null);
     const [catenaInput, setCatenaInput] = useState(null);
@@ -22,6 +22,7 @@ export const Mint = ({info}) => {
         share: null,
     });
 
+
     const [mintButtonDisabled, setMintButtonDisabled] = useState(false);
 
     useEffect(() => {
@@ -31,26 +32,25 @@ export const Mint = ({info}) => {
     }, [account, mintRedeemCurrency])
 
 
-
     useEffect(() => {
 
         if (account) {
             if (mintRedeemCurrency === "AGOUSD") {
-                const usdt = getTokenBalance("USDT");
-                if (usdt.userNativeBalance === "0" && mintRedeemCurrency === "AGOUSD") {
+                const usdt = balances.find(item => item.symbol === "USDT").nativeBalance;
+                if (usdt.userNativeBalance === 0 && mintRedeemCurrency === "AGOUSD") {
                     setMintButtonDisabled(true);
                     message.warn({content: `You have 0 USDT to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
                 }
             }
             else if (mintRedeemCurrency === "AGOBTC") {
-                const wbtc = getTokenBalance("WBTC");
-                if (wbtc.userNativeBalance === "0" && mintRedeemCurrency === "AGOBTC") {
+                const wbtc = balances.find(item => item.name === "AGOBTC").nativeBalance;
+                if (wbtc.userNativeBalance === 0 && mintRedeemCurrency === "AGOBTC") {
                     setMintButtonDisabled(true);
                     message.warn({content: `You have 0 WBTC to make mint go to Trading page and buy some`, key: MINT_REDEEM_KEY, className: "ant-argano-message", duration: 10})
                 }
             }
         }
-    }, [userProtfolio])
+    }, [balances])
 
     const getAllowance = async () => {
 
@@ -58,13 +58,13 @@ export const Mint = ({info}) => {
         let share;
 
         if (mintRedeemCurrency === "AGOUSD") {
-            collateral = await tokens.USDT.instance.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOUSD).call();
-            share = await tokens.CNUSD.instance.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOUSD).call();
+            collateral = await contracts.USDT.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOUSD).call();
+            share = await contracts.CNUSD.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOUSD).call();
         }
 
         else {
-            collateral = await tokens.WBTC.instance.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOBTC).call();
-            share = await tokens.CNBTC.instance.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOBTC).call();
+            collateral = await contracts.WBTC.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOBTC).call();
+            share = await contracts.CNBTC.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOBTC).call();
         }
 
         setApproved( prevState => ({
@@ -92,18 +92,18 @@ export const Mint = ({info}) => {
 
         if (tokenType === "collateral") {
             if (mintRedeemCurrency === "AGOUSD") {
-                await tokens.USDT.instance.methods.approve(CONTRACT_ADRESESS.POOL_AGOUSD, MAX_INT).send({from: account})
+                await contracts.USDT.methods.approve(CONTRACT_ADRESESS.POOL_AGOUSD, MAX_INT).send({from: account})
             }
             else {
-                await tokens.WBTC.instance.methods.approve(CONTRACT_ADRESESS.POOL_AGOBTC, MAX_INT).send({from: account})
+                await contracts.WBTC.methods.approve(CONTRACT_ADRESESS.POOL_AGOBTC, MAX_INT).send({from: account})
             }
         }
         else {
             if (mintRedeemCurrency === "AGOUSD") {
-                await tokens.CNUSD.instance.methods.approve(CONTRACT_ADRESESS.POOL_AGOUSD, MAX_INT).send({from: account})
+                await contracts.CNUSD.methods.approve(CONTRACT_ADRESESS.POOL_AGOUSD, MAX_INT).send({from: account})
             }
             else {
-                await tokens.CNBTC.instance.methods.approve(CONTRACT_ADRESESS.POOL_AGOBTC, MAX_INT).send({from: account})
+                await contracts.CNBTC.methods.approve(CONTRACT_ADRESESS.POOL_AGOBTC, MAX_INT).send({from: account})
             }
         }
 
@@ -118,8 +118,10 @@ export const Mint = ({info}) => {
                 try {
                     message.loading({content: "Mint in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
                     setMintButtonDisabled(true);
-                    await contracts.POOL_AGOUSD.methods.mint(formatToDecimal(collateralInput, tokens.USDT.decimals), formatToDecimal(catenaInput, tokens.CNUSD.decimals), 0).send({from: account}); // TODO: AGOUSD amount - slippage in %
-                    
+                    await contracts.POOL_AGOUSD.methods.mint(
+                        formatToDecimal(collateralInput, tokens.find(item => item.symbol === "USDT").decimals),
+                        formatToDecimal(catenaInput, tokens.find(item => item.symbol === "CNUSD").decimals), 0)
+                        .send({from: account}); // TODO: AGOUSD amount - slippage in %
                     message.success({content: `Succsessfully minted ${mintRedeemCurrency}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5})
                     setMintButtonDisabled(false);
                 }
@@ -132,7 +134,10 @@ export const Mint = ({info}) => {
                 try {
                     setMintButtonDisabled(true);
                     message.loading({content: "Mint in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
-                    await contracts.POOL_AGOBTC.methods.mint(formatToDecimal(collateralInput, tokens.WBTC.decimals), formatToDecimal(catenaInput, tokens.CNBTC.decimals), 0).send({from: account});
+                    await contracts.POOL_AGOBTC.methods.mint(
+                        formatToDecimal(collateralInput, tokens.find(item => item.symbol === "WBTC").decimals),
+                        formatToDecimal(catenaInput, tokens.find(item => item.symbol === "CNBTC").decimals), 0)
+                        .send({from: account});
                     message.success({content: `Succsessfully minted ${mintRedeemCurrency}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5})
                     setMintButtonDisabled(false);
     
@@ -163,11 +168,6 @@ export const Mint = ({info}) => {
             return <button disabled={mintButtonDisabled} className='mint-window-run-mint withoutBg' onClick={handleMint}> Mint </button>
         }
 
-    }
-
-
-    const handleUnpause = async () => {
-        await contracts.TREASURY_AGOUSD.methods.unpauseCollateralRatio().send({from: account});
     }
 
     const handleRefreshCollateralRatio = async () => {
@@ -207,7 +207,7 @@ export const Mint = ({info}) => {
                 </div>
                 <div className='general-window-input-row'>
                     <span> <h3> Input: <b> {info.targetCollateralRatio}% </b> </h3> </span>
-                    <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC")}  </h3> </span>
+                    <span className='balance'> <h3> Balance: {balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "USDT" : item.symbol === "WBTC" ).nativeBalance}  </h3> </span>
                     <input type='number' placeholder="0.00" onChange={(e) => handleCollateralInput(e.target.value)} value={collateralInput}/>
                     <span className='currency'> <TokenIcon iconName={ mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
                 </div>
@@ -216,7 +216,7 @@ export const Mint = ({info}) => {
                 </div>
                 <div className='general-window-input-row'> 
                     <span> <h3> Input: <b>{info.targetCollateralRatio - 100}% </b> </h3> </span>
-                    <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC")} </h3> </span>
+                    <span className='balance'> <h3> Balance: {balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "CNUSD" : item.symbol === "CNBTC" ).nativeBalance} </h3> </span>
                     <input type='number' disabled={info.targetCollateralRatio === 100} placeholder={info.targetCollateralRatio === 100 ? "TCR is 100%" : "0.00"} onChange={(e) => handleCatenaInput(e.target.value)} value={info.targetCollateralRatio === 100 ? "" : catenaInput}/>
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</span>
                 </div>
@@ -225,7 +225,7 @@ export const Mint = ({info}) => {
                 </div>
                 <div className='general-window-input-row output'> 
                     <span> <h3> Output(estimated) </h3> </span>
-                    <span className='balance'> <h3> Balance: {getTokenBalance(mintRedeemCurrency)} </h3> </span>
+                    <span className='balance'> <h3> Balance: {balances.find(item => item.symbol === mintRedeemCurrency).nativeBalance} </h3> </span>
                     <input disabled type='number' placeholder="0.00" value={outputInput}/>
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency}/> {mintRedeemCurrency} </span>
                 </div>

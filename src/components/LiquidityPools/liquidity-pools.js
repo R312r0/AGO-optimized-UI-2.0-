@@ -12,6 +12,7 @@ import {LOADER_INDICATOR} from "../../constants";
 import styled from "styled-components";
 import {CreatePairModal} from "./CreatePairModal/create-pair-modal";
 import { ReactComponent as CreatePairPlus } from '../../assets/icons/plus_create.svg';
+import { useThemeContext } from '../Layout/layout';
 
 const SearchBar = styled.div`
   width: 39.271vw;
@@ -52,7 +53,7 @@ const SearchBar = styled.div`
 export const LiquidityPools = () => {
 
     const {account, library} = useWeb3React();
-    const {theme} = useSystemContext();
+    const {theme} = useThemeContext();
     const {data, loading} = useQuery(LIQUIDITY_POOLS);
     const [pools, setPools] = useState(null);
     const [earnPools, setEarnPools] = useState(null);

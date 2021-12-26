@@ -22,7 +22,7 @@ const FoundryActions = () => {
 
     useEffect(() => {
 
-        if (account) {
+        if (account && contracts) {
             getAllowance();
             getInfo();
         }
@@ -35,18 +35,18 @@ const FoundryActions = () => {
         const balCnusd = await contracts.FOUNDRY_AGOUSD.methods.balanceOf(account).call();
         const balCnbtc = await contracts.FOUNDRY_AGOBTC.methods.balanceOf(account).call();
 
-        setCnusdStaked(formatFromDecimal(balCnusd, tokens["CNUSD"].decimals));
-        setCnbtcStaked(formatFromDecimal(balCnbtc, tokens["CNBTC"].decimals));
+        setCnusdStaked(formatFromDecimal(balCnusd, tokens.find(item => item.symbol === "CNUSD").decimals));
+        setCnbtcStaked(formatFromDecimal(balCnbtc, tokens.find(item => item.symbol === "CNBTC").decimals));
 
     }
 
     const handleApprove = async (currency) => {
 
         if (currency === "USD") {
-            await tokens["CNUSD"].instance.methods.approve(CONTRACT_ADRESESS.FOUNDRY_AGOUSD, MAX_INT).send({from: account});
+            await contracts.CNUSD.methods.approve(CONTRACT_ADRESESS.FOUNDRY_AGOUSD, MAX_INT).send({from: account});
         }
         else {
-            await tokens["CNBTC"].instance.methods.approve(CONTRACT_ADRESESS.FOUNDRY_AGOBTC, MAX_INT).send({from: account});
+            await tokens.CNBTC.methods.approve(CONTRACT_ADRESESS.FOUNDRY_AGOBTC, MAX_INT).send({from: account});
         }
 
         await getAllowance();
@@ -55,8 +55,8 @@ const FoundryActions = () => {
 
     const getAllowance = async () => {
 
-        const cnusdAllow = await tokens["CNUSD"].instance.methods.allowance(account, CONTRACT_ADRESESS.FOUNDRY_AGOUSD).call()
-        const cnbtcAllow = await tokens["CNBTC"].instance.methods.allowance(account, CONTRACT_ADRESESS.FOUNDRY_AGOBTC).call()
+        const cnusdAllow = await contracts.CNUSD.methods.allowance(account, CONTRACT_ADRESESS.FOUNDRY_AGOUSD).call()
+        const cnbtcAllow = await contracts.CNBTC.methods.allowance(account, CONTRACT_ADRESESS.FOUNDRY_AGOBTC).call()
 
         setCnusdAllowance(cnusdAllow.length === MAX_INT.length);
         setCnbtcAllowance(cnbtcAllow.length === MAX_INT.length);
@@ -65,11 +65,11 @@ const FoundryActions = () => {
     const handleStake = async (currency) => {
 
         if (currency === "USD") {
-            const dec = tokens["CNUSD"].decimals
+            const dec = tokens.find((item) => item.symbol === "CNUSD").decimals
             await contracts.FOUNDRY_AGOUSD.methods.stake(formatToDecimal(cnusdInput, dec)).send({from: account})
         }
         else {
-            const dec = tokens["CNBTC"].decimals
+            const dec = tokens.find((item) => item.symbol === "CNBTC").decimals
             await contracts.FOUNDRY_AGOBTC.methods.stake(formatToDecimal(cnbtcInput, dec)).send({from: account})
         }
         await getInfo();

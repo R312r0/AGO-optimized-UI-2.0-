@@ -13,33 +13,31 @@ import MASTER_CHEF_ABI from './abi/MasterChef.json';
 import TOKEN_ORACLE_ABI from './abi/TOKEN_ORACLE.json';
 import { CONTRACT_ADRESESS } from './constants';
 import { formatFromDecimal } from './utils/helpers';
-import { message } from 'antd';
+import { message, Spin } from 'antd';
 import { ethErrors } from 'eth-rpc-errors'
 import { EthereumRpcError, EthereumProviderError } from 'eth-rpc-errors'
 import {useQuery} from "@apollo/client";
-import {TOKENS_FOR_USER_BALANCES} from "./api/client";
-
+import {TOKENS} from "./api/client";
+import { useDataContext } from './dataProvider';
+import { LOADER_INDICATOR_GLOBAL } from './constants';
 
 const SystemContext = React.createContext();
 export const useSystemContext = () => useContext(SystemContext);
 
 export const SystemProvider = ({children}) => {
 
-    const {account, activate, active, library, deactivate} = useWeb3React();
+    const {account, activate, active, library, deactivate, error} = useWeb3React();
 
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || "dark");
-
-    const [mintRedeemCurrency, setMintRedeemCurrency] = useState("AGOUSD");
-    const [mintRedeemCurrencyModal, setMintRedeemCurrencyModal] = useState(false);
-
-    const [tokens, setTokens] = useState(null);
     const [contracts, setContracts] = useState(null);
+    const [balances, setBalances] = useState(null);
 
-    const [userProtfolio, setUserPortfolio] = useState(null);
     const [isWalletModal, setIsWalletModal] = useState(false);
 
-    const [mintRedeemInfo, setMintRedeemInfo] = useState(null);
-    const [mintRedeemSlipage, setMintRedeemSlipage] = useState(3);
+    const {tokens} = useDataContext();
+
+    const [mintRedeemCurrencyModal, setMintRedeemCurrencyModal] = useState(false);
+
+    const [web3Loading, setWeb3Loading] = useState(true);
 
     // 1. Check if user are already connected trough MetaMask if yes then connect him again.
     useEffect(() => {
@@ -68,24 +66,31 @@ export const SystemProvider = ({children}) => {
     }, [])
 
 
+    useEffect(() => {
+    
+        if (error instanceof UnsupportedChainIdError ) {
+            message.error({content: "You choose wrong network in your wallet please change it to Polygon Mainnet", key: "NETWORK", className: "ant-argano-message", duration: 3000})
+        }
+        else {
+            message.success({content: "Success!", key: "NETWORK", className: "ant-argano-message", duration: 3})
+        }
+    
+    
+    }, [error])
 
-    // useEffect(() => {
-    //
-    //     if (error instanceof UnsupportedChainIdError ) {
-    //         message.error({content: "You choose wrong network in your wallet please change it to Polygon Mainnet", key: "NETWORK", className: "ant-argano-message", duration: 3000})
-    //     }
-    //     else {
-    //         message.success({content: "Success!", key: "NETWORK", className: "ant-argano-message", duration: 3})
-    //     }
-    //
-    //
-    // }, [error])
+    useEffect(() => {
+
+        if (active) {
+            setWeb3Loading(false);
+        }
+
+    }, [active])
 
     // 2. Inits contracts and tokens not-depend if user connected or not.
     useEffect(() => {
-        if (active && !tokens && !contracts) {
+        if (active && tokens && !contracts) {
             try {
-                initTokens();
+                // initTokens();
                 initContracts();
             }
 
@@ -94,46 +99,22 @@ export const SystemProvider = ({children}) => {
             }
 
         }
-    }, [active])
+    }, [active, tokens])
 
     useEffect(() => {
 
-        if (contracts && tokens) {
-            if (account) {
-                getUserPortfolio();
-            }
+        if (contracts && tokens && account) {
+            getUserPortfolio();
         }
 
     }, [account, contracts, tokens])
 
-    const initTokens = async () => {
-
-        const AGO = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.AGO);
-        const AGOUSD = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOUSD);
-        const AGOBTC = new library.eth.Contract(STABLE_ABI, CONTRACT_ADRESESS.AGOBTC);
-        const CNUSD = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNUSD);
-        const CNBTC = new library.eth.Contract(SHARE_ABI, CONTRACT_ADRESESS.CNBTC);
-        const USDT = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.USDT);
-        const USDC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.USDC);
-        const DAI = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.DAI);
-        const WMATIC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.WMATIC);
-        const WBTC = new library.eth.Contract(ERC20_ABI, CONTRACT_ADRESESS.WBTC)
-
-
-        setTokens({
-            AGOBTC: {name: "AGOBTC",instance: AGOBTC, decimals: await AGOBTC.methods.decimals().call(), totalSupply: await AGOBTC.methods.totalSupply().call()},
-            CNBTC: {name: "CNBTC",instance: CNBTC, decimals: await CNBTC.methods.decimals().call(), totalSupply: await CNBTC.methods.totalSupply().call()},
-            AGOUSD: {name: "AGOUSD",instance: AGOUSD, decimals: await AGOUSD.methods.decimals().call(), totalSupply: await AGOUSD.methods.totalSupply().call()},
-            CNUSD: {name: "CNUSD",instance: CNUSD, decimals: await CNUSD.methods.decimals().call(), totalSupply: await CNUSD.methods.totalSupply().call()},
-            AGO: {name: "AGO",instance: AGO, decimals: await AGO.methods.decimals().call(), totalSupply: await AGO.methods.totalSupply().call()},
-            USDT: {name: "USDT",instance: USDT, decimals: await USDT.methods.decimals().call(), totalSupply: await USDT.methods.totalSupply().call()},
-            WMATIC: {name: "WMATIC",instance: WMATIC, decimals: await WMATIC.methods.decimals().call(), totalSupply: await WMATIC.methods.totalSupply().call()},
-            WBTC: {name: "WBTC",instance: WBTC, decimals: await WBTC.methods.decimals().call(), totalSupply: await WBTC.methods.totalSupply().call()}
-        });
-
-    }
-
     const initContracts = () => {
+
+        const tokensContractsObj = Object.fromEntries(tokens.map((item) => {
+            return [item.symbol, new library.eth.Contract(ERC20_ABI, item.address)];
+        }))
+
         const POOL_AGOUSD = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOUSD);
         const TREASURY_AGOUSD = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOUSD);
         const FOUNDRY_AGOUSD = new library.eth.Contract(FOUNDRY_ABI, CONTRACT_ADRESESS.FOUNDRY_AGOUSD);
@@ -142,8 +123,27 @@ export const SystemProvider = ({children}) => {
         const FOUNDRY_AGOBTC = new library.eth.Contract(FOUNDRY_ABI, CONTRACT_ADRESESS.FOUNDRY_AGOBTC);
         const ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.ROUTER)
         const MASTER_CHEF = new library.eth.Contract(MASTER_CHEF_ABI, CONTRACT_ADRESESS.MASTER_CHEF);
-        // setContracts({POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC});
-        setContracts({ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, MASTER_CHEF, FOUNDRY_AGOUSD, FOUNDRY_AGOBTC})
+        
+
+        setContracts({ ...tokensContractsObj, ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, MASTER_CHEF, FOUNDRY_AGOUSD, FOUNDRY_AGOBTC})
+    }
+
+    const getUserPortfolio = async () => {
+
+        const filterTokens = tokens.filter(token => token.isProtocolMain);
+
+        const balancesResult = filterTokens.map(async (item) => {
+
+            const tokenContract = contracts[item.symbol];
+            const nativeBalance = parseFloat(formatFromDecimal(await tokenContract.methods.balanceOf(account).call(), item.decimals));
+            const usdBalance = nativeBalance * item.priceUSD;
+            
+            return {symbol: item.symbol, nativeBalance, usdBalance};
+
+        })
+
+        setBalances(await Promise.all(balancesResult))
+
     }
 
     const connectWallet = (wallet) => {
@@ -167,58 +167,17 @@ export const SystemProvider = ({children}) => {
         activate(network);
     }
 
-    const getUserPortfolio = async () => {
-
-        const balances = Object.entries(tokens).map(async (item) => {
-
-            const obj = {
-                name: item[0],
-                userNativeBalance: await item[1].instance.methods.balanceOf(account).call(),
-                decimals: await item[1].instance.methods.decimals().call()
-            }
-
-            obj.userNativeBalance = parseInt(formatFromDecimal(obj.userNativeBalance, obj.decimals))
-            // obj.userUsdBalance = parseInt(obj.userNativeBalance) * usdBalance[MOCK_PRICE_ADDRESS[item[0]]].usd
-
-            if (item[0].startsWith("AGO")) {
-                obj.color = "#40BA93"
-            }
-            else if (item[0].startsWith("CN")) {
-                obj.color = "#EFBF14"
-            }
-            else {
-                obj.color = "#B3362A"
-            }
-
-            return obj
-        })
-
-        setUserPortfolio(await Promise.all(balances));
-
-    }
-
-    const getTokenBalance = (name) => {
-        return parseFloat(userProtfolio.find((item) => item.name === name).userNativeBalance).toFixed(2)
-    }
-
     const systemValue = {
-        theme,
-        setTheme,
+        connectWallet,
         mintRedeemCurrencyModal,
         setMintRedeemCurrencyModal,
-        mintRedeemCurrency,
-        getTokenBalance,
-        setMintRedeemCurrency,
-        connectWallet,
         disconnectWallet,
         isWalletModal,
         setIsWalletModal,
         tokens,
         contracts,
-        userProtfolio,
-        mintRedeemSlipage,
-        setMintRedeemSlipage,
-        mintRedeemInfo,
+        balances,
+        web3Loading
     }
 
     return (

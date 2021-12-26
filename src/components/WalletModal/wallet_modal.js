@@ -12,6 +12,7 @@ import safepalWallet from './wallet-icons/safepal-logo.svg'
 import './wallet_modal.scss'
 import { useSystemContext } from '../../systemProvider'
 import { useMediaQuery } from 'react-responsive'
+import { useThemeContext } from '../Layout/layout'
 
 const walletList = [
     {name:'MetaMask',       icon: <img className='walletModal-list__img-wrapper' src={metaMask}         alt={'icon'} /> },
@@ -25,7 +26,8 @@ const walletList = [
 
 export const WalletModal = () => {
 
-    const { connectWallet, theme, isWalletModal, setIsWalletModal} = useSystemContext()
+    const { connectWallet, isWalletModal, setIsWalletModal} = useSystemContext();
+    const { theme } = useThemeContext();
     const closeModal = e => e.target === document.querySelector('#modalBg') && setIsWalletModal(false)
     const isTabletScreen = useMediaQuery({query: '(max-width: 1024px)'})
         

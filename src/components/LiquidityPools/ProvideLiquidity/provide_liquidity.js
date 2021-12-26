@@ -31,12 +31,9 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
 
 
         setInput0(value);
-        console.log(token0.price);
         const priceForEquality = value * parseFloat(token0.price);
         const token1Amount = priceForEquality / parseFloat(token1.price);
 
-        console.log(priceForEquality);
-        console.log(token1Amount);
 
         setInput1(token1Amount);
         setUsdValue(priceForEquality * 2);
@@ -53,8 +50,8 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
 
     const checkAllowance = async () => {
 
-        const tokenContract0 = tokens[token0.symbol].instance;
-        const tokenContract1 = tokens[token1.symbol].instance;
+        const tokenContract0 = contracts[token0.symbol];
+        const tokenContract1 = contracts[token1.symbol];
 
         const allowance0 = (await tokenContract0.methods.allowance(account, DEX_ADDRESESS.ROUTER).call()).length === MAX_INT.length;
         const allowance1 = (await tokenContract1.methods.allowance(account, DEX_ADDRESESS.ROUTER).call()).length === MAX_INT.length;
@@ -158,8 +155,8 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
     }
 
     const handleApprove = async () => {
-        const tokenContract0 = tokens[token0.symbol].instance;
-        const tokenContract1 = tokens[token1.symbol].instance;
+        const tokenContract0 = contracts[token0.symbol];
+        const tokenContract1 = contracts[token1.symbol];
 
         await tokenContract0.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account})
         await tokenContract1.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account})

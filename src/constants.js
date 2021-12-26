@@ -1,5 +1,6 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from '@web3-react/network-connector';
+import { styled } from 'styled-components';
 // Dark theme icons.
 import dashboard_black from './assets/icons/nav-links/dark-theme/dashboard-black.svg';
 import mint_redeem_black from './assets/icons/nav-links/dark-theme/mint-redeem-black.svg';
@@ -31,8 +32,6 @@ import trading_active from './assets/icons/nav-links/active/trading-active.svg';
 import accounts_acitve from './assets/icons/nav-links/active/accounts-active.svg';
 import { LoadingOutlined } from "@ant-design/icons";
 
-
-
 export const COINGECKO_IDS = {
     AGO: "uniswap",
     AGOUSD: "tether",
@@ -45,7 +44,7 @@ export const COINGECKO_IDS = {
 }
 
 export const DEX_ADDRESESS = {
-    FACTORY: "0xD97c98cCe28353a2EfbB41b9f13B3a7229b02b92",
+    FACTORY: "0xe5e3751f6fad15f35a2c8bccb56f74f6b68165ce",
     ROUTER: "0xc44De2adc61909F27877fcDC6D467ec1D886ef56",
 }
 
@@ -72,11 +71,18 @@ export const CONTRACT_ADRESESS = {
     POOL_AGOBTC: "0x7c2f93fBE7ec3ee75778D013bb813478efe22b64",
     TREASURY_AGOBTC: "0x4ba0780Eb663BceDC58d1C18b0b08c920ea5D08f",
 
-    MASTER_CHEF: "0xe3b49f1382e146b6C2c7E497d4A32b39D2AD07B6"
+    MASTER_CHEF: "0x9671479BC3141F33616643de801FdFC1A8b5Df26"
 }
 
 
-export const LOADER_INDICATOR = <LoadingOutlined style={{ fontSize: "7vw", color: "#40BA93", position: "fixed", top: "50%", left: "50%" }} />
+
+export const LOADER_INDICATOR =             <LoadingOutlined 
+style={{ 
+    fontSize: "7vw",
+    color: "#40BA93",
+    position: "absolute",
+    top: "50%", left: "50%"
+}} />    
 
 export const LOADER_INDICATOR_LOCAL = <LoadingOutlined style={{ fontSize: "3vw", color: "#40BA93", position: "absolute", top: "50%", left: "50%" }} />
 
