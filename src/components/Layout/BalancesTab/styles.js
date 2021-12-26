@@ -208,7 +208,7 @@ export const BalanceExpand = styled.div`
   z-index: ${props => props.opened ? "99999" : "-1000"};
 `
 
-const BalanceOverall = styled.div`
+export const BalanceOverall = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;

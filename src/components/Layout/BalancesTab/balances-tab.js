@@ -9,8 +9,6 @@ import { useMediaQuery } from 'react-responsive';
 import { ReactComponent as Pig_icon } from '../../../assets/icons/pig-balances.svg';
 import {BalancesTabWrapper, BalanceListDesktop, BalanceListItemDesktop} from './styles';
 import { useThemeContext } from '../layout';
-
-
 const BalancesTab = () => {
 
   const [balancesExpanded, setBalancesExpaned] = useState(false);
@@ -65,7 +63,7 @@ const BalancesTab = () => {
             <BalanceListDesktop opened={balancesExpanded} onMouseEnter={handleShiftKey} id='balanceList'>
               {balances && balances.filter(b => b.nativeBalance > 0).map((item) => {
                 return <BalanceTabItem balance={item} theme={theme}/>
-    
+
               })}
             </BalanceListDesktop>
           </>
