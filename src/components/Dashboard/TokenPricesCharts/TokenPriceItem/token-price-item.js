@@ -9,7 +9,6 @@ import { ResponsiveContainer, LineChart, Line, Tooltip, XAxis } from 'recharts';
 import { CustomToolTip } from '../../../ChartCustomTooltip/chart-custom-tooltip';
 import arrowUp from '../arrow-up.svg';
 import arrowDown from '../arrow-down.svg';
-import demoChart from '../../../../assets/charts/demo-chart.svg'
 
 const Arrow = (change24h) => {
     return (
@@ -97,9 +96,6 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                   <h3> {tokenPriceItem.symbol} </h3>
                   <h1> ${tokenPriceItem.price} </h1>
                   <span> <Arrow/> {tokenPriceItem.change24h === Infinity ? 0 : tokenPriceItem.change24h}% <span>(24h)</span> </span>
-<<<<<<< HEAD
-                  <img src={demoChart} className='demo-chart' alt="chart-demo"/>
-=======
                   <ResponsiveContainer className='responsive-container-chart demo-chart' width={"100%"} height={"100%"}>
                       <LineChart
                         data={tokenPriceItem.chart}
@@ -132,7 +128,6 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                       </LineChart>
                     </ResponsiveContainer>
                   {/* <img src={demoChart} className='demo-chart' alt="chart-demo"/> */}
->>>>>>> 680a4a4 (changes)
                 </SinglePriceBlock>
                 <div className="price-block-chart">
                   <div className='chart-wrapper'>
