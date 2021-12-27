@@ -43,7 +43,7 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
         setInput1(value);
         setInput0(0);
         const priceForEquality = value * token1.price;
-        const token0Amount = priceForEquality / token0.price;
+        const token0Amount = value / token1.priceInToken0;
         setInput0(token0Amount);
         setUsdValue(formattedNum(priceForEquality * 2));
     }

@@ -49,8 +49,8 @@ export const MintRedeem = () => {
 
 
         setMintRedeemInfo({
-            stablePrice: formatFromDecimal(info["0"], 18),
-            sharePrice: formatFromDecimal(info["1"], 18),
+            stablePrice: formatFromDecimal(info["0"], 6),
+            sharePrice: formatFromDecimal(info["1"], 6),
             targetCollateralRatio: formatFromDecimal(info["2"], 6) * 100,
             effectiveCollateralRatio: parseFloat(formatFromDecimal(info["3"], 6)) * 100,
             globalCollateralValue: info["4"], 

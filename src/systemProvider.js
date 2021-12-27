@@ -146,6 +146,26 @@ export const SystemProvider = ({children}) => {
 
     }
 
+    const changeTokenBalance = (tokenName, amount, sub) => {
+
+        let balancesArr = balances;
+        let findedIndex = balancesArr.findIndex(item => item.symbol === tokenName);
+
+        let item = balancesArr[findedIndex];
+
+        if (sub) {
+            item.nativeBalance -= parseFloat(amount)
+        }
+        else {
+            item.nativeBalance += parseFloat(amount) 
+        }
+        
+        item.usdBalance = item.nativeBalance * tokens.find((itemTok) => itemTok.symbol === tokenName);
+        balancesArr[findedIndex] = item;
+        setBalances(balancesArr);
+
+    }
+
     const connectWallet = (wallet) => {
 
         switch (wallet) {
@@ -177,7 +197,8 @@ export const SystemProvider = ({children}) => {
         tokens,
         contracts,
         balances,
-        web3Loading
+        web3Loading,
+        changeTokenBalance
     }
 
     return (

@@ -97,18 +97,20 @@ const TradingMarket = ({pool}) => {
     const SwapButtonFunc = () => {
 
         const zeroInputCheck = token0Input === 0 || token1Input === 0;
-        const insuficientBalance = token0Input > balances.find(item => item.symbol === token0.token.symbol).nativeBalance;
+
+        // const insuficientBalance = token0Input > balances.find(item => item.symbol === token0.token.symbol).nativeBalance;
 
         if (!token0Allowance) {
             return <SwapButtonWrapper onClick={() => handleApprove(pool.token0)}> Approve {pool.token0.symbol} </SwapButtonWrapper>
         }
+
         else if (!token1Allowance) {
             return <SwapButtonWrapper onClick={() => handleApprove(pool.token1)}> Approve {pool.token1.symbol} </SwapButtonWrapper>
         }
 
-        else if (insuficientBalance) {
-            return <SwapButtonWrapper disabled={true}> Insuficient balance  </SwapButtonWrapper>
-        }
+        // else if (insuficientBalance) {
+        //     return <SwapButtonWrapper disabled={true}> Insuficient balance  </SwapButtonWrapper>
+        // }
 
         else {
             return <SwapButtonWrapper disabled={zeroInputCheck} onClick={() => handleSwap(token0Input)}> SWAP </SwapButtonWrapper>

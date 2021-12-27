@@ -25,6 +25,8 @@ const BalancesTab = () => {
   //   preventDefaultTouchmoveEvent: true,
   // })
 
+  console.log(balances);
+
   const scroll = () => {
     const scrollContainer = document.querySelector("#balanceList");
 
@@ -76,14 +78,13 @@ const BalancesTab = () => {
 }
 
 
-const BalanceTabItem = ({name, nativeBalance, usdBalance}, theme) => {
-
+const BalanceTabItem = ({balance: {symbol, nativeBalance, usdBalance}, theme}) => {
 
   return (
     <>
-      <BalanceListItemDesktop key={"token-" + name} light={theme === "light"}>
-        <TokenIcon iconName={name} />
-        <span> {formattedNum(nativeBalance)}{name}/{formattedNum(usdBalance)}$ </span>
+      <BalanceListItemDesktop key={"token-" + symbol} light={theme === "light"}>
+        <TokenIcon iconName={symbol} />
+        <span> {formattedNum(nativeBalance)}{symbol}/{formattedNum(usdBalance)}$ </span>
       </BalanceListItemDesktop>
   </>
   )

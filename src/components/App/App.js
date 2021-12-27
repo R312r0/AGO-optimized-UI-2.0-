@@ -35,11 +35,11 @@ export const App = () => {
                     <Layout>
                         <Route path="/" component={Dashboard} exact />
                         <Route path="/mint-redeem" component={MintRedeem} exact />
-                        <Route path="/foundry" component={Foundry} exact />
-                        <Route path="/staking" component={StakingRewards} exact />
+                        {/* <Route path="/foundry" component={Foundry} exact /> */}
+                        {/* <Route path="/staking" component={StakingRewards} exact /> */}
                         <Route path="/liqudity-pools" component={LiquidityPools} exact />
                         <Route path="/trading" component={Trading} exact />
-                        <Route path="/accounts" component={Accounts} exact />
+                        {/* <Route path="/accounts" component={Accounts} exact /> */}
                     </Layout>
                 </Switch>
             </Router>

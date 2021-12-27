@@ -5,26 +5,34 @@ import { useWeb3React } from '@web3-react/core';
 import { useSystemContext } from '../../../systemProvider';
 import { CONTRACT_ADRESESS, MINT_REDEEM_KEY } from '../../../constants';
 import { MAX_INT } from '../../../constants';
-import { formatFromDecimal, formatToDecimal } from '../../../utils/helpers';
+import { formatFromDecimal, formattedNum, formatToDecimal } from '../../../utils/helpers';
 import { message } from 'antd';
 
 export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => {
 
 
     const { account } = useWeb3React();
-    const { contracts, tokens, balances } = useSystemContext();
+    const { contracts, tokens, balances, changeTokenBalance } = useSystemContext();
     const [approved, setApproved] = useState(null);
+
+    const [stableBalance, setStableBalance] = useState(0);
     const [input, setInput] = useState(null);
     const [collateralOutput, setCollateralOutput] = useState(null);
     const [catenaOutput, setCatenaOutput] = useState(null);
     const [redeemBalances, setRedeemBalances] = useState(null)
 
-
-
     useEffect(() => {
-        getAllowance()
-        getRedemption()
-    }, [mintRedeemCurrency])
+
+        if (account) {
+
+            setStableBalance(balances.find((item) => item.symbol === mintRedeemCurrency).nativeBalance);
+
+            getAllowance()
+            getRedemption()
+        }
+
+
+    }, [account, mintRedeemCurrency])
 
     const getAllowance = async () => {
 
@@ -61,6 +69,13 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
 
     }
 
+    const setInputsToZero = () => {
+        setCollateralOutput(0);
+        setInput(0);
+        if (info.effectiveCollateralRatio !== 100) {
+            setCatenaOutput(0)
+        }        
+    }
 
     const handleRedeem = async () => {
         if (input === "0" || !input) {
@@ -70,11 +85,14 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
         try {
             message.loading({content: `Redeeming ${mintRedeemCurrency}`, key: MINT_REDEEM_KEY, duration: 3000, className: "ant-argano-message"})
             if (mintRedeemCurrency === "AGOUSD") {
-                await contracts.POOL_AGOUSD.methods.redeem(formatToDecimal(input, tokens.AGOUSD.decimals), 0, 0).send({from: account}) 
+                await contracts.POOL_AGOUSD.methods.redeem(formatToDecimal(input, tokens.find((item) => item.symbol === "AGOUSD").decimals), 0, 0).send({from: account});
             }
             else {
-                await contracts.POOL_AGOBTC.methods.redeem(formatToDecimal(input, tokens.AGOBTC.decimals), 0, 0).send({from: account})
+                await contracts.POOL_AGOBTC.methods.redeem(formatToDecimal(input, tokens.find((item) => item.symbol === "AGOBTC").decimals), 0, 0).send({from: account})
             }
+            changeTokenBalance(mintRedeemCurrency, input, true);
+            await getRedemption();
+            setInputsToZero();
             message.success({content: `Successfully redeemed ${mintRedeemCurrency} !`, key: MINT_REDEEM_KEY, duration: 3, className: "ant-argano-message"})
         }
         catch {
@@ -87,11 +105,12 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
         try {
             message.loading({content: `Approve`, key: MINT_REDEEM_KEY, duration: 3000, className: "ant-argano-message"})
             if (mintRedeemCurrency === "AGOUSD") {
-                await tokens.AGOUSD.instance.methods.approve(CONTRACT_ADRESESS.POOL_AGOUSD, MAX_INT).send({from: account})
+                await contracts.AGOUSD.methods.approve(CONTRACT_ADRESESS.POOL_AGOUSD, MAX_INT).send({from: account})
             }
             else {
-                await tokens.AGOBTC.instance.methods.approve(CONTRACT_ADRESESS.POOL_AGOBTC, MAX_INT).send({from: account})
+                await contracts.AGOBTC.methods.approve(CONTRACT_ADRESESS.POOL_AGOBTC, MAX_INT).send({from: account})
             }
+            await getAllowance();
             message.success({content: `Successfully approved !`, key: MINT_REDEEM_KEY, duration: 3, className: "ant-argano-message"})
         }
         catch {
@@ -116,11 +135,20 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
             message.loading({content: `Collect redemption`, key: MINT_REDEEM_KEY, duration: 3000, className: "ant-argano-message"})
             if (mintRedeemCurrency === "AGOUSD") {
                 await contracts.POOL_AGOUSD.methods.collectRedemption().send({from: account});
+                changeTokenBalance("USDT", redeemBalances.redemptionCollateral, false);
+                if (info.effectiveCollateralRatio !== 100) {
+                    changeTokenBalance("CNUSD", redeemBalances.redemptionShare, false);
+                }
             }
     
             else {
                 await contracts.POOL_AGOBTC.methods.collectRedemption().send({from: account}); 
+                changeTokenBalance("WBTC", redeemBalances.redemptionCollateral, false);
+                if (info.effectiveCollateralRatio !== 100) {
+                    changeTokenBalance("CNBTC", redeemBalances.redemptionShare, false);
+                }
             }
+            setRedeemBalances({redemptionCollateral: 0, redemptionShare: 0});
             message.success({content: `Successfully collected redemption !`, key: MINT_REDEEM_KEY, duration: 3, className: "ant-argano-message"})
 
         }
@@ -129,7 +157,6 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
         }
 
     }
-
 
     return (
         <div className='general-wrapper'>
@@ -140,8 +167,8 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
                         <button disabled={collectRedemption.redemptionCollateral === "0" && collectRedemption.redemptionShare === "0"} onClick={() => collectRedemption()}> Collect </button>
                     </div>
                     <div> 
-                        <h3> {redeemBalances?.redemptionCollateral} <b>{mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b> </h3>
-                        <h3> {redeemBalances?.redemptionShare} <b>{mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</b> </h3>
+                        <h3> {formattedNum(redeemBalances?.redemptionCollateral)} <b>{mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b> </h3>
+                        <h3> {formattedNum(redeemBalances?.redemptionShare)} <b>{mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</b> </h3>
                     </div>
                 </div>
                 <div className='collect-redemption'> 
@@ -168,7 +195,9 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
             </div>
             <div className='general-window-input-row'> 
                 <span> <h3> Input </h3> </span>
-                <span className='balance'> <h3> Balance: {tokens.find(item => item.symbol === mintRedeemCurrency).nativeBalance} </h3> </span>
+                <span className='balance'>
+                    <h3> Balance: {formattedNum(balances.find(item => item.symbol === mintRedeemCurrency).nativeBalance)} </h3> 
+                </span>
                 <input onChange={(e) => handleStableInput(e.target.value)} className='inpunt-redeem' type='number' placeholder="0.00" value={input}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency}/> {mintRedeemCurrency} </span>
             </div>
@@ -177,7 +206,9 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
             </div>
             <div className='general-window-input-row'> 
                 <span> <h3> Output USDT : <b> {info.effectiveCollateralRatio}% </b> </h3> </span>
-                <span className='balance'> <h3> Balance: {tokens.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "USDT" : item.symbol === "WBTC").nativeBalance} </h3> </span>
+                <span className='balance'> 
+                    <h3> Balance: {formattedNum(balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "USDT" : item.symbol === "WBTC").nativeBalance)} </h3> 
+                </span>
                 <input disabled type='number' placeholder="0.00" value={collateralOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
             </div>
@@ -186,15 +217,20 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
             </div>
             <div className='general-window-input-row output'> 
                 <span> <h3> Output CNUSD : <b> {100 - info.effectiveCollateralRatio}% </b> </h3> </span>
-                <span className='balance'> <h3> Balance: {tokens.find((item) => mintRedeemCurrency === "AGOUSD" ? item.symbol === "CNUSD" : item.symbol === "CNBTC").nativeBalance} </h3> </span>
+                <span className='balance'> 
+                    <h3> Balance: {formattedNum(balances.find((item) => mintRedeemCurrency === "AGOUSD" ? item.symbol === "CNUSD" : item.symbol === "CNBTC").nativeBalance)} </h3> 
+                </span>
                 <input disabled type='number' placeholder={info.effectiveCollateralRatio === 100 ? "ECR is 100%" : "0.00"} value={info.effectiveCollateralRatio === 100 ? null : catenaOutput}/>
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} </span>
             </div>
             <div className='general-btn-wrapper'>
-                <button className='mint-window-run-mint' onClick={approved ? handleRedeem : handleApprove}> {approved > "0" ? "Redeem" : `Approve ${mintRedeemCurrency}`}</button>
+                {input > stableBalance ? 
+                    <button className='mint-window-run-mint' disabled={true}> Insufficient {mintRedeemCurrency} balance </button>
+                    :
+                    <button className='mint-window-run-mint' onClick={approved ? handleRedeem : handleApprove}> {approved > "0" ? "Redeem" : `Approve ${mintRedeemCurrency}`}</button>
+                }
             </div>
         </div>
     </div>
     )
-
 }
