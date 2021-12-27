@@ -3,15 +3,36 @@ import { createChart } from 'lightweight-charts';
 import { formatDate } from '../../../utils/helpers';
 import { useSystemContext } from '../../../systemProvider';
 import { useThemeContext } from '../../Layout/layout';
+import { useSubscription } from '@apollo/client';
+import { TOKEN_PRICE_CHART } from '../../../api/subscriptions';
 
-export const TradingChart = ({candleData, lineData, chartType }) => {
+export const TradingChart = ({token, candleData, lineData, chartType }) => {
 
 
     const ref = useRef();
     const parentRef = useRef(null);
+    const { tokens } = useSystemContext();
     const {theme} = useThemeContext();
     const [chart, setChart] = useState(null);
     const [lineSeries, setLineSeries] = useState(null);
+
+    const chartItem = useSubscription(TOKEN_PRICE_CHART, {
+        variables: {id: tokens?.find(item => item.symbol === token)?.address}
+    });
+
+    console.log(chartItem);
+
+    useEffect(() => {
+
+        if (chartItem?.data && !chartItem?.loading) {
+            if (lineSeries) {
+                const chartElem = chartItem.data.token.lineChartUSD[0];
+                lineSeries.update({time: parseInt(chartElem.timestamp), value: parseFloat(chartElem.valueUSD)})
+            }
+        }
+
+    }, [chartItem?.data, chartItem?.loading])
+
     // const [candleSeries, setCandleSeries] = useState(null);
     
     // const calculateChangeBetweenCandles = (firstCandle, secondCandle) => {

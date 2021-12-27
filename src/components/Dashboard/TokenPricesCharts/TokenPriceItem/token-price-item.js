@@ -134,10 +134,6 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                     <ResponsiveContainer className='responsive-container-chart' width={"100%"} height={"100%"}>
                       <LineChart
                         data={tokenPriceItem.chart}
-                      // onMouseLeave={() => setChartValue({
-                      //     time: data[data.length - 1].date,
-                      //     value: data[data.length - 1].uv
-                      // })}
                       >
                         <defs>
                           <filter id="shadow" height="200%">

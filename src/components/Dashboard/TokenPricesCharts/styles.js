@@ -11,7 +11,7 @@ export const TokenPriceChartWrapper = styled.div`
   transition: 0.3s all;
   cursor: pointer;
 
-  height: ${props => props.isWindowExpanded ? "28vw" : "10.5vw"};
+  height: ${props => props.isWindowExpanded ? "30vw" : "10.5vw"};
   padding: 1.823vw 2.084vw;
   /* margin-bottom: 3.646vw; */
   
@@ -173,7 +173,7 @@ export const SinglePriceBlock = styled.div`
     }
 
     h3 {
-      margin-bottom: ${props => props.isWindowExpanded ? "0.938vw" : "0"};
+      margin-bottom: ${props => props.isWindowExpanded ? "0" : "0"};
     }
 
     h1 {

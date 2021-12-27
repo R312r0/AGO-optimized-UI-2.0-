@@ -12,8 +12,11 @@ import { formatFromDecimal, formatToDecimal } from "../../../utils/helpers";
 
 const ModalWrapper = styled.div`
   display: grid;
-  grid-template-rows: 1.5fr 2fr 2fr 1fr;
+  grid-template-columns: 1fr;
+  row-gap: 21px;
+  /* grid-template-rows: 1.5fr 2fr 2fr 1fr; */
   height: 100%;
+ 
 `
 
 const ModalHeader = styled.h1`
@@ -21,22 +24,20 @@ const ModalHeader = styled.h1`
 `
 
 const TokenSelectBlock = styled.div`
-  background: #1E1E1E;
-  justify-self: center;
-  align-self: center;
-  width: 80%;
-  height: 80%;
-  border-radius: 25px;
-  box-sizing: border-box;
-  padding: 5px 10px;
-  display: grid;
-  grid-template-rows: 1fr 2fr;
+    width: 100%;
+    background: #1E1E1E;
+    border-radius: 40px;
+    justify-self: center;
+    align-self: center;
+    padding: 24px 46px;
+    display: grid;
+    grid-template-columns: 1fr;
   p {
     color: white;
   }
   div {
     display: grid;
-    grid-template-columns: 2fr 1fr 1.5fr;
+    grid-template-columns: 1fr 81px 180px;
     align-items: center;
     input {
       color: white;
@@ -45,18 +46,16 @@ const TokenSelectBlock = styled.div`
       }
     }  
     .max {
-        background: #40BA93;
-        border-radius: 25px;
-        color: white;
-        height: 50%;
-        width: 80%;
-        border: 0px;
+        background: #2C2C2C;
+        border-radius: 40px;
+        padding: 7px 15px;
+        font-size: 12px;
+        text-align: center;
+        color: #FFFFFF;
     }
     .disabled {
       pointer-events: none;
-      background: transparent;
-      color: #4f4f4f;
-      border: 1px solid #40BA93;
+      color: #4F4F4F;
     }
     
     .token-sel {
@@ -77,32 +76,33 @@ const TokenSelectBlock = styled.div`
 `
 
 const CreatePairButtonWrapper = styled.button`
-  width: 50%;
-  height: 80%;
-  background: ${props => props.disabled ? "transparent" : "#40BA93"};
-  border: 1px solid #40BA93;
-  border-radius: 25px;
-  justify-self: center;
-  align-self: center;
-  pointer-events: ${props => props.disabled ? "none" : "all"};
-  color: ${props => props.disabled ? "#4F4F4F" : "white"};
+    max-width: 342px;
+    margin: 42px auto 0;
+    padding: 22px 80px;
+    background: ${props => props.disabled ? "transparent" : "#40BA93"};
+    border-radius: 30px;
+    border: 1px solid ${props => props.disabled ? "#4F4F4F" : "transparent"};
+    color: ${props => props.disabled ? "#828282" : "white"};
 `
 
 const SelectTokenWrapper = styled.div`
   position: relative;
   height: 100%;
   display: grid;
-  grid-template-rows: 0.5fr 1fr 4fr 0.5fr;
+  grid-template-columns: 1fr;
+  row-gap: 25px;
   h1 {
     color: white;
   }
   
   input {
+    padding: 17px 46px;
     border: 1px solid #4F4F4F;
-    border-radius: 25px;
-    padding-left: 15px;
-    color: white;
-    font-size: 18px;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 36px;
+    color: #4F4F4F;
+    border-radius: 40px;
   }
 `
 
@@ -110,11 +110,14 @@ const SelectionWindow = styled.ul`
   overflow-y: scroll;
   display: grid;
   justify-items: center;
+  row-gap: 10px;
+  height: 445px;
   li {
-    background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+    width: calc(100% - 11px);
+    margin-right: 11px;
+    background: #1E1E1E;
     border-radius: 40px;
-    height: 50px;
-    width: 95%;
+    padding: 21px 52px;
     display: grid;
     grid-template-columns: 1fr 1fr auto;
     
@@ -127,7 +130,6 @@ const SelectionWindow = styled.ul`
       color: white;
       font-size: 14px;      
     }
-    margin-bottom: 5px;
   }
   &::-webkit-scrollbar {
     width: 0.208vw;
@@ -339,6 +341,7 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
             onCancel={() => setVisible(false)}
             wrapClassName={"create-pair-modal"}
             footer={null}
+            width="798px"
         >
             {tokenSelectWindow ?
                 <SelectTokenWindow

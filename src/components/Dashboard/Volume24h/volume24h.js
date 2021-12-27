@@ -82,7 +82,7 @@ export const Volume24h = ({ data }) => {
                                 }}
                             />
                             <XAxis
-                                dy={10}
+                                dy={5}
                                 dataKey="time"
                                 axisLine={false}
                                 tickLine={false}

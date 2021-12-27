@@ -13,8 +13,20 @@ import Layout from '../Layout/layout';
 import { Accounts } from '../Accounts/accounts';
 import 'antd/dist/antd.css';
 import { Foundry } from "../Foundry/foundry";
+import { useSystemContext } from '../../systemProvider'
 
 export const App = () => {
+    // const { connectWallet } = useSystemContext()
+    // useEffect(() => {
+    //     setTimeout(() => {
+
+    //         const connectedWallet = localStorage.getItem('connected Wallet');
+    //         if (connectedWallet) {
+    //             connectWallet(connectedWallet);
+    //         }
+    //     }, 0)
+
+    // }, [])
 
     return (
         <>

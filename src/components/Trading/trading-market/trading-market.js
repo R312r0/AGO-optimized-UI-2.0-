@@ -8,6 +8,8 @@ import {Spin} from "antd";
 import {DEX_ADDRESESS, LOADER_INDICATOR_LOCAL, MAX_INT} from "../../../constants";
 import {useWeb3React} from "@web3-react/core";
 import styled from "styled-components";
+import { useSubscription } from '@apollo/client';
+import { TRADING_TOKEN_POOL_PRICE } from '../../../api/subscriptions';
 
 const SwapButtonWrapper = styled.button`
   width: 7.292vw;
@@ -43,6 +45,10 @@ const TradingMarket = ({pool}) => {
     const [token0Input, setToken0Input] = useState(null);
     const [token1Input, setToken1Input] = useState(null);
 
+    const {data, loading, error} = useSubscription(TRADING_TOKEN_POOL_PRICE, {
+        variables: {id: pool?.id}
+    })
+
     useEffect(() => {
 
         if (pool && balances) {
@@ -55,7 +61,6 @@ const TradingMarket = ({pool}) => {
         }
 
     }, [account, pool, balances])
-
 
     const checkAllowance = async () => {
 
@@ -131,6 +136,8 @@ const TradingMarket = ({pool}) => {
 
     }
 
+    console.log(data?.pair)
+
     return (
         <>
         {token0 && token1 ?
@@ -156,7 +163,7 @@ const TradingMarket = ({pool}) => {
                     <div className="trading-wrapper-exchange__swap-input">
                         <div className="trading-wrapper-exchange__swap-input__header">
                             <h3> {token0.token.name} </h3>
-                            <h5> =${formattedNum(token0.token.priceUSD)} </h5>
+                            <h5> =${formattedNum(data?.pair.token0.priceUSD)} </h5>
                         </div>
                         <main>
                     <span>
@@ -173,19 +180,19 @@ const TradingMarket = ({pool}) => {
                     <div className="trading-wrapper-exchange__swap-input">
                         <div className="trading-wrapper-exchange__swap-input__header">
                             <h3> {token1.token.name} </h3>
-                            <h5> =${formattedNum(token1.token.priceUSD)} </h5>
+                            <h5> =${formattedNum(data?.pair.token1.priceUSD)} </h5>
                         </div>
                         <main>
                     <span>
                         <TokenIcon iconName={token1.token.symbol}/>
                         <h3> {token1.token.symbol} </h3>
                     </span>
-                            <input type="numbe" placeholder="Enter amount" value={token1Input}/>
+                            <input type="number" placeholder="Enter amount" value={token1Input}/>
                         </main>
                     </div>
                     <div className="trading-wrapper-exchange__tx-info-block">
-                        <span> <h3> Rate </h3> <h3> 1 {token0.token.symbol} = <b>{parseFloat(token1.poolPrice).toFixed(2)}</b> {token1.token.symbol} </h3>  </span>
-                        <span> <h3> Inverse Rate </h3> <h3> 1 {token1.token.symbol} = <b>{parseFloat(token0.poolPrice).toFixed(2)}</b> {token0.token.symbol} </h3>  </span>
+                        <span> <h3> Rate </h3> <h3> 1 {token0.token.symbol} = <b>{parseFloat(data?.pair.token1Price).toFixed(2)}</b> {token1.token.symbol} </h3>  </span>
+                        <span> <h3> Inverse Rate </h3> <h3> 1 {token1.token.symbol} = <b>{parseFloat(data?.pair.token0Price).toFixed(2)}</b> {token0.token.symbol} </h3>  </span>
                         <span> <h3> Estimated Fee </h3> <b> = ${(((token0.token.priceUSD * token0Input) / 100) * 0.3).toFixed(4)}</b> </span>
                         <span> <h3> USD amount  </h3> <b className="active"> = ${(token0.token.priceUSD * token0Input).toFixed(4)} </b> </span>
                     </div>

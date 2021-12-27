@@ -118,7 +118,7 @@ export const Accounts = () => {
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info'> 
                                     
                                     <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
-                                        <AccountPieChart />
+                                        <AccountPieChart userBalanceData={balances}/>
                                         <ul> 
                                             {userPortfolio && userPortfolio.map((item, _ind) => {
                                                 return <li key={item.name}>
