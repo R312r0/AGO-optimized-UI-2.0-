@@ -36,8 +36,6 @@ export const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
-
-
 export const TOKENS_PAIRS = gql(`
     query tokens_pairs {
         tokens(first: 100) {
