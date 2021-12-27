@@ -97,7 +97,42 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                   <h3> {tokenPriceItem.symbol} </h3>
                   <h1> ${tokenPriceItem.price} </h1>
                   <span> <Arrow/> {tokenPriceItem.change24h === Infinity ? 0 : tokenPriceItem.change24h}% <span>(24h)</span> </span>
+<<<<<<< HEAD
                   <img src={demoChart} className='demo-chart' alt="chart-demo"/>
+=======
+                  <ResponsiveContainer className='responsive-container-chart demo-chart' width={"100%"} height={"100%"}>
+                      <LineChart
+                        data={tokenPriceItem.chart}
+                      >
+                        <defs>
+                          <filter id="shadow" height="200%">
+                            <feDropShadow dx="0" dy="10" stdDeviation="10" />
+                          </filter>
+                        </defs>
+                        <Line
+                          filter="url(#shadow)"
+                          type="monotone"
+                          dataKey="value"
+                          stroke="#40BA93"
+                          strokeWidth={"0.2vw"}
+                          dot={false}
+                          activeDot={true}
+                        />
+                        {/* <Tooltip
+                          content={CustomToolTip}
+                        />
+                        <XAxis
+                          dy={10}
+                          dataKey="time"
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fontSize: "0.7vw" }}
+                          stroke={theme === "light" ? "black" : "white"}
+                        /> */}
+                      </LineChart>
+                    </ResponsiveContainer>
+                  {/* <img src={demoChart} className='demo-chart' alt="chart-demo"/> */}
+>>>>>>> 680a4a4 (changes)
                 </SinglePriceBlock>
                 <div className="price-block-chart">
                   <div className='chart-wrapper'>
