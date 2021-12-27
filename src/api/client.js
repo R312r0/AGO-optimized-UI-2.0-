@@ -13,7 +13,7 @@ const httpLink = new HttpLink({
   });
 
 const wsLink = new WebSocketLink({
-    uri: 'ws://api.thegraph.com/subgraphs/name/r312r0/vlad-ago-subgraph',
+    uri: 'wss://api.thegraph.com/subgraphs/name/r312r0/vlad-ago-subgraph',
     options: {
       reconnect: true
     }

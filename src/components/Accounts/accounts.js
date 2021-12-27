@@ -46,7 +46,7 @@ export const Accounts = () => {
 
                 return {name, nativeBalance, usdBalance: usdBalance * nativeBalance}
             });
-
+            0xc0E97d7843Ae80E4d0F7a8e904f77fb95Afc553f
             setUserPortfolio(res);
             setSyntheticAssets(res.filter(item => item.name === "AGOUSD" || item.name === "CNUSD" || item.name === "AGOBTC" || item.name === "CNBTC"))
             setSumUserBalances(res.reduce((a, {usdBalance}) => a + usdBalance, 0))
