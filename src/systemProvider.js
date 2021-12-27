@@ -86,6 +86,12 @@ export const SystemProvider = ({children}) => {
 
     }, [active])
 
+    useEffect(() => {
+
+        console.log(balances);
+
+    }, [balances])
+
     // 2. Inits contracts and tokens not-depend if user connected or not.
     useEffect(() => {
         if (active && tokens && !contracts) {
@@ -142,26 +148,51 @@ export const SystemProvider = ({children}) => {
 
         })
 
-        setBalances(await Promise.all(balancesResult))
+        const res = await Promise.all(balancesResult)
 
+        res.sort((a, b) => {
+            if(a.symbol < b.symbol) { return -1; }
+            if(a.symbol > b.symbol) { return 1; }
+            return 0;
+        })
+
+        setBalances(res)
     }
 
-    const changeTokenBalance = (tokenName, amount, sub) => {
+    const changeTokenBalance = (operations) => {
 
-        let balancesArr = balances;
-        let findedIndex = balancesArr.findIndex(item => item.symbol === tokenName);
+        let balancesArr = [...balances];
 
-        let item = balancesArr[findedIndex];
+        operations.forEach((item) => {
 
-        if (sub) {
-            item.nativeBalance -= parseFloat(amount)
-        }
-        else {
-            item.nativeBalance += parseFloat(amount) 
-        }
-        
-        item.usdBalance = item.nativeBalance * tokens.find((itemTok) => itemTok.symbol === tokenName);
-        balancesArr[findedIndex] = item;
+            let findedIndex = balancesArr.findIndex(bal => bal.symbol === item.name);
+
+            if (findedIndex === -1) {
+                return;
+            }
+
+            else {
+                let balCopy = {...balancesArr[findedIndex]}
+    
+                if (item.sub) {
+                    balCopy.nativeBalance -= parseFloat(item.amount)
+                }
+
+                else {
+                    balCopy.nativeBalance += parseFloat(item.amount) 
+                }
+                
+                balCopy.usdBalance = balCopy.nativeBalance * tokens.find((itemTok) => itemTok.symbol === item.name).priceUSD;
+                balancesArr[findedIndex] = balCopy;
+            }            
+        })
+
+        balancesArr.sort((a, b) => {
+            if(a.symbol < b.symbol) { return -1; }
+            if(a.symbol > b.symbol) { return 1; }
+            return 0;
+        });
+
         setBalances(balancesArr);
 
     }

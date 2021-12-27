@@ -10,14 +10,24 @@ export const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
-export const TOKENS = gql(`
-    query tokens {
+export const TOKENS_PAIRS = gql(`
+    query tokens_pairs {
         tokens(first: 100) {
             id
             symbol
             decimals
             priceUSD
             isProtocolMain
+        }
+        pairs(first: 100) {
+            id
+            token0 {
+                symbol
+            }
+            token1 {
+                symbol
+            }
+            
         }
     }
 `)

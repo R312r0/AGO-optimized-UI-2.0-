@@ -22,7 +22,7 @@ const AccountsSynthetic = ({sytheticAssets}) => {
                                 <TokenIcon iconName={item.name}/>
                                 <p> {item.name} </p>
                             </div>
-                            <span> {item.nativeBalance} </span>
+                            <span> {formattedNum(item.nativeBalance)} </span>
                             <span> ${formattedNum(item.usdBalance)} </span>
                         </li>
                     )
@@ -31,8 +31,6 @@ const AccountsSynthetic = ({sytheticAssets}) => {
 
             <div className='accounts-wrapper-use-staking-pools__pagination'>
                 <span className='active'>1</span>
-                <span>2</span>
-                <span>3</span>
             </div>
         </div>
     )

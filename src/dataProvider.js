@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {useQuery} from '@apollo/client';
-import {TOKENS} from './api/client';
+import {TOKENS_PAIRS} from './api/client';
 
 const DataContext = React.createContext();
 
@@ -9,9 +9,8 @@ export const useDataContext = () => useContext(DataContext);
 export const DataProvider = ({children}) => {
 
 
-    const {data, loading, error} = useQuery(TOKENS)
+    const {data, loading, error} = useQuery(TOKENS_PAIRS)
     const [mainData, setMainData] = useState(null);
-
 
     useEffect(() => {
 

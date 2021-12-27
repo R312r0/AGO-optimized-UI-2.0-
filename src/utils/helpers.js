@@ -63,6 +63,7 @@ export const getCoinGeckoCurrentPrice = (tokenName) => {
 
 export const findNearestPortfolioTokenPrice = (tokensArr, balanceTimeStamp, symbol) => {
 
+
     const tok = tokensArr.find(item => item.symbol === symbol)
     const chart = tok.lineChartUSD
     let priceItem;

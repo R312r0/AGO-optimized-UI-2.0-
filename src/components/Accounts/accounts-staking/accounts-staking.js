@@ -55,12 +55,11 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
 
             let amountStaked = (await contracts.MASTER_CHEF.methods.userInfo(i, account).call()).amount;
 
-            console.log(amountStaked);
 
             if (amountStaked > 0) {
                 const poolLpTokenAddress = (await contracts.MASTER_CHEF.methods.poolInfo(i).call()).lpToken
 
-                console.log(await contracts.MASTER_CHEF.methods.poolInfo(i).call());
+                // console.log(await contracts.MASTER_CHEF.methods.poolInfo(i).call());
 
                 let tok = tokensSub.find(item => item.id === poolLpTokenAddress.toLowerCase());
                 let poolName;

@@ -97,8 +97,8 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     const handleCollateralInput = (value) => {
 
-        const shareOutput = ((value * info.sharePrice) - ((value * info.sharePrice) * (info.mintFee / 100))) * ((100 - info.targetCollateralRatio) / 100);
-        const stableOutput = ((value * 1.0001) - ((value / 1.001) * (info.mintFee / 100))) * (info.targetCollateralRatio / 100);
+        let shareOutput = (((parseFloat(value) * 1.0001) * (1 - (info.targetCollateralRatio / 100))) / (parseFloat(info.sharePrice) * (info.targetCollateralRatio / 100)))
+        const stableOutput = (shareOutput * parseFloat(info.sharePrice)) + ((value * 1.001) * (info.targetCollateralRatio / 100));
 
         setCollateralInput(value)
         setOutputInput(stableOutput + shareOutput)
@@ -147,6 +147,7 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
         if (collateralInput > 0) {
             if (mintRedeemCurrency === "AGOUSD") {
                 try {
+                        
                     message.loading({content: "Mint in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
                     setMintButtonDisabled(true);
                     await contracts.POOL_AGOUSD.methods.mint(
@@ -154,13 +155,19 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
                         formatToDecimal(catenaInput, tokens.find(item => item.symbol === "CNUSD").decimals), 0)
                         .send({from: account}); // TODO: AGOUSD amount - slippage in %
 
-                    changeTokenBalance("USDT", collateralInput, true);
-
                     if (info.totalCollateralRatio !== 100) {
-                        changeTokenBalance("CNUSD", catenaInput, true)
+                        changeTokenBalance([
+                            {name: "USDT", amount: collateralInput, sub: true},
+                            {name: "CNUSD", amount: catenaInput, sub: true},
+                            {name: "AGOUSD", amount: catenaInput, sub: false},
+                        ])
                     }
-
-                    changeTokenBalance("AGOUSD", outputInput, false);
+                    else {
+                        changeTokenBalance([
+                            {name: "USDT", amount: collateralInput, sub: true},
+                            {name: "AGOUSD", amount: catenaInput, sub: false},
+                        ])
+                    }
 
                     setInputsFiledToZero();
                     message.success({content: `Succsessfully minted ${mintRedeemCurrency}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5})
@@ -179,13 +186,21 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
                         formatToDecimal(collateralInput, tokens.find(item => item.symbol === "WBTC").decimals),
                         formatToDecimal(catenaInput, tokens.find(item => item.symbol === "CNBTC").decimals), 0)
                         .send({from: account});
-                    changeTokenBalance("WBTC", collateralInput, true);
 
-                    if (info.totalCollateralRatio !== 100) {
-                        changeTokenBalance("CNBTC", catenaInput, true)
-                    }
-
-                    changeTokenBalance("AGOBTC", outputInput, false);
+                        if (info.totalCollateralRatio !== 100) {
+                            changeTokenBalance([
+                                {name: "WBTC", amount: collateralInput, sub: true},
+                                {name: "CNBTC", amount: catenaInput, sub: true},
+                                {name: "AGOBTC", amount: catenaInput, sub: false},
+                            ])
+                        }
+                        else {
+                            changeTokenBalance([
+                                {name: "WBTC", amount: collateralInput, sub: true},
+                                {name: "AGOBTC", amount: catenaInput, sub: false},
+                            ])
+                        }
+                        
                     setInputsFiledToZero();
                     message.success({content: `Succsessfully minted ${mintRedeemCurrency}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5})
                     setMintButtonDisabled(false);
@@ -221,6 +236,9 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
             if (shareBalance < +catenaInput) {
                 return <button disabled={true} className='mint-window-run-mint withoutBg'> Insuficcient {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} balance </button>
             }
+            else {
+                return <button disabled={mintButtonDisabled} className='mint-window-run-mint withoutBg' onClick={handleMint}> Mint </button>
+            }
         }
 
         else {
@@ -231,10 +249,7 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     const handleRefreshCollateralRatio = async () => {
         if (mintRedeemCurrency === "AGOUSD") {
-            const data = await contracts.TREASURY_AGOUSD.methods.getCollateralPrice().call();
-            const pool = await contracts.POOL_AGOUSD.methods.getMissing_decimals().call();
-            console.log(data);
-            console.log(pool);
+            await contracts.TREASURY_AGOUSD.methods.refreshCollateralRatio().send({from: account});
         }
         else {
             await contracts.TREASURY_AGOBTC.methods.refreshCollateralRatio().send({from: account});

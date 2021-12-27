@@ -82,7 +82,7 @@ const AccountsPools = () => {
             <div className='accounts-wrapper-use-staking-pools__list-header'> 
                 <span> Pair </span>
                 <span> My Liquidity </span>
-                <span> Reward </span>
+                <span> USD Balance </span>
             </div>
 
             <ul>

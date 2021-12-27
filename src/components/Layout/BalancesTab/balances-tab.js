@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSystemContext } from '../../../systemProvider';
 import { formattedNum } from '../../../utils/helpers';
 import { TokenIcon } from '../../TokenIcon/token_icon';
@@ -16,6 +16,20 @@ const BalancesTab = () => {
   const { account } = useWeb3React();
   const { balances } = useSystemContext();
   const { theme } = useThemeContext();
+
+  const [sumBalances, setSumBalances] = useState(0);
+
+  useEffect(() => {
+
+    if (balances) {
+
+      console.log(balances);
+
+      setSumBalances(formattedNum(balances.reduce((a, { usdBalance }) => a + usdBalance, 0)))
+    }
+
+  }, [balances])
+
   const isMobileScreen = useMediaQuery({ query: '(max-width: 750px)' });
 
   // const handlersMobileBalancesExpanded = useSwipeable({
@@ -25,7 +39,8 @@ const BalancesTab = () => {
   //   preventDefaultTouchmoveEvent: true,
   // })
 
-  console.log(balances);
+  console.log(sumBalances);
+
 
   const scroll = () => {
     const scrollContainer = document.querySelector("#balanceList");
@@ -55,7 +70,7 @@ const BalancesTab = () => {
               {/* <img className='balance-tab-wrapper__pig' src={theme === "light" ? pig_icon_light : pig_icon} alt="balance" /> */}
               <p className='balance'> Balance </p>
               <div className="balance-arrow-wrapper">
-                <p> {balances ? formattedNum(balances.reduce((a, { usdBalance }) => a + usdBalance, 0)) : 0.00}$ </p>
+                <p> {sumBalances || 0.00}$ </p>
                 <svg className="vector" width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0.901211 1.07468e-08L6 5L0.901211 10L1.05386e-08 9.11625L4.19758 5L1.0871e-07 0.88375" fill="white" />
                 </svg>
@@ -63,8 +78,8 @@ const BalancesTab = () => {
             </div>
 
             <BalanceListDesktop opened={balancesExpanded} onMouseEnter={handleShiftKey} id='balanceList'>
-              {balances && balances.filter(b => b.nativeBalance > 0).map((item) => {
-                return <BalanceTabItem balance={item} theme={theme}/>
+              {balances && balances.filter(b => b.nativeBalance > 0).map((item, _ind) => {
+                return <BalanceTabItem key={item.symbol + _ind} balance={item} theme={theme}/>
 
               })}
             </BalanceListDesktop>
@@ -119,4 +134,4 @@ const BalanceTabItem = ({balance: {symbol, nativeBalance, usdBalance}, theme}) =
 //   null
 // }
 
-export default React.memo(BalancesTab);
+export default BalancesTab;

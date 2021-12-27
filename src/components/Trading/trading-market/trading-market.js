@@ -31,7 +31,7 @@ const SwapButtonWrapper = styled.button`
 
 const TradingMarket = ({pool}) => {
 
-    const {contracts, tokens, balances, theme} = useSystemContext();
+    const {contracts, tokens, balances, theme, setIsWalletModal, changeTokenBalance} = useSystemContext();
     const {account} = useWeb3React();
 
     const [token0, setToken0] = useState(null);
@@ -46,12 +46,15 @@ const TradingMarket = ({pool}) => {
     useEffect(() => {
 
         if (pool && balances) {
-            checkAllowance();
             setToken0({token: pool.token0, poolPrice: pool.token0Price})
             setToken1({token: pool.token1, poolPrice: pool.token1Price})
+
+            if (account) {
+                checkAllowance();
+            }
         }
 
-    }, [pool, balances])
+    }, [account, pool, balances])
 
 
     const checkAllowance = async () => {
@@ -92,15 +95,25 @@ const TradingMarket = ({pool}) => {
             [token0.token.id, token1.token.id],
             account,
             999999999999).send({from: account})
+
+        changeTokenBalance([
+            {name: token0.token.symbol, amount: +tokenInput, sub: true},
+            {name: token1.token.symbol, amount: token1Input, sub: false}]);
+        setToken0Input(0);
+        setToken1Input(0);
     }
 
     const SwapButtonFunc = () => {
 
-        const zeroInputCheck = token0Input === 0 || token1Input === 0;
+        const zeroInputCheck = +token0Input === 0 || +token1Input === 0;
 
         // const insuficientBalance = token0Input > balances.find(item => item.symbol === token0.token.symbol).nativeBalance;
 
-        if (!token0Allowance) {
+        if (!account) {
+            return <SwapButtonWrapper onClick={() => setIsWalletModal(true)}> Connect Wallet </SwapButtonWrapper>
+        }
+
+        else if (!token0Allowance) {
             return <SwapButtonWrapper onClick={() => handleApprove(pool.token0)}> Approve {pool.token0.symbol} </SwapButtonWrapper>
         }
 

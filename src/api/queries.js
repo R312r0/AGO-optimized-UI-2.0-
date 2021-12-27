@@ -4,7 +4,7 @@ export const TOKEN_DASHBOARD_CHARTS = gql(`
 
     query token($id: String!) {
         token(id: $id) {
-            lineChartUSD(orderBy: timestamp, orderDirection: desc) {
+            lineChartUSD(orderBy: timestamp, orderDirection: asc) {
                 valueUSD
                 timestamp
             }

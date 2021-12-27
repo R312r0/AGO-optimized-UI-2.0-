@@ -90,7 +90,11 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
             else {
                 await contracts.POOL_AGOBTC.methods.redeem(formatToDecimal(input, tokens.find((item) => item.symbol === "AGOBTC").decimals), 0, 0).send({from: account})
             }
-            changeTokenBalance(mintRedeemCurrency, input, true);
+
+            changeTokenBalance([
+                {name: mintRedeemCurrency, amount: input, sub: true},
+            ])
+
             await getRedemption();
             setInputsToZero();
             message.success({content: `Successfully redeemed ${mintRedeemCurrency} !`, key: MINT_REDEEM_KEY, duration: 3, className: "ant-argano-message"})
@@ -136,16 +140,33 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
             if (mintRedeemCurrency === "AGOUSD") {
                 await contracts.POOL_AGOUSD.methods.collectRedemption().send({from: account});
                 changeTokenBalance("USDT", redeemBalances.redemptionCollateral, false);
+
                 if (info.effectiveCollateralRatio !== 100) {
-                    changeTokenBalance("CNUSD", redeemBalances.redemptionShare, false);
+                    changeTokenBalance([
+                        {name: "USDT", amount: redeemBalances.redemptionCollateral, sub: false},
+                        {name: "CNUSD", amount: redeemBalances.redemptionShare, sub: false}
+                    ]);
+                }
+                else {
+                    changeTokenBalance([
+                        {name: "USDT", amount: redeemBalances.redemptionCollateral, sub: false},
+                    ]);
                 }
             }
     
             else {
                 await contracts.POOL_AGOBTC.methods.collectRedemption().send({from: account}); 
-                changeTokenBalance("WBTC", redeemBalances.redemptionCollateral, false);
+
                 if (info.effectiveCollateralRatio !== 100) {
-                    changeTokenBalance("CNBTC", redeemBalances.redemptionShare, false);
+                    changeTokenBalance([
+                        {name: "WBTC", amount: redeemBalances.redemptionCollateral, sub: false},
+                        {name: "CNBTC", amount: redeemBalances.redemptionShare, sub: false}
+                    ]);
+                }
+                else {
+                    changeTokenBalance([
+                        {name: "WBTC", amount: redeemBalances.redemptionCollateral, sub: false},
+                    ]);
                 }
             }
             setRedeemBalances({redemptionCollateral: 0, redemptionShare: 0});
