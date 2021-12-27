@@ -16,17 +16,17 @@ import { Foundry } from "../Foundry/foundry";
 import { useSystemContext } from '../../systemProvider'
 
 export const App = () => {
-    // const { connectWallet } = useSystemContext()
-    // useEffect(() => {
-    //     setTimeout(() => {
+    const { connectWallet } = useSystemContext()
+    useEffect(() => {
+        setTimeout(() => {
 
-    //         const connectedWallet = localStorage.getItem('connected Wallet');
-    //         if (connectedWallet) {
-    //             connectWallet(connectedWallet);
-    //         }
-    //     }, 0)
+            const connectedWallet = localStorage.getItem('connected Wallet');
+            if (connectedWallet) {
+                connectWallet(connectedWallet);
+            }
+        }, 0)
 
-    // }, [])
+    }, [])
 
     return (
         <>

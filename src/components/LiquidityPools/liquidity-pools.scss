@@ -1,59 +1,94 @@
-.create-pair-modal {
+body{
     .ant-modal-content {
-        border-radius: 25px;
-        height: 40vh;
-        background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-        .ant-modal-body {
-            height: 100%;
+        position: relative;
+        .ant-modal-close-x {
+            position: absolute;
+            top: 21px;
+            right: 20px;
+        
+            background: #171717;
+            box-shadow: -8px -8px 20px rgba(28, 27, 27, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            // padding: 13px 24px;
+            width: 68px;
+            height: 45px;
+        
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        
+            & svg{
+                fill:#4F4F4F;
+            }
         }
     }
 }
 
-.remove-liquidity-modal {
 
+.create-pair-modal {
     .ant-modal-content {
+        padding: 27px 51px;
         border-radius: 25px;
-
-        background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+        position: relative;
+        // height: 50vh;
+        background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%),
+            linear-gradient(90.99deg, #1d1d1d 2.18%, #232323 104.4%);
         .ant-modal-body {
-            display: grid;
-            grid-auto-rows: auto;
+            padding: 0;
+            max-height: 820px;
             height: 100%;
-            h3 {
-                color: white;
-                font-weight: 500;
-                align-self: center;
-                justify-self: flex-start;
-            }
-            p {
-                color: white;
-            }
-
-            input {
-                outline: none;
-                border: 0px;
-                border-radius: 25px;
-                background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-                justify-self: center;
-                height: 70%;
-                width: 50%;
-                color: white;
-                font-size: 14px;
-                font-weight: 600;
-            }
-            button {
-                width: 100px;
-                height: 35px;
-                background: #40BA93;
-                border: 0px;
-                border-radius: 25px;
-                color: white;
-                place-self: center;
-            }
-
-
         }
+       
+    }
+}
 
+.remove-liquidity-modal {
+    .ant-modal-content {
+        background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+        border-radius: 40px;
+        .ant-modal-body {
+            padding: 27px 51px;
+            display: grid;
+            grid-template-columns: 1fr;
+            row-gap: 21px;
+            
+            .button-area{
+                margin-top: 25px;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 6px;
+
+                button{
+                    background: #40BA93;
+                    border-radius: 30px;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 27px;
+                    /* identical to box height */
+
+                    text-align: center;
+
+                    color: #FFFFFF;
+                    padding: 15px 0;
+                    width: 100%;
+
+                    &.back{
+                        border: 1px solid #40BA93;
+                        background: transparent;
+                    }
+                }
+            }
+            // button {
+            //     width: 100px;
+            //     height: 35px;
+            //     background: #40ba93;
+            //     border: 0px;
+            //     border-radius: 25px;
+            //     color: white;
+            //     place-self: center;
+            // }
+        }
     }
 }
 
@@ -71,14 +106,14 @@
         .create-btn {
             width: 226px;
             padding: 14px 37px;
-            border: 1px solid #4F4F4F;
+            border: 1px solid #4f4f4f;
             box-sizing: border-box;
-            border-radius: 40px; 
+            border-radius: 40px;
             font-size: 18px;
             line-height: 27px;
             text-align: center;
 
-            color: #FFFFFF;
+            color: #ffffff;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -86,7 +121,6 @@
             column-gap: 28px;
             cursor: pointer;
         }
-
     }
 
     .luqidity-pools-wrapper-heading {
@@ -99,18 +133,18 @@
 
         color: white;
     }
-    
+
     &__list-header {
         display: grid;
         grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr;
         margin: 2.969vw 6.771vw 0.938vw 6.51vw;
-        color: #4F4F4F;
+        color: #4f4f4f;
         h5 {
             display: flex;
             align-items: center;
 
             font-size: 0.938vw;
-            color: #4F4F4F;
+            color: #4f4f4f;
 
             svg {
                 margin-left: 1.458vw;
@@ -138,19 +172,18 @@
 
             padding: 1vw 2.813vw 1vw 3.489vw;
             margin: 0 3.958vw 1.042vw 3.021vw;
-            
+
             border-radius: 2.083vw;
 
-            background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+            background: linear-gradient(90.99deg, #1d1d1d 2.18%, #232323 104.4%);
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
-            transition: all .2s ease-in-out;
+            transition: all 0.2s ease-in-out;
             transform: scale(1);
             cursor: pointer;
 
-            &:hover{
-                transform: scale(1.01)
+            &:hover {
+                transform: scale(1.01);
             }
-            
 
             &__header {
                 width: 100%;
@@ -159,7 +192,8 @@
                 align-items: center;
                 grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr;
 
-                & h3, & div {
+                & h3,
+                & div {
                     margin-right: auto;
                 }
             }
@@ -169,26 +203,26 @@
                 color: white;
             }
 
-           .pair {
-               width: 100%;
+            .pair {
+                width: 100%;
 
-               display: flex;
-               align-items: center;
-               color: white;
+                display: flex;
+                align-items: center;
+                color: white;
 
-               font-size: 0.938vw;
-               
-               img {
-                   width: 2.448vw;
-                   height: 2.448vw;
+                font-size: 0.938vw;
 
-                   &:not(:first-child) {
-                       margin: 0 0.990vw 0 0.469vw;
-                   }
-               }
-           }
+                img {
+                    width: 2.448vw;
+                    height: 2.448vw;
 
-           .chart-expand {
+                    &:not(:first-child) {
+                        margin: 0 0.99vw 0 0.469vw;
+                    }
+                }
+            }
+
+            .chart-expand {
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -200,34 +234,39 @@
 
                 font-size: 0.938vw;
                 cursor: pointer;
-                background: #1E1E1E;
-                color: #4F4F4F;
+                background: #1e1e1e;
+                color: #4f4f4f;
 
-                border: 0.052vw solid #4F4F4F;
+                border: 0.052vw solid #4f4f4f;
                 border-radius: 1.042vw;
 
                 &:hover {
                     transition: 0.3s all;
 
-                    background-color: #40BA93;
-                    border: 0.052vw solid #40BA93;
+                    background-color: #40ba93;
+                    border: 0.052vw solid #40ba93;
                     color: white;
                 }
-           }
+            }
         }
 
         .liq-item-opened {
             display: flex;
             align-items: center;
             justify-content: center;
-            
+
             padding: 0.938vw 2.813vw 4vw 3.489vw;
-            transition: .4s ease;
+            transition: 0.4s ease;
 
             height: 100%;
-        
-            background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-            
+
+            background: radial-gradient(
+                    94.26% 94.26% at 47.39% 30.04%,
+                    rgba(64, 186, 147, 0.16) 0%,
+                    rgba(0, 0, 0, 0) 100%
+                ),
+                linear-gradient(90.99deg, #1d1d1d 2.18%, #232323 104.4%);
+
             // animation: listOpened 0.3s;
 
             // .luqidity-pools-wrapper-list-item__header {
@@ -236,16 +275,16 @@
 
             .control-panel {
                 width: 100%;
-                
+
                 display: flex;
                 flex-direction: column;
 
                 margin-bottom: auto;
-                
+
                 &__header {
                     display: flex;
                     padding: 1.563vw 0 1.823vw;
-                    
+
                     &__transactions {
                         padding: 1.563vw 0 0;
                     }
@@ -256,7 +295,7 @@
 
                         cursor: pointer;
                         white-space: nowrap;
-                        
+
                         border-radius: 1.042vw;
                         border: 0.052vw solid transparent;
 
@@ -266,8 +305,8 @@
 
                     .active {
                         animation: activeTabLiq 0.25s;
-                        background-color: #40BA93;
-                        border: 0.052vw solid #40BA93;
+                        background-color: #40ba93;
+                        border: 0.052vw solid #40ba93;
                         color: white;
                     }
 
@@ -281,20 +320,16 @@
                             width: 1.042vw;
                             opacity: 0.25;
                             color: transparent;
-
-                            
                         }
                         50% {
                             width: 2.083vw;
-                            opacity: 0.50;
+                            opacity: 0.5;
                             color: transparent;
-
                         }
                         75% {
                             width: 4.167vw;
                             opacity: 0.75;
                             color: transparent;
-
                         }
                         100% {
                             width: 6.25vw;
@@ -314,7 +349,7 @@
                         &__switch-buttons {
                             width: 19.5vw;
                             margin-left: auto;
-                            margin-bottom: 0.990vw;
+                            margin-bottom: 0.99vw;
 
                             display: flex;
                             align-items: center;
@@ -322,7 +357,7 @@
 
                             .transanction-tabs-wrapper-active {
                                 color: white;
-                                background: #40BA93;
+                                background: #40ba93;
                                 font-weight: 700;
                             }
 
@@ -330,17 +365,17 @@
                                 font-size: 0.729vw;
                                 font-weight: 300;
 
-                                padding: 0.260vw 1.302vw;
+                                padding: 0.26vw 1.302vw;
 
                                 background: transparent;
                                 border-radius: 1.302vw;
-                                color: #B0B0B0;
+                                color: #b0b0b0;
 
                                 border: none;
                                 cursor: pointer;
-                                transition: all .3s;
+                                transition: all 0.3s;
 
-                                &:hover{
+                                &:hover {
                                     color: #fff;
                                 }
                             }
@@ -356,8 +391,8 @@
                         flex-direction: column;
                         justify-content: center;
                         align-items: center;
-                        
-                        background: linear-gradient(95.56deg, #1D1D1D 13.15%, #282828 95.93%);
+
+                        background: linear-gradient(95.56deg, #1d1d1d 13.15%, #282828 95.93%);
                         border-radius: 2.083vw;
 
                         .chart-block {
@@ -375,25 +410,25 @@
                         .buttons {
                             display: flex;
                             margin: 0 0 1.563vw;
-                            
+
                             button {
                                 margin: 0 auto;
                                 padding: 0.2vw 1vw;
-    
+
                                 cursor: pointer;
                                 color: white;
                                 font-size: 0.625vw;
-                                
-                                background-color: #40BA93;
-                                border: 0.052vw solid #40BA93;
+
+                                background-color: #40ba93;
+                                border: 0.052vw solid #40ba93;
                                 border-radius: 1.042vw;
 
-                                transition: .4s ease;
-    
+                                transition: 0.4s ease;
+
                                 &:last-child {
                                     margin-left: 0.4vw;
                                 }
-                                
+
                                 &:hover {
                                     background-color: transparent;
                                 }
@@ -404,7 +439,7 @@
                     .provide-liquidity-block {
                         width: 100%;
 
-                        background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+                        background: linear-gradient(90.99deg, #1d1d1d 2.18%, #232323 104.4%);
                         border-radius: 2.083vw;
 
                         padding: 1.1vw 1.979vw 1.1vw 2.604vw;
@@ -426,7 +461,6 @@
                                     font-size: 0.625vw;
                                 }
 
-
                                 p {
                                     color: white;
                                     margin: auto 0 auto auto;
@@ -444,7 +478,7 @@
                                 display: flex;
                                 flex-direction: column;
 
-                                padding: 0.460vw 0;
+                                padding: 0.46vw 0;
 
                                 .provide-liq-heading {
                                     font-size: 0.625vw;
@@ -488,7 +522,7 @@
                                         border: none;
                                         outline: none;
 
-                                        color: #4F4F4F;
+                                        color: #4f4f4f;
 
                                         &::-webkit-outer-spin-button,
                                         &::-webkit-inner-spin-button {
@@ -496,12 +530,12 @@
                                             margin: 0;
                                         }
 
-                                        input[type=number] {
+                                        input[type="number"] {
                                             -moz-appearance: textfield;
                                         }
 
                                         &::placeholder {
-                                            color: #4F4F4F;
+                                            color: #4f4f4f;
                                         }
                                     }
                                 }
@@ -542,11 +576,11 @@
 
                         padding: 1.7vw 2.083vw;
                         animation: liqInfoAppears 0.3s;
-                        background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+                        background: linear-gradient(90.99deg, #1d1d1d 2.18%, #232323 104.4%);
 
                         border-radius: 2.083vw;
                         box-sizing: border-box;
-                       
+
                         justify-self: flex-end;
                         align-self: center;
 
@@ -598,7 +632,6 @@
                             opacity: 1;
                         }
                     }
-
                 }
             }
         }
@@ -606,7 +639,7 @@
 
     .earn-ago {
         .luqidity-pools-wrapper-list-item {
-            background: linear-gradient(90.19deg, #560397 -3.27%, #3D1B57 103.63%);
+            background: linear-gradient(90.19deg, #560397 -3.27%, #3d1b57 103.63%);
 
             .control-panel__header {
                 button {
@@ -615,16 +648,14 @@
             }
         }
     }
-    
 }
 
 .luqidity-pools-wrapper-light {
-
     .luqidity-pools-wrapper-list {
         .luqidity-pools-wrapper-list-item {
-            background: #F2F2F2;
+            background: #f2f2f2;
             h3 {
-                color: #333333
+                color: #333333;
             }
             .pair {
                 h3 {
@@ -632,12 +663,12 @@
                 }
             }
             .chart-expand {
-                background: #BDBDBD;
+                background: #bdbdbd;
             }
             .control-panel {
                 &__content {
                     .liq-info {
-                        background: linear-gradient(110.02deg, #40BA93 2.33%, rgba(64, 186, 147, 0) 123.59%);
+                        background: linear-gradient(110.02deg, #40ba93 2.33%, rgba(64, 186, 147, 0) 123.59%);
                         span {
                             border-bottom: 1px solid white;
                             h5 {
@@ -646,14 +677,14 @@
                         }
                     }
                     .provide-liquidity-block {
-                        background: #FFFFFF;
+                        background: #ffffff;
                         &__input-row {
                             span {
-                                color: #4F4F4F;
+                                color: #4f4f4f;
                             }
                             div {
                                 p {
-                                    color: #4F4F4F;
+                                    color: #4f4f4f;
                                 }
                                 input {
                                     color: black;
@@ -673,16 +704,19 @@
                         }
                     }
                     .provide-liq-wrapper {
-                        background: #FFFFFF;
+                        background: #ffffff;
                     }
-
                 }
             }
         }
         .liq-item-opened {
-            border: 1px solid #40BA93;
-            background: radial-gradient(134.01% 652.71% at 100% 100%, rgba(64, 186, 147, 0.2) 0%, rgba(64, 186, 147, 0) 100%), radial-gradient(105.3% 524.96% at -8.59% -19.61%, #40BA93 0%, rgba(242, 242, 242, 0) 100%);
+            border: 1px solid #40ba93;
+            background: radial-gradient(
+                    134.01% 652.71% at 100% 100%,
+                    rgba(64, 186, 147, 0.2) 0%,
+                    rgba(64, 186, 147, 0) 100%
+                ),
+                radial-gradient(105.3% 524.96% at -8.59% -19.61%, #40ba93 0%, rgba(242, 242, 242, 0) 100%);
         }
     }
-
 }
