@@ -131,8 +131,10 @@
 
                 padding: 4.063vw 2.5vw 0;
 
-                display: flex;
-                flex-direction: column;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-row-gap: 1em;
+
                 position: relative;
 
                 background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
@@ -203,6 +205,9 @@
                         border: 0.052vw solid #4F4F4F;
                     }
                 }
+            }
+            .reward {
+                grid-template-columns: 1fr;
             }
         }
     }

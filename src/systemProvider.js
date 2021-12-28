@@ -9,9 +9,9 @@ import FOUNDRY_ABI from './abi/Foundry.json';
 import STABLE_ABI from './abi/STABLE.json';
 import SHARE_ABI from './abi/SHARE.json';
 import STABLE_POOL_ABI from './abi/STABLE_POOL.json';
-import MASTER_CHEF_ABI from './abi/MasterChef.json';
+import SINGLE_CHEF_ABI from './abi/SIngleChef.json';
 import TOKEN_ORACLE_ABI from './abi/TOKEN_ORACLE.json';
-import { CONTRACT_ADRESESS } from './constants';
+import { CONTRACT_ADRESESS, SINGLE_STAKING_POOL } from './constants';
 import { formatFromDecimal } from './utils/helpers';
 import { message, Spin } from 'antd';
 import { ethErrors } from 'eth-rpc-errors'
@@ -19,7 +19,6 @@ import { EthereumRpcError, EthereumProviderError } from 'eth-rpc-errors'
 import {useQuery} from "@apollo/client";
 import {TOKENS} from "./api/client";
 import { useDataContext } from './dataProvider';
-import { LOADER_INDICATOR_GLOBAL } from './constants';
 
 const SystemContext = React.createContext();
 export const useSystemContext = () => useContext(SystemContext);
@@ -36,6 +35,8 @@ export const SystemProvider = ({children}) => {
     const {tokens} = useDataContext();
 
     const [mintRedeemCurrencyModal, setMintRedeemCurrencyModal] = useState(false);
+
+    const [stakingPools, setStakingPools] = useState(null);
 
     const [web3Loading, setWeb3Loading] = useState(true);
 
@@ -128,10 +129,9 @@ export const SystemProvider = ({children}) => {
         const TREASURY_AGOBTC = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOBTC);
         const FOUNDRY_AGOBTC = new library.eth.Contract(FOUNDRY_ABI, CONTRACT_ADRESESS.FOUNDRY_AGOBTC);
         const ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.ROUTER)
-        const MASTER_CHEF = new library.eth.Contract(MASTER_CHEF_ABI, CONTRACT_ADRESESS.MASTER_CHEF);
         
 
-        setContracts({ ...tokensContractsObj, ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, MASTER_CHEF, FOUNDRY_AGOUSD, FOUNDRY_AGOBTC})
+        setContracts({ ...tokensContractsObj, ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, FOUNDRY_AGOUSD, FOUNDRY_AGOBTC})
     }
 
     const getUserPortfolio = async () => {

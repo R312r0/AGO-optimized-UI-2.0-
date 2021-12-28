@@ -34,7 +34,7 @@ const TradingWindow = () => {
     useEffect(() => {
 
         if (data && !loading) {
-            setActiveToken(data.tokens[0].symbol);
+            setActiveToken("AGO");
         }
 
     }, [data, loading])
@@ -48,6 +48,9 @@ const TradingWindow = () => {
         }
 
     }, [activeToken])
+
+
+    console.log(activeToken);
 
     // useEffect(() => {
     //

@@ -11,7 +11,7 @@ import {
     Legend,
     ArcElement,
 } from 'chart.js'
-import { Chart } from 'react-chartjs-2'
+import { Chart,  registerables } from 'react-chartjs-2'
 
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'

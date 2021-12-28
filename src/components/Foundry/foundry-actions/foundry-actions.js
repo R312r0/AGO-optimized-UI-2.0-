@@ -4,30 +4,46 @@ import {TokenIcon} from "../../TokenIcon/token_icon";
 import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
 import {CONTRACT_ADRESESS, MAX_INT} from "../../../constants";
-import {formatFromDecimal, formatToDecimal} from "../../../utils/helpers";
+import {formatFromDecimal, formattedNum, formatToDecimal} from "../../../utils/helpers";
 
 const FoundryActions = () => {
 
-    const {contracts, tokens} = useSystemContext();
+    const {contracts, tokens, changeTokenBalance} = useSystemContext();
     const {account} = useWeb3React();
 
-    const [cnusdInput, setCnusdInput] = useState(0);
-    const [cnbtcInput, setCnbtcInput] = useState(0);
+    const [allowance, setAllowance] = useState({
+        cnusd: false,
+        cnbtc: false
+    });
 
-    const [cnusdAllowance, setCnusdAllowance] = useState(false);
-    const [cnbtcAllowance, setCnbtcAllowance] = useState(false);
+    const [info, setInfo] = useState({
+        cnusd: {
+            allowance: null,
+            collateralEarned: 0,
+            isWithdrawAvailable: false
+        },
+        cnbtc: {
+            staked: 0,
+            collateralEarned: 0,
+            isWithdrawAvailable: false
+        }
 
-    const [cnusdStaked, setCnusdStaked] = useState(0);
-    const [cnbtcStaked, setCnbtcStaked] = useState(0);
+    })
+
+    const [cnusdStakeInput, setCnusdStakeInput] = useState(0);
+    const [cnbtcStakeInput, setCnbtcStakeInput] = useState(0);
+
+    const [cnusdWithdrawInput, setCnusdWithdrawInput] = useState(0);
+    const [cnbtcWithdrawInput, setCnbtcWithdrawInput] = useState(0);
 
     useEffect(() => {
 
-        if (account && contracts) {
+        if (account && contracts && tokens) {
             getAllowance();
             getInfo();
         }
 
-    }, [account])
+    }, [account, contracts, tokens])
 
 
     const getInfo = async () => {
@@ -35,10 +51,26 @@ const FoundryActions = () => {
         const balCnusd = await contracts.FOUNDRY_AGOUSD.methods.balanceOf(account).call();
         const balCnbtc = await contracts.FOUNDRY_AGOBTC.methods.balanceOf(account).call();
 
-        setCnusdStaked(formatFromDecimal(balCnusd, tokens.find(item => item.symbol === "CNUSD").decimals));
-        setCnbtcStaked(formatFromDecimal(balCnbtc, tokens.find(item => item.symbol === "CNBTC").decimals));
+        const rewardUSD = formatFromDecimal(await contracts.FOUNDRY_AGOUSD.methods.earned(account).call(), tokens.find(item => item.symbol === "USDT").decimals);
+        const rewardWBTC = formatFromDecimal(await contracts.FOUNDRY_AGOBTC.methods.earned(account).call(), tokens.find(item => item.symbol === "WBTC").decimals);
 
+        const canWithdrawUSD = await contracts.FOUNDRY_AGOUSD.methods.canWithdraw(account).call();
+        const canWithdrawBTC = await contracts.FOUNDRY_AGOBTC.methods.canWithdraw(account).call();
+
+        setInfo({
+            cnusd: {
+                staked: formatFromDecimal(balCnusd, tokens.find(item => item.symbol === "CNUSD").decimals),
+                isWithdrawAvailable: canWithdrawUSD,
+                collateralEarned: rewardUSD,
+            }, 
+            cnbtc: {
+                staked: formatFromDecimal(balCnbtc, tokens.find(item => item.symbol === "CNBTC").decimals),
+                isWithdrawAvailable: canWithdrawBTC,
+                collateralEarned: rewardWBTC
+            }
+        })
     }
+
 
     const handleApprove = async (currency) => {
 
@@ -46,7 +78,7 @@ const FoundryActions = () => {
             await contracts.CNUSD.methods.approve(CONTRACT_ADRESESS.FOUNDRY_AGOUSD, MAX_INT).send({from: account});
         }
         else {
-            await tokens.CNBTC.methods.approve(CONTRACT_ADRESESS.FOUNDRY_AGOBTC, MAX_INT).send({from: account});
+            await contracts.CNBTC.methods.approve(CONTRACT_ADRESESS.FOUNDRY_AGOBTC, MAX_INT).send({from: account});
         }
 
         await getAllowance();
@@ -58,21 +90,59 @@ const FoundryActions = () => {
         const cnusdAllow = await contracts.CNUSD.methods.allowance(account, CONTRACT_ADRESESS.FOUNDRY_AGOUSD).call()
         const cnbtcAllow = await contracts.CNBTC.methods.allowance(account, CONTRACT_ADRESESS.FOUNDRY_AGOBTC).call()
 
-        setCnusdAllowance(cnusdAllow.length === MAX_INT.length);
-        setCnbtcAllowance(cnbtcAllow.length === MAX_INT.length);
+        setAllowance({
+            cnusd: cnusdAllow.length === MAX_INT.length,
+            cnbtc: cnbtcAllow.length === MAX_INT.length
+        })
+
     }
 
     const handleStake = async (currency) => {
 
         if (currency === "USD") {
             const dec = tokens.find((item) => item.symbol === "CNUSD").decimals
-            await contracts.FOUNDRY_AGOUSD.methods.stake(formatToDecimal(cnusdInput, dec)).send({from: account})
+            await contracts.FOUNDRY_AGOUSD.methods.stake(formatToDecimal(cnusdStakeInput, dec)).send({from: account})
+            changeTokenBalance([{name: "CNUSD", amount: cnusdStakeInput, sub: true}])
         }
         else {
             const dec = tokens.find((item) => item.symbol === "CNBTC").decimals
-            await contracts.FOUNDRY_AGOBTC.methods.stake(formatToDecimal(cnbtcInput, dec)).send({from: account})
+            await contracts.FOUNDRY_AGOBTC.methods.stake(formatToDecimal(cnbtcStakeInput, dec)).send({from: account})
+            changeTokenBalance([{name: "CNBTC", amount: cnbtcStakeInput, sub: true}])
+
         }
         await getInfo();
+    }
+
+    const handleWithdraw = async (currency) => {
+
+        if (currency === "USD") {
+            const dec = tokens.find((item) => item.symbol === "CNUSD").decimals
+            await contracts.FOUNDRY_AGOUSD.methods.withdraw(formatToDecimal(cnusdWithdrawInput, dec)).send({from: account})
+            changeTokenBalance([{name: "CNUSD", amount: cnusdWithdrawInput, sub: false}])
+
+        }
+        else {
+            const dec = tokens.find((item) => item.symbol === "CNBTC").decimals
+            await contracts.FOUNDRY_AGOBTC.methods.withdraw(formatToDecimal(cnbtcWithdrawInput, dec)).send({from: account})
+            changeTokenBalance([{name: "CNBTC", amount: cnbtcWithdrawInput, sub: false}])
+
+        }
+        await getInfo();
+
+    }
+
+    const handleCollectReward = async (currency) => {
+
+        if (currency === "USD") {
+            await contracts.FOUNDRY_AGOUSD.methods.claimReward().send({from: account})
+            changeTokenBalance([{name: "USDT", amount: info.cnusd.collateralEarned, sub: false}])
+        }
+        else {
+            await contracts.FOUNDRY_AGOBTC.methods.claimReward().send({from: account})
+            changeTokenBalance([{name: "WBTC", amount: info.cnbtc.collateralEarned, sub: false}])
+        }
+        await getInfo();
+
     }
 
     return (
@@ -85,20 +155,23 @@ const FoundryActions = () => {
                     <p>CNUSD</p>
                 </div>
 
-                <p className='amount'>Staked: {cnusdStaked}</p>
-                <input type="number" placeholder={"Put your CNUSD"} onChange={(e) => setCnusdInput(e.target.value)} />
-                <button disabled={cnusdInput <= 0} onClick={() => cnusdAllowance ? handleStake("USD") : handleApprove("USD")}> {cnusdAllowance ? "Stake" : "Approve"} </button>
+                <p className='amount'>Staked: {info.cnusd.staked}</p>
+                <input type="number" placeholder={"Stake your CNUSD"} onChange={(e) => setCnusdStakeInput(e.target.value)} />
+                <button disabled={cnusdStakeInput <= 0} onClick={() => allowance.cnusd ? handleStake("USD") : handleApprove("USD")}> {allowance.cnusd ? "Stake" : "Approve"} </button>
+
+                <input type="number" placeholder={"Withdraw your CNUSD"} onChange={(e) => setCnusdStakeInput(e.target.value)} />
+                <button disabled={!info.cnbtc.isWithdrawAvailable || cnusdWithdrawInput <= 0} onClick={() => handleWithdraw("USD")}> {!info.cnbtc.isWithdrawAvailable ? "Blocked" : "Withdraw"} </button>
             </div>
 
-            <div className='foundry__actions-item'>
+            <div className='foundry__actions-item reward'>
                 <span className='foundry__actions-item__status'>Earned</span>
                 <div className='foundry__actions-item__token'>
                     <TokenIcon iconName={"USDT"}/>
                     <p>USDT</p>
                 </div>
                 
-                <p className='amount'>0</p>
-                <button> Collect reward </button>
+                <p className='amount'>{formattedNum(info.cnusd.collateralEarned)}</p>
+                <button disabled={info.cnusd.collateralEarned === 0} onClick={() => handleCollectReward("USD")}>  {info.cnusd.collateralEarned === 0 ? "No rewards" : "Collect reward"} </button>
             </div>
 
             <div className='foundry__actions-item'>
@@ -108,20 +181,23 @@ const FoundryActions = () => {
                     <p>CNBTC</p>
                 </div>
                 
-                <p className='amount'>Staked: {cnbtcStaked}</p>
-                <input type="number" placeholder={"Put your CNBTC"} onChange={(e) => setCnbtcInput(e.target.value)}/>
-                <button disabled={cnbtcInput <= 0} onClick={() => cnbtcAllowance ? handleStake("BTC") : handleApprove("BTC")}> {cnbtcAllowance ? "Stake" : "Approve"}  </button>
+                <p className='amount'>Staked: {formattedNum(info.cnbtc.staked)}</p>
+                <input type="number" placeholder={"Stake/Withdraw your CNBTC"} onChange={(e) => setCnbtcStakeInput(e.target.value)}/>
+                <button disabled={cnbtcStakeInput <= 0} onClick={() => allowance.cnbtc ? handleStake("BTC") : handleApprove("BTC")}> {allowance.cnbtc ? "Stake" : "Approve"}  </button>
+
+                <input type="number" placeholder={"Withdraw your CNUSD"} onChange={(e) => setCnusdStakeInput(e.target.value)} />
+                <button disabled={!info.cnbtc.isWithdrawAvailable || cnusdWithdrawInput <= 0 } onClick={() => handleWithdraw("USD")}> {!info.cnbtc.isWithdrawAvailable ? "Blocked" : "Withdraw"} </button>
             </div>
 
-            <div className='foundry__actions-item'>
+            <div className='foundry__actions-item reward'>
                 <span className='foundry__actions-item__status'>Earned</span>
                 <div className='foundry__actions-item__token'>
                     <TokenIcon iconName={"WBTC"}/>
                     <p>WBTC</p>
                 </div>
                 
-                <p className='amount'>0</p>
-                <button>Collect reward</button>
+                <p className='amount'>{formattedNum(info.cnbtc.collateralEarned)}</p>
+                <button disabled={+info.cnbtc.collateralEarned === 0} onClick={() => handleCollectReward("USD")}>  {+info.cnbtc.collateralEarned === 0 ? "No rewards" : "Collect reward"} </button>
             </div>
         </div>
     )

@@ -126,7 +126,7 @@ export const TokenPriceChartWrapper = styled.div`
             display: flex;
             margin-right: auto;
 
-            color: ${props => props.light ? '#333' : '#1E1E1E'};
+            color: ${props => props.light ? '#333' : 'white'};
             background: ${props => props.light ? '#fff' : '#1E1E1E'};
             border-radius: 0.625vw;
 

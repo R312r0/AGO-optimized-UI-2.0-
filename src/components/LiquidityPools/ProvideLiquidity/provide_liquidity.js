@@ -88,7 +88,7 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
     const ProvideButton = () => {
 
         if (allowance.token0 && allowance.token1) {
-            return <button onClick={() => provideLiquidity()}> Porvide </button>
+            return <button onClick={() => provideLiquidity()}> Provide </button>
         }
         else {
             return <button onClick={() => handleApprove()}> Approve </button>

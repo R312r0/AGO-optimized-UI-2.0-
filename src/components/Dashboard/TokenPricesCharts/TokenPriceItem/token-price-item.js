@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { TOKEN_DASHBOARD_CHARTS } from '../../../../api/queries';
 import { useSystemContext } from '../../../../systemProvider';
-import { formatFromDecimal } from '../../../../utils/helpers';
+import { formatFromDecimal, formattedNum } from '../../../../utils/helpers';
 import { useThemeContext } from '../../../Layout/layout';
 import { SinglePriceBlock } from '../styles';
 import { ResponsiveContainer, LineChart, Line, Tooltip, XAxis } from 'recharts';
@@ -166,11 +166,11 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                   <main>
                     <div className="token-data">
                       <p>Supply:</p>
-                      <span>{tokenPriceItem.supply}</span>
+                      <span>{formattedNum(tokenPriceItem.supply)}</span>
                     </div>
                     <div className="token-data">
                       <p>Market cap:</p>
-                      <span>${tokenPriceItem.marketCap}</span>
+                      <span>${formattedNum(tokenPriceItem.marketCap)}</span>
                     </div>
                   </main>
                 </div>

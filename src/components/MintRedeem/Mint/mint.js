@@ -97,8 +97,10 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     const handleCollateralInput = (value) => {
 
-        let shareOutput = (((parseFloat(value) * 1.0001) * (1 - (info.targetCollateralRatio / 100))) / (parseFloat(info.sharePrice) * (info.targetCollateralRatio / 100)))
-        const stableOutput = (shareOutput * parseFloat(info.sharePrice)) + ((value * 1.001) * (info.targetCollateralRatio / 100));
+        let shareOutput = info.targetCollateralRatio < 100 ? (((parseFloat(value) * info.collateralPrice) * (1 - (info.targetCollateralRatio / 100)))
+        / (parseFloat(info.sharePrice) * (info.targetCollateralRatio / 100))) : 0;
+
+        const stableOutput = (shareOutput * parseFloat(info.sharePrice)) + ((value * info.collateralPrice) * (info.targetCollateralRatio / 100));
 
         setCollateralInput(value)
         setOutputInput(stableOutput + shareOutput)
@@ -150,6 +152,10 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
                         
                     message.loading({content: "Mint in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
                     setMintButtonDisabled(true);
+
+                    console.log(collateralInput);
+                    console.log(catenaInput);
+
                     await contracts.POOL_AGOUSD.methods.mint(
                         formatToDecimal(collateralInput, tokens.find(item => item.symbol === "USDT").decimals),
                         formatToDecimal(catenaInput, tokens.find(item => item.symbol === "CNUSD").decimals), 0)
@@ -182,6 +188,7 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
                 try {
                     setMintButtonDisabled(true);
                     message.loading({content: "Mint in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
+
                     await contracts.POOL_AGOBTC.methods.mint(
                         formatToDecimal(collateralInput, tokens.find(item => item.symbol === "WBTC").decimals),
                         formatToDecimal(catenaInput, tokens.find(item => item.symbol === "CNBTC").decimals), 0)
@@ -249,7 +256,19 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     const handleRefreshCollateralRatio = async () => {
         if (mintRedeemCurrency === "AGOUSD") {
-            await contracts.TREASURY_AGOUSD.methods.refreshCollateralRatio().send({from: account});
+            // await contracts.TREASURY_AGOUSD.methods.allocateSeigniorage().send({from: account});
+            // calcCollateralBalance()
+
+            const exceedCollateralValue = await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call();
+
+            console.log(exceedCollateralValue);
+
+            // const data = await contracts.FOUNDRY_AGOUSD.methods.earned(account).call();
+            // const howMuchUSDT = await contracts.USDT.balanceOf()
+            // console.log(data);
+
+            // await contracts.TREASURY_AGOUSD.methods.refreshCollateralRatio().send({from: account});
+
         }
         else {
             await contracts.TREASURY_AGOBTC.methods.refreshCollateralRatio().send({from: account});

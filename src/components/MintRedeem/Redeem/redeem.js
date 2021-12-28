@@ -124,8 +124,8 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
 
     const handleStableInput = (value) => {
 
-        const collateralOutput = ((value / info.stablePrice) - ((value / info.stablePrice) * (info.redeemFee / 100))) * (info.effectiveCollateralRatio / 100);
-        const shareOutput = ((value / info.sharePrice) - ((value / info.sharePrice) * (info.redeemFee / 100))) * ((100 - info.effectiveCollateralRatio) / 100);
+        const collateralOutput = ((parseFloat(value) * (info.effectiveCollateralRatio / 100)) / info.collateralPrice)
+        const shareOutput = ((parseFloat(value) * (1 - (info.effectiveCollateralRatio / 100))) / info.sharePrice)
 
         setCollateralOutput(collateralOutput);
         setCatenaOutput(shareOutput);
@@ -139,12 +139,11 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
             message.loading({content: `Collect redemption`, key: MINT_REDEEM_KEY, duration: 3000, className: "ant-argano-message"})
             if (mintRedeemCurrency === "AGOUSD") {
                 await contracts.POOL_AGOUSD.methods.collectRedemption().send({from: account});
-                changeTokenBalance("USDT", redeemBalances.redemptionCollateral, false);
 
                 if (info.effectiveCollateralRatio !== 100) {
                     changeTokenBalance([
-                        {name: "USDT", amount: redeemBalances.redemptionCollateral, sub: false},
-                        {name: "CNUSD", amount: redeemBalances.redemptionShare, sub: false}
+                        {name: "USDT", amount: parseFloat(redeemBalances.redemptionCollateral), sub: false},
+                        {name: "CNUSD", amount: parseFloat(redeemBalances.redemptionShare), sub: false}
                     ]);
                 }
                 else {
@@ -159,13 +158,13 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
 
                 if (info.effectiveCollateralRatio !== 100) {
                     changeTokenBalance([
-                        {name: "WBTC", amount: redeemBalances.redemptionCollateral, sub: false},
-                        {name: "CNBTC", amount: redeemBalances.redemptionShare, sub: false}
+                        {name: "WBTC", amount: parseFloat(redeemBalances.redemptionCollateral), sub: false},
+                        {name: "CNBTC", amount: parseFloat(redeemBalances.redemptionShare), sub: false}
                     ]);
                 }
                 else {
                     changeTokenBalance([
-                        {name: "WBTC", amount: redeemBalances.redemptionCollateral, sub: false},
+                        {name: "WBTC", amount: parseFloat(redeemBalances.redemptionCollateral), sub: false},
                     ]);
                 }
             }

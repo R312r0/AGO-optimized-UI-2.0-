@@ -70,32 +70,6 @@ export const Accounts = () => {
 
         return null;
     }
-
-    const PortfolioPieChart = ({assetsList}) => {
-
-        return (
-            <ResponsiveContainer>
-                {/* <PieChart width={0} height={0}>
-                    <Pie
-                    startAngle={0} 
-                    endAngle={360}
-                    data={assetsList}
-                    labelLine={false}
-                    // label={renderCustomizedLabel}
-                    stroke="none"
-                    dataKey="userUsdBalance"
-                    >
-                    {assetsList.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                    </Pie>
-                    <Tooltip
-                    content={<CustomToolTip/>}
-                    />
-                </PieChart> */}
-            </ResponsiveContainer>
-        )
-    }
     
     return (
         <>

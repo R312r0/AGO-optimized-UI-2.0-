@@ -1,6 +1,10 @@
 import React from 'react';
+import { formattedNum } from '../../../utils/helpers';
 
-const FoundryData = () => {
+const FoundryData = ({data}) => {
+
+
+
 
     return (
         <div className='foundry__data'>
@@ -11,11 +15,11 @@ const FoundryData = () => {
                     <div className='foundry__data-item__wrapper'>
                         <div className='foundry__data-item__wrapper__token-data'>
                             <p>USDT</p>
-                            <b>2,500</b>
+                            <b>{data ? formattedNum( data.usdt) : 0}</b>
                         </div>
                         <div className='foundry__data-item__wrapper__token-data'>
                             <p>WBTC</p>
-                            <b>1,500</b>
+                            <b>{data ? formattedNum( data.wbtc) : 0}</b>
                         </div>
                     </div>
                 </main>
@@ -44,11 +48,11 @@ const FoundryData = () => {
                     <div className='foundry__data-item__wrapper'>
                         <div className='foundry__data-item__wrapper__token-data'>
                             <p>CNUSD</p>
-                            <b>25,3</b>
+                            <b>{data ? formattedNum( data.cnusd) : 0}</b>
                         </div>
                         <div className='foundry__data-item__wrapper__token-data'>
                             <p>CNBTC</p>
-                            <b>16,8</b>
+                            <b>{data ? formattedNum( data.cnbtc) : 0}</b>
                         </div>
                     </div>
                 </main>
@@ -62,7 +66,7 @@ const FoundryData = () => {
                 <main>
                     <p className='foundry__data-item__heading'>Total Value Locked</p>
                     <div className='foundry__data-item__wrapper'>
-                        <b>$3,438,283</b>
+                        <b>${data ? formattedNum(data.tvl) : 0}</b>
                     </div>
                 </main>
                 <svg className='foundry__data-item__icon' viewBox="0 0 64 69">

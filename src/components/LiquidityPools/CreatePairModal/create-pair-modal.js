@@ -176,41 +176,43 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
 
     useEffect(() => {
 
-        // setToken0Input(0);
-        // setToken1Input(0);
-
-        const searchToken0 = tokens[token0Select?.symbol];
-        const searchToken1 = tokens[token1Select?.symbol];
-
-        if (searchToken0) {
-            allowanceForRouter(searchToken0.instance, 0)
-            checkTokenBalance(searchToken0.instance, 0)
-        }
-        else {
-            const contr = new library.eth.Contract(ERC20_ABI, token0Select.id)
-            allowanceForRouter(contr, 0);
-            checkTokenBalance(contr, 0)
-        }
-
-        if (searchToken1) {
-            allowanceForRouter(searchToken1.instance, 1);
-            checkTokenBalance(searchToken1.instance, 1)
-        }
-        else {
-            if (token1Select) {
-                const contr = new library.eth.Contract(ERC20_ABI, token1Select.id)
-                allowanceForRouter(contr, 1);
+        if (contracts) {
+            const searchToken0 = contracts[token0Select?.symbol];
+            const searchToken1 = contracts[token1Select?.symbol];
+    
+            if (searchToken0) {
+                allowanceForRouter(searchToken0, 0)
+                checkTokenBalance(searchToken0, 0)
+            }
+            else {
+                const contr = new library.eth.Contract(ERC20_ABI, token0Select.id)
+                allowanceForRouter(contr, 0);
                 checkTokenBalance(contr, 0)
+            }
+    
+            if (searchToken1) {
+                allowanceForRouter(searchToken1, 1);
+                checkTokenBalance(searchToken1, 1)
+            }
+            else {
+                if (token1Select) {
+                    const contr = new library.eth.Contract(ERC20_ABI, token1Select.id)
+                    allowanceForRouter(contr, 1);
+                    checkTokenBalance(contr, 0)
+                }
             }
         }
 
-    }, [token0Select, token1Select])
+    }, [contracts, token0Select, token1Select])
 
 
 
     const CreatePairButton = () => {
 
         const findPool = pools.find(item => {
+
+            console.log(item);
+
             if (item.token0.symbol === token0Select.symbol || item.token0.symbol === token1Select?.symbol) {
                 if (item.token1.symbol === token0Select.symbol || item.token1.symbol === token1Select?.symbol) {
                     return item;

@@ -6,18 +6,12 @@ import vector from '../../assets/icons/vector.svg';
 import claimRewardIcon from './claim-reward.svg';
 import './staking-rewards.scss';
 import { StakingItem } from "./StakingItem/staking-item";
-import { CONTRACT_ADRESESS } from "../../constants";
+import { CONTRACT_ADRESESS, SINGLE_STAKING_POOL } from "../../constants";
 import { useThemeContext } from '../Layout/layout';
 
 export const StakingRewards = () => {
 
     const { theme } = useThemeContext();
-
-    const stakingPools = [
-        { name: "Argano", symbol: "AGO", roi: "30%", contract: CONTRACT_ADRESESS.MASTER_CHEF, pid: 0 },
-        { name: "Argano Dollar Token", symbol: "AGOUSD", roi: "20%", contract: CONTRACT_ADRESESS.MASTER_CHEF, pid: 1 },
-        { name: "Argano Bitcoin Token", symbol: "AGOBTC", roi: "30%", contract: CONTRACT_ADRESESS.MASTER_CHEF, pid: 2 },
-    ]
 
     return (
         <div className={`staking-wrapper ${theme === "light" ? " staking-wrapper-light" : ""}`}>
@@ -36,7 +30,7 @@ export const StakingRewards = () => {
                 </div>
 
                 <ul>
-                    {stakingPools.map((item, _ind) => <StakingItem pool={item} key={`staking_item_${_ind}`} />)}
+                    {SINGLE_STAKING_POOL.map((item, _ind) => <StakingItem pool={item} key={`staking_item_${_ind}`} />)}
                 </ul>
             </div>
         </div>

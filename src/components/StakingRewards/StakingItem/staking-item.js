@@ -5,77 +5,104 @@ import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
 import {formatFromDecimal, formatToDecimal} from "../../../utils/helpers";
 import {CONTRACT_ADRESESS, MAX_INT} from "../../../constants";
+import SINGLE_CHEF_ABI from '../../../abi/SIngleChef.json';
+import { useDataContext } from '../../../dataProvider';
 
 
 export const StakingItem = ({pool}) => {
 
 
-    const {symbol, name, roi, contract, pid } = pool;
-    const { account } = useWeb3React();
-    const { contracts, tokens } = useSystemContext();
+    console.log(pool);
+
+    const { name, address } = pool;
+    const { account, library } = useWeb3React();
+    const { tokens, contracts } = useSystemContext();
+
+    const [poolContract, setPoolContract] = useState(null);
+    const [stakingInfo, setStakingInfo] = useState({
+        rewardTokenName: "",
+        staked: 0,
+        userReward: 0
+    });
     const [windowExpanded, setWindowExpanded] = useState(false);
     const [depositInput, setDepositInput] = useState(0);
     const [allowance, setAllowance] = useState(false);
-    const [earned, setEarned] = useState(0);
-    const [staked, setStaked] = useState(0);
 
     useEffect(() => {
 
-        if (account && contracts) {
-            getAllowance()
-            getStakignData()
+        if (library && !poolContract) {
+
+            setPoolContract(new library.eth.Contract(SINGLE_CHEF_ABI, address));
+
         }
 
+    }, [library])
 
-    }, [account])
+
+    useEffect(() => {
+
+        if (account && poolContract && tokens) {
+            getPoolInfo(name, poolContract);
+        }
+
+    }, [account, poolContract, tokens])
 
 
-    const getStakignData = async () => {
-        const rewardTokenDecimals = tokens.find(item => item.symbol === "AGO").decimals
-        const tokenDecimals = tokens.find(item => item.symbol === symbol).decimals
+    const getPoolInfo = async (name, contract) => {
 
-        const earned = await contracts.MASTER_CHEF.methods.pendingAgo(pid, account).call();
-        const staked = await contracts.MASTER_CHEF.methods.userInfo(pid, account).call();
-        setEarned(formatFromDecimal(earned, rewardTokenDecimals));
-        setStaked(formatFromDecimal(staked.amount, tokenDecimals));
+        console.log(contract);
+
+        const lpToken = await contract.methods.rewardToken().call();
+        const userInfo = await contract.methods.userInfo(account).call();
+
+        const rewardTokenName = tokens.find((tok) => tok.address === lpToken.toLowerCase()).symbol
+        const staked = formatFromDecimal(userInfo[0], tokens.find((tok) => tok.symbol === name).decimals) 
+        const userReward = formatFromDecimal(userInfo[1], tokens.find((tok) => tok.symbol === rewardTokenName).decimals) 
+
+        setStakingInfo({
+            rewardTokenName,
+            staked,
+            userReward
+        })
 
     }
 
     const handleDeposit = async () => {
 
-        const tokenDecimals = tokens[symbol].decimals;
-        await contracts.MASTER_CHEF.methods.deposit(pid, formatToDecimal(depositInput, tokenDecimals)).send({from: account});
-        await getStakignData();
+        const tokenDecimals = tokens.find((item) => item.symbol === name).decimals;
+        await poolContract.methods.deposit(formatToDecimal(depositInput, tokenDecimals)).send({from: account});
+        await getPoolInfo();
 
     }
 
     const handleUnstake = async () => {
 
-        const tokenDecimals = tokens[symbol].decimals
-        await contracts.MASTER_CHEF.methods.withdraw(pid, formatToDecimal(depositInput, tokenDecimals)).send({from:account})
-        await getStakignData()
+        const tokenDecimals = tokens.find((item) => item.symbol === name).decimals
+        await poolContract.methods.withdraw(formatToDecimal(depositInput, tokenDecimals)).send({from:account})
+        await getPoolInfo()
 
     }
 
     const handleClaimReward = async () => {
-        await contracts.MASTER_CHEF.methods.withdraw(pid, 0).send({from: account})
-        await getStakignData()
+        await poolContract.methods.withdraw(0).send({from: account})
+        await getPoolInfo()
     }
 
     const handleApprove = async () => {
-        const tok = contracts[symbol];
-        await tok.methods.approve(CONTRACT_ADRESESS.MASTER_CHEF, MAX_INT).send({from: account});
+        const tok = contracts[name];
+        await tok.methods.approve(address, MAX_INT).send({from: account});
 
         await getAllowance();
 
     }
 
     const getAllowance = async () => {
-        const tok = contracts[symbol];
-        const allowance = await tok.methods.allowance(account, CONTRACT_ADRESESS.MASTER_CHEF).call()
+        const tok = contracts[name];
+        const allowance = await tok.methods.allowance(account, address).call()
 
         setAllowance(allowance.length === MAX_INT.length)
     }
+
 
     return (
         // FIXME: onClick={() => setWindowExpanded(!windowExpanded)} ${windowExpanded  ? "__opened" : ""}`}
@@ -84,16 +111,16 @@ export const StakingItem = ({pool}) => {
             <div className='head-wrapper'>
                 <div className='token'>
                     <div className='token-main'>
-                        <TokenIcon iconName={symbol}/>
+                        <TokenIcon iconName={name}/>
                         <b> {name} </b>
                     </div>
-                    <span> {symbol} </span>
+                    <span> {name} </span>
                 </div>
                 <div className='roi'>
-                    <span> {roi} </span>
+                    <span> 6.66% </span>
                 </div>
                 <div className='contract'>
-                    <span>{contract}</span>
+                    <span>{address}</span>
                 </div>
                 <button onClick={() => setWindowExpanded(!windowExpanded)} className='hide-btn'>{windowExpanded ? 'Hide' : 'Deploy'}</button>
             </div>
@@ -112,9 +139,9 @@ export const StakingItem = ({pool}) => {
                                     <h5> Currently Staked </h5>
                                 </div>
                                 <div className='info__row'>
-                                    <h5> {earned} AGO </h5>
-                                    <input type="number" placeholder={`Put ${symbol} token amount`} onChange={(e) => setDepositInput(e.target.value)}/>
-                                    <h5> {staked} {symbol} </h5>
+                                    <h5> {stakingInfo.userReward} {stakingInfo.rewardTokenName} </h5>
+                                    <input type="number" placeholder={`Put ${name} token amount`} onChange={(e) => setDepositInput(e.target.value)}/>
+                                    <h5> {stakingInfo.staked} {name} </h5>
                                 </div>
                             </div>
                             <div className='control-stake'>

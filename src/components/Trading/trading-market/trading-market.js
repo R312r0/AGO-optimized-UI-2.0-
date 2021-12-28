@@ -33,7 +33,7 @@ const SwapButtonWrapper = styled.button`
 
 const TradingMarket = ({pool}) => {
 
-    const {contracts, tokens, balances, theme, setIsWalletModal, changeTokenBalance} = useSystemContext();
+    const {contracts, balances, theme, setIsWalletModal, changeTokenBalance} = useSystemContext();
     const {account} = useWeb3React();
 
     const [token0, setToken0] = useState(null);
@@ -82,7 +82,7 @@ const TradingMarket = ({pool}) => {
 
     const handleApprove = async (tok) => {
 
-        const inst = tokens[tok.symbol].instance;
+        const inst = contracts[tok.symbol];
         await inst.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account});
         checkAllowance()
     }

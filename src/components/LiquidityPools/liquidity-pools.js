@@ -72,6 +72,8 @@ export const LiquidityPools = () => {
     }, [account, data, loading])
 
 
+    console.log(pools);
+
     useEffect(() => {
 
         if ( pools && earnPools ) {
@@ -260,7 +262,7 @@ export const LiquidityPools = () => {
                 }
             </ul>
         </div>
-            {/* <CreatePairModal visible={isCreatePairModal} setVisible={setIsCreatePairModal} pools={pools}/> */}
+            <CreatePairModal visible={isCreatePairModal} setVisible={setIsCreatePairModal} pools={pools}/>
         </>
         }
         </>
