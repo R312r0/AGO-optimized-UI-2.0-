@@ -49,95 +49,103 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
 
     const getUserPools = async (tokensSub, lpTokens) => {
 
-        const poolLength = await contracts.MASTER_CHEF.methods.poolLength().call();
-        let userPools = []
-        for (let i = 0; i < poolLength - 1; i++) {
+        // const poolLength = await contracts.MASTER_CHEF.methods.poolLength().call();
 
-            let amountStaked = (await contracts.MASTER_CHEF.methods.userInfo(i, account).call()).amount;
+        let singlePools = [];
+        let lpPools = [];
+
+        console.log(tokensSub);
+        console.log(lpTokens);
 
 
-            if (amountStaked > 0) {
-                const poolLpTokenAddress = (await contracts.MASTER_CHEF.methods.poolInfo(i).call()).lpToken
+        // for (let i = 0; i < poolLength - 1; i++) {
+
+        //     let amountStaked = (await contracts.MASTER_CHEF.methods.userInfo(i, account).call()).amount;
+
+
+        //     if (amountStaked > 0) {
+        //         const poolLpTokenAddress = (await contracts.MASTER_CHEF.methods.poolInfo(i).call()).lpToken
                 
-                let tok = tokensSub.find(item => item.id === poolLpTokenAddress.toLowerCase());
-                let poolName;
-                let rewardSize = formatFromDecimal(await contracts.MASTER_CHEF.methods.pendingAgo(i, account).call(), tokens.find(item => item.symbol === "AGO").decimals)
+        //         let tok = tokensSub.find(item => item.id === poolLpTokenAddress.toLowerCase());
+        //         let poolName;
+        //         let rewardSize = formatFromDecimal(await contracts.MASTER_CHEF.methods.pendingAgo(i, account).call(), tokens.find(item => item.symbol === "AGO").decimals)
 
-                if (!tok) {
-                    tok = lpTokens.find(item => item.id === poolLpTokenAddress.toLowerCase());
-                    poolName = `${tok.token0.symbol}-${tok.token1.symbol}`
-                    amountStaked = formatFromDecimal(amountStaked, 18);
-                }
-                else {
-                    poolName = tok.symbol;
-                    amountStaked = formatFromDecimal(amountStaked, tok.decimals)
-                }
+        //         if (!tok) {
+        //             tok = lpTokens.find(item => item.id === poolLpTokenAddress.toLowerCase());
+        //             poolName = `${tok.token0.symbol}-${tok.token1.symbol}`
+        //             amountStaked = formatFromDecimal(amountStaked, 18);
+        //         }
+        //         else {
+        //             poolName = tok.symbol;
+        //             amountStaked = formatFromDecimal(amountStaked, tok.decimals)
+        //         }
 
-                userPools.push({poolName, amountStaked, rewardSize})
-            }
-        }
+        //         userPools.push({poolName, amountStaked, rewardSize})
+        //     }
+        // }
 
-        determineNumberOfPages(userPools)
-        setUserStake(userPools);
+        // determineNumberOfPages(userPools)
+        // setUserStake(userPools);
 
     }
 
     return (
-        <div className='accounts-wrapper-use-staking-pools cosmetical-wrapper'> 
-            <h1> Staking </h1>
+        <h1> Staking </h1>
+        // <div className='accounts-wrapper-use-staking-pools cosmetical-wrapper'> 
+        //     <h1> Staking </h1>
             
-            <div className='accounts-wrapper-use-staking-pools__list-header'> 
-                <span> Symbol </span>
-                <span> Size </span>
-                <span> Reward </span>
-            </div>
+        //     <div className='accounts-wrapper-use-staking-pools__list-header'> 
+        //         <span> Symbol </span>
+        //         <span> Size </span>
+        //         <span> Reward </span>
+        //     </div>
 
-            <ul style={{position: "relative"}}>
-                {dataPaginated && dataPaginated[`${currentClickedNumber}`] ? dataPaginated[`${currentClickedNumber}`].map((item) => {
-                    if (item.poolName.indexOf("-") !== -1) {
-                        const symbols = item.poolName.split("-")
-                        return (
-                            <li>
-                               <div>
-                                   <TokenIcon iconName={symbols[0]}/>
-                                   <TokenIcon iconName={symbols[1]}/>
-                                   <p>{item.poolName}</p>
-                               </div>
-                                <span>{item.amountStaked} LP</span>
-                                <span>{item.rewardSize}</span>
-                            </li>
-                        )
-                    }
+        //     <ul style={{position: "relative"}}>
+        //         {dataPaginated && dataPaginated[`${currentClickedNumber}`] ? dataPaginated[`${currentClickedNumber}`].map((item) => {
+        //             if (item.poolName.indexOf("-") !== -1) {
+        //                 const symbols = item.poolName.split("-")
+        //                 return (
+        //                     <li>
+        //                        <div>
+        //                            <TokenIcon iconName={symbols[0]}/>
+        //                            <TokenIcon iconName={symbols[1]}/>
+        //                            <p>{item.poolName}</p>
+        //                        </div>
+        //                         <span>{item.amountStaked} LP</span>
+        //                         <span>{item.rewardSize}</span>
+        //                     </li>
+        //                 )
+        //             }
 
 
-                    return (
-                        <li>
-                            <div>
-                                <TokenIcon iconName={item.poolName} />
-                                <p>{item.poolName}</p>
-                            </div>
-                            <span>{item.amountStaked} {item.poolName}</span>
-                            <span>{item.rewardSize}</span>
-                        </li>
-                    )
-                })
-                :
-                    <Spin indicator={LOADER_INDICATOR_LOCAL}/>
-                }
+        //             return (
+        //                 <li>
+        //                     <div>
+        //                         <TokenIcon iconName={item.poolName} />
+        //                         <p>{item.poolName}</p>
+        //                     </div>
+        //                     <span>{item.amountStaked} {item.poolName}</span>
+        //                     <span>{item.rewardSize}</span>
+        //                 </li>
+        //             )
+        //         })
+        //         :
+        //             <Spin indicator={LOADER_INDICATOR_LOCAL}/>
+        //         }
 
-            </ul>
+        //     </ul>
 
-            <div className='accounts-wrapper-use-staking-pools__pagination'>
-                {dataPaginated && Object.entries(dataPaginated).map((item) => {
-                    return <span onClick={() => setCurrentClickedNumber(item[0])} className={item[0] === currentClickedNumber ? "active" : ""}>{item[0]}</span>
-                })}
-            </div>
+        //     <div className='accounts-wrapper-use-staking-pools__pagination'>
+        //         {dataPaginated && Object.entries(dataPaginated).map((item) => {
+        //             return <span onClick={() => setCurrentClickedNumber(item[0])} className={item[0] === currentClickedNumber ? "active" : ""}>{item[0]}</span>
+        //         })}
+        //     </div>
             
-            <div className='accounts-wrapper-use-staking-pools__buttons'>
-                <button className='active'>Add</button>
-                <button>Withdraw</button>
-            </div>
-        </div>
+        //     <div className='accounts-wrapper-use-staking-pools__buttons'>
+        //         <button className='active'>Add</button>
+        //         <button>Withdraw</button>
+        //     </div>
+        // </div>
     )
 }
 

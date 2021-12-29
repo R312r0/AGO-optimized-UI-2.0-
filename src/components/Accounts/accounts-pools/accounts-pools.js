@@ -7,21 +7,20 @@ import {useWeb3React} from "@web3-react/core";
 import {formatFromDecimal, formattedNum} from "../../../utils/helpers";
 import {TokenIcon} from "../../TokenIcon/token_icon";
 
-const AccountsPools = () => {
+const AccountsPools = ({data}) => {
 
     const { account, library } = useWeb3React();
-    const {data, loading} = useQuery(LIQ_POOLS_ACCOUNTS);
     const [totalPages, setTotalPages] = useState(null);
     const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
     const [dataPaginated, setDataPaginated] = useState(null);
 
     useEffect(() => {
 
-        if (account && data && !loading) {
+        if (account && data) {
             getUserPools()
         }
 
-    }, [account, data, loading])
+    }, [account, data])
 
     const determineNumberOfPages = (arr) => {
         const itemsPerPage = 3;

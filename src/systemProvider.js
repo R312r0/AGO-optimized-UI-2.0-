@@ -110,6 +110,7 @@ export const SystemProvider = ({children}) => {
 
         if (contracts && tokens && account) {
             getUserPortfolio();
+            getUserStakingPools();
         }
 
     }, [account, contracts, tokens])
@@ -156,6 +157,12 @@ export const SystemProvider = ({children}) => {
 
         setBalances(res)
     }
+
+
+    const getUserStakingPools = async () => {
+
+    }
+
 
     const changeTokenBalance = (operations) => {
 

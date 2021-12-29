@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { Doughnut } from 'react-chartjs-2'
+import styled from 'styled-components';
+import { useThemeContext } from '../../Layout/layout';
+import { formattedNum } from '../../../utils/helpers';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -11,21 +14,6 @@ import {
     Legend,
     ArcElement,
 } from 'chart.js'
-import { Chart,  Doughnut } from 'react-chartjs-2'
-
-import Highcharts from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
-import chartBgImage from '../../../assets/charts/pieChartBg.svg';
-
-import { useSystemContext } from '../../../systemProvider';
-
-import styled from 'styled-components';
-import { useThemeContext } from '../../Layout/layout';
-import { formattedNum } from '../../../utils/helpers';
-
-Chart.register(
-    Doughnut
-)
 
 ChartJS.register(
     CategoryScale,
@@ -37,7 +25,6 @@ ChartJS.register(
     Legend,
     ArcElement,
 )
-
 
 window.arcSpacing = 0.1;
 window.segmentHovered = false;
@@ -83,35 +70,21 @@ const AccountPieChart = ({userBalanceData}) => {
     const [chartData, setChartData] = useState(null);
     const [chartOptions, setChartOptions] = useState(null);
 
-    const chartRef = useRef(null);
     const chartCanvasRef = useRef(null);
 
     const labels = ['#40BA93', '#0885F8', '#EA8C00', '#1BB8DB', '#9018EE',
         '#DB1B60', '#EAD200', '#DB1BB1'];
 
-    const data = {
-        labels: labels,
-        datasets: [
-            {
-                data: [800, 400, 540, 290, 400, 540, 290],
-                backgroundColor: labels,
-            }
-        ]
-    }
-
-
     useEffect(() => {
 
         if (userBalanceData) {
 
-            if (chartRef) {
-                const dataSets = userBalanceData.map((item) => item.usdBalance);
-                setChartData({datasets: [{data: dataSets, backgroundColor: labels}]})   
-            }
+            const dataSets = userBalanceData.map((item) => item.usdBalance);
+            setChartData({datasets: [{data: dataSets, backgroundColor: labels}]})   
 
         }
 
-    }, [chartRef, userBalanceData])
+    }, [userBalanceData])
 
 
     useEffect(() => {
@@ -200,7 +173,7 @@ const AccountPieChart = ({userBalanceData}) => {
                         /> */}
             
             
-                        <Chart ref={chartRef} type='doughnut' data={chartData} options={chartOptions} height='200px' redraw />
+                        <Doughnut data={chartData} options={chartOptions} height='200px' redraw />
                         <canvas className={'chartCanvas'} ref={chartCanvasRef} width="260" height="260" />
                     </PieCartWrapper>
                     :
