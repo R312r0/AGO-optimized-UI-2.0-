@@ -95,6 +95,7 @@ body{
 .luqidity-pools-wrapper {
     display: flex;
     flex-direction: column;
+    position: relative;
 
     .luqidity-pools-wrapper-page-header {
         display: grid;

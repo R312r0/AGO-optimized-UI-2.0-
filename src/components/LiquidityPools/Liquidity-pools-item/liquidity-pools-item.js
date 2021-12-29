@@ -6,7 +6,7 @@ import { Liquidity } from '../Liquidity/liquidity';
 import {RemoveLiquidityModal} from "../RemoveLiquidityModal/remove-liquidity-modal";
 import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
-import {DEX_ADDRESESS, MAX_INT} from "../../../constants";
+import {DEX_ADDRESESS, MAX_INT, CONTRACT_ADRESESS} from "../../../constants";
 import {Transactions} from "../Transactions/transactions";
 import {StakeLp} from "../StakeLp/stake-lp";
 
@@ -36,7 +36,7 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
             case TRANSACTIONS:
                 return (<Transactions token0={token0} token1={token1}/>)
             case STAKE_LP:
-                return (<StakeLp token0={token0} token1={token1} lpTokenContract={lpTokenContract} lpUserBalance={lpUserBalance}/>)
+                return (<StakeLp token0={token0} token1={token1} lpTokenContract={lpTokenContract} lpUserBalance={lpUserBalance} lpTokenAddress={address}/>)
             default:
                 return (<ProvideLiquidity/>)
         };
@@ -112,6 +112,7 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
                                   token1={token1}
                                   lpTokenContract={lpTokenContract}
                                   lpUserBalance={lpUserBalance}
+                                  lpTokenAddress={address}
             />
         </>
     )

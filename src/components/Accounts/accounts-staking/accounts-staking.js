@@ -58,9 +58,7 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
 
             if (amountStaked > 0) {
                 const poolLpTokenAddress = (await contracts.MASTER_CHEF.methods.poolInfo(i).call()).lpToken
-
-                // console.log(await contracts.MASTER_CHEF.methods.poolInfo(i).call());
-
+                
                 let tok = tokensSub.find(item => item.id === poolLpTokenAddress.toLowerCase());
                 let poolName;
                 let rewardSize = formatFromDecimal(await contracts.MASTER_CHEF.methods.pendingAgo(i, account).call(), tokens.find(item => item.symbol === "AGO").decimals)

@@ -40,6 +40,9 @@ export const SystemProvider = ({children}) => {
 
     const [web3Loading, setWeb3Loading] = useState(true);
 
+    const [approveDataForModal, setApproveDataForModal] = useState(null);
+    const [approveModal, setApproveModal] = useState(false);
+
     // 1. Check if user are already connected trough MetaMask if yes then connect him again.
     useEffect(() => {
         metaMask.isAuthorized()
@@ -87,11 +90,6 @@ export const SystemProvider = ({children}) => {
 
     }, [active])
 
-    useEffect(() => {
-
-        console.log(balances);
-
-    }, [balances])
 
     // 2. Inits contracts and tokens not-depend if user connected or not.
     useEffect(() => {
@@ -229,7 +227,11 @@ export const SystemProvider = ({children}) => {
         contracts,
         balances,
         web3Loading,
-        changeTokenBalance
+        changeTokenBalance,
+        approveModal,
+        setApproveModal,
+        approveDataForModal,
+        setApproveDataForModal
     }
 
     return (

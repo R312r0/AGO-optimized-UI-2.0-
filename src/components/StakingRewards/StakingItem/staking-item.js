@@ -6,17 +6,15 @@ import {useWeb3React} from "@web3-react/core";
 import {formatFromDecimal, formatToDecimal} from "../../../utils/helpers";
 import {CONTRACT_ADRESESS, MAX_INT} from "../../../constants";
 import SINGLE_CHEF_ABI from '../../../abi/SIngleChef.json';
+import { ApproveModal } from '../../ApproveModal/approve-modal';
 import { useDataContext } from '../../../dataProvider';
 
 
 export const StakingItem = ({pool}) => {
 
-
-    console.log(pool);
-
     const { name, address } = pool;
     const { account, library } = useWeb3React();
-    const { tokens, contracts } = useSystemContext();
+    const { tokens, contracts, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
 
     const [poolContract, setPoolContract] = useState(null);
     const [stakingInfo, setStakingInfo] = useState({
@@ -28,12 +26,13 @@ export const StakingItem = ({pool}) => {
     const [depositInput, setDepositInput] = useState(0);
     const [allowance, setAllowance] = useState(false);
 
+
+
     useEffect(() => {
 
         if (library && !poolContract) {
 
             setPoolContract(new library.eth.Contract(SINGLE_CHEF_ABI, address));
-
         }
 
     }, [library])
@@ -41,23 +40,26 @@ export const StakingItem = ({pool}) => {
 
     useEffect(() => {
 
-        if (account && poolContract && tokens) {
+        if (account && poolContract && tokens && contracts) {
             getPoolInfo(name, poolContract);
+
+            if (!approveModal) {
+                getAllowance();
+            }
         }
 
-    }, [account, poolContract, tokens])
+    }, [account, poolContract, tokens, contracts, approveModal])
 
 
     const getPoolInfo = async (name, contract) => {
-
-        console.log(contract);
 
         const lpToken = await contract.methods.rewardToken().call();
         const userInfo = await contract.methods.userInfo(account).call();
 
         const rewardTokenName = tokens.find((tok) => tok.address === lpToken.toLowerCase()).symbol
         const staked = formatFromDecimal(userInfo[0], tokens.find((tok) => tok.symbol === name).decimals) 
-        const userReward = formatFromDecimal(userInfo[1], tokens.find((tok) => tok.symbol === rewardTokenName).decimals) 
+
+        const userReward = formatFromDecimal(await contract.methods.pendingReward(account).call(), tokens.find((tok) => tok.symbol === rewardTokenName).decimals) 
 
         setStakingInfo({
             rewardTokenName,
@@ -71,7 +73,7 @@ export const StakingItem = ({pool}) => {
 
         const tokenDecimals = tokens.find((item) => item.symbol === name).decimals;
         await poolContract.methods.deposit(formatToDecimal(depositInput, tokenDecimals)).send({from: account});
-        await getPoolInfo();
+        await getPoolInfo(name, poolContract);
 
     }
 
@@ -79,20 +81,25 @@ export const StakingItem = ({pool}) => {
 
         const tokenDecimals = tokens.find((item) => item.symbol === name).decimals
         await poolContract.methods.withdraw(formatToDecimal(depositInput, tokenDecimals)).send({from:account})
-        await getPoolInfo()
+        await getPoolInfo(name, poolContract)
 
     }
 
     const handleClaimReward = async () => {
         await poolContract.methods.withdraw(0).send({from: account})
-        await getPoolInfo()
+        await getPoolInfo(name, poolContract)
     }
 
     const handleApprove = async () => {
-        const tok = contracts[name];
-        await tok.methods.approve(address, MAX_INT).send({from: account});
+ 
+        setApproveDataForModal({
+            destination: address,
+            approves: [
+                {name: name, address: tokens?.find(item => item.symbol === name).address, alreadyApproved: allowance},
+            ]
+        })
 
-        await getAllowance();
+        setApproveModal(true);
 
     }
 
@@ -105,8 +112,7 @@ export const StakingItem = ({pool}) => {
 
 
     return (
-        // FIXME: onClick={() => setWindowExpanded(!windowExpanded)} ${windowExpanded  ? "__opened" : ""}`}
-        // FIXME: Return this but fix it first.
+        <>
         <li className={`staking-list__item staking-list__item${windowExpanded  ? "__opened" : ""}`}>
             <div className='head-wrapper'>
                 <div className='token'>
@@ -153,6 +159,7 @@ export const StakingItem = ({pool}) => {
                 }
             </div>
         </li>
+        </>
     )
 
 }

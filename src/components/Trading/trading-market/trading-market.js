@@ -33,7 +33,7 @@ const SwapButtonWrapper = styled.button`
 
 const TradingMarket = ({pool}) => {
 
-    const {contracts, balances, theme, setIsWalletModal, changeTokenBalance} = useSystemContext();
+    const {contracts, balances, theme, setIsWalletModal, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal} = useSystemContext();
     const {account} = useWeb3React();
 
     const [token0, setToken0] = useState(null);
@@ -45,6 +45,8 @@ const TradingMarket = ({pool}) => {
     const [token0Input, setToken0Input] = useState(null);
     const [token1Input, setToken1Input] = useState(null);
 
+    const [tokensSwaped, setTokensSwaped] = useState(false);
+
     const {data, loading, error} = useSubscription(TRADING_TOKEN_POOL_PRICE, {
         variables: {id: pool?.id}
     })
@@ -55,12 +57,12 @@ const TradingMarket = ({pool}) => {
             setToken0({token: pool.token0, poolPrice: pool.token0Price})
             setToken1({token: pool.token1, poolPrice: pool.token1Price})
 
-            if (account) {
+            if (account && !approveModal) {
                 checkAllowance();
             }
         }
 
-    }, [account, pool, balances])
+    }, [account, pool, balances, approveModal])
 
     const checkAllowance = async () => {
 
@@ -73,6 +75,9 @@ const TradingMarket = ({pool}) => {
     }
 
     const handleChangeTokens = () => {
+
+        setTokensSwaped(!tokensSwaped);
+
         const token0Loc = token0;
         const token1Loc = token1;
         setToken0(token1Loc);
@@ -82,9 +87,19 @@ const TradingMarket = ({pool}) => {
 
     const handleApprove = async (tok) => {
 
-        const inst = contracts[tok.symbol];
-        await inst.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account});
-        checkAllowance()
+        setApproveDataForModal({
+            destination: DEX_ADDRESESS.ROUTER,
+            approves: [
+                {name: token0.token.symbol, address: token0.token.id, alreadyApproved: token0Allowance},
+                {name: token1.token.symbol, address: token1.token.id, alreadyApproved: token1Allowance},
+            ]
+        })
+
+        setApproveModal(true);
+
+        // const inst = contracts[tok.symbol];
+        // await inst.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account});
+        // checkAllowance()
     }
 
     const handleInput = (value) => {
@@ -118,12 +133,8 @@ const TradingMarket = ({pool}) => {
             return <SwapButtonWrapper onClick={() => setIsWalletModal(true)}> Connect Wallet </SwapButtonWrapper>
         }
 
-        else if (!token0Allowance) {
-            return <SwapButtonWrapper onClick={() => handleApprove(pool.token0)}> Approve {pool.token0.symbol} </SwapButtonWrapper>
-        }
-
-        else if (!token1Allowance) {
-            return <SwapButtonWrapper onClick={() => handleApprove(pool.token1)}> Approve {pool.token1.symbol} </SwapButtonWrapper>
+        else if (!token0Allowance || !token1Allowance) {
+            return <SwapButtonWrapper onClick={() => handleApprove(pool.token1)}> Approve </SwapButtonWrapper>
         }
 
         // else if (insuficientBalance) {
@@ -135,8 +146,6 @@ const TradingMarket = ({pool}) => {
         }
 
     }
-
-    console.log(data?.pair)
 
     return (
         <>
@@ -163,7 +172,7 @@ const TradingMarket = ({pool}) => {
                     <div className="trading-wrapper-exchange__swap-input">
                         <div className="trading-wrapper-exchange__swap-input__header">
                             <h3> {token0.token.name} </h3>
-                            <h5> =${formattedNum(data?.pair.token0.priceUSD)} </h5>
+                            <h5> =${formattedNum(tokensSwaped ? data?.pair.token1.priceUSD : data?.pair.token0.priceUSD)} </h5>
                         </div>
                         <main>
                     <span>
@@ -180,7 +189,7 @@ const TradingMarket = ({pool}) => {
                     <div className="trading-wrapper-exchange__swap-input">
                         <div className="trading-wrapper-exchange__swap-input__header">
                             <h3> {token1.token.name} </h3>
-                            <h5> =${formattedNum(data?.pair.token1.priceUSD)} </h5>
+                            <h5> =${formattedNum(tokensSwaped ? data?.pair.token0.priceUSD : data?.pair.token1.priceUSD)} </h5>
                         </div>
                         <main>
                     <span>

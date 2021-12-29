@@ -13,6 +13,7 @@ import styled from "styled-components";
 import {CreatePairModal} from "./CreatePairModal/create-pair-modal";
 import { ReactComponent as CreatePairPlus } from '../../assets/icons/plus_create.svg';
 import { useThemeContext } from '../Layout/layout';
+import { CONTRACT_ADRESESS } from '../../constants';
 
 const SearchBar = styled.div`
   width: 39.271vw;
@@ -62,6 +63,8 @@ export const LiquidityPools = () => {
     const [earnPoolsFormatted, setEarnPoolsFormatted] = useState([]);
     const [poolsPreparing, setPoolsPreparing] = useState(true);
     const [isCreatePairModal, setIsCreatePairModal] = useState(false);
+    const [approveData, setApproveData] = useState(null);
+    const [approveModal, setApproveModal] = useState(false);
 
     useEffect(() => {
 
@@ -72,7 +75,6 @@ export const LiquidityPools = () => {
     }, [account, data, loading])
 
 
-    console.log(pools);
 
     useEffect(() => {
 

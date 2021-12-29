@@ -20,8 +20,6 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
         variables: {id: tokens?.find(item => item.symbol === token)?.address}
     });
 
-    console.log(chartItem);
-
     useEffect(() => {
 
         if (chartItem?.data && !chartItem?.loading) {
@@ -222,7 +220,7 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
                 // candleSeries.setData([])
             }
         }
-    }, [chartType, chart, candleData, lineData]);
+    }, [chartType, chart, candleData, lineData, token]);
 
 
      return (

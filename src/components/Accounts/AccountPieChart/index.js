@@ -78,8 +78,6 @@ const AccountPieChart = ({userBalanceData}) => {
     const [chartData, setChartData] = useState(null);
     const [chartOptions, setChartOptions] = useState(null);
 
-    console.log(userBalanceData);
-
     const chartRef = useRef(null);
     const chartCanvasRef = useRef(null);
 

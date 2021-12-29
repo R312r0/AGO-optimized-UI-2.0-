@@ -6,14 +6,16 @@ import { useSystemContext } from '../../../systemProvider';
 import { CONTRACT_ADRESESS, MINT_REDEEM_KEY } from '../../../constants';
 import { MAX_INT } from '../../../constants';
 import { formatFromDecimal, formattedNum, formatToDecimal } from '../../../utils/helpers';
+import { ApproveModal } from '../../ApproveModal/approve-modal';
 import { message } from 'antd';
 
 export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => {
 
 
     const { account } = useWeb3React();
-    const { contracts, tokens, balances, changeTokenBalance } = useSystemContext();
+    const { contracts, tokens, balances, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
     const [approved, setApproved] = useState(null);
+
 
     const [stableBalance, setStableBalance] = useState(0);
     const [input, setInput] = useState(null);
@@ -27,12 +29,16 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
 
             setStableBalance(balances.find((item) => item.symbol === mintRedeemCurrency).nativeBalance);
 
-            getAllowance()
+            if (!approveModal) {
+                getAllowance()                
+            }
+
             getRedemption()
+
         }
 
 
-    }, [account, mintRedeemCurrency])
+    }, [account, mintRedeemCurrency, approveModal])
 
     const getAllowance = async () => {
 
@@ -106,20 +112,17 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
     }
 
     const handleApprove = async () => {
-        try {
-            message.loading({content: `Approve`, key: MINT_REDEEM_KEY, duration: 3000, className: "ant-argano-message"})
-            if (mintRedeemCurrency === "AGOUSD") {
-                await contracts.AGOUSD.methods.approve(CONTRACT_ADRESESS.POOL_AGOUSD, MAX_INT).send({from: account})
-            }
-            else {
-                await contracts.AGOBTC.methods.approve(CONTRACT_ADRESESS.POOL_AGOBTC, MAX_INT).send({from: account})
-            }
-            await getAllowance();
-            message.success({content: `Successfully approved !`, key: MINT_REDEEM_KEY, duration: 3, className: "ant-argano-message"})
-        }
-        catch {
-            message.error({content: `Something went wrong !`, key: MINT_REDEEM_KEY, duration: 3, className: "ant-argano-message"})
-        }
+
+        setApproveDataForModal({
+            destination: CONTRACT_ADRESESS[`POOL_${mintRedeemCurrency}`],
+            approves: [
+                {name: mintRedeemCurrency,
+                    address: CONTRACT_ADRESESS[mintRedeemCurrency],
+                    alreadyApproved: approved?.length === MAX_INT.length},
+            ]
+        })
+
+        setApproveModal(true);
     }
 
     const handleStableInput = (value) => {
@@ -247,7 +250,7 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
                 {input > stableBalance ? 
                     <button className='mint-window-run-mint' disabled={true}> Insufficient {mintRedeemCurrency} balance </button>
                     :
-                    <button className='mint-window-run-mint' onClick={approved ? handleRedeem : handleApprove}> {approved > "0" ? "Redeem" : `Approve ${mintRedeemCurrency}`}</button>
+                    <button className='mint-window-run-mint' onClick={approved ? handleRedeem : handleApprove}> {approved > "0" ? "Redeem" : `Approve`}</button>
                 }
             </div>
         </div>

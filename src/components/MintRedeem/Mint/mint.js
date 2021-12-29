@@ -6,12 +6,13 @@ import setting_cog from '../../../assets/icons/setting-cog.svg'
 import { useSystemContext } from '../../../systemProvider';
 import { formatFromDecimal, formattedNum, formatToDecimal } from '../../../utils/helpers';
 import { TokenIcon } from '../../TokenIcon/token_icon';
+import { ApproveModal } from '../../ApproveModal/approve-modal';
 
 
 export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => {
 
     const {account} = useWeb3React();
-    const { contracts, tokens, balances, changeTokenBalance } = useSystemContext();
+    const { contracts, tokens, balances, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
 
     const [collateralInput, setCollateralInput] = useState(null);
     const [catenaInput, setCatenaInput] = useState(null);
@@ -26,14 +27,23 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
         share: null,
     });
 
+    const testData = {
+        destination: "0xtrqwrqrw",
+        approves: [
+            {name: "AGO", address: "0xAgoAddress", alreadyApproved: true}
+        ]
+    }
+
 
     const [mintButtonDisabled, setMintButtonDisabled] = useState(false);
 
     useEffect(() => {
         if (account) {
-            getAllowance()
+            if (!approveModal) {
+                getAllowance()
+            }
         }
-    }, [account, mintRedeemCurrency])
+    }, [account, mintRedeemCurrency, approveModal])
 
 
     useEffect(() => {
@@ -111,26 +121,21 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
         setCatenaInput(value)
     }
 
-    const handleApprove = async (tokenType) => {
+    const handleApprove = () => {
 
-        if (tokenType === "collateral") {
-            if (mintRedeemCurrency === "AGOUSD") {
-                await contracts.USDT.methods.approve(CONTRACT_ADRESESS.POOL_AGOUSD, MAX_INT).send({from: account})
-            }
-            else {
-                await contracts.WBTC.methods.approve(CONTRACT_ADRESESS.POOL_AGOBTC, MAX_INT).send({from: account})
-            }
-        }
-        else {
-            if (mintRedeemCurrency === "AGOUSD") {
-                await contracts.CNUSD.methods.approve(CONTRACT_ADRESESS.POOL_AGOUSD, MAX_INT).send({from: account})
-            }
-            else {
-                await contracts.CNBTC.methods.approve(CONTRACT_ADRESESS.POOL_AGOBTC, MAX_INT).send({from: account})
-            }
-        }
+        setApproveDataForModal({
+            destination: CONTRACT_ADRESESS[`POOL_${mintRedeemCurrency}`],
+            approves: [
+                {name: mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC",
+                    address: mintRedeemCurrency === "AGOUSD" ? CONTRACT_ADRESESS.USDT : CONTRACT_ADRESESS.WBTC,
+                    alreadyApproved: approved.collateral?.length === MAX_INT.length},
+                {name: mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC",
+                    address: mintRedeemCurrency === "AGOUSD" ? CONTRACT_ADRESESS.CNUSD : CONTRACT_ADRESESS.CNBTC,
+                    alreadyApproved: approved.share?.length === MAX_INT.length}
+            ]
+        })
 
-       await getAllowance();
+        setApproveModal(true);
     }
 
     const setInputsFiledToZero = () => {
@@ -152,9 +157,6 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
                         
                     message.loading({content: "Mint in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
                     setMintButtonDisabled(true);
-
-                    console.log(collateralInput);
-                    console.log(catenaInput);
 
                     await contracts.POOL_AGOUSD.methods.mint(
                         formatToDecimal(collateralInput, tokens.find(item => item.symbol === "USDT").decimals),
@@ -227,12 +229,8 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     const MintButton = () => {
 
-        if (approved.collateral === "0") {
-            return <button disabled={mintButtonDisabled} className='mint-window-run-mint withoutBg' onClick={() => handleApprove("collateral")}> Approve {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</button>
-        }
-
-        else if (approved.share === "0" & approved.collateral !== "0") {
-            return <button disabled={mintButtonDisabled} className='mint-window-run-mint withoutBg' onClick={() => handleApprove("share")}> Approve {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</button>
+        if (approved.collateral === "0" || approved.share === "0") {
+            return <button disabled={mintButtonDisabled} className='mint-window-run-mint withoutBg' onClick={() => handleApprove("collateral")}> Approve </button>
         }
 
         else if (collateralBalance < +collateralInput) {
@@ -256,14 +254,14 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     const handleRefreshCollateralRatio = async () => {
         if (mintRedeemCurrency === "AGOUSD") {
-            // await contracts.TREASURY_AGOUSD.methods.allocateSeigniorage().send({from: account});
+            await contracts.TREASURY_AGOUSD.methods.allocateSeigniorage().send({from: account});
             // calcCollateralBalance()
 
-            const exceedCollateralValue = await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call();
+            // const exceedCollateralValue = await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call();
 
-            console.log(exceedCollateralValue);
+            // console.log(exceedCollateralValue);
 
-            // const data = await contracts.FOUNDRY_AGOUSD.methods.earned(account).call();
+            // const data = await contracts.FOUNDRY_AGOUSD.methods.rewardPerShare().call();
             // const howMuchUSDT = await contracts.USDT.balanceOf()
             // console.log(data);
 

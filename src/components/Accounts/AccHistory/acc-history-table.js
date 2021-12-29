@@ -1,20 +1,12 @@
 import React, {useEffect, useState} from 'react';
 
 // icons
-import agoLogo from '../../../assets/icons/ago-logo.svg';
-
-import lockIcon from '../../../assets/icons/lock-history.svg';
-import lateralArrowsIcon from '../../../assets/icons/lateral-arrows-history.svg';
-import downArrowIcon from '../../../assets/icons/down-arrow-history.svg';
-import upArrowIcon from '../../../assets/icons/down-arrow-history.svg';
-import downloadIcon from '../../../assets/icons/download-history.svg';
-import documentIcon from '../../../assets/icons/document-history.svg';
 import {useQuery} from "@apollo/client";
 import {USER_TXS_HISTORY} from "../../../api/client";
 import {useWeb3React} from "@web3-react/core";
-import {formatAMPM, formatDate, formatDateUnixTxs} from "../../../utils/helpers";
+import {formatAMPM, formatDateUnixTxs} from "../../../utils/helpers";
 import {TokenIcon} from "../../TokenIcon/token_icon";
-import {TXS_NAME} from "../../../constants";
+import {TXS_NAME, TXS_ICONS} from "../../../constants";
 
 export const AccHistoryTable = ({searchPattern}) => {
 
@@ -88,12 +80,11 @@ export const AccHistoryTable = ({searchPattern}) => {
                         {item.txs.map((itemTX) => {
 
                             const symbols = itemTX.token0.split("-")
-
                             return (
                             <li>
                                 <div className='action-container'>
                                 <span className='action-img'>
-                                    <img src={lockIcon} />
+                                    <img src={TXS_ICONS[Object.entries(TXS_NAME).find(item => item[1] === itemTX.name)[0]]} alt={"TX-ICON"} />
                                 </span>
                                     <div className='text'>
                                         <p>{itemTX.name}</p>

@@ -14,7 +14,6 @@ const ModalHeader = styled.h1`
     line-height: 36px;
     /* identical to box height */
 
-
     color: #FFFFFF;
 `
 
@@ -76,20 +75,22 @@ const ModaBox = styled.div`
     }
 `
 
-export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTokenContract, lpUserBalance }) => {
+export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTokenContract, lpUserBalance, lpTokenAddress }) => {
 
     const { account } = useWeb3React();
-    const { contracts } = useSystemContext();
+    const { contracts, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
     const [removeValue, setRemoveValue] = useState(0);
     const [allowance, setAllowance] = useState(false);
 
     useEffect(() => {
 
         if (account && lpTokenContract) {
-            checkAllowance()
+            if (!approveModal) {
+                checkAllowance()
+            }
         }
 
-    }, [allowance, account, lpTokenContract])
+    }, [allowance, account, lpTokenContract, approveModal])
 
 
     const checkAllowance = async () => {
@@ -98,6 +99,7 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
     }
 
     const handleApprove = async () => {
+
         await lpTokenContract.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({ from: account });
         await checkAllowance()
     }

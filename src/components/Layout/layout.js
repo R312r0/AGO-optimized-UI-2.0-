@@ -12,6 +12,7 @@ import { LayoutWrapper, MobileHeader, MobileMainHeader, AgoLogo, BurgerButton, H
 import { useSystemContext } from '../../systemProvider';
 import { Spin } from 'antd';
 import { LOADER_INDICATOR } from '../../constants';
+import { ApproveModal } from '../ApproveModal/approve-modal';
 
 
 const ThemeContext = React.createContext();
@@ -61,6 +62,7 @@ const Layout = ({children}) => {
                   {web3Loading ? <Spin indicator={LOADER_INDICATOR}/> : children}                    
                 </Content>
                 <WalletModal />
+                <ApproveModal/>
             </LayoutWrapper>
         </ThemeContext.Provider>
     )

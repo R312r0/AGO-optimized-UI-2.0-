@@ -23,8 +23,6 @@ const BalancesTab = () => {
 
     if (balances) {
 
-      console.log(balances);
-
       setSumBalances(formattedNum(balances.reduce((a, { usdBalance }) => a + usdBalance, 0)))
     }
 
@@ -38,8 +36,6 @@ const BalancesTab = () => {
   //   },
   //   preventDefaultTouchmoveEvent: true,
   // })
-
-  console.log(sumBalances);
 
 
   const scroll = () => {

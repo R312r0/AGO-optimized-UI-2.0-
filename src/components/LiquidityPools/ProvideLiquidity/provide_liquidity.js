@@ -4,13 +4,14 @@ import {formattedNum, formatToDecimal} from "../../../utils/helpers";
 import {Cell, Pie, PieChart, ResponsiveContainer} from "recharts";
 import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
-import {DEX_ADDRESESS, MAX_INT} from "../../../constants";
+import {CONTRACT_ADRESESS, DEX_ADDRESESS, MAX_INT} from "../../../constants";
 import ProvideLiquidityPieChart from '../ProvideLiqPieChart/provide-liquidity-pie-chart';
+import { ApproveModal } from '../../ApproveModal/approve-modal';
 
 export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
 
     const {account} = useWeb3React();
-    const {contracts, tokens, changeTokenBalance} = useSystemContext();
+    const {contracts, tokens, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal} = useSystemContext();
     const [input0, setInput0] = useState(null);
     const [input1, setInput1] = useState(null);
     const [usdValue, setUsdValue] = useState(0);
@@ -22,10 +23,13 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
     useEffect(() => {
 
         if (account) {
-            checkAllowance()
+            if (!approveModal) {
+                checkAllowance()
+            }
+        
         }
 
-    }, [account])
+    }, [account, approveModal])
 
     const handleInput0 = (value) => {
 
@@ -97,11 +101,16 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
     }
 
     const handleApprove = async () => {
-        const tokenContract0 = contracts[token0.symbol];
-        const tokenContract1 = contracts[token1.symbol];
 
-        await tokenContract0.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account})
-        await tokenContract1.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account})
+        setApproveDataForModal({
+            destination: DEX_ADDRESESS.ROUTER,
+            approves: [
+                {name: token0.symbol, address: token0.address, alreadyApproved: allowance.token0},
+                {name: token1.symbol, address: token1.address, alreadyApproved: allowance.token1},
+            ]
+        })
+
+        setApproveModal(true);
     }
 
     return(

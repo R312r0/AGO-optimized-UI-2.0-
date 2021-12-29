@@ -211,8 +211,6 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
 
         const findPool = pools.find(item => {
 
-            console.log(item);
-
             if (item.token0.symbol === token0Select.symbol || item.token0.symbol === token1Select?.symbol) {
                 if (item.token1.symbol === token0Select.symbol || item.token1.symbol === token1Select?.symbol) {
                     return item;

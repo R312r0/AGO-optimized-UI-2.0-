@@ -5,10 +5,11 @@ import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
 import {CONTRACT_ADRESESS, MAX_INT} from "../../../constants";
 import {formatFromDecimal, formattedNum, formatToDecimal} from "../../../utils/helpers";
+import { ApproveModal } from '../../ApproveModal/approve-modal';
 
 const FoundryActions = () => {
 
-    const {contracts, tokens, changeTokenBalance} = useSystemContext();
+    const {contracts, tokens, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal} = useSystemContext();
     const {account} = useWeb3React();
 
     const [allowance, setAllowance] = useState({
@@ -36,14 +37,17 @@ const FoundryActions = () => {
     const [cnusdWithdrawInput, setCnusdWithdrawInput] = useState(0);
     const [cnbtcWithdrawInput, setCnbtcWithdrawInput] = useState(0);
 
+
     useEffect(() => {
 
         if (account && contracts && tokens) {
-            getAllowance();
+            if (!approveModal) {
+                getAllowance();
+            }
             getInfo();
         }
 
-    }, [account, contracts, tokens])
+    }, [account, contracts, tokens, approveModal])
 
 
     const getInfo = async () => {
@@ -74,14 +78,16 @@ const FoundryActions = () => {
 
     const handleApprove = async (currency) => {
 
-        if (currency === "USD") {
-            await contracts.CNUSD.methods.approve(CONTRACT_ADRESESS.FOUNDRY_AGOUSD, MAX_INT).send({from: account});
-        }
-        else {
-            await contracts.CNBTC.methods.approve(CONTRACT_ADRESESS.FOUNDRY_AGOBTC, MAX_INT).send({from: account});
-        }
+        setApproveDataForModal({
+            destination: CONTRACT_ADRESESS[`FOUNDRY_${currency === "USD" ? "AGOUSD" : "AGOBTC"}`],
+            approves: [
+                {name: currency === "USD" ? "CNUSD" : "CNBTC",
+                    address: CONTRACT_ADRESESS[currency === "USD" ? "CNUSD" : "CNBTC"],
+                    alreadyApproved: allowance[currency === "USD" ? "CNUSD".toLowerCase() : "CNBTC".toLowerCase()]},
+            ]
+        })
 
-        await getAllowance();
+        setApproveModal(true);
 
     }
 

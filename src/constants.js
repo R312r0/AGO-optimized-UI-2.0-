@@ -32,6 +32,14 @@ import trading_active from './assets/icons/nav-links/active/trading-active.svg';
 import accounts_acitve from './assets/icons/nav-links/active/accounts-active.svg';
 import { LoadingOutlined } from "@ant-design/icons";
 
+// User txs icons
+import lateralArrowsIcon from './assets/icons/lateral-arrows-history.svg';
+import downloadIcon from './assets/icons/download-history.svg'
+import downArrowIcon from './assets/icons/down-arrow-history.svg';
+import lockIcon from './assets/icons/lock-history.svg';
+import documentIcon from './assets/icons/document-history.svg';
+
+
 export const COINGECKO_IDS = {
     AGO: "uniswap",
     AGOUSD: "tether",
@@ -68,21 +76,22 @@ export const CONTRACT_ADRESESS = {
     TREASURY_AGOUSD: "0x9b7A436fD9964538b5d877B9Af2D5FD6508D2B45",
 
     FOUNDRY_AGOBTC: "0x6184177897B7C2207C33fF5A9776b7Ea02baABbB",
-    POOL_AGOBTC: "0x3C8DA1e17B821adeC3BED8dAE75Eb8E9d052D369",
-    TREASURY_AGOBTC: "0x54aFD712090288013E3EBCbbae8520268092D11f",
+    POOL_AGOBTC: "0x15f706813764e160976aAD8675E6807585f16fce",
+    TREASURY_AGOBTC: "0x3C8DA1e17B821adeC3BED8dAE75Eb8E9d052D369",
 }
 
+
 export const SINGLE_STAKING_POOL = [
-    {name: "AGO", address: "0xD0B5A822087D6306Fd5Dd521e612931C2a55342E"},
-    {name: "AGOUSD", address: "0x3bcD0e03b3E188946dcBf3974E2AD813eDCb7015"},
-    {name: "AGOBTC", address: "0x360239EE2776f23CE01E40799Ff7768D1aaC0060"}
+    {name: "AGO", address: "0x4bDDb9BCf1b268d8F6C1273a889f3452f3F9D003"},
+    // {name: "AGOUSD", address: ""},
+    // {name: "AGOBTC", address: "0x360239EE2776f23CE01E40799Ff7768D1aaC0060"}
 ]
 
 export const LP_STAKING_POOL = [
-    {},
-    {},
-    {},
-    {}
+    {name: "AGOUSD-USDT", address: "0x3B9B897DE879b09292267ae08137EC1C854AD34D"},
+    // {},
+    // {},
+    // {}
 ]
 
 
@@ -127,4 +136,15 @@ export const TXS_NAME = {
     COLLECT_REDEMPTION: "Collect redemption",
     STAKE: "Stake",
     UNSTAKE: "Unstake"
+}
+
+export const TXS_ICONS = {
+    SWAP: lateralArrowsIcon,
+    ADD: downloadIcon,
+    BURN: downArrowIcon,
+    MINT: downloadIcon,
+    REDEEM: documentIcon,
+    COLLECT_REDEMPTION: downloadIcon,
+    STAKE: lockIcon,
+    UNSTAKE: downArrowIcon
 }
