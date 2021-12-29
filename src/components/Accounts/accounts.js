@@ -30,6 +30,7 @@ const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#9018EE", "#1B
 export const Accounts = () => {
     const { tokens } = useDataContext();
     const { balances, setIsWalletModal} = useSystemContext();
+    const { data } = useQuery(LIQ_POOLS_ACCOUNTS);
     const [sumUserBalances, setSumUserBalances] = useState(0.00);
     const [syntheticAssets, setSyntheticAssets] = useState(null);
     const [userPortfolio, setUserPortfolio] = useState(null);
@@ -135,8 +136,8 @@ export const Accounts = () => {
                         </div>
     
                         <div className='accounts-container-duo'>
-                            {/* <AccountsStaking tokensSub={data?.tokens} lpTokens={data?.pairs}/> */}
-                            <AccountsPools />
+                            <AccountsStaking/>
+                            <AccountsPools data={data}/>
                         </div>
                     </div>
                     

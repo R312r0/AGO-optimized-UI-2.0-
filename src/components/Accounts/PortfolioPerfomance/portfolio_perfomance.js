@@ -97,7 +97,7 @@ export const PortfolioPerfomance = () => {
                       formattedData.length === 0 ? <h1 style={{position: "absolute", top: "40%", left: "40%"}}> No Data </h1> : 
                       <>
                       <div className='accounts-wrapper-portoflio-perf__header-control-panel'>
-                          <h1> Portfolio perfomance </h1>
+                          <h1> Portfolio performance </h1>
                           <div className='accounts-wrapper-portoflio-perf__header-control-panel__time-frame-list'>
                               {/*FIXME: Unlock when */}
                               {/*<button className='active-frame'> 1H </button>*/}

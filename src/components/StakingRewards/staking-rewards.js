@@ -25,7 +25,7 @@ export const StakingRewards = () => {
 
                 <div className='staking-list__header'>
                     <span> Pool </span>
-                    <span> ARP </span>
+                    <span> APR </span>
                     <span> Contract </span>
                 </div>
 

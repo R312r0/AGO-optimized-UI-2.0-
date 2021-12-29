@@ -183,7 +183,7 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
 
     return (
         <div className='general-wrapper'>
-            <div className='collect-redemption-wrapper'>
+            <div className='collect-redemption-wrapper '>
                 <div className='collect-redemption'> 
                     <div>
                         <h3> Collect redemption </h3>
@@ -194,7 +194,7 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
                         <h3> {formattedNum(redeemBalances?.redemptionShare)} <b>{mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</b> </h3>
                     </div>
                 </div>
-                <div className='collect-redemption'> 
+                <div className='collect-redemption active-minting'> 
                     <div>
                         <h3>Active minting</h3>
                         <span>

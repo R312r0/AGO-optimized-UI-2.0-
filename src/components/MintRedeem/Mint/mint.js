@@ -276,7 +276,7 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     return (
         <div className='general-wrapper'> 
-            <div className='collect-redemption-wrapper'>
+            <div className='collect-redemption-wrapper active-minting'>
                 <div className='collect-redemption'> 
                     <div>
                         <h3>Active minting</h3>
@@ -312,7 +312,7 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
                 </div>
                 <div className='general-window-input-row'> 
                     <span> 
-                        <h3> Input: <b>{info.targetCollateralRatio - 100}% </b> </h3> 
+                        <h3> Input: <b>{100 - info.targetCollateralRatio}% </b> </h3> 
                     </span>
                     <span className='balance'> 
                         <h3> Balance: {formattedNum(balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "CNUSD" : item.symbol === "CNBTC" ).nativeBalance)} </h3> 

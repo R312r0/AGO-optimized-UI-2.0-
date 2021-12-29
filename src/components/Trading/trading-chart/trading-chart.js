@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
-import { formatDate } from '../../../utils/helpers';
+import { formatDate, formattedNum } from '../../../utils/helpers';
 import { useSystemContext } from '../../../systemProvider';
 import { useThemeContext } from '../../Layout/layout';
 import { useSubscription } from '@apollo/client';
@@ -154,8 +154,12 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
                         visible: true,
                     },
                 },
+                localization: {
+                    priceFormatter:(price) =>  formattedNum(+price),
+                },
                 priceScale: {
-                    autoScale: true,
+                    
+                    // autoScale: true,
                     invertScale: false,
                     alignLabels: false,
                     borderVisible: false,
@@ -183,8 +187,9 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
                 lineWidth: 3,
                 crosshairMarkerVisible: false,
                 lineType: 0,
+
             });
-    
+
             setChart(chartInst);
             setLineSeries(lineSeriesInst);
             // setCandleSeries(candlestickSeries);

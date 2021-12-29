@@ -107,12 +107,12 @@ export const TokenTransactionTable = () => {
     <TokenTransactionTableWrapper light={theme === "light"}>
       <div className="transanction-tabs-wrapper">
         <h2 className={'transactions-heading'}>Transactions</h2>
-        <div>
+        {/* <div>
           <button className="transanction-tabs-wrapper-active">All</button>
           <button>Swaps</button>
           <button>Adds</button>
           <button>Removes</button>
-        </div>
+        </div> */}
       </div>
       <Table light={theme === "light"}>
         <TableHead light={theme === "light"}>

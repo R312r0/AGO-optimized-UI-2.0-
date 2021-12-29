@@ -14,7 +14,7 @@ export const StakingItem = ({pool}) => {
 
     const { name, address } = pool;
     const { account, library } = useWeb3React();
-    const { tokens, contracts, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
+    const { tokens, contracts, approveModal, setApproveModal, setApproveDataForModal, changeTokenBalance } = useSystemContext();
 
     const [poolContract, setPoolContract] = useState(null);
     const [stakingInfo, setStakingInfo] = useState({
@@ -73,7 +73,11 @@ export const StakingItem = ({pool}) => {
 
         const tokenDecimals = tokens.find((item) => item.symbol === name).decimals;
         await poolContract.methods.deposit(formatToDecimal(depositInput, tokenDecimals)).send({from: account});
+        changeTokenBalance([
+            {name: name, amount: depositInput, sub: true},
+        ])
         await getPoolInfo(name, poolContract);
+
 
     }
 
@@ -81,13 +85,22 @@ export const StakingItem = ({pool}) => {
 
         const tokenDecimals = tokens.find((item) => item.symbol === name).decimals
         await poolContract.methods.withdraw(formatToDecimal(depositInput, tokenDecimals)).send({from:account})
+        changeTokenBalance([
+            {name, amount: depositInput, sub: false},
+            {name: stakingInfo.rewardTokenName, amount: depositInput, sub: false}
+        ])
         await getPoolInfo(name, poolContract)
+
 
     }
 
     const handleClaimReward = async () => {
         await poolContract.methods.withdraw(0).send({from: account})
+        changeTokenBalance([
+            {name: stakingInfo.rewardTokenName, amount: stakingInfo.userReward, sub: false},
+        ])
         await getPoolInfo(name, poolContract)
+
     }
 
     const handleApprove = async () => {
@@ -126,7 +139,7 @@ export const StakingItem = ({pool}) => {
                     <span> 6.66% </span>
                 </div>
                 <div className='contract'>
-                    <span>{address}</span>
+                    <a href={`https://polygonscan.com/address/${address}`} without rel="noreferrer" target={'_blank'}>{address}</a>
                 </div>
                 <button onClick={() => setWindowExpanded(!windowExpanded)} className='hide-btn'>{windowExpanded ? 'Hide' : 'Deploy'}</button>
             </div>
@@ -134,8 +147,8 @@ export const StakingItem = ({pool}) => {
                 {windowExpanded ?
                     <>
                         <div className='claim-reward'>
-                            <h5> Governance Vault (V2) </h5>
-                            <button onClick={() => handleClaimReward()}> <img src={claimRewardIcon} width="20" height="20"/> </button>
+                            <h5> Governance Vault </h5>
+                            <button onClick={() => handleClaimReward()}> Harvest <img src={claimRewardIcon} width="20" height="20"/> </button>
                         </div>
                         <div className='info-control-panel'>
                             <div className='info'>

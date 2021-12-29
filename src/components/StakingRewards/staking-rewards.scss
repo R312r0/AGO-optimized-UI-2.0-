@@ -123,8 +123,18 @@
       }
 
       .contract {
-        font-size: 0.938vw;
-        color: #40ba93;
+        display: grid;
+        align-items: center;
+        a {
+          font-size: 0.938vw;
+          color: #40ba93;
+          &:hover {
+            color: #40ba93;
+          }
+          &:visited {
+            color: #40ba93;
+          }
+        }
       }
     }
 
@@ -170,7 +180,8 @@
           align-items: center;
           justify-content: center;
 
-          width: 3.594vw;
+          font-size: 10px;
+          width: 15%;
           height: 2.552vw;
 
           background: #1e1e1e;
@@ -180,6 +191,7 @@
           cursor: pointer;
 
           img {
+            margin-left: 5px;
             width: 1.302vw;
             height: 1.354vw;
           }

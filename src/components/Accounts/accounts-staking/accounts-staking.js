@@ -2,27 +2,29 @@ import React, {useEffect, useState} from 'react';
 import agologo from './../../../assets/icons/ago-logo.svg'
 import {useWeb3React} from "@web3-react/core";
 import {useSystemContext} from "../../../systemProvider";
-import {formatFromDecimal} from "../../../utils/helpers";
-import {LOADER_INDICATOR_LOCAL} from "../../../constants";
+import {formatFromDecimal, formattedNum} from "../../../utils/helpers";
+import {LOADER_INDICATOR_LOCAL, LP_STAKING_POOL} from "../../../constants";
 import {Spin} from "antd";
 import {TokenIcon} from "../../TokenIcon/token_icon";
+import SINGLE_STAKING_ABI from '../../../abi/SIngleChef.json';
+import { SINGLE_STAKING_POOL } from '../../../constants';
 
-const AccountsStaking = ({tokensSub, lpTokens}) => {
+const AccountsStaking = () => {
 
-    const {account} = useWeb3React();
+    const {account, library} = useWeb3React();
     const {contracts, tokens} = useSystemContext();
-    const [userStake, setUserStake] = useState(null);
+    const [pools, setPools] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [dataPaginated, setDataPaginated] = useState(0);
     const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
 
     useEffect(() => {
 
-        if (account && tokensSub && lpTokens) {
-            getUserPools(tokensSub, lpTokens);
+        if (account) {
+            getUserPools();
         }
 
-    }, [account, tokensSub, lpTokens])
+    }, [account])
 
 
     const determineNumberOfPages = (arr) => {
@@ -47,105 +49,118 @@ const AccountsStaking = ({tokensSub, lpTokens}) => {
         setDataPaginated(paginatedDataObject);
     };
 
-    const getUserPools = async (tokensSub, lpTokens) => {
+    const getUserPools = async () => {
 
         // const poolLength = await contracts.MASTER_CHEF.methods.poolLength().call();
 
-        let singlePools = [];
-        let lpPools = [];
 
-        console.log(tokensSub);
-        console.log(lpTokens);
+        const singlePools = await Promise.all(SINGLE_STAKING_POOL.map(async (item) => {
 
+            const contract = new library.eth.Contract(SINGLE_STAKING_ABI, item.address);
 
-        // for (let i = 0; i < poolLength - 1; i++) {
+            const lpToken = await contract.methods.rewardToken().call();
+            const userInfo = await contract.methods.userInfo(account).call();
+    
+            const rewardToken = tokens.find((tok) => tok.address === lpToken.toLowerCase())
+            const staked = parseFloat(formatFromDecimal(userInfo[0], tokens.find((tok) => tok.symbol === item.name).decimals))
+    
+            const userReward = formatFromDecimal(await contract.methods.pendingReward(account).call(), rewardToken.decimals) 
+            const userUSDReward = parseFloat(userReward) * parseFloat(rewardToken.priceUSD)
 
-        //     let amountStaked = (await contracts.MASTER_CHEF.methods.userInfo(i, account).call()).amount;
+            return {
+                stakeTokenName: item.name,
+                rewardTokenName: rewardToken.symbol,
+                staked,
+                userReward,
+                userUSDReward
+            }
 
+        }))
 
-        //     if (amountStaked > 0) {
-        //         const poolLpTokenAddress = (await contracts.MASTER_CHEF.methods.poolInfo(i).call()).lpToken
-                
-        //         let tok = tokensSub.find(item => item.id === poolLpTokenAddress.toLowerCase());
-        //         let poolName;
-        //         let rewardSize = formatFromDecimal(await contracts.MASTER_CHEF.methods.pendingAgo(i, account).call(), tokens.find(item => item.symbol === "AGO").decimals)
+        const lpPools = await Promise.all(LP_STAKING_POOL.map(async (item) => {
 
-        //         if (!tok) {
-        //             tok = lpTokens.find(item => item.id === poolLpTokenAddress.toLowerCase());
-        //             poolName = `${tok.token0.symbol}-${tok.token1.symbol}`
-        //             amountStaked = formatFromDecimal(amountStaked, 18);
-        //         }
-        //         else {
-        //             poolName = tok.symbol;
-        //             amountStaked = formatFromDecimal(amountStaked, tok.decimals)
-        //         }
+            const contract = new library.eth.Contract(SINGLE_STAKING_ABI, item.address);
 
-        //         userPools.push({poolName, amountStaked, rewardSize})
-        //     }
-        // }
+            const lpToken = await contract.methods.rewardToken().call();
+            const userInfo = await contract.methods.userInfo(account).call();
+    
+            const rewardToken = tokens.find((tok) => tok.address === lpToken.toLowerCase())
+            const staked = parseFloat(formatFromDecimal(userInfo[0], 18) );
+    
+            const userReward = formatFromDecimal(await contract.methods.pendingReward(account).call(), rewardToken.decimals) 
+            const userUSDReward = parseFloat(userReward) * parseFloat(rewardToken.priceUSD)
 
-        // determineNumberOfPages(userPools)
-        // setUserStake(userPools);
+            return {
+                stakeTokenName: item.name,
+                rewardTokenName: rewardToken.symbol,
+                staked,
+                userReward,
+                userUSDReward
+            }
 
+        }))
+
+        const unitedArr = [...singlePools, ...lpPools].filter((item) => item.staked !== 0)
+
+        determineNumberOfPages(unitedArr);
+        setPools(unitedArr);
     }
 
     return (
-        <h1> Staking </h1>
-        // <div className='accounts-wrapper-use-staking-pools cosmetical-wrapper'> 
-        //     <h1> Staking </h1>
+        <div className='accounts-wrapper-use-staking-pools cosmetical-wrapper'> 
+            <h1> Staking </h1>
             
-        //     <div className='accounts-wrapper-use-staking-pools__list-header'> 
-        //         <span> Symbol </span>
-        //         <span> Size </span>
-        //         <span> Reward </span>
-        //     </div>
+            <div className='accounts-wrapper-use-staking-pools__list-header'> 
+                <span> Symbol </span>
+                <span> Size </span>
+                <span> Reward </span>
+            </div>
 
-        //     <ul style={{position: "relative"}}>
-        //         {dataPaginated && dataPaginated[`${currentClickedNumber}`] ? dataPaginated[`${currentClickedNumber}`].map((item) => {
-        //             if (item.poolName.indexOf("-") !== -1) {
-        //                 const symbols = item.poolName.split("-")
-        //                 return (
-        //                     <li>
-        //                        <div>
-        //                            <TokenIcon iconName={symbols[0]}/>
-        //                            <TokenIcon iconName={symbols[1]}/>
-        //                            <p>{item.poolName}</p>
-        //                        </div>
-        //                         <span>{item.amountStaked} LP</span>
-        //                         <span>{item.rewardSize}</span>
-        //                     </li>
-        //                 )
-        //             }
+            <ul style={{position: "relative"}}>
+                {dataPaginated && dataPaginated[`${currentClickedNumber}`] ? dataPaginated[`${currentClickedNumber}`].map((item) => {
+                    if (item.stakeTokenName.indexOf("-") !== -1) {
+                        const symbols = item.stakeTokenName.split("-")
+                        return (
+                            <li>
+                               <div>
+                                   <TokenIcon iconName={symbols[0]}/>
+                                   <TokenIcon iconName={symbols[1]}/>
+                                   <p>{item.stakeTokenName}</p>
+                               </div>
+                                <span> {item.staked} {item.stakeTokenName} </span>
+                                <span> {formattedNum(item.userReward)} {item.rewardTokenName} / {formattedNum(item.userUSDReward)}$ </span>
+                            </li>
+                        )
+                    }
 
+                    return (
+                        <li>
+                            <div>
+                                <TokenIcon iconName={item.stakeTokenName} />
+                                <p>{item.stakeTokenName}</p>
+                            </div>
+                            <span>{item.staked} {item.stakeTokenName}</span>
+                            <span> {formattedNum(item.userReward)} {item.rewardTokenName} / {formattedNum(item.userUSDReward)}$ </span>
+                        </li>
+                    )
+                })
+                :
+                    <Spin indicator={LOADER_INDICATOR_LOCAL}/>
+                }
 
-        //             return (
-        //                 <li>
-        //                     <div>
-        //                         <TokenIcon iconName={item.poolName} />
-        //                         <p>{item.poolName}</p>
-        //                     </div>
-        //                     <span>{item.amountStaked} {item.poolName}</span>
-        //                     <span>{item.rewardSize}</span>
-        //                 </li>
-        //             )
-        //         })
-        //         :
-        //             <Spin indicator={LOADER_INDICATOR_LOCAL}/>
-        //         }
+            </ul>
 
-        //     </ul>
-
-        //     <div className='accounts-wrapper-use-staking-pools__pagination'>
-        //         {dataPaginated && Object.entries(dataPaginated).map((item) => {
-        //             return <span onClick={() => setCurrentClickedNumber(item[0])} className={item[0] === currentClickedNumber ? "active" : ""}>{item[0]}</span>
-        //         })}
-        //     </div>
+            <div className='accounts-wrapper-use-staking-pools__pagination'>
+                {dataPaginated && Object.entries(dataPaginated).map((item) => {
+                    return <span onClick={() => setCurrentClickedNumber(item[0])} className={item[0] === currentClickedNumber ? "active" : ""}>{item[0]}</span>
+                })}
+            </div>
             
-        //     <div className='accounts-wrapper-use-staking-pools__buttons'>
-        //         <button className='active'>Add</button>
-        //         <button>Withdraw</button>
-        //     </div>
-        // </div>
+            <div className='accounts-wrapper-use-staking-pools__buttons'>
+                <button className='active'>Add</button>
+                <button>Withdraw</button>
+            </div>
+        </div>
     )
 }
 
