@@ -1,24 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
-import { NoEthereumProviderError, UserRejectedRequestError } from '@web3-react/injected-connector';
-import {DEX_ADDRESESS, metaMask, network} from './constants';
+
+// ABIS
 import ERC20_ABI from './abi/ERC20.json';
 import ROUTER_ABI from './abi/Router.json';
 import TREASURY_ABI from './abi/TREASURY.json';
 import FOUNDRY_ABI from './abi/Foundry.json';
-import STABLE_ABI from './abi/STABLE.json';
-import SHARE_ABI from './abi/SHARE.json';
 import STABLE_POOL_ABI from './abi/STABLE_POOL.json';
-import SINGLE_CHEF_ABI from './abi/SIngleChef.json';
-import TOKEN_ORACLE_ABI from './abi/TOKEN_ORACLE.json';
-import { CONTRACT_ADRESESS, SINGLE_STAKING_POOL } from './constants';
+
+import { CONTRACT_ADRESESS, DEX_ADDRESESS, metaMask, network } from './constants';
 import { formatFromDecimal } from './utils/helpers';
-import { message, Spin } from 'antd';
-import { ethErrors } from 'eth-rpc-errors'
-import { EthereumRpcError, EthereumProviderError } from 'eth-rpc-errors'
-import {useQuery} from "@apollo/client";
-import {TOKENS} from "./api/client";
+import { message } from 'antd';
 import { useDataContext } from './dataProvider';
+
 
 const SystemContext = React.createContext();
 export const useSystemContext = () => useContext(SystemContext);

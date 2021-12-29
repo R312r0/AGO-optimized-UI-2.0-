@@ -9,7 +9,7 @@ export const useDataContext = () => useContext(DataContext);
 export const DataProvider = ({children}) => {
 
 
-    const {data, loading, error} = useQuery(TOKENS_PAIRS)
+    const {data, loading, error} = useQuery(TOKENS_PAIRS);
     const [mainData, setMainData] = useState(null);
 
     useEffect(() => {
