@@ -23,17 +23,6 @@ import styled from 'styled-components';
 import { useThemeContext } from '../../Layout/layout';
 import { formattedNum } from '../../../utils/helpers';
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-    ArcElement,
-)
-
 window.arcSpacing = 0.1;
 window.segmentHovered = false;
 
@@ -83,6 +72,20 @@ const AccountPieChart = ({userBalanceData}) => {
 
     const labels = ['#40BA93', '#0885F8', '#EA8C00', '#1BB8DB', '#9018EE',
         '#DB1B60', '#EAD200', '#DB1BB1'];
+
+    useEffect(() => {
+        ChartJS.register(
+            CategoryScale,
+            LinearScale,
+            PointElement,
+            LineElement,
+            Title,
+            Tooltip,
+            Legend,
+            ArcElement,
+        )
+
+    }, [])
 
     const data = {
         labels: labels,
