@@ -45,24 +45,62 @@ const TradingMarket = ({pool}) => {
     const [token0Input, setToken0Input] = useState(null);
     const [token1Input, setToken1Input] = useState(null);
 
-    const [tokensSwaped, setTokensSwaped] = useState(false);
+    const [token0Price, setToken0Price] = useState(0);
+    const [token1Price, setToken1Price] = useState(0)
+
+    const [token0PairPrice, setToken0PairPrice] = useState(0);
+    const [token1PairPrice, setToken1PairPrice] = useState(0);
+
+    const [tokenChangeSwap, setTokenChangeSwap] = useState(false);
 
     const {data, loading, error} = useSubscription(TRADING_TOKEN_POOL_PRICE, {
         variables: {id: pool?.id}
     })
 
+    
+
     useEffect(() => {
 
-        if (pool && balances) {
-            setToken0({token: pool.token0, poolPrice: pool.token0Price})
-            setToken1({token: pool.token1, poolPrice: pool.token1Price})
+        if (data && pool) {
+            if (tokenChangeSwap) {
+                setToken0Price(data.pair.token1.priceUSD)
+                setToken1Price(data.pair.token0.priceUSD)
 
-            if (account && !approveModal) {
-                checkAllowance();
+                setToken0PairPrice(data.pair.token0Price)
+                setToken1PairPrice(data.pair.token1Price)
+
+                setToken0(pool.token1)
+                setToken1(pool.token0)
+
+                
             }
+            else {
+                setToken0Price(data.pair.token0.priceUSD)
+                setToken1Price(data.pair.token1.priceUSD)
+
+                setToken0PairPrice(data.pair.token1Price)
+                setToken1PairPrice(data.pair.token0Price)
+
+                setToken0(pool.token0)
+                setToken1(pool.token1)
+            }
+
         }
 
-    }, [account, pool, balances, approveModal])
+    }, [data, pool, tokenChangeSwap]);
+
+    useEffect(() => {
+    
+        if (account && !approveModal && pool && contracts) {
+            checkAllowance();
+        }
+
+    }, [pool, account, approveModal, contracts])
+
+
+    console.log(token0Input);
+    console.log(token1Input);
+
 
     const checkAllowance = async () => {
 
@@ -74,16 +112,35 @@ const TradingMarket = ({pool}) => {
 
     }
 
-    const handleChangeTokens = () => {
+    // const handleChangeTokens = () => {
 
-        setTokensSwaped(!tokensSwaped);
+    //     setTokenChangeSwap(!tokenChangeSwap);
 
-        const token0Loc = token0;
-        const token1Loc = token1;
-        setToken0(token1Loc);
-        setToken1(token0Loc);
-        setToken1Input(token0Input * token0Loc.poolPrice)
-    }
+    //     if (tokenChangeSwap) {
+    //         setToken0Price(data.pair.token1.priceUSD)
+    //         setToken1Price(data.pair.token0.priceUSD)
+
+    //         setToken0PairPrice(data.pair.token0Price)
+    //         setToken1PairPrice(data.pair.token1Price)
+
+    //         setToken0(pool.token1)
+    //         setToken1(pool.token0)
+    //     }
+    //     else {
+    //         setToken0Price(data.pair.token0.priceUSD)
+    //         setToken1Price(data.pair.token1.priceUSD)
+
+    //         setToken0PairPrice(data.pair.token1Price)
+    //         setToken1PairPrice(data.pair.token0Price)
+
+    //         setToken0(pool.token0)
+    //         setToken1(pool.token1)
+    //     }
+
+    //     setToken0({...token1});
+    //     setToken1({...token0});
+    //     setToken1Input(token0Input);
+    // }
 
     const handleApprove = async (tok) => {
 
@@ -97,28 +154,25 @@ const TradingMarket = ({pool}) => {
 
         setApproveModal(true);
 
-        // const inst = contracts[tok.symbol];
-        // await inst.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({from: account});
-        // checkAllowance()
     }
 
     const handleInput = (value) => {
         setToken0Input(value);
-        setToken1Input(value * token1.poolPrice);
+        setToken1Input(value * token1PairPrice);
     }
 
     const handleSwap = async (tokenInput) => {
 
         await contracts.ROUTER.methods.swapExactTokensForTokens(
-            formatToDecimal(tokenInput, token0.token.decimals),
+            formatToDecimal(tokenInput, token0.decimals),
             0,
-            [token0.token.id, token1.token.id],
+            [token0.id, token1.id],
             account,
             999999999999).send({from: account})
 
         changeTokenBalance([
-            {name: token0.token.symbol, amount: +tokenInput, sub: true},
-            {name: token1.token.symbol, amount: token1Input, sub: false}]);
+            {name: token0.symbol, amount: +tokenInput, sub: true},
+            {name: token1.symbol, amount: +token1Input, sub: false}]);
         setToken0Input(0);
         setToken1Input(0);
     }
@@ -147,6 +201,9 @@ const TradingMarket = ({pool}) => {
 
     }
 
+    console.log(token0);
+    console.log(token1);
+
     return (
         <>
         {token0 && token1 ?
@@ -171,39 +228,39 @@ const TradingMarket = ({pool}) => {
                     <h4 className='trading-wrapper-exchange__title'>You Pay</h4>
                     <div className="trading-wrapper-exchange__swap-input">
                         <div className="trading-wrapper-exchange__swap-input__header">
-                            <h3> {token0.token.name} </h3>
-                            <h5> =${formattedNum(tokensSwaped ? data?.pair.token1.priceUSD : data?.pair.token0.priceUSD)} </h5>
+                            <h3> {token0.symbol} </h3>
+                            <h5> =${formattedNum(token0Price)} </h5>
                         </div>
                         <main>
                     <span>
-                        <TokenIcon iconName={token0.token.symbol}/>
-                        <h3> {token0.token.symbol} </h3>
+                        <TokenIcon iconName={token0?.symbol}/>
+                        <h3> {token0?.symbol} </h3>
                     </span>
-                            <input type="numbe" placeholder="Enter amount" value={token0Input} onChange={(e) => handleInput(e.target.value)}/>
+                            <input type="number" placeholder="Enter amount" value={token0Input} onChange={(e) => handleInput(e.target.value)}/>
                         </main>
                     </div>
 
-                    <img className="arrow-swap" src={ theme === "light" ? swap_trading_dark : swap_trading} alt="swap"  onClick={() => handleChangeTokens()}/>
+                    <img className="arrow-swap" src={ theme === "light" ? swap_trading_dark : swap_trading} alt="swap"  onClick={() => setTokenChangeSwap(!tokenChangeSwap)}/>
 
                     <h4 className='trading-wrapper-exchange__title'>You Receive</h4>
                     <div className="trading-wrapper-exchange__swap-input">
                         <div className="trading-wrapper-exchange__swap-input__header">
-                            <h3> {token1.token.name} </h3>
-                            <h5> =${formattedNum(tokensSwaped ? data?.pair.token0.priceUSD : data?.pair.token1.priceUSD)} </h5>
+                            <h3> {token1.symbol} </h3>
+                            <h5> =${formattedNum(token1Price)} </h5>
                         </div>
                         <main>
                     <span>
-                        <TokenIcon iconName={token1.token.symbol}/>
-                        <h3> {token1.token.symbol} </h3>
+                        <TokenIcon iconName={token1.symbol}/>
+                        <h3> {token1.symbol} </h3>
                     </span>
                             <input type="number" placeholder="Enter amount" value={token1Input}/>
                         </main>
                     </div>
                     <div className="trading-wrapper-exchange__tx-info-block">
-                        <span> <h3> Rate </h3> <h3> 1 {token0.token.symbol} = <b>{parseFloat(data?.pair.token1Price).toFixed(2)}</b> {token1.token.symbol} </h3>  </span>
-                        <span> <h3> Inverse Rate </h3> <h3> 1 {token1.token.symbol} = <b>{parseFloat(data?.pair.token0Price).toFixed(2)}</b> {token0.token.symbol} </h3>  </span>
-                        <span> <h3> Estimated Fee </h3> <b> = ${(((token0.token.priceUSD * token0Input) / 100) * 0.3).toFixed(4)}</b> </span>
-                        <span> <h3> USD amount  </h3> <b className="active"> = ${(token0.token.priceUSD * token0Input).toFixed(4)} </b> </span>
+                        <span> <h3> Rate </h3> <h3> 1 {token0.symbol} = <b>{parseFloat(token0PairPrice).toFixed(2)}</b> {token1.symbol} </h3>  </span>
+                        <span> <h3> Inverse Rate </h3> <h3> 1 {token1.symbol} = <b>{parseFloat(token1PairPrice).toFixed(2)}</b> {token0.symbol} </h3>  </span>
+                        <span> <h3> Estimated Fee </h3> <b> = ${(((token0Price * token0Input) / 100) * 0.3).toFixed(4)}</b> </span>
+                        <span> <h3> USD amount  </h3> <b className="active"> = ${(token0Price * token0Input).toFixed(4)} </b> </span>
                     </div>
                     <SwapButtonFunc/>
                 </div>

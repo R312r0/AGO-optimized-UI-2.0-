@@ -225,10 +225,10 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency}/> {mintRedeemCurrency} </span>
             </div>
             <div className='general-window-op-sign-row'> 
-                <i className="fas fa-plus"/>
+                <i className="fas fa-arrow-down"/>
             </div>
             <div className='general-window-input-row'> 
-                <span> <h3> Output USDT : <b> {info.effectiveCollateralRatio}% </b> </h3> </span>
+                <span> <h3> Output {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} : <b> {info.effectiveCollateralRatio}% </b> </h3> </span>
                 <span className='balance'> 
                     <h3> Balance: {formattedNum(balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "USDT" : item.symbol === "WBTC").nativeBalance)} </h3> 
                 </span>
@@ -236,10 +236,10 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
             </div>
             <div className='general-window-op-sign-row'> 
-                <i className="fas fa-arrow-down"/>
+                <i className="fas fa-plus"/>
             </div>
             <div className='general-window-input-row output'> 
-                <span> <h3> Output CNUSD : <b> {100 - info.effectiveCollateralRatio}% </b> </h3> </span>
+                <span> <h3> Output {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} : <b> {100 - info.effectiveCollateralRatio}% </b> </h3> </span>
                 <span className='balance'> 
                     <h3> Balance: {formattedNum(balances.find((item) => mintRedeemCurrency === "AGOUSD" ? item.symbol === "CNUSD" : item.symbol === "CNBTC").nativeBalance)} </h3> 
                 </span>

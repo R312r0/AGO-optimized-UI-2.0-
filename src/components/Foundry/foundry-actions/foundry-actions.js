@@ -151,6 +151,8 @@ const FoundryActions = () => {
 
     }
 
+    console.log(info.cnusd.collateralEarned);
+
     return (
         <div className='foundry__actions'> 
         
@@ -177,7 +179,7 @@ const FoundryActions = () => {
                 </div>
                 
                 <p className='amount'>{formattedNum(info.cnusd.collateralEarned)}</p>
-                <button disabled={info.cnusd.collateralEarned === 0} onClick={() => handleCollectReward("USD")}>  {info.cnusd.collateralEarned === 0 ? "No rewards" : "Collect reward"} </button>
+                <button disabled={+info.cnusd.collateralEarned === 0} onClick={() => handleCollectReward("USD")}>  {info.cnusd.collateralEarned === 0 ? "No rewards" : "Collect reward"} </button>
             </div>
 
             <div className='foundry__actions-item'>

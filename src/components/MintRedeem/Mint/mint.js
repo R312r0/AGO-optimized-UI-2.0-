@@ -27,13 +27,6 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
         share: null,
     });
 
-    const testData = {
-        destination: "0xtrqwrqrw",
-        approves: [
-            {name: "AGO", address: "0xAgoAddress", alreadyApproved: true}
-        ]
-    }
-
 
     const [mintButtonDisabled, setMintButtonDisabled] = useState(false);
 
@@ -107,13 +100,24 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     const handleCollateralInput = (value) => {
 
-        let shareOutput = info.targetCollateralRatio < 100 ? (((parseFloat(value) * info.collateralPrice) * (1 - (info.targetCollateralRatio / 100)))
-        / (parseFloat(info.sharePrice) * (info.targetCollateralRatio / 100))) : 0;
+        let shareOutput;
+        let stableOutput;
 
-        const stableOutput = (shareOutput * parseFloat(info.sharePrice)) + ((value * info.collateralPrice) * (info.targetCollateralRatio / 100));
+        if (mintRedeemCurrency === "AGOUSD") {
+            shareOutput = info.targetCollateralRatio < 100 ? (((parseFloat(value) * info.collateralPrice) * (1 - (info.targetCollateralRatio / 100)))
+            / (parseFloat(info.sharePrice) * (info.targetCollateralRatio / 100))) : 0;
+            stableOutput = (shareOutput * parseFloat(info.sharePrice)) + ((value * info.collateralPrice) * (info.targetCollateralRatio / 100))
+        }
+
+        else {
+            shareOutput = info.targetCollateralRatio < 100 ? 
+            (((parseFloat(value) * info.collateralPrice) * (1 - (info.targetCollateralRatio / 100))) / (parseFloat(info.sharePrice) * (info.targetCollateralRatio / 100)))
+            : 0;
+            stableOutput = info.stablePrice / ((shareOutput * parseFloat(info.sharePrice)) + (value * info.collateralPrice))
+        }
 
         setCollateralInput(value)
-        setOutputInput(stableOutput + shareOutput)
+        setOutputInput(stableOutput)
         setCatenaInput(shareOutput)
     }
 

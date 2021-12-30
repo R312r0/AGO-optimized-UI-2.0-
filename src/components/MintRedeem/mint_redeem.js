@@ -64,6 +64,9 @@ export const MintRedeem = () => {
 
     }, [account, contracts]);
 
+
+    console.log(mintRedeemInfo);
+
     return (
         <>
         {!account ?
@@ -85,7 +88,7 @@ export const MintRedeem = () => {
                                     <i className="fas fa-circle"></i>
                                     <span> Slippage: <b>{mintRedeemSlipage}%</b></span>
                                     <i className="fas fa-circle"></i>
-                                    <span> Rates: <span> 1 <b>{mintRedeemCurrency}</b> = {mintRedeemInfo.stablePrice} <b> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b> </span> </span>
+                                    <span> Rates: <span> 1 <b>{mintRedeemCurrency}</b> = {mintRedeemCurrency === "AGOUSD" ?  mintRedeemInfo.stablePrice : mintRedeemInfo.stablePrice / mintRedeemInfo.collateralPrice} <b> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b> </span> </span>
 
                                     <span className='contract__link-polygon'> <a href="https://polygonscan.com/"> View contracts on PolygonScan </a> <i className="fas fa-external-link-alt"></i> </span>
                                 </div>

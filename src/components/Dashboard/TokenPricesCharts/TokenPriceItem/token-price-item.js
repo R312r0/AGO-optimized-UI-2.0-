@@ -10,7 +10,8 @@ import { CustomToolTip } from '../../../ChartCustomTooltip/chart-custom-tooltip'
 import arrowUp from '../arrow-up.svg';
 import arrowDown from '../arrow-down.svg';
 
-const Arrow = (change24h) => {
+const Arrow = ({change24h}) => {
+
     return (
         <>
             {
@@ -54,9 +55,13 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                 tokenItem.decimals));
         const marketCap = tokenTotalSupply * tokenItem.priceUSD;
 
-        const latestRecordChange = chartArr.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
-        const change24h = !latestRecordChange || +latestRecordChange.valueUSD === 0 ? 
-        0 : ((tokenItem.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
+        let reverse = [...chartArr];
+        reverse.reverse();
+
+        const latestRecordChange = reverse.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
+        const change24h = +latestRecordChange.valueUSD === 0 && +tokenItem.priceUSD === 0 ? 0 : ((tokenItem.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
+
+        console.log(change24h);
 
         const newLineChartData = chartArr.map(item => {
             const date = new Date(item.timestamp * 1000);
@@ -95,7 +100,7 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
 
                   <h3> {tokenPriceItem.symbol} </h3>
                   <h1> ${tokenPriceItem.price} </h1>
-                  <span> <Arrow/> {tokenPriceItem.change24h === Infinity ? 0 : tokenPriceItem.change24h}% <span>(24h)</span> </span>
+                  <span> <Arrow change24h={tokenPriceItem.change24h}/> {tokenPriceItem.change24h === Infinity ? 0 : tokenPriceItem.change24h}% <span>(24h)</span> </span>
                   <ResponsiveContainer className='responsive-container-chart demo-chart' width={"100%"} height={"100%"}>
                       <LineChart
                         data={tokenPriceItem.chart}
