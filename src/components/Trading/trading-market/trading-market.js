@@ -112,36 +112,6 @@ const TradingMarket = ({pool}) => {
 
     }
 
-    // const handleChangeTokens = () => {
-
-    //     setTokenChangeSwap(!tokenChangeSwap);
-
-    //     if (tokenChangeSwap) {
-    //         setToken0Price(data.pair.token1.priceUSD)
-    //         setToken1Price(data.pair.token0.priceUSD)
-
-    //         setToken0PairPrice(data.pair.token0Price)
-    //         setToken1PairPrice(data.pair.token1Price)
-
-    //         setToken0(pool.token1)
-    //         setToken1(pool.token0)
-    //     }
-    //     else {
-    //         setToken0Price(data.pair.token0.priceUSD)
-    //         setToken1Price(data.pair.token1.priceUSD)
-
-    //         setToken0PairPrice(data.pair.token1Price)
-    //         setToken1PairPrice(data.pair.token0Price)
-
-    //         setToken0(pool.token0)
-    //         setToken1(pool.token1)
-    //     }
-
-    //     setToken0({...token1});
-    //     setToken1({...token0});
-    //     setToken1Input(token0Input);
-    // }
-
     const handleApprove = async (tok) => {
 
         setApproveDataForModal({
