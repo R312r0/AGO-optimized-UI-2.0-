@@ -58,10 +58,13 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
         let reverse = [...chartArr];
         reverse.reverse();
 
+        let change24h = 0;
         const latestRecordChange = reverse.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
-        const change24h = +latestRecordChange.valueUSD === 0 && +tokenItem.priceUSD === 0 ? 0 : ((tokenItem.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
 
-        console.log(change24h);
+        if (latestRecordChange) {
+          change24h = +latestRecordChange?.valueUSD === 0 && +tokenItem.priceUSD === 0 ?
+          0 : ((tokenItem.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
+        }
 
         const newLineChartData = chartArr.map(item => {
             const date = new Date(item.timestamp * 1000);

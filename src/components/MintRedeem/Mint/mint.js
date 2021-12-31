@@ -81,6 +81,10 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
         let collateral;
         let share;
 
+        const agousd = contracts.AGOBTC;
+
+        console.log(await agousd.methods.totalSupply().call())
+
         if (mintRedeemCurrency === "AGOUSD") {
             collateral = await contracts.USDT.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOUSD).call();
             share = await contracts.CNUSD.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOUSD).call();
@@ -97,6 +101,8 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
             share
         }))
     }
+
+    console.log(approved);
 
     const handleCollateralInput = (value) => {
 
@@ -258,7 +264,7 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     const handleRefreshCollateralRatio = async () => {
         if (mintRedeemCurrency === "AGOUSD") {
-            await contracts.TREASURY_AGOUSD.methods.allocateSeigniorage().send({from: account});
+            // await contracts.TREASURY_AGOUSD.methods.allocateSeigniorage().send({from: account});
             // calcCollateralBalance()
 
             // const exceedCollateralValue = await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call();
@@ -269,7 +275,7 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
             // const howMuchUSDT = await contracts.USDT.balanceOf()
             // console.log(data);
 
-            // await contracts.TREASURY_AGOUSD.methods.refreshCollateralRatio().send({from: account});
+            await contracts.TREASURY_AGOUSD.methods.refreshCollateralRatio().send({from: account});
 
         }
         else {

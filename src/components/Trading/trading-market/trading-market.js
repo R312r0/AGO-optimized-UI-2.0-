@@ -61,6 +61,7 @@ const TradingMarket = ({pool}) => {
 
     useEffect(() => {
 
+
         if (data && pool) {
             if (tokenChangeSwap) {
                 setToken0Price(data.pair.token1.priceUSD)

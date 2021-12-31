@@ -128,9 +128,9 @@ export const SystemProvider = ({children}) => {
 
     const getUserPortfolio = async () => {
 
-        const filterTokens = tokens.filter(token => token.isProtocolMain);
+        // const filterTokens = tokens.filter(token => token.isProtocolMain);
 
-        const balancesResult = filterTokens.map(async (item) => {
+        const balancesResult = tokens.map(async (item) => {
 
             const tokenContract = contracts[item.symbol];
             const nativeBalance = parseFloat(formatFromDecimal(await tokenContract.methods.balanceOf(account).call(), item.decimals));
@@ -141,6 +141,8 @@ export const SystemProvider = ({children}) => {
         })
 
         const res = await Promise.all(balancesResult)
+
+        console.log(res);
 
         res.sort((a, b) => {
             if(a.symbol < b.symbol) { return -1; }

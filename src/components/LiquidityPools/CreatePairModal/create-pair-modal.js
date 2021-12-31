@@ -177,9 +177,13 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
     useEffect(() => {
 
         if (contracts) {
+
             const searchToken0 = contracts[token0Select?.symbol];
             const searchToken1 = contracts[token1Select?.symbol];
     
+            console.log(searchToken0);
+            console.log(searchToken1);
+
             if (searchToken0) {
                 allowanceForRouter(searchToken0, 0)
                 checkTokenBalance(searchToken0, 0)
@@ -274,12 +278,17 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
         const token1AmountFormatted = formatToDecimal(token1Amount, token1.decimals);
 
 
+        console.log(token0);
+        console.log(token1);
+
         await contracts.ROUTER.methods.addLiquidity(token0.id, token1.id, token0AmountFormatted, token1AmountFormatted, 0, 0, account, 9999999999).send({ from: account });
 
     }
 
     const allowanceForRouter = async (contract, tokenInd) => {
         const allowance = await contract.methods.allowance(account, DEX_ADDRESESS.ROUTER).call()
+
+        console.log(allowance);
 
         if (tokenInd === 0) {
             setToken0Allowance(allowance.length === MAX_INT.length);
@@ -292,7 +301,7 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
 
     const approveForRouter = async (tokenObj) => {
 
-        const searchContract = tokens[tokenObj.symbol]?.instance;
+        const searchContract = contracts[tokenObj.symbol];
 
         if (!searchContract) {
             const contr = new library.eth.Contract(ERC20_ABI, tokenObj.id);
