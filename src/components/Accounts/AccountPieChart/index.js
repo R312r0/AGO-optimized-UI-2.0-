@@ -72,8 +72,7 @@ const AccountPieChart = ({userBalanceData}) => {
 
     const chartCanvasRef = useRef(null);
 
-    const labels = ['#40BA93', '#0885F8', '#EA8C00', '#1BB8DB', '#9018EE',
-        '#DB1B60', '#EAD200', '#DB1BB1'];
+    const labels = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#EA8C00", "#47867d", "#1BB8DB", "#9018EE"];
 
     useEffect(() => {
 
@@ -126,7 +125,7 @@ const AccountPieChart = ({userBalanceData}) => {
                 }})
         }
 
-    }, [chartData]);
+    }, [chartData, theme]);
 
     const textInCenter = (value, label) => {
         const canvas = chartCanvasRef.current;

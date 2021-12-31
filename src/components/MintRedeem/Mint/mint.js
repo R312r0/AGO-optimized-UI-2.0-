@@ -109,18 +109,17 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
         let shareOutput;
         let stableOutput;
 
-        if (mintRedeemCurrency === "AGOUSD") {
-            shareOutput = info.targetCollateralRatio < 100 ? (((parseFloat(value) * info.collateralPrice) * (1 - (info.targetCollateralRatio / 100)))
-            / (parseFloat(info.sharePrice) * (info.targetCollateralRatio / 100))) : 0;
-            stableOutput = (shareOutput * parseFloat(info.sharePrice)) + ((value * info.collateralPrice) * (info.targetCollateralRatio / 100))
-        }
+        shareOutput = info.targetCollateralRatio < 100 ? (((parseFloat(value) * info.collateralPrice) * (1 - (info.targetCollateralRatio / 100)))
+        / (parseFloat(info.sharePrice) * (info.targetCollateralRatio / 100))) : 0;
 
-        else {
-            shareOutput = info.targetCollateralRatio < 100 ? 
-            (((parseFloat(value) * info.collateralPrice) * (1 - (info.targetCollateralRatio / 100))) / (parseFloat(info.sharePrice) * (info.targetCollateralRatio / 100)))
-            : 0;
-            stableOutput = info.stablePrice / ((shareOutput * parseFloat(info.sharePrice)) + (value * info.collateralPrice))
-        }
+        console.log(shareOutput.length)
+
+        shareOutput = shareOutput.toString().length > 18 ? parseFloat(shareOutput).toFixed(18) : shareOutput
+
+        stableOutput = ((value * parseFloat(info.collateralPrice)) +  shareOutput * parseFloat(info.sharePrice)) / parseFloat(info.stablePrice);
+        stableOutput = stableOutput - (stableOutput * (info.mintFee / 100))
+
+        stableOutput = stableOutput.toString().length > 18 ? parseFloat(stableOutput).toFixed(18) : stableOutput 
 
         setCollateralInput(value)
         setOutputInput(stableOutput)

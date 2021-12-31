@@ -127,8 +127,14 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
 
     const handleStableInput = (value) => {
 
-        const collateralOutput = ((parseFloat(value) * (info.effectiveCollateralRatio / 100)) / info.collateralPrice)
-        const shareOutput = ((parseFloat(value) * (1 - (info.effectiveCollateralRatio / 100))) / info.sharePrice)
+        const dollarValueWithFe = (value * info.stablePrice) - (value * info.stablePrice * (info.redeemFee / 100));
+
+        let shareOutput = (dollarValueWithFe * (1 - (info.effectiveCollateralRatio / 100))) / info.sharePrice;
+        shareOutput = shareOutput.toString().length > 18 ? parseFloat(shareOutput).toFixed(18) : shareOutput
+
+
+        let collateralOutput = (dollarValueWithFe * (info.effectiveCollateralRatio / 100)) / info.collateralPrice;
+        collateralOutput = collateralOutput.toString().length > 18 ? parseFloat(collateralOutput).toFixed(18) : collateralOutput
 
         setCollateralOutput(collateralOutput);
         setCatenaOutput(shareOutput);
@@ -228,7 +234,7 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
                 <i className="fas fa-arrow-down"/>
             </div>
             <div className='general-window-input-row'> 
-                <span> <h3> Output {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} : <b> {info.effectiveCollateralRatio}% </b> </h3> </span>
+                <span> <h3> Output {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} : <b> {parseFloat(info.effectiveCollateralRatio).toFixed(2)}% </b> </h3> </span>
                 <span className='balance'> 
                     <h3> Balance: {formattedNum(balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "USDT" : item.symbol === "WBTC").nativeBalance)} </h3> 
                 </span>
@@ -239,7 +245,7 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
                 <i className="fas fa-plus"/>
             </div>
             <div className='general-window-input-row output'> 
-                <span> <h3> Output {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} : <b> {100 - info.effectiveCollateralRatio}% </b> </h3> </span>
+                <span> <h3> Output {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} : <b> {parseFloat(100 - info.effectiveCollateralRatio).toFixed(2)}% </b> </h3> </span>
                 <span className='balance'> 
                     <h3> Balance: {formattedNum(balances.find((item) => mintRedeemCurrency === "AGOUSD" ? item.symbol === "CNUSD" : item.symbol === "CNBTC").nativeBalance)} </h3> 
                 </span>

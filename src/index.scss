@@ -333,16 +333,12 @@ body {
 
         .trading-wrapper {
             .trading-window-box {
+                position: relative;
                 box-shadow: none;
             }
 
             &.trading-wrapper-light .trading-wrapper-chart {
                 border: 0.5px solid #40ba93;
-            }
-            .trading-wrapper-chart__control-panel select {
-                border: 1px solid #40ba93;
-                border-radius: 10px;
-                color: #333;
             }
             .trading-wrapper-exchange__header h1 {
                 color: #333;

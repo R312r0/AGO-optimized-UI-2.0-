@@ -24,7 +24,7 @@ import { LOADER_INDICATOR } from '../../constants';
 import { useDataContext } from '../../dataProvider';
 import { LIQ_POOLS_ACCOUNTS } from '../../api/client';
 
-const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#9018EE", "#1BB8DB", "#EA8C00"]
+const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#EA8C00", "#47867d", "#1BB8DB", "#9018EE"]
 
 
 export const Accounts = () => {

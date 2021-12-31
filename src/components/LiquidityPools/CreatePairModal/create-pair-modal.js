@@ -230,13 +230,13 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
             return <CreatePairButtonWrapper disabled={true}> Please choose tokens from list </CreatePairButtonWrapper>
         }
 
-        if (+token0Balance < token0Input) {
-            return <CreatePairButtonWrapper disabled={true}> Insufficient {token0Select.symbol} balance </CreatePairButtonWrapper>
-        }
+        // if (+token0Balance < token0Input) {
+        //     return <CreatePairButtonWrapper disabled={true}> Insufficient {token0Select.symbol} balance </CreatePairButtonWrapper>
+        // }
 
-        if (+token1Balance < token1Input) {
-            return <CreatePairButtonWrapper disabled={true}> Insufficient {token1Select.symbol} balance </CreatePairButtonWrapper>
-        }
+        // if (+token1Balance < token1Input) {
+        //     return <CreatePairButtonWrapper disabled={true}> Insufficient {token1Select.symbol} balance </CreatePairButtonWrapper>
+        // }
 
         if (!token0Allowance) {
             return <CreatePairButtonWrapper disabled={false} onClick={() => approveForRouter(token0Select)}> Approve {token0Select.symbol} </CreatePairButtonWrapper>

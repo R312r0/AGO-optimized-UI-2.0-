@@ -86,7 +86,7 @@ export const ApproveModal = () => {
                                 )
                             })}
                         </div>
-                        <button className='close-approve-btn'> Clearly </button>
+                        <button onClick={() => setApproveModal(false)} className='close-approve-btn'> Ok </button>
                     </div>
                 </div>
                 :

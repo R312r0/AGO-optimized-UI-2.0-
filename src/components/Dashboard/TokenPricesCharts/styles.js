@@ -65,6 +65,7 @@ export const TokenPriceChartWrapper = styled.div`
   }
 
   .single-price-wrapper {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     overflow-x: scroll;
@@ -114,6 +115,7 @@ export const TokenPriceChartWrapper = styled.div`
           font-size: 1vw;
         }
         main {
+          position: relative;
           display: flex;
           flex-direction: column;
 
@@ -160,25 +162,6 @@ export const SinglePriceBlock = styled.div`
     opacity: 0;
     margin-bottom: auto;
     margin-right: auto;
-  }
-
-  &:hover {
-    transition: .4s ease;
-
-    .demo-chart {
-      transition: ${props => props.isWindowExpanded ? "0.1s ease" : ".5s ease"};
-
-      height: ${props => props.isWindowExpanded ? "0" : "3vw"};
-      opacity: 1;
-    }
-
-    h3 {
-      margin-bottom: ${props => props.isWindowExpanded ? "0" : "0"};
-    }
-
-    h1 {
-      font-size: ${props => props.isWindowExpanded ? "1.875vw" : "0.729vw"};
-    }
   }
 
   @media only screen and (max-width: 1024px){

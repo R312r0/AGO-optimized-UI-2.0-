@@ -823,6 +823,7 @@
     }
 
     .trading-window-box {
+        position: relative;
         background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
         box-shadow: 0 0.208vw 2.083vw rgba(0, 0, 0, 0.25);
         border-radius: 2.083vw;
@@ -846,7 +847,7 @@
         }
     }
     .trading-wrapper-exchange {
-        background: #F2F2F2;
+        background: linear-gradient(90.99deg, #ffffff 2.18%, #ffffff 104.4%);
         &__header {
             color: black;
         }
@@ -883,7 +884,7 @@
         }
     }
     .trading-wrapper-txs {
-        background: #F2F2F2;
+        background: linear-gradient(90.99deg, #ffffff 2.18%, #ffffff 104.4%);
     }
 
 }

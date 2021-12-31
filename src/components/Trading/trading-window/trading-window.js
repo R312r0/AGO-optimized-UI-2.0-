@@ -12,11 +12,12 @@ import { useQuery, useSubscription } from "@apollo/client";
 import { TOKENS_TRADING } from "../../../api/client";
 import { Spin } from "antd";
 import { TOKEN_PRICE_CHART } from '../../../api/subscriptions';
+import { useThemeContext } from '../../Layout/layout';
 
 const TradingWindow = () => {
 
     const { tokens } = useSystemContext();
-
+    const { theme } = useThemeContext();
     const { data, loading } = useQuery(TOKENS_TRADING);
   
     // const [chartType, setChartType] = useState("candle");
@@ -178,7 +179,7 @@ const TradingWindow = () => {
 
     return <div className='trading-wrapper-chart trading-window-box'>
         {loading && !activeToken ?
-            <Spin indicator={LOADER_INDICATOR_LOCAL} />
+            null
             :
             <>
                 <div className='trading-wrapper-chart__header'>
@@ -195,7 +196,7 @@ const TradingWindow = () => {
                         {/*}*/}
 
                         {/* <div class="custom-select" style={{ width: '121px' }}> */}
-                            <select onChange={(e) => setActiveToken(e.target.value)}>
+                            <select style={{border: "1px solid #10DC9B", borderRadius: "25px", background: "transparent", color: theme === "dark" ? "white" : "black"}} onChange={(e) => setActiveToken(e.target.value)}>
                                 {data.tokens.map((item, index) => {
                                     return <option key={`index_opt_${index}`} value={item.symbol}> {item.symbol} </option>
                                 })}

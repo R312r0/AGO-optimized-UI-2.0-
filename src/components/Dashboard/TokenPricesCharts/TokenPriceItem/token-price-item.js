@@ -32,7 +32,6 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
     const { theme } = useThemeContext();
 
     const [tokenPriceItem, setTokenPriceItem] = useState(null);
-    const [showChart, setShowChart] = useState(false);
 
 
     useEffect(() => {
@@ -92,9 +91,7 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
               <main>
                 {tokenPriceItem ? 
                     <>
-                        <SinglePriceBlock
-                  onMouseEnter={() => expandWindow ? null : setShowChart(true)}
-                  onMouseLeave={() => expandWindow ? null : setShowChart(false)}
+                <SinglePriceBlock
                   key={_ind}
                   isShowDivider={_ind === 1}
                   isWindowExpanded={expandWindow}
@@ -122,20 +119,8 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
                           dot={false}
                           activeDot={true}
                         />
-                        {/* <Tooltip
-                          content={CustomToolTip}
-                        />
-                        <XAxis
-                          dy={10}
-                          dataKey="time"
-                          axisLine={false}
-                          tickLine={false}
-                          tick={{ fontSize: "0.7vw" }}
-                          stroke={theme === "light" ? "black" : "white"}
-                        /> */}
                       </LineChart>
                     </ResponsiveContainer>
-                  {/* <img src={demoChart} className='demo-chart' alt="chart-demo"/> */}
                 </SinglePriceBlock>
                 <div className="price-block-chart">
                   <div className='chart-wrapper'>

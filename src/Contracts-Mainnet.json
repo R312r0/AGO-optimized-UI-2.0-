@@ -1,0 +1,27 @@
+{
+    "DEX-CONTRACTS": {
+        "Factory": "",
+        "Router": ""
+    },
+
+    "TOKENS": {
+        "AGOy": "",
+        "AGOUSD": "",
+        "CNUSD": "",
+        "AGOBTC": "",
+        "CNBTC": ""
+    },
+
+    "USD_LOGIC": {
+        "TREASURY_AGOUSD": "",
+        "POOL_AGOUSD": "",
+        "FOUNDRY_AGOUSD": ""
+    },
+
+    "BTC_LOGIC": {
+        "TREASURY_AGOBTC": "",
+        "POOL_AGOBTC": "",
+        "FOUNDRY_AGOBTC": ""
+    }
+
+}

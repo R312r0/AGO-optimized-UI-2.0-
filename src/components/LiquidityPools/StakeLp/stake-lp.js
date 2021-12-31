@@ -6,6 +6,8 @@ import {useSystemContext} from "../../../systemProvider";
 import {formatFromDecimal, formatToDecimal} from "../../../utils/helpers";
 import { LP_STAKING_POOL } from '../../../constants';
 import STAKING_POOL_ABI from '../../../abi/SIngleChef.json';
+import { TokenIcon } from '../../TokenIcon/token_icon';
+import stake_icon_white from '../../../assets/icons/nav-links/active/staking-active.svg';
 
 export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpTokenAddress}) => {
 
@@ -107,16 +109,41 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpToken
     }
 
     return (
-        <>
-            <h5> Deposit/Withdraw </h5>
+        <div className='stake-lp-wrapper'>
+            <div className='stake-lp-wrapper__header'>
+                <h5>Deposit/Withdraw</h5>
+                <h5>Earned</h5>
+                <h5>Staked</h5>
+                <h5>User Lp</h5>
+            </div>
+            <div className='stake-lp-wrapper__info'>
+                <div>
+                    <h3> Input Lp to deposit </h3>
+                    <span> <TokenIcon iconName={rewardTokenSymbol}/> <h5>{rewardTokenSymbol}</h5> </span>
+                    <h3> CNUSD-WMATIC </h3>
+                    <h3> Balance </h3>
+                </div>
+                <div>
+                    <input type={"number"} onChange={(e) => setDepositWithdrawInput(e.target.value)} value={0}/>
+                    <h3> {token0.symbol}-{token1.symbol} </h3>
+                    <h3> {staked} Lp </h3>
+                    <h3> {lpUserBalance} </h3>
+                </div>
+            </div>
+            <div className='stake-lp-wrapper__buttons'>
+                <button className='stake-lp-wrapper__buttons__claim-reward' onClick={() => handleClaimReward()}> <img src={stake_icon_white}/> Claim reward </button>
+                <button className='stake-lp-wrapper__buttons__stake' onClick={() => allowance ? handleStake() : handleApprove()}> {allowance ? "Stake" : "Approve"} </button>
+                <button className='stake-lp-wrapper__buttons__unstake' onClick={() => handleUnstake()} > Unstake </button>
+            </div>
+            {/* <h5> Deposit/Withdraw </h5>
             <input type="number" onChange={(e) => setDepositWithdrawInput(e.target.value)} placeholder={"Input LP to deposit"}/>
             <button onClick={() => allowance ? handleStake() : handleApprove()}> {allowance ? "Stake" : "Approve"} </button>
             <button onClick={() => handleUnstake()}> Unstake </button>
             <button onClick={() => handleClaimReward()}> Claim reward </button>
             <h5> Earned {rewardTokenSymbol}: {earned} {rewardTokenSymbol}</h5>
             <h5> STAKED {token0.symbol}-{token1.symbol}: {staked} LP</h5>
-            <p>User Lp balance: {lpUserBalance}</p>
-        </>
+            <p>User Lp balance: {lpUserBalance}</p> */}
+        </div>
     )
 
 }

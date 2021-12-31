@@ -4,6 +4,8 @@ import { useDataContext } from '../../../dataProvider';
 import { checkDashboardToken } from '../../../utils/helpers';
 import TokenPriceItem from './TokenPriceItem/token-price-item';
 import { useThemeContext } from '../../Layout/layout';
+import { LOADER_INDICATOR_LOCAL } from '../../../constants';
+import { Spin } from 'antd';
 
 export const TokenPricesCharts = () => {
 
