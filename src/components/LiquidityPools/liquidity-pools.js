@@ -8,12 +8,13 @@ import {useWeb3React} from "@web3-react/core";
 import ERC20_ABI from '../../abi/ERC20.json';
 import {LiquidityPoolsItem} from "./Liquidity-pools-item/liquidity-pools-item";
 import {Spin} from "antd";
-import {LOADER_INDICATOR, LOADER_INDICATOR_LOCAL} from "../../constants";
+import {LOADER_INDICATOR, LOADER_INDICATOR_LOCAL, LP_STAKING_POOL} from "../../constants";
 import styled from "styled-components";
 import {CreatePairModal} from "./CreatePairModal/create-pair-modal";
 import { ReactComponent as CreatePairPlus } from '../../assets/icons/plus_create.svg';
 import { useThemeContext } from '../Layout/layout';
 import { CONTRACT_ADRESESS } from '../../constants';
+import SINGLE_STAKING_ABI from '../../abi/SIngleChef.json';
 
 const SearchBar = styled.div`
   width: 39.271vw;
@@ -55,7 +56,7 @@ export const LiquidityPools = () => {
 
     const {account, library} = useWeb3React();
     const {theme} = useThemeContext();
-    const { setIsWalletModal } = useSystemContext();
+    const { setIsWalletModal, tokens } = useSystemContext();
     const {data, loading} = useQuery(LIQUIDITY_POOLS);
     const [pools, setPools] = useState(null);
     const [earnPools, setEarnPools] = useState(null);
@@ -87,6 +88,18 @@ export const LiquidityPools = () => {
 
     const prepareData = async (pools) => {
 
+        // const getPoolApr = (
+        //     stakingTokenPrice,
+        //     rewardTokenPrice,
+        //     totalStaked,
+        //     tokenPerBlock,
+        // ) => {                                                                                              // unix-oneday * 30days * 12 month / 2blocks per sec
+        //     const totalRewardPricePerYear = ethers.BigNumber.from(rewardTokenPrice).pow(tokenPerBlock).pow(86400 * 30 * 12 / 2)
+        //     const totalStakingTokenInPool = ethers.BigNumber.from(stakingTokenPrice).pow(totalStaked)
+        //     const apr = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
+        //     return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()
+        // }
+
         const res = pools.map(async (item) => {
             const lp = new library.eth.Contract(ERC20_ABI, item.id);
             const lpTotalSupply = formatFromDecimal(await lp.methods.totalSupply().call(), 18);
@@ -95,7 +108,36 @@ export const LiquidityPools = () => {
             const token0 = {symbol: item.token0.symbol, address: item.token0.id, price: item.token0.priceUSD, priceInToken1: item.token1Price}
             const token1 = {symbol: item.token1.symbol, address: item.token1.id, price: item.token1.priceUSD, priceInToken0: item.token0Price}
             const liquidityUSD = item.reserveUSD;
-            const myLiquidity = (liquidityUSD / lpTotalSupply) * lpUserBalance;
+            const lpTokenPrice = (liquidityUSD / lpTotalSupply);
+            const myLiquidity = lpTokenPrice * lpUserBalance;
+
+            // rewardPerBlock()
+
+            // console.log(item);
+
+            const findedStakingPool = LP_STAKING_POOL.find(itemPool => {
+                let searchPattern = `${item.token0.symbol}-${item.token1.symbol}`
+                let revertSearchPattern = `${item.token1.symbol}-${item.token0.symbol}`
+
+                if (itemPool.name === searchPattern || itemPool.name === revertSearchPattern) {
+                    return item
+                }
+
+            });
+            const stakingContract = findedStakingPool ? new library.eth.Contract(SINGLE_STAKING_ABI, findedStakingPool.address) : null;
+
+            let apr = 0;
+
+            if (stakingContract) {
+                const rewardTokenAddress = await stakingContract.methods.rewardToken().call();
+                const rewardToken = tokens.find(tok => tok.address === rewardTokenAddress.toLowerCase());
+                const tokenPerBlock = formatFromDecimal(await stakingContract.methods.rewardPerBlock().call(), rewardToken.decimals);
+                const tokensStaked = formatFromDecimal(await stakingContract.methods.tokensStaked().call(), 18) ;
+                const totalRewardPricePerYear = rewardToken.priceUSD**tokenPerBlock;
+                const totalStakingTokenInPool = lpTokenPrice**tokensStaked;
+                apr = (totalRewardPricePerYear / totalStakingTokenInPool) * 100
+            }
+
 
             const liqChart = item.liquidityChart.map((item) => {
                const date = new Date(item.timestamp * 1000);
@@ -111,7 +153,7 @@ export const LiquidityPools = () => {
                 return {value: +item.valueUSD, time}
             });
 
-            return {address: item.id, isEarnAgo: item.isRewardPool, lpTokenContract: lp, lpUserBalance, token0,token1, liqiuidityUSD: formattedNum(liquidityUSD), myLiquidity: formattedNum(myLiquidity), liqChart, volChart}
+            return {apr, address: item.id, isEarnAgo: item.isRewardPool, lpTokenContract: lp, lpUserBalance, token0,token1, liqiuidityUSD: formattedNum(liquidityUSD), myLiquidity: formattedNum(myLiquidity), liqChart, volChart}
 
         })
 
@@ -119,8 +161,10 @@ export const LiquidityPools = () => {
         const earnAgo = (await Promise.all(res)).filter((item) => item.isEarnAgo);
 
 
-        setPools(trading);
-        setEarnPools(earnAgo);
+        //FIXME: take this off when production release.
+        setPools(trading.filter(item => item.address !== "0x7cbdc04ab8defbf88ccfa331e57398fb36bae595"));
+        setEarnPools(earnAgo.filter(item => item.address !== "0x7cbdc04ab8defbf88ccfa331e57398fb36bae595"));
+
     }
 
     const handleChangePool = (value) => {

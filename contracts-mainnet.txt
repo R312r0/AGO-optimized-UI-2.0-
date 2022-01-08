@@ -1,0 +1,55 @@
+==========================================================================
+deployer:       0x15FEEc5eBFcb2B6403f1De5b93c0d5933edF5bE0
+network:        mainnet
+==========================================================================
+[+] tokens:
+    [+] READY-TOKENS:
+    [✅] AGO: [💈]0x4e125214Db26128B35c24c66113C63A83029e433[💈]
+    [✅] USDT: [💈]0xc2132D05D31c914a87C6611C10748AEb04B58e8F[💈]
+    [✅] USDC: [💈]0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174[💈]
+    [✅] DAI: [💈]0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063[💈]
+    [✅] WBTC: [💈]0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6[💈]
+    [✅] WMATIC: [💈]0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270[💈]
+
+    [+] DEPLOYED-TOKENS:
+    [✅] AGOLiquidity: [💈]0xc165f5E799278914dC1FFA10cf31142730ca26f3[💈]
+    [✅] AGOUSD: [💈]0x629215C28e5F467307a1bf51161505c0730f06C3[💈]
+    [✅] AGOBTC: [💈]0xe65d6998E744cb46f17B27E5a8559855ac64Ec2D[💈]
+    [✅] CNUSD: [💈]0xB57B1e729673A13E91FF07671aA1bD6e74DCab8b[💈]
+    [✅] CNBTC: [💈]0xE86E1363132B5B92AC2049058B6A5cb2E04565d3[💈]
+[+] dex: 
+    [✅] UniswapV2Factory: [💈] 0xdAc31E70c2C4Fea0629e85e7B67222127A8672d8 [💈]
+    [✅] UniswapV2Router02 [💈] 0xD3d28e4958bAa48a7c4bDC2e486E0f6D7501f0d8 [💈]
+[+] uniswap pairs:
+    [✅] AGO/WMATIC: [💈]0x7cBDC04aB8dEFBF88CCfa331e57398Fb36BaE595[💈]
+    [✅] AGOUSD/USDT: [💈]0xe4db1d34559bB115B954FAd53fd9d4Ed311Ec03E[💈]
+    [✅] CNUSD/WMATIC: [💈]0xE5ff83BFF888EfdD2c73EddC3FeAf992EDA37457[💈]
+    [✅] AGOBTC/WBTC: [💈]0x206a734E79fDf5134eF6a0B14D10a170De196717[💈]
+    [✅] CNBTC/WMATIC: [💈]0x3e17c74Aa689706Ef1ACB18abB62E8eA38986Cf9[💈]
+[+] treasury: 
+    [✅] Treasury AGOUSD [💈] 0x7fc76857ef263f3A6eEbDA2178A57e53a45B47F6 [💈]
+    [✅] Treasury AGOBTC [💈] 0xb8C21036Dc1aA2688d30c41000056e1d8a6f0255 [💈]
+[+] oracles:
+    [+] PAIR-ORACLES:
+    [✅] AGOUSD/USDT PairOracle [💈] 0x8597934e430a64480eF54B1144c287089B007482 [💈]
+    [✅] AGOBTC/WBTC PairOracle  [💈] 0x99725fEf742F1DB2ea22bA26bB623D75aE09a26F [💈]
+    [✅] CNUSD/WMATIC PairOracle  [💈] 0x518b1B381Ea45589468B8A08c95E7F0deD26ba38 [💈]
+    [✅] CNBTC/WMATIC PairOracle  [💈] 0x82cFf87C39ae473A7518F4f3Bf1F486714A1dd28 [💈]
+    [✅] AGO/WMATIC PairOracle  [💈] 0x7b0bd891e157E33ed5721ecbd760D1c280f8E553 [💈]
+    [+] CUSTOM-TOKEN-ORACLES:
+    [✅] AGOUSD CustomTokenOracle  [💈] 0xcfFC49530ee2fffab46582dAF2e7fb4D7349D879 [💈]
+    [✅] AGOBTC CustomTokenOracle  [💈] 0x8E6Aea794fD6a678A1ef40C3175dC405A1D60dA0 [💈]
+    [✅] CNUSD  CustomTokenOracle   [💈] 0xfDF3e2319e54f5D9eC869ECbb0136d07cfdA939C [💈]
+    [✅] CNBTC  CustomTokenOracle   [💈] 0xf35DD795770bdcddD2588C80aa75DdFF34A4a262 [💈]
+    [✅] AGO    CustomTokenOracle   [💈]  0x23aefA07fa94512BF7A8eB6EB0FcF00f3A8a54c0[💈]
+    [+] CHAIN-LINK-ORACLE:
+    [✅] USDT ChainLinkOracle  [💈] 0x9559e33664e46c6d7DE51d79D5cc5c3EDdDdF50c [💈]
+    [✅] WBTC ChainLinkOracle  [💈] 0x3329c85Fa450785CF393AEA293e2E113e7849E79 [💈]
+    [✅] WMATIC ChainLinkOracle  [💈] 0x138470Cd30D42CD093f3573445fc6756249Fcc82 [💈]
+[+] foundry:
+    [✅] Foundry AGOUSD  [💈] 0x6729d1E5dcDBb01da9045312af255A4a35cbd3A0 [💈]
+    [✅] Foundry AGOBTC  [💈] 0xb4825e19050715feeD3f636053E811871661Fbdc [💈]
+[+] pools:
+    [✅] Pool AGOUSD  [💈] 0x250EFcd45D9f83036f2D403223c7cCb2E1e9D00b [💈]
+    [✅] Pool AGOBTC  [💈] 0x610094adF401626D6B62df62bF6E67A7A6E22043 [💈]
+[+] staking-pools:

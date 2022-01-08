@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {useQuery} from '@apollo/client';
 import {TOKENS_PAIRS} from './api/client';
+import { CONTRACT_ADRESESS } from './constants';
 
 const DataContext = React.createContext();
 
@@ -15,7 +16,7 @@ export const DataProvider = ({children}) => {
     useEffect(() => {
 
         if (data && !loading) {
-            setMainData(data.tokens.map((item) => {
+            let dataArr = data.tokens.map((item) => {
                 return {
                     address: item.id,
                     symbol: item.symbol,
@@ -23,7 +24,18 @@ export const DataProvider = ({children}) => {
                     isProtocolMain: item.isProtocolMain,
                     priceUSD: parseFloat(item.priceUSD).toFixed(2) 
                 }
-            }));
+            })
+
+            // FIXME: Beta AgoLiquidity
+            dataArr.push({
+                address: CONTRACT_ADRESESS.AGO_LIQUIDITY.toLowerCase(),
+                symbol: "AGOy",
+                decimals: 18,
+                isProtocolMain: true,
+                priceUSD: 0 
+            })
+
+            setMainData(dataArr);
         }
 
     }, [data, loading])

@@ -3,7 +3,7 @@ import { NetworkConnector } from '@web3-react/network-connector';
 import { styled } from 'styled-components';
 // Dark theme icons.
 import dashboard_black from './assets/icons/nav-links/dark-theme/dashboard-black.svg';
-import mint_redeem_black from './assets/icons/nav-links/dark-theme/mint-redeem-black.svg';
+import mint_redeem_black from './assets/icons/nav-links/mint-redeem-new.svg';
 import foundry_black from './assets/icons/nav-links/dark-theme/foundry-active.svg';
 import staking_black from './assets/icons/nav-links/dark-theme/staking-black.svg';
 import liquidity_pools_black from './assets/icons/nav-links/dark-theme/liquidity-pools-black.svg';
@@ -24,7 +24,7 @@ import { ReactComponent as Accounts_black } from './assets/icons/nav-links/dark-
 
 // Active icons.
 import dashboard_active from './assets/icons/nav-links/active/dashboard-active.svg';
-import mint_redeem_active from './assets/icons/nav-links/active/mint-redeem-active.svg';
+import mint_redeem_active from './assets/icons/nav-links/mint-redeem-new.svg';
 import foundry_active from './assets/icons/nav-links/active/foundry-active.svg';
 import staking_active from './assets/icons/nav-links/active/staking-active.svg';
 import liquidity_pools_active from './assets/icons/nav-links/active/liq-pools-active.svg';
@@ -52,45 +52,81 @@ export const COINGECKO_IDS = {
 }
 
 export const DEX_ADDRESESS = {
-    FACTORY: "0xDAB3117a88082B3ED8a07f0e0363c033d41E3fBF",
-    ROUTER: "0x4332F8C0616f5449FDDbB654460bc45029BAb484",
+    FACTORY: "0xdAc31E70c2C4Fea0629e85e7B67222127A8672d8",
+    ROUTER: "0xD3d28e4958bAa48a7c4bDC2e486E0f6D7501f0d8",
+}
+
+const STABLE_COINS = {
+    AGOUSD: "0x629215C28e5F467307a1bf51161505c0730f06C3",
+    AGOBTC: "0xe65d6998E744cb46f17B27E5a8559855ac64Ec2D"
+}
+
+const SHARE_COINS = {
+    CNUSD: "0xB57B1e729673A13E91FF07671aA1bD6e74DCab8b",
+    CNBTC: "0xE86E1363132B5B92AC2049058B6A5cb2E04565d3"
+}
+
+const LOGIC_CONTRACTS_USD = {
+    FOUNDRY_AGOUSD: "0x6729d1E5dcDBb01da9045312af255A4a35cbd3A0",
+    POOL_AGOUSD: "0x250EFcd45D9f83036f2D403223c7cCb2E1e9D00b",
+    TREASURY_AGOUSD: "0x7fc76857ef263f3A6eEbDA2178A57e53a45B47F6",
+}
+
+const LOGIC_CONTRACTS_BTC = {
+    FOUNDRY_AGOBTC: "0xb4825e19050715feeD3f636053E811871661Fbdc",
+    POOL_AGOBTC: "0x610094adF401626D6B62df62bF6E67A7A6E22043",
+    TREASURY_AGOBTC: "0xb8C21036Dc1aA2688d30c41000056e1d8a6f0255",
+}
+
+const PAIRS_DEX = {
+    AGO_WMATIC: "0x7cBDC04aB8dEFBF88CCfa331e57398Fb36BaE595",
+    AOGUSD_USDT: "0xe4db1d34559bB115B954FAd53fd9d4Ed311Ec03E",
+    WBTC_AGOBTC: "0x206a734E79fDf5134eF6a0B14D10a170De196717",
+    WMATIC_CNBTC: "0x3e17c74Aa689706Ef1ACB18abB62E8eA38986Cf9",
+    WMATIC_CNUSD: "0xE5ff83BFF888EfdD2c73EddC3FeAf992EDA37457"
+}
+
+const READY_TOKENS = {
+    AGO: "0x4e125214Db26128B35c24c66113C63A83029e433",
+    AGO_LIQUIDITY: "0xc165f5E799278914dC1FFA10cf31142730ca26f3",
+    USDT: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    WMATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+    WBTC: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
 }
 
 export const CONTRACT_ADRESESS = {
-
-    FOUNDRY_AGOUSD: "0xC29e189A350B28353fC24Fe07a59B7154494cBB4",
-    POOL_AGOUSD: "0xaC8034DAFF3fb9FAbB28d8730D920eE03d8aa9fb",
-    TREASURY_AGOUSD: "0xA4f3664fc835cb44C83029347F6AF2A2ED6F65fF",
-
-    USDT: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
-    AGOUSD: "0xA996135C16AD3d8689127C167A62Dfa0586f9746",
-    CNUSD: "0x794adF01EB99B1Bfd7d598Ac908bfA7bdba07592",
-
-    WMATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
-
-    WBTC: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
-    AGOBTC: "0x79E2b283D24117E740627D960C767Fd7658F20b2",
-    CNBTC: "0xe75E5186CC972b14d154a8Db2c515c6d9Cfd137E",
-
-    FOUNDRY_AGOBTC: "0xE479a5dd333f5cFE7baf45b893B9B0a6F8b898c0",
-    POOL_AGOBTC: "0xF50D96Ea44FAE5dc472272F5793a17CD8ECD51B5",
-    TREASURY_AGOBTC: "0xb4b468a05c9392937Cd9D7f01cC40dEc0137A7F4",
+    // ...DEX_ADDRESESS, // TODO: fix it later
+    ...STABLE_COINS,
+    ...SHARE_COINS,
+    ...LOGIC_CONTRACTS_USD,
+    ...LOGIC_CONTRACTS_BTC,
+    ...PAIRS_DEX,
+    ...READY_TOKENS
 }
 
+// // SINGLE_CHEF
+// AGLIQUIDITY / AGOLIQUIDITY => 0x49881Fa26F4B6EEBF6791E85247b56d412039264
+// AGOUSD / AGOLIQUIDITY => 0x2b99ba7d51D4Be00852C27dD61dFeCFBC77121c7
+// AGOBTC / AGOLIQUIDTY => 0x8de26d4Bfd311aF2D727383f9DEdc023BDdAF808
+
+// // LP_CHEF
+// AGOUSD/USD /CNUSD => 0xAcEF71144D5e01e89CEDD53eBB5b7E422d030834
+// CNUSD/WMATIC /CNUSD => 0x4c99AF184e4598360a5D17b7d6539b900B8B269c
+// AGOBTC/WBTC /CNBTC => 0xe9269671c2a9a95354b3b02AB34063c31AECe378
+// CNBTC/WMATIC /CNBTC => 0xe9B7920Cb7a18CB30EA8E58f6b5AD11D12f11081
 
 export const SINGLE_STAKING_POOL = [
-    {name: "AGO", address: "0x4bDDb9BCf1b268d8F6C1273a889f3452f3F9D003"},
-    // {name: "AGOUSD", address: ""},
-    // {name: "AGOBTC", address: "0x360239EE2776f23CE01E40799Ff7768D1aaC0060"}
+    {name: "AGOy", address: "0x49881Fa26F4B6EEBF6791E85247b56d412039264"},
+    {name: "AGOUSD", address: "0x2b99ba7d51D4Be00852C27dD61dFeCFBC77121c7"},
+    {name: "AGOBTC", address: "0x8de26d4Bfd311aF2D727383f9DEdc023BDdAF808"}
 ]
 
 export const LP_STAKING_POOL = [
-    {name: "AGOUSD-USDT", address: "0x3B9B897DE879b09292267ae08137EC1C854AD34D"},
-    // {},
-    // {},
-    // {}
+    {name: "AGOUSD-USDT", address: "0xAcEF71144D5e01e89CEDD53eBB5b7E422d030834"},
+    {name: "CNUSD-WMATIC", address: "0x4c99AF184e4598360a5D17b7d6539b900B8B269c"},
+    {name: "AGOBTC-WBTC", address: "0xe9269671c2a9a95354b3b02AB34063c31AECe378"},
+    {name: "CNBTC-WMATIC", address: "0xe9B7920Cb7a18CB30EA8E58f6b5AD11D12f11081"},
 ]
-
 
 export const LOADER_INDICATOR =             <LoadingOutlined 
 style={{ 
@@ -101,6 +137,8 @@ style={{
 }} />    
 
 export const LOADER_INDICATOR_LOCAL = <LoadingOutlined style={{ fontSize: "3vw", color: "#40BA93", position: "absolute", top: "50%", left: "50%" }} />
+
+export const LOADER_INDICATOR_MINI = <LoadingOutlined style={{ fontSize: "1.5vw", color: "#40BA93"}} />
 
 // Connectors
 export const metaMask = new InjectedConnector({ supportedChainIds: [137] });
@@ -116,10 +154,10 @@ export const PAGES = [
     { path: "/", name: "Dashboard", img: dashboard_black, imgActive: dashboard_active, component: Dashboard_black },
     { path: "/mint-redeem", name: "Mint/Redeem", img: mint_redeem_black, imgActive: mint_redeem_active, component: Mint_redeem_black },
     { path: "/foundry", name: "Foundry", img: foundry_black, imgActive: foundry_active, component: Foundry_black },
-    { path: "/staking", name: "Staking rewards", img: staking_black, imgActive: staking_active, component: Staking_black },
-    { path: "/liqudity-pools", name: "Liquidity-Pools", img: liquidity_pools_black, imgActive: liquidity_pools_active, component: Liquidity_pools_black },
+    { path: "/staking", name: "Staking", img: staking_black, imgActive: staking_active, component: Staking_black },
+    { path: "/liqudity-pools", name: "Liquidity Pools", img: liquidity_pools_black, imgActive: liquidity_pools_active, component: Liquidity_pools_black },
     { path: "/trading", name: "Trading", img: trading_black, imgActive: trading_active, component: Trading_black },
-    { path: "/accounts", name: "Accounts", img: accounts_black, imgActive: accounts_acitve, component: Accounts_black },
+    { path: "/accounts", name: "Account", img: accounts_black, imgActive: accounts_acitve, component: Accounts_black },
 ]
 
 export const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]

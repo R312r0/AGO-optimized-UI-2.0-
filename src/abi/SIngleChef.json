@@ -191,6 +191,13 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "fundContract",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "inputs": [{
                 "internalType": "uint256",
                 "name": "_from",
@@ -203,6 +210,17 @@
             }
         ],
         "name": "getMultiplier",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTokenAmountForFund",
         "outputs": [{
             "internalType": "uint256",
             "name": "",
@@ -324,6 +342,17 @@
     {
         "inputs": [{
             "internalType": "uint256",
+            "name": "_rewardPerBlock",
+            "type": "uint256"
+        }],
+        "name": "setRewardPerBlock",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{
+            "internalType": "uint256",
             "name": "_stakingEndBlock",
             "type": "uint256"
         }],
@@ -368,6 +397,17 @@
     {
         "inputs": [],
         "name": "startBlock",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tokensStaked",
         "outputs": [{
             "internalType": "uint256",
             "name": "",

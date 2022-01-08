@@ -2,7 +2,7 @@
   "name": "ago",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://argano-rest-api-sever.herokuapp.com",
+  "homepage": "https://app.argano.io",
   "dependencies": {
     "@apollo/client": "^3.5.5",
     "@emotion/react": "^11.7.0",

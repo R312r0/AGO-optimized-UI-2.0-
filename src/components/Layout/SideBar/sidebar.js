@@ -80,7 +80,7 @@ export const SideBar = () => {
       </div>
       <Documentsvg />
     </div>
-  <ThemeSwitcher />
+  {/* <ThemeSwitcher /> */}
     </SideBarWrapper >
   )
 }

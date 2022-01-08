@@ -202,7 +202,7 @@ export const Trading = () => {
           <main onClick={() => setExpandLiqPoolsList(!expandLiqPoolsList)} ref={pools}>
             {expandLiqPoolsList ?
               <ul className='expanded-liquidity-list'>
-                {data?.pairs.map((item, _ind) => {
+                {data?.pairs.filter(item => item.token0.symbol !== "AGO" && item.token1.symbol !== "AGO").map((item, _ind) => {
                   return (
                     <li onClick={() => setChosedPool(item)} key={_ind + "_pool" + item.id}>
                       <div className='data-wrapper'>

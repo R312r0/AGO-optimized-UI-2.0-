@@ -6,7 +6,7 @@ import { useWeb3React } from "@web3-react/core";
 import { formatFromDecimal, formatToDecimal } from "../../../utils/helpers";
 import { TokenIcon } from "../../TokenIcon/token_icon";
 import { useSystemContext } from "../../../systemProvider";
-import { DEX_ADDRESESS, MAX_INT } from "../../../constants";
+import { CONTRACT_ADRESESS, DEX_ADDRESESS, MAX_INT } from "../../../constants";
 
 const ModalHeader = styled.h1`
     font-weight: 500;
@@ -82,6 +82,8 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
     const [removeValue, setRemoveValue] = useState(0);
     const [allowance, setAllowance] = useState(false);
 
+    const [lpBalance, setLpBalance] = useState(0)
+ 
     useEffect(() => {
 
         if (account && lpTokenContract) {
@@ -93,6 +95,8 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
     }, [allowance, account, lpTokenContract, approveModal])
 
 
+
+
     const checkAllowance = async () => {
         const res = await lpTokenContract.methods.allowance(account, DEX_ADDRESESS.ROUTER).call();
         setAllowance(res === MAX_INT)
@@ -100,12 +104,17 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
 
     const handleApprove = async () => {
 
+        console.log("Approve");
+
         await lpTokenContract.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({ from: account });
         await checkAllowance()
     }
 
     const handleRemove = async (val) => {
-        await contracts.ROUTER.methods.removeLiquidity(token0.address, token1.address, formatToDecimal(val, 18), 0, 0, account, 999999999999999).send({ from: account });
+
+        // await contracts.ROUTER.methods.removeLiquidity(token0.address, token1.address, formatToDecimal(val, 18), 0, 0, account, 999999999999999).send({ from: account });
+        await contracts.ROUTER.methods.removeLiquidity(CONTRACT_ADRESESS.USDT, CONTRACT_ADRESESS.WMATIC, formatToDecimal("1.5", 18), 0, 0, account, 999999999999999).send({ from: account });
+
     }
 
     return (

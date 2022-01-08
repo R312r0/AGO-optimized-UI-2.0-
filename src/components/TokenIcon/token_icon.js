@@ -2,6 +2,7 @@ import React from 'react'
 
 // Protocol icons import
 import ago from './svg/AGO.svg'
+import agoy from './svg/AGOy.svg'
 import agoUsd from './svg/AGOUSD.svg'
 import agoBtc from './svg/AGOBTC.svg'
 import cnUsd from './svg/CNUSD.png'
@@ -22,6 +23,7 @@ import unknow from './svg/UNKNOWN_TOKEN.png';
 export const TokenIcon = ({iconName}) => {
     const tokens = [
         { name: "AGO", icon: ago },
+        { name: "AGOy", icon: agoy},
         { name: "AGOUSD", icon: agoUsd },
         { name: "MATIC", icon: real_matic },
         { name: "AGOBTC", icon: agoBtc },

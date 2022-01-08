@@ -13,7 +13,7 @@ const AccountsStaking = () => {
 
     const {account, library} = useWeb3React();
     const {contracts, tokens} = useSystemContext();
-    const [pools, setPools] = useState([]);
+    const [pools, setPools] = useState(null);
     const [totalPages, setTotalPages] = useState(0);
     const [dataPaginated, setDataPaginated] = useState(0);
     const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
@@ -106,6 +106,8 @@ const AccountsStaking = () => {
         setPools(unitedArr);
     }
 
+    console.log(pools);
+
     return (
         <div className='accounts-wrapper-use-staking-pools cosmetical-wrapper'> 
             <h1> Staking </h1>
@@ -145,7 +147,14 @@ const AccountsStaking = () => {
                     )
                 })
                 :
-                    <Spin indicator={LOADER_INDICATOR_LOCAL}/>
+                <>
+                    {pools?.length === 0 ?    
+                        <h1>No staking pools</h1>
+                        :
+                        <Spin indicator={LOADER_INDICATOR_LOCAL}/>
+                    }
+                </>
+
                 }
 
             </ul>

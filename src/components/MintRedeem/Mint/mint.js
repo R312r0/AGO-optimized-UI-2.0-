@@ -7,11 +7,12 @@ import { useSystemContext } from '../../../systemProvider';
 import { formatFromDecimal, formattedNum, formatToDecimal } from '../../../utils/helpers';
 import { TokenIcon } from '../../TokenIcon/token_icon';
 import { ApproveModal } from '../../ApproveModal/approve-modal';
+import ORACLE_ABI from '../../../abi/CustomTokenOracle.json';
 
 
 export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => {
 
-    const {account} = useWeb3React();
+    const {account, library} = useWeb3React();
     const { contracts, tokens, balances, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
 
     const [collateralInput, setCollateralInput] = useState(null);
@@ -261,27 +262,43 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     }
 
-    const handleRefreshCollateralRatio = async () => {
-        if (mintRedeemCurrency === "AGOUSD") {
-            // await contracts.TREASURY_AGOUSD.methods.allocateSeigniorage().send({from: account});
-            // calcCollateralBalance()
+    // const handleRefreshCollateralRatio = async () => {
+    //     if (mintRedeemCurrency === "AGOUSD") {
+    //         // console.log(await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call());
+            
+    //         // console.log("DOllar total supply");
 
-            // const exceedCollateralValue = await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call();
+    //         // console.log(await contracts.AGOUSD.methods.totalSupply().call());
 
-            // console.log(exceedCollateralValue);
+    //         // calcCollateralBalance()
 
-            // const data = await contracts.FOUNDRY_AGOUSD.methods.rewardPerShare().call();
-            // const howMuchUSDT = await contracts.USDT.balanceOf()
-            // console.log(data);
+    //         // const exceedCollateralValue = await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call();
 
-            await contracts.TREASURY_AGOUSD.methods.refreshCollateralRatio().send({from: account});
+    //         // console.log(exceedCollateralValue);
 
-        }
-        else {
-            await contracts.TREASURY_AGOBTC.methods.refreshCollateralRatio().send({from: account});
-        }
+    //         // const data = await contracts.FOUNDRY_AGOUSD.methods.rewardPerShare().call();
+    //         // const howMuchUSDT = await contracts.USDT.balanceOf()
+    //         // console.log(data);
 
-    }
+    //         // await contracts.TREASURY_AGOUSD.methods.unpauseCollateralRatio().send({from: account});
+            
+    //         // const orac = new library.eth.Contract(ORACLE_ABI, oracleDollar);
+    
+    //         // await orac.methods.updateIfRequired().send({from: account});
+
+    //         // console.log(await orac.methods.priceFeed().call());
+
+    //         // await contracts.TREASURY_AGOUSD.methods.refreshCollateralRatio().send({from: account});
+    //         await contracts.TREASURY_AGOUSD.methods.updateOracles().send({from: account});
+
+    //     }
+    //     else {
+    //         await contracts.TREASURY_AGOBTC.methods.updateOracles().send({from: account});
+
+    //         // await contracts.TREASURY_AGOBTC.methods.refreshCollateralRatio().send({from: account});
+    //     }
+
+    // }
 
     return (
         <div className='general-wrapper'> 
@@ -335,13 +352,13 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
                 <div className='general-window-input-row output'> 
                     <span> <h3> Output(estimated) </h3> </span>
                     <span className='balance'> 
-                        <h3> Balance: {formattedNum(balances.find(item => item.symbol === mintRedeemCurrency).nativeBalance)} </h3> 
+                        <h3> Balance: {formattedNum(balances.find(item => item.symbol === mintRedeemCurrency)?.nativeBalance)} </h3> 
                     </span>
                     <input disabled type='number' placeholder="0.00" value={outputInput}/>
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency}/> {mintRedeemCurrency} </span>
                 </div>
                 <div className="general-btn-wrapper">
-                    <button onClick={() => handleRefreshCollateralRatio()}> Refresh collateral ratio </button>
+                    {/* <button onClick={() => handleRefreshCollateralRatio()}> Refresh collateral ratio </button> */}
                     <MintButton/>
                 </div>
             </div>

@@ -95,7 +95,7 @@ const BalanceTabItem = ({balance: {symbol, nativeBalance, usdBalance}, theme}) =
     <>
       <BalanceListItemDesktop key={"token-" + symbol} light={theme === "light"}>
         <TokenIcon iconName={symbol} />
-        <span> {formattedNum(nativeBalance)}{symbol}/{formattedNum(usdBalance)}$ </span>
+        <span> {formattedNum(nativeBalance).startsWith("<") ? "0" : formattedNum(nativeBalance)}{symbol}/{formattedNum(usdBalance)}$ </span>
       </BalanceListItemDesktop>
   </>
   )

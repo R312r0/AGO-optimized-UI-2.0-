@@ -136,7 +136,7 @@ export const Accounts = () => {
                         </div>
     
                         <div className='accounts-container-duo'>
-                            {/* <AccountsStaking/> */}
+                            <AccountsStaking/>
                             <AccountsPools data={data}/>
                         </div>
                     </div>

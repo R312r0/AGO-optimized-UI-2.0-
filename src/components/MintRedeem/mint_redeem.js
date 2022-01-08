@@ -8,14 +8,14 @@ import { useSystemContext } from '../../systemProvider';
 import { formattedNum, formatFromDecimal } from '../../utils/helpers';
 import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
-import { LOADER_INDICATOR_LOCAL } from '../../constants';
+import { CONTRACT_ADRESESS, LOADER_INDICATOR_LOCAL } from '../../constants';
 import { CurrencySwitchModal } from './CurrencySwitchModal/currency-switch-modal';
 
 export const MintRedeem = () => {
 
     const [activeTab, setActiveTab] = useState("Mint");
     const [mintRedeemInfo, setMintRedeemInfo] = useState(null);
-    const { account } = useWeb3React();
+    const { account, library } = useWeb3React();
     const { contracts, setIsWalletModal, balances } = useSystemContext();
     const { theme } = useThemeContext();
     // const [connectWalletThumb, setConnectWalletThumb] = useState()
@@ -39,6 +39,12 @@ export const MintRedeem = () => {
         let poolBalance;
         let collateralPrice;
 
+        // const poolInfo = await contracts.POOL_AGOUSD.methods.info().call();
+
+        // console.log("poolInfo");
+        // console.log(poolInfo);
+
+
         if (currency === "AGOUSD") {
             info = await contracts.TREASURY_AGOUSD.methods.info(account).call();
             collateralPrice = await contracts.POOL_AGOUSD.methods.getCollateralPrice().call();
@@ -50,12 +56,16 @@ export const MintRedeem = () => {
             poolBalance = formatFromDecimal(await contracts.POOL_AGOBTC.methods.collateralDollarBalance().call(), 18);
         }
 
-        console.log(`Dollar price: ${info["0"]} `)
-        console.log(`Collateral price: ${collateralPrice} `)
-        const dollarTotalSupply = await contracts["AGOUSD"].methods.totalSupply().call();
+        // console.log(`Dollar price: ${info["0"]} `)
+        // console.log(`Collateral price: ${collateralPrice} `)
+        // const dollarTotalSupply = await contracts["AGOUSD"].methods.totalSupply().call();
 
-        console.log(`Dollar total supply ${dollarTotalSupply}`);
-        console.log(`ECR ${info["3"]}`)
+        // console.log(`Dollar total supply ${dollarTotalSupply}`);
+        // console.log(`ECR ${info["3"]}`)
+
+        console.log(await contracts.POOL_AGOUSD.methods.unclaimed_pool_collateral().call());
+
+        // console.log(await contracts.POOL_AGOUSD.methods.info().call())
 
         setMintRedeemInfo({
             stablePrice: formatFromDecimal(info["0"], 6),

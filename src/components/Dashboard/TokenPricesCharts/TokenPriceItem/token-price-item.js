@@ -60,8 +60,10 @@ const TokenPriceItem = ({token, _ind, expandWindow}) => {
         let change24h = 0;
         const latestRecordChange = reverse.find((item) => item.timestamp * 1000 <= currentDate - (86400 * 1000));
 
+        console.log(latestRecordChange);
+
         if (latestRecordChange) {
-          change24h = +latestRecordChange?.valueUSD === 0 && +tokenItem.priceUSD === 0 ?
+          change24h = +latestRecordChange?.valueUSD === 0 || +tokenItem.priceUSD === 0 ?
           0 : ((tokenItem.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
         }
 

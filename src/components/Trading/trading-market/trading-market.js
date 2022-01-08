@@ -114,11 +114,13 @@ const TradingMarket = ({pool}) => {
 
     const handleApprove = async (tok) => {
 
+        console.log(token0);
+
         setApproveDataForModal({
             destination: DEX_ADDRESESS.ROUTER,
             approves: [
-                {name: token0.token.symbol, address: token0.token.id, alreadyApproved: token0Allowance},
-                {name: token1.token.symbol, address: token1.token.id, alreadyApproved: token1Allowance},
+                {name: token0.symbol, address: token0.id, alreadyApproved: token0Allowance},
+                {name: token1.symbol, address: token1.id, alreadyApproved: token1Allowance},
             ]
         })
 
@@ -139,7 +141,7 @@ const TradingMarket = ({pool}) => {
                 0,
                 [token0.id, token1.id],
                 account,
-                999999999999).send({from: account, value: formatFromDecimal(token0Input, 18)})            
+                999999999999).send({from: account, value: formatToDecimal(token0Input, 18)})            
         }
 
         else if (token1.symbol === "MATIC") {
@@ -148,7 +150,7 @@ const TradingMarket = ({pool}) => {
                 formatFromDecimal((token0Input + (token0Input * 0.05)), 18),
                 [token1.id, token0.id],
                 account,
-                999999999999).send({from: account, value: formatFromDecimal(token0Input, 18)})            
+                999999999999).send({from: account, value: formatToDecimal(token0Input, 18)})            
         }
 
         else {
@@ -218,7 +220,7 @@ const TradingMarket = ({pool}) => {
                             <h5> =${formattedNum(token0Price)} </h5>
                         </div>
                         <main>
-                    <span onClick={() => token0.symbol === "WMATIC" ?  setToken0({id: token0.id, priceUSD: token0.priceUSD, symbol: "MATIC", name: "MAITC"}) : setToken0({id: token0.id, priceUSD: token0.priceUSD, symbol: "WMATIC", name: "WMAITC"})} style={{border: token0.symbol === "WMATIC" ? "1px solid #40BA93" : "", borderRadius: "25px"}}>
+                    <span onClick={() => token0.symbol === "WMATIC" ?  setToken0({id: token0.id, priceUSD: token0.priceUSD, symbol: "MATIC", name: "MAITC"}) : setToken0({id: token0.id, priceUSD: token0.priceUSD, symbol: "WMATIC", name: "WMAITC"})}>
                         <TokenIcon iconName={token0?.symbol}/>
                         <h3> {token0.symbol} </h3>
                     </span>
@@ -235,7 +237,7 @@ const TradingMarket = ({pool}) => {
                             <h5> =${formattedNum(token1Price)} </h5>
                         </div>
                         <main>
-                    <span onClick={() => token1.symbol === "WMATIC" ?  setToken1({id: token1.id, priceUSD: token1.priceUSD, symbol: "MATIC", name: "MAITC"}) : setToken0({id: token1.id, priceUSD: token1.priceUSD, symbol: "WMATIC", name: "WMAITC"})} style={{border: token1.symbol === "WMATIC" ? "1px solid #40BA93" : "", borderRadius: "25px"}}>
+                    <span onClick={() => token1.symbol === "WMATIC" ?  setToken1({id: token1.id, priceUSD: token1.priceUSD, symbol: "MATIC", name: "MAITC"}) : setToken0({id: token1.id, priceUSD: token1.priceUSD, symbol: "WMATIC", name: "WMAITC"})}>
                         <TokenIcon iconName={token1.symbol}/>
                         <h3> {token1.symbol} </h3>
                     </span>

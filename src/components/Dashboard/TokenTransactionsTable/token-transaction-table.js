@@ -56,14 +56,13 @@ export const TokenTransactionTable = () => {
                     txName = `${item.name} ${item.token0} and ${item.token1}`
                     break;
                 case MINT:
-                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
+                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare > 0 ? item.tokenShare : ""}`
                     break;
                 case REDEEM:
-                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare !== 0 ?  item.tokenShare : ""}`
+                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare > 0 ?  item.tokenShare : ""}`
                     break;
                 case COLLECT_REDEMPTION:
-                    txName = `${item.name} ${+item.amountShare !== 0 ?  item.tokenShare + " and" : ""} ${item.token1}`
-                    token0Amount = `${+item.amountShare !== 0 ? item.amountShare: "0.00" + " " + item.tokenShare}`
+                    txName = `${item.name} ${item.token0} ${+item.amountShare > 0 ? item.tokenShare + " and" : ""}`
                     break;
                 case STAKE:
                     txName = `${item.name} ${item.token0}`

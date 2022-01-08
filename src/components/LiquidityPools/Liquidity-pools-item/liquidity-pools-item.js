@@ -18,7 +18,7 @@ const TABS = {
     STAKE_LP: "Stake LP"
 }
 
-export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD, isEarnAgo, myLiquidity, volChart, liqChart, lpTokenContract, lpUserBalance }}) => {
+export const LiquidityPoolsItem = ({pool: {apr,address,token0, token1, liqiuidityUSD, isEarnAgo, myLiquidity, volChart, liqChart, lpTokenContract, lpUserBalance }}) => {
 
     const { PROVIDE_LIQUIDITY, VOLUME, LIQUIDITY, TRANSACTIONS, STAKE_LP } = TABS;
     const [windowExpanded, setWindowExpanded] = useState(false);
@@ -56,7 +56,7 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
                 </div>
                 <h3> {liqiuidityUSD}$ </h3>
                 <h3>  {myLiquidity}$ </h3>
-                <h3> 0% </h3>
+                <h3> {apr.toFixed(2)}% </h3>
                 <button className='chart-expand'
                         onClick={() => setWindowExpanded(!windowExpanded)}> {windowExpanded ?
                     <i className="fas fa-times"/> : <i className="fas fa-chart-line"/>} </button>
@@ -93,7 +93,7 @@ export const LiquidityPoolsItem = ({pool: {address,token0, token1, liqiuidityUSD
                                 <span> <h5>Liquidity </h5> <b> ${liqiuidityUSD} </b> </span>
                                 <span> <h5>Volume (24H) </h5> <b> $ volume </b> </span>
                                 <span> <h5>Earnings (24H) </h5> <b> $51,544 </b> </span>
-                                <span> <h5>Total APY </h5> <b> 31.84% </b> </span>
+                                <span> <h5>Total APR </h5> <b> {apr.toFixed(2)}% </b> </span>
                                 <span> <h5>My Liquidity </h5> <b> ${myLiquidity} </b> </span>
                             </div>
                             :

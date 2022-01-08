@@ -35,7 +35,7 @@ const TradingWindow = () => {
     useEffect(() => {
 
         if (data && !loading) {
-            setActiveToken("AGO");
+            setActiveToken("AGOUSD");
         }
 
     }, [data, loading])
@@ -197,7 +197,7 @@ const TradingWindow = () => {
 
                         {/* <div class="custom-select" style={{ width: '121px' }}> */}
                             <select style={{border: "1px solid #10DC9B", borderRadius: "25px", background: "transparent", color: theme === "dark" ? "white" : "black"}} onChange={(e) => setActiveToken(e.target.value)}>
-                                {data.tokens.map((item, index) => {
+                                {data.tokens.filter(item => item.symbol !== "AGO").map((item, index) => {
                                     return <option key={`index_opt_${index}`} value={item.symbol}> {item.symbol} </option>
                                 })}
                             </select>

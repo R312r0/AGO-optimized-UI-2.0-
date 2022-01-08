@@ -124,7 +124,7 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpToken
                     <h3> Balance </h3>
                 </div>
                 <div>
-                    <input type={"number"} onChange={(e) => setDepositWithdrawInput(e.target.value)} value={0}/>
+                    <input type={"number"} onChange={(e) => setDepositWithdrawInput(e.target.value)}/>
                     <h3> {token0.symbol}-{token1.symbol} </h3>
                     <h3> {staked} Lp </h3>
                     <h3> {lpUserBalance} </h3>

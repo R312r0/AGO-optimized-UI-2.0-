@@ -235,10 +235,11 @@ export const BalanceOverall = styled.div`
 export const BalanceList = styled.ul`
   max-width: 100%;
   width: 100%;
-  margin-left: auto;
   box-sizing: border-box;
   padding: 2.083vw;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: auto;
 `
 
 export const BalanceSwipeStripe = styled.div`
@@ -256,7 +257,7 @@ export const BalanceSwipeStripe = styled.div`
 `
 
 export const BalanceListItem = styled.li`
-  display: flex;
+  display: grid;
   align-items: center;
   grid-template-columns: 1fr 3fr;
   background: linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
@@ -289,7 +290,7 @@ export const BalanceListDesktop = styled.ul`
   margin-left: ${props => props.opened ? "20px" : "0"};
   margin-bottom: 0;
   align-items: center;
-  column-gap: 15px;
+  column-gap: 35px;
   color: white;
 
   opacity: ${props => props.opened ? "1" : "0"};
@@ -318,7 +319,7 @@ export const BalanceListItemDesktop = styled.li`
   display: flex;
   align-items: center;
   column-gap: 5px;
-  padding-right: 5px;
+  padding-right: 30px;
 
   img {
     max-width:23px;

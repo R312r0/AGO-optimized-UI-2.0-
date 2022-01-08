@@ -165,7 +165,7 @@ const FoundryActions = () => {
 
                 <p className='amount'>Staked: {info.cnusd.staked}</p>
                 <input type="number" placeholder={"Stake your CNUSD"} onChange={(e) => setCnusdStakeInput(e.target.value)} />
-                <button disabled={cnusdStakeInput <= 0} onClick={() => allowance.cnusd ? handleStake("USD") : handleApprove("USD")}> {allowance.cnusd ? "Stake" : "Approve"} </button>
+                <button disabled={allowance.cnusd && cnusdStakeInput <= 0} onClick={() => allowance.cnusd ? handleStake("USD") : handleApprove("USD")}> {allowance.cnusd ? "Stake" : "Approve"} </button>
 
                 <input type="number" placeholder={"Withdraw your CNUSD"} onChange={(e) => setCnusdStakeInput(e.target.value)} />
                 <button disabled={!info.cnbtc.isWithdrawAvailable || cnusdWithdrawInput <= 0} onClick={() => handleWithdraw("USD")}> {!info.cnbtc.isWithdrawAvailable ? "Blocked" : "Withdraw"} </button>
@@ -191,7 +191,7 @@ const FoundryActions = () => {
                 
                 <p className='amount'>Staked: {formattedNum(info.cnbtc.staked)}</p>
                 <input type="number" placeholder={"Stake/Withdraw your CNBTC"} onChange={(e) => setCnbtcStakeInput(e.target.value)}/>
-                <button disabled={cnbtcStakeInput <= 0} onClick={() => allowance.cnbtc ? handleStake("BTC") : handleApprove("BTC")}> {allowance.cnbtc ? "Stake" : "Approve"}  </button>
+                <button disabled={allowance.cnusd && cnbtcStakeInput <= 0} onClick={() => allowance.cnbtc ? handleStake("BTC") : handleApprove("BTC")}> {allowance.cnbtc ? "Stake" : "Approve"}  </button>
 
                 <input type="number" placeholder={"Withdraw your CNUSD"} onChange={(e) => setCnusdStakeInput(e.target.value)} />
                 <button disabled={!info.cnbtc.isWithdrawAvailable || cnusdWithdrawInput <= 0 } onClick={() => handleWithdraw("USD")}> {!info.cnbtc.isWithdrawAvailable ? "Blocked" : "Withdraw"} </button>
