@@ -108,6 +108,12 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpToken
         await getStakeInfo()
     }
 
+    const maxInput = () => {
+        // find Max Value that customer can input
+        // const maxValue = ...
+        // setDepositWithdrawInput(maxValue);
+    }
+
     return (
         <div className='stake-lp-wrapper'>
             <div className='stake-lp-wrapper__header'>
@@ -123,8 +129,12 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpToken
                     <h3> CNUSD-WMATIC </h3>
                     <h3> Balance </h3>
                 </div>
-                <div>
-                    <input type={"number"} onChange={(e) => setDepositWithdrawInput(e.target.value)}/>
+                <div className='stake-lp-wrapper__info__data'>
+                    <div className='stake-lp-wrapper__info__data__input'>
+                        <input type={"number"} placeholder='0' onChange={(e) => setDepositWithdrawInput(e.target.value)}/>
+                        <button className='stake-lp-wrapper__info__data__input__max' onClick={maxInput()}>Max</button>
+                    </div>
+                    
                     <h3> {token0.symbol}-{token1.symbol} </h3>
                     <h3> {staked} Lp </h3>
                     <h3> {lpUserBalance} </h3>
