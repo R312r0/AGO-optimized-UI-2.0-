@@ -1,29 +1,28 @@
-body{
+body {
     .ant-modal-content {
         position: relative;
         .ant-modal-close-x {
             position: absolute;
             top: 21px;
             right: 20px;
-        
+
             background: #171717;
             box-shadow: -8px -8px 20px rgba(28, 27, 27, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25);
             border-radius: 16px;
             // padding: 13px 24px;
             width: 68px;
             height: 45px;
-        
+
             display: flex;
             align-items: center;
             justify-content: center;
-        
-            & svg{
-                fill:#4F4F4F;
+
+            & svg {
+                fill: #4f4f4f;
             }
         }
     }
 }
-
 
 .create-pair-modal {
     .ant-modal-content {
@@ -38,13 +37,17 @@ body{
             max-height: 820px;
             height: 100%;
         }
-       
     }
 }
 
 .remove-liquidity-modal {
     .ant-modal-content {
-        background: radial-gradient(61.16% 3404.86% at 48.28% 79.61%, rgba(30, 117, 89, 0.3) 0%, rgba(9, 33, 25, 0.3) 100%), linear-gradient(90.99deg, #272727 2.18%, #1C1C1C 104.4%);
+        background: radial-gradient(
+                61.16% 3404.86% at 48.28% 79.61%,
+                rgba(30, 117, 89, 0.3) 0%,
+                rgba(9, 33, 25, 0.3) 100%
+            ),
+            linear-gradient(90.99deg, #272727 2.18%, #1c1c1c 104.4%);
         box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
         border-radius: 40px;
         .ant-modal-body {
@@ -52,15 +55,15 @@ body{
             display: grid;
             grid-template-columns: 1fr;
             row-gap: 21px;
-            
-            .button-area{
+
+            .button-area {
                 margin-top: 25px;
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 column-gap: 6px;
 
-                button{
-                    background: #40BA93;
+                button {
+                    background: #40ba93;
                     border-radius: 30px;
                     font-weight: 500;
                     font-size: 14px;
@@ -69,12 +72,12 @@ body{
 
                     text-align: center;
 
-                    color: #FFFFFF;
+                    color: #ffffff;
                     padding: 15px 0;
                     width: 100%;
 
-                    &.back{
-                        border: 1px solid #40BA93;
+                    &.back {
+                        border: 1px solid #40ba93;
                         background: transparent;
                     }
                 }
@@ -182,6 +185,10 @@ body{
             cursor: pointer;
 
             height: 84px;
+            -webkit-transition: background 1s ease-out;
+            -moz-transition: background 1s ease-out;
+            -o-transition: background 1s ease-out;
+            transition: background 1s ease-out, height 0.5s, transform 0.2s ease-in-out;
             &:hover {
                 transform: scale(1.01);
             }
@@ -282,7 +289,6 @@ body{
 
                 margin-bottom: auto;
 
-
                 &__header {
                     display: flex;
                     padding: 1.563vw 0 1.823vw;
@@ -360,50 +366,48 @@ body{
                                 font-weight: normal;
                                 font-size: 14px;
                                 line-height: 21px;
-                                color: #4F4F4F;
+                                color: #4f4f4f;
                             }
                         }
                         &__info {
                             display: grid;
                             grid-template-rows: 1fr 1fr;
                             row-gap: 13px;
-                            background: #1E1E1E;
+                            background: #1e1e1e;
                             border-radius: 40px;
                             padding: 24px 56px 70px;
 
-                            & h3{
+                            & h3 {
                                 font-size: 18px;
                                 line-height: 27px;
-                                color: #FFFFFF;
+                                color: #ffffff;
                             }
 
-                            &__data{
-                                & h3{
+                            &__data {
+                                & h3 {
                                     font-weight: normal;
                                     font-size: 18px;
                                     line-height: 27px;
-                                    color: #A9AAAB;
+                                    color: #a9aaab;
                                 }
-                                &__input{
+                                &__input {
                                     border-right: 1px solid #333333;
                                     position: relative;
 
-                                    &__max{
+                                    &__max {
                                         position: absolute;
                                         top: 0px;
                                         right: 13px;
-                                        background: #2C2C2C;
+                                        background: #2c2c2c;
                                         border-radius: 40px;
                                         padding: 7px 25px;
                                         font-weight: normal;
                                         font-size: 14px;
                                         line-height: 21px;
-                                        color: #FFFFFF;
+                                        color: #ffffff;
                                         text-transform: uppercase;
                                     }
                                 }
-
-                                
                             }
                             div {
                                 display: grid;
@@ -443,24 +447,24 @@ body{
 
                             button {
                                 height: 50px;
-                                border-radius: 30px;  
+                                border-radius: 30px;
                             }
 
                             &__claim-reward {
                                 justify-self: flex-start;
-                                border: 1px solid #40BA93;
+                                border: 1px solid #40ba93;
                                 max-width: 230px;
                                 width: 100%;
                                 color: white;
                             }
                             &__stake {
-                                background: #40BA93;
+                                background: #40ba93;
                                 color: white;
                                 max-width: 145px;
                             }
                             &__unstake {
                                 color: white;
-                                border: 1px solid #4F4F4F;
+                                border: 1px solid #4f4f4f;
                                 max-width: 145px;
                             }
                         }
@@ -760,16 +764,29 @@ body{
                 }
             }
         }
+        & .liq-item-opened {
+            overflow: hidden;
+            // border: 1px solid #40ba93;
+            background: radial-gradient(
+                    94.26% 94.26% at 47.39% 30.04%,
+                    rgba(64, 186, 147, 0.16) 0%,
+                    rgba(0, 0, 0, 0) 100%
+                ),
+                linear-gradient(90.99deg, #1d1d1d 2.18%, #232323 104.4%);
+            box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.25);
+            border-radius: 40px;
+            height: 566px;
+        }
     }
 
     .earn-ago {
         .luqidity-pools-wrapper-list-item {
             overflow: hidden;
             background: linear-gradient(90.19deg, #560397 -3.27%, #3d1b57 103.63%);
-            -webkit-transition: background 1s ease-out;  
-            -moz-transition: background 1s ease-out;  
-            -o-transition: background 1s ease-out; 
-            transition: background 1s ease-out, height .5s, transform 0.2s ease-in-out;
+            -webkit-transition: background 1s ease-out;
+            -moz-transition: background 1s ease-out;
+            -o-transition: background 1s ease-out;
+            transition: background 1s ease-out, height 0.5s, transform 0.2s ease-in-out;
             // background-color: linear-gradient(152.93deg, #560397 -56.36%, #202020 48.96%)
 
             &.liq-item-opened {
@@ -847,15 +864,6 @@ body{
                     }
                 }
             }
-        }
-        .liq-item-opened {
-            border: 1px solid #40ba93;
-            background: radial-gradient(
-                    134.01% 652.71% at 100% 100%,
-                    rgba(64, 186, 147, 0.2) 0%,
-                    rgba(64, 186, 147, 0) 100%
-                ),
-                radial-gradient(105.3% 524.96% at -8.59% -19.61%, #40ba93 0%, rgba(242, 242, 242, 0) 100%);
         }
     }
 }
