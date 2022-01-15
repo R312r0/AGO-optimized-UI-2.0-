@@ -58,11 +58,12 @@ export const Volume24hChartWrapper = styled.div`
 
     p {
       font-weight: 500;
-      font-size: ${props => props.mobile ? "3.6vw" : "14px"};
+      font-size: ${props => props.mobile ? "3.6vw" : "18px"};
       color: ${props => props.mobile ? "#BDBDBD" : props.light ? "#333" : "white"};
       line-height: 27px;
 
       &:last-child{
+        font-size: ${props => props.mobile ? "3.6vw" : "14px"};
         color: ${props => props.mobile ? "#BDBDBD" : props.light ? "#828282" : "white"};
       }
     }

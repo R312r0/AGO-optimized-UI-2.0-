@@ -131,7 +131,12 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpToken
                 </div>
                 <div className='stake-lp-wrapper__info__data'>
                     <div className='stake-lp-wrapper__info__data__input'>
-                        <input type={"number"} placeholder='0' onChange={(e) => setDepositWithdrawInput(e.target.value)}/>
+                        <input 
+                        type={"number"} 
+                        placeholder='0.00'
+                        onFocus={(e) => e.target.placeholder = ""} 
+                        onBlur={(e) => e.target.placeholder = "0.00"}
+                        onChange={(e) => setDepositWithdrawInput(e.target.value)}/>
                         <button className='stake-lp-wrapper__info__data__input__max' onClick={maxInput()}>Max</button>
                     </div>
                     

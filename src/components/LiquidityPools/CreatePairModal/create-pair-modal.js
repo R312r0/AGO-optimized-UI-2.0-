@@ -180,7 +180,7 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
 
             const searchToken0 = contracts[token0Select?.symbol];
             const searchToken1 = contracts[token1Select?.symbol];
-    
+
             console.log(searchToken0);
             console.log(searchToken1);
 
@@ -193,7 +193,7 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
                 allowanceForRouter(contr, 0);
                 checkTokenBalance(contr, 0)
             }
-    
+
             if (searchToken1) {
                 allowanceForRouter(searchToken1, 1);
                 checkTokenBalance(searchToken1, 1)
@@ -368,7 +368,12 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
                     <TokenSelectBlock>
                         <p> Input </p>
                         <div>
-                            <input placeholder={"0.0"} onChange={(e) => setToken0Input(e.target.value)} value={token0Input} />
+                            <input
+                                placeholder={"0.00"}
+                                onFocus={(e) => e.target.placeholder = ""}
+                                onBlur={(e) => e.target.placeholder = "0.00"}
+                                onChange={(e) => setToken0Input(e.target.value)}
+                                value={token0Input} />
                             <button onClick={() => handleMaxInput(0)} className={'max'}>MAX</button>
                             <button onClick={() => handleTokenSelectWindow(0)} className={'token-sel'}>
                                 <TokenIcon iconName={token0Select.symbol} />
@@ -379,7 +384,12 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
                     <TokenSelectBlock>
                         <p> Input </p>
                         <div>
-                            <input placeholder={"0.0"} onChange={(e) => setToken1Input(e.target.value)} value={token1Input} />
+                            <input 
+                            placeholder={"0.00"}
+                            onFocus={(e) => e.target.placeholder = ""}
+                            onBlur={(e) => e.target.placeholder = "0.00"}
+                            onChange={(e) => setToken1Input(e.target.value)} 
+                            value={token1Input} />
                             <button onClick={() => handleMaxInput(1)} className={`max ${!token1Select ? "disabled" : ""}`}>MAX</button>
                             <button onClick={() => handleTokenSelectWindow(1)} className={'token-sel'}>
                                 {token1Select ?

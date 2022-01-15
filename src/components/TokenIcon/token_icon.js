@@ -1,12 +1,12 @@
 import React from 'react'
 
 // Protocol icons import
-import ago from './svg/AGO.svg'
-import agoy from './svg/AGOy.svg'
-import agoUsd from './svg/AGOUSD.svg'
-import agoBtc from './svg/AGOBTC.svg'
-import cnUsd from './svg/CNUSD.png'
-import cnBtc from './svg/CNBTC.png'
+import ago from './svg/newIcons/AGO.svg'
+import agoy from './svg/newIcons/AGOy.svg'
+import agoUsd from './svg/newIcons/AGOUSD.svg'
+import agoBtc from './svg/newIcons/AGOBTC.svg'
+import cnUsd from './svg/newIcons/CNUSD.svg'
+import cnBtc from './svg/newIcons/CNBTC.svg'
 // import real_matic from './svg/real_matic.svg';
 
 // Market icons import

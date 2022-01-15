@@ -123,7 +123,13 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
                     <div className='provide-liquidity-block__item__input-wrapper__token'>
                         <TokenIcon iconName={token0.symbol}/>
                         <h5>{token0.symbol}</h5>
-                        <input type="number" onChange={(e) => handleInput0(e.target.value)} value={input0} placeholder={`Enter ${token0.symbol} amout`}/>
+                        <input 
+                        type="number" 
+                        onChange={(e) => handleInput0(e.target.value)} 
+                        value={input0} 
+                        placeholder={`Enter ${token0.symbol} amout`}
+                        onFocus={(e) => e.target.placeholder = ""} 
+                        onBlur={(e) => e.target.placeholder = `Enter ${token0.symbol} amout`}/>
                     </div>
                 </div>
 
@@ -140,7 +146,12 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
                     <div className='provide-liquidity-block__item__input-wrapper__token'>
                         <TokenIcon iconName={token1.symbol}/>
                         <h5>{token1.symbol}</h5>
-                        <input type="number" placeholder={`Enter ${token1.symbol} amout`} onChange={(e) => handleInput1(e.target.value)} value={input1}/>
+                        <input 
+                        type="number" 
+                        placeholder={`Enter ${token1.symbol} amout`}
+                        onFocus={(e) => e.target.placeholder = ""} 
+                        onBlur={(e) => e.target.placeholder = `Enter ${token1.symbol} amout`}
+                        onChange={(e) => handleInput1(e.target.value)} value={input1}/>
                     </div>
                 </div>
 

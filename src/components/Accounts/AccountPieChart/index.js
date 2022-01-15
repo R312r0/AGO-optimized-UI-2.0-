@@ -31,11 +31,12 @@ window.segmentHovered = false;
 
 
 const PieCartWrapper = styled.div`
-    max-width: 260px;
-    width: 100%;
+    /* max-width: 260px; */
+    /* width: 100%; */
     background-position: right center;
     background-size: 116%;
     position: relative;
+    /* margin-right: 20px; */
 
     & .highcharts-credits{
         display: none;
@@ -56,15 +57,20 @@ const PieCartWrapper = styled.div`
 
     & .chartCanvas{
         position: absolute;
-        top: 0px;
-        left: 0px;
+        /* top: 0px;
+        left: 0px; */
+        max-width: 100%;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 `
 
 
 
 
-const AccountPieChart = ({userBalanceData}) => {
+const AccountPieChart = ({ userBalanceData }) => {
 
     const { theme } = useThemeContext();
     const [chartData, setChartData] = useState(null);
@@ -79,7 +85,7 @@ const AccountPieChart = ({userBalanceData}) => {
         if (userBalanceData) {
 
             const dataSets = userBalanceData.map((item) => item.usdBalance);
-            setChartData({datasets: [{data: dataSets, backgroundColor: labels}]})   
+            setChartData({ datasets: [{ data: dataSets, backgroundColor: labels }] })
 
         }
 
@@ -91,38 +97,40 @@ const AccountPieChart = ({userBalanceData}) => {
         if (chartData) {
             setChartOptions(
                 {
-                cutout: 108,
-                responsive: true,
-                elements: {
-                    arc: {
-                        borderWidth: 6,
-                        borderRadius: 20,
-                        borderColor: theme === 'light' ? '#fff' : '#1e1e1e',
+                    // responsive: true,
+                    cutout: "87%",
+                    responsive: true,
+                    elements: {
+                        arc: {
+                            borderWidth: 6,
+                            borderRadius: 20,
+                            borderColor: theme === 'light' ? '#fff' : '#1e1e1e',
+                        },
                     },
-                },
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    enabled: false
-                },
-                plugins: {
                     legend: {
                         display: false
                     },
-                },
-                animation: {
-                    onComplete: function (animation) {
-                        if (!window.segmentHovered) {
-                            var value = chartData.datasets[0].data.reduce(function (a, b) {
-                                return a + b;
-                            }, 0);
-                            var label = 'Total Balance';
-        
-                            textInCenter(`${formattedNum(value)} $`, label);
-                        }
+                    tooltips: {
+                        enabled: false
                     },
-                }})
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                    },
+                    animation: {
+                        onComplete: function (animation) {
+                            if (!window.segmentHovered) {
+                                var value = chartData.datasets[0].data.reduce(function (a, b) {
+                                    return a + b;
+                                }, 0);
+                                var label = 'Total Balance';
+
+                                textInCenter(`$${formattedNum(value)}`, label);
+                            }
+                        },
+                    }
+                })
         }
 
     }, [chartData, theme]);
@@ -164,19 +172,27 @@ const AccountPieChart = ({userBalanceData}) => {
 
     return (
         <>
-            {chartData && chartOptions ? 
-                        <PieCartWrapper light={theme === "light"}>
-                        {/* <HighchartsReact
+            {chartData && chartOptions ?
+                <PieCartWrapper light={theme === "light"} style={{
+                    position: 'relative',
+                    height: '100%',
+                    width: '13.541666666666666vw'
+                }}>
+                    {/* <HighchartsReact
                             highcharts={Highcharts}
                             options={options}
                         /> */}
-            
-            
-                        <Doughnut data={chartData} options={chartOptions} height='200px' redraw />
-                        <canvas className={'chartCanvas'} ref={chartCanvasRef} width="260" height="260" />
-                    </PieCartWrapper>
-                    :
-                    null            
+
+
+                    <Doughnut data={chartData} options={chartOptions} redraw height='200px' style={{
+                    height: '17.727272727272727vh',
+                }} />
+                    <canvas className={'chartCanvas'} ref={chartCanvasRef}/>
+                    {/* <Doughnut data={chartData} options={chartOptions} height='200px' redraw />
+                        <canvas className={'chartCanvas'} ref={chartCanvasRef}  /> */}
+                </PieCartWrapper>
+                :
+                null
             }
         </>
 

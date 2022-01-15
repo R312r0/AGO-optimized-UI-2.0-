@@ -166,8 +166,9 @@ const AccountsStaking = () => {
             </div>
             
             <div className='accounts-wrapper-use-staking-pools__buttons'>
-                <button className='active'>Add</button>
-                <button>Withdraw</button>
+                <button>Manage</button>
+                {/* <button className='active'>Add</button>
+                <button>Withdraw</button> */}
             </div>
         </div>
     )

@@ -86,7 +86,11 @@ export const Volume24h = ({ data }) => {
                                 dataKey="time"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fontSize: isMobileScreen ? "14px" : "1vw" }}
+                                tick={{
+                                    fontSize: "14px",
+                                    fontWeight: 300,
+                                    lineHeight: '21px'
+                                  }}
                                 stroke={theme === "light" ? "black" : "white"}
                                 minTickGap={isMobileScreen ? 0 : 15}
                             />

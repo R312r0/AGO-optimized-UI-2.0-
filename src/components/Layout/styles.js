@@ -37,7 +37,8 @@ export const Content = styled.div`
     display: none;
   }
 `
-export const AgoLogo = styled.img`
+// export const AgoLogo = styled.img`
+export const AgoLogo = styled.div`
   width: 2.60vw;
   height: 2.20vw;
   place-self: center;
