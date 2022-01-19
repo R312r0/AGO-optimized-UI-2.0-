@@ -6,35 +6,46 @@ import {
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { split, HttpLink } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
-import {FACTORY_ADDRESS} from "../constants";
+import { FACTORY_ADDRESS } from "../constants";
+
+
 
 const httpLink = new HttpLink({
     uri: 'https://api.thegraph.com/subgraphs/name/r312r0/vlad-ago-subgraph'
-  });
+});
 
 const wsLink = new WebSocketLink({
     uri: 'wss://api.thegraph.com/subgraphs/name/r312r0/vlad-ago-subgraph',
     options: {
-      reconnect: true
+        reconnect: true
     }
-  });
+});
 
 const splitLink = split(
     ({ query }) => {
-      const definition = getMainDefinition(query);
-      return (
-        definition.kind === 'OperationDefinition' &&
-        definition.operation === 'subscription'
-      );
+        const definition = getMainDefinition(query);
+        return (
+            definition.kind === 'OperationDefinition' &&
+            definition.operation === 'subscription'
+        );
     },
     wsLink,
     httpLink,
-  );
+);
 
 export const client = new ApolloClient({
     link: splitLink,
     cache: new InMemoryCache()
 });
+
+const quickHttpLink = new HttpLink({
+    uri: "https://api.thegraph.com/subgraphs/name/sameepsi/quickswap05"
+})
+
+export const quickswapClient = new ApolloClient({
+    link: quickHttpLink,
+    cache: new InMemoryCache()
+})
 
 export const TOKENS_PAIRS = gql(`
     query tokens_pairs {

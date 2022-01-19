@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { TokenIcon } from '../../TokenIcon/token_icon';
 import {formattedNum, formatToDecimal} from "../../../utils/helpers";
-import {Cell, Pie, PieChart, ResponsiveContainer} from "recharts";
+import { message } from 'antd';
 import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
-import {CONTRACT_ADRESESS, DEX_ADDRESESS, MAX_INT} from "../../../constants";
+import {MINT_REDEEM_KEY, DEX_ADDRESESS, MAX_INT} from "../../../constants";
 import ProvideLiquidityPieChart from '../ProvideLiqPieChart/provide-liquidity-pie-chart';
-import { ApproveModal } from '../../ApproveModal/approve-modal';
 
 export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
 
@@ -69,20 +68,31 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
 
     const provideLiquidity = async () => {
 
-        await contracts.ROUTER.methods.addLiquidity(
-            token0.address,
-            token1.address,
-            formatToDecimal(input0, 18),
-            formatToDecimal(input1, 18),
-            0,
-            0,
-            account,
-            9999999999).send({from: account})
-        
-        changeTokenBalance([
-            {name: token0.symbol, amount: input0, sub: true},
-            {name: token1.symbol, amount: input1, sub: true}
-        ]);
+        try {
+            message.loading({content: "Provide Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
+
+            await contracts.ROUTER.methods.addLiquidity(
+                token0.address,
+                token1.address,
+                formatToDecimal(input0, 18),
+                formatToDecimal(input1, 18),
+                0,
+                0,
+                account,
+                9999999999).send({from: account})
+
+            message.success({content: "Provide Liquidity is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+
+            changeTokenBalance([
+                {name: token0.symbol, amount: input0, sub: true},
+                {name: token1.symbol, amount: input1, sub: true}
+            ]);
+
+        }
+
+        catch(e) {
+            message.error({content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+        }
 
         setInput0(0);
         setInput1(0);

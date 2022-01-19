@@ -41,6 +41,9 @@ export const AgoLogo = styled.img`
   width: 2.60vw;
   height: 2.20vw;
   place-self: center;
+  &:hover {
+    cursor: pointer;
+  }
 
   @media screen and (max-width: 1200px) {
     width: 3.4vw;

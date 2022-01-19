@@ -140,7 +140,7 @@ body {
 
     &__list-header {
         display: grid;
-        grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr;
+        grid-template-columns: 1.2fr 1fr 1fr 0.7fr 1fr;
         margin: 2.969vw 6.771vw 0.938vw 6.51vw;
         color: #4f4f4f;
         h5 {
@@ -198,11 +198,29 @@ body {
 
                 display: grid;
                 align-items: center;
-                grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr;
+                grid-template-columns: 1.5fr 1fr 1fr 1fr 0.5fr 0.5fr;
 
                 & h3,
                 & div {
                     margin-right: auto;
+                }
+                .apr {
+
+                    padding: 10px;
+
+                    border: 1px solid #320952;
+                    background: #320952;
+                    border-radius: 25px;
+
+                    h3 {
+                        color: #40BA93;
+                    }
+                }
+
+                .not-reward {
+
+                    border: 1px solid #2D2D2D;
+                    background: #2D2D2D;
                 }
             }
 
@@ -359,7 +377,7 @@ body {
                         width: 100%;
                         &__header {
                             display: grid;
-                            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+                            grid-template-columns: 1fr 1fr 1fr 1fr;
                             column-gap: 13px;
                             padding: 0px 56px 6px;
                             h5 {
@@ -411,7 +429,7 @@ body {
                             }
                             div {
                                 display: grid;
-                                grid-template-columns: 1.5fr 1fr 1fr 1fr;
+                                grid-template-columns: 1fr 1fr 1fr 1fr;
                                 column-gap: 13px;
                                 padding: 2px 0;
                                 align-items: center;
@@ -431,6 +449,11 @@ body {
                                     h5 {
                                         color: white;
                                     }
+                                }
+                                &:last-child {
+                                    h3 {
+                                        color: #A9AAAB;
+                                    } 
                                 }
                             }
                         }
@@ -777,6 +800,46 @@ body {
             border-radius: 40px;
             height: 566px;
         }
+    }
+
+    .earn-agoy {
+        .luqidity-pools-wrapper-list-item {
+            overflow: hidden;
+            background: linear-gradient(90.19deg, #40BA93 -3.27%, #22644f 103.63%);
+            -webkit-transition: background 1s ease-out;
+            -moz-transition: background 1s ease-out;
+            -o-transition: background 1s ease-out;
+            transition: background 1s ease-out, height 0.5s, transform 0.2s ease-in-out;
+            // background-color: linear-gradient(152.93deg, #560397 -56.36%, #202020 48.96%)
+
+            &__header {
+                .apr {
+                    padding: 10px;
+
+                    border: 1px solid #06422f;
+                    background: #06422f;
+                    border-radius: 25px;
+
+                    h3 {
+                        color: #40BA93;
+                    }
+                }
+            }
+
+            &.liq-item-opened {
+                // background: linear-gradient(152.93deg, #560397 -56.36%, #202020 48.96%);
+                background: linear-gradient(147.18deg, #40BA93 -72%, #202423 50%);
+                box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.25);
+                border-radius: 40px;
+                height: 566px;
+            }
+
+            .control-panel__header {
+                button {
+                    color: white;
+                }
+            }
+        }  
     }
 
     .earn-ago {

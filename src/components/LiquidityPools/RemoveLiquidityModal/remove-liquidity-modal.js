@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from "antd";
 import styled from 'styled-components';
-import ERC20_ABI from '../../../abi/ERC20.json';
 import { useWeb3React } from "@web3-react/core";
-import { formatFromDecimal, formatToDecimal } from "../../../utils/helpers";
+import { formatToDecimal } from "../../../utils/helpers";
 import { TokenIcon } from "../../TokenIcon/token_icon";
 import { useSystemContext } from "../../../systemProvider";
-import { CONTRACT_ADRESESS, DEX_ADDRESESS, MAX_INT } from "../../../constants";
+import { MINT_REDEEM_KEY, CONTRACT_ADRESESS, DEX_ADDRESESS, MAX_INT } from "../../../constants";
+import { message } from 'antd';
+
 
 const ModalHeader = styled.h1`
     font-weight: 500;
@@ -112,8 +113,19 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
 
     const handleRemove = async (val) => {
 
-        // await contracts.ROUTER.methods.removeLiquidity(token0.address, token1.address, formatToDecimal(val, 18), 0, 0, account, 999999999999999).send({ from: account });
-        await contracts.ROUTER.methods.removeLiquidity(CONTRACT_ADRESESS.USDT, CONTRACT_ADRESESS.WMATIC, formatToDecimal("1.5", 18), 0, 0, account, 999999999999999).send({ from: account });
+        try {
+            message.loading({content: "Remove Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
+
+            await contracts.ROUTER.methods.removeLiquidity(CONTRACT_ADRESESS.USDT, CONTRACT_ADRESESS.WMATIC, formatToDecimal("1.5", 18), 0, 0, account, 999999999999999).send({ from: account });
+
+            message.success({content: "Remove Liquidity is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+
+        }
+
+        catch(e) {
+            message.error({content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+        }
+
 
     }
 

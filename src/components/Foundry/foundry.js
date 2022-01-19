@@ -31,16 +31,22 @@ export const Foundry = () => {
         const cnUsdFoundryBalance = formatFromDecimal(await contracts.CNUSD.methods.balanceOf(CONTRACT_ADRESESS.FOUNDRY_AGOUSD).call(), cnusdToken.decimals);
         const cnBtcFoundryBalance = formatFromDecimal(await contracts.CNBTC.methods.balanceOf(CONTRACT_ADRESESS.FOUNDRY_AGOBTC).call(), cnbtcToken.decimals);
 
-        const usdtFoundryBalance = formatFromDecimal(await contracts.USDT.methods.balanceOf(CONTRACT_ADRESESS.FOUNDRY_AGOUSD).call(), tokens.find(item => item.symbol === "USDT").decimals);
-        const wbtcFoundryBalance = formatFromDecimal(await contracts.WBTC.methods.balanceOf(CONTRACT_ADRESESS.FOUNDRY_AGOBTC).call(), tokens.find(item => item.symbol === "WBTC").decimals);
+        console.log(await contracts.TREASURY_AGOBTC.methods.calcCollateralBalance().call());
+
+        const usdCollateralBalance = await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call();
+        const wbtcCollateralBalance = await contracts.TREASURY_AGOBTC.methods.calcCollateralBalance().call();
+
+        const usdtEstimatedAllocation = usdCollateralBalance._exceeded ? formatFromDecimal(usdCollateralBalance._collateral_value, 18) : 0;
+        const wbtcEstimatedAllocation = wbtcCollateralBalance._exceeded ? formatFromDecimal(wbtcCollateralBalance._collateral_value, 18) : 0;
+
 
         const tvl = (parseFloat(cnUsdFoundryBalance) * parseFloat(cnusdToken.priceUSD)) + (parseFloat(cnBtcFoundryBalance) * parseFloat(cnbtcToken.priceUSD));
 
         setFoundryStaked({
             cnusd: cnUsdFoundryBalance,
             cnbtc: cnBtcFoundryBalance,
-            usdt: usdtFoundryBalance,
-            wbtc: wbtcFoundryBalance,
+            usdt: usdtEstimatedAllocation,
+            wbtc: wbtcEstimatedAllocation,
             tvl
         })
 
@@ -48,7 +54,7 @@ export const Foundry = () => {
 
 
     return (
-        <div className='foundry'> 
+        <div className='foundry'>
             <h1 className='foundry__heading main__heading__page'>Foundry</h1>
 
             <main className='foundry__wrapper'>

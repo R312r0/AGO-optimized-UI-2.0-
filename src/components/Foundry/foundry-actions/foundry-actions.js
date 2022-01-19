@@ -1,16 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import agoLogo from './../../../assets/icons/ago-logo.svg'
 import {TokenIcon} from "../../TokenIcon/token_icon";
 import {useSystemContext} from "../../../systemProvider";
 import {useWeb3React} from "@web3-react/core";
-import {CONTRACT_ADRESESS, MAX_INT} from "../../../constants";
+import {CONTRACT_ADRESESS, MAX_INT, MINT_REDEEM_KEY} from "../../../constants";
 import {formatFromDecimal, formattedNum, formatToDecimal} from "../../../utils/helpers";
-import { ApproveModal } from '../../ApproveModal/approve-modal';
+import { message } from 'antd';
+
 
 const FoundryActions = () => {
 
     const {contracts, tokens, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal} = useSystemContext();
     const {account} = useWeb3React();
+
+    const [wbtcApproved, setWbtcApproved] = useState(false);
 
     const [allowance, setAllowance] = useState({
         cnusd: false,
@@ -30,6 +32,8 @@ const FoundryActions = () => {
         }
 
     })
+
+
 
     const [cnusdStakeInput, setCnusdStakeInput] = useState(0);
     const [cnbtcStakeInput, setCnbtcStakeInput] = useState(0);
@@ -58,6 +62,9 @@ const FoundryActions = () => {
         const rewardUSD = formatFromDecimal(await contracts.FOUNDRY_AGOUSD.methods.earned(account).call(), tokens.find(item => item.symbol === "USDT").decimals);
         const rewardWBTC = formatFromDecimal(await contracts.FOUNDRY_AGOBTC.methods.earned(account).call(), tokens.find(item => item.symbol === "WBTC").decimals);
 
+
+        // console.log(await contracts.FOUNDRY_AGOBTC.methods.blacksmiths("0xf8d40f5257324f2f4fbd531f342c97ef7d011c16").call());
+
         const canWithdrawUSD = await contracts.FOUNDRY_AGOUSD.methods.canWithdraw(account).call();
         const canWithdrawBTC = await contracts.FOUNDRY_AGOBTC.methods.canWithdraw(account).call();
 
@@ -65,12 +72,12 @@ const FoundryActions = () => {
             cnusd: {
                 staked: formatFromDecimal(balCnusd, tokens.find(item => item.symbol === "CNUSD").decimals),
                 isWithdrawAvailable: canWithdrawUSD,
-                collateralEarned: rewardUSD,
+                collateralEarned: 0,
             }, 
             cnbtc: {
                 staked: formatFromDecimal(balCnbtc, tokens.find(item => item.symbol === "CNBTC").decimals),
                 isWithdrawAvailable: canWithdrawBTC,
-                collateralEarned: rewardWBTC
+                collateralEarned: 0
             }
         })
     }
@@ -105,53 +112,94 @@ const FoundryActions = () => {
 
     const handleStake = async (currency) => {
 
-        if (currency === "USD") {
-            const dec = tokens.find((item) => item.symbol === "CNUSD").decimals
-            await contracts.FOUNDRY_AGOUSD.methods.stake(formatToDecimal(cnusdStakeInput, dec)).send({from: account})
-            changeTokenBalance([{name: "CNUSD", amount: cnusdStakeInput, sub: true}])
-        }
-        else {
-            const dec = tokens.find((item) => item.symbol === "CNBTC").decimals
-            await contracts.FOUNDRY_AGOBTC.methods.stake(formatToDecimal(cnbtcStakeInput, dec)).send({from: account})
-            changeTokenBalance([{name: "CNBTC", amount: cnbtcStakeInput, sub: true}])
+        try {
+
+            message.loading({content: "Foundry stake in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
+
+            if (currency === "USD") {
+                const dec = tokens.find((item) => item.symbol === "CNUSD").decimals
+                await contracts.FOUNDRY_AGOUSD.methods.stake(formatToDecimal(cnusdStakeInput, dec)).send({from: account})
+                changeTokenBalance([{name: "CNUSD", amount: cnusdStakeInput, sub: true}])
+            }
+
+            else {
+                const dec = tokens.find((item) => item.symbol === "CNBTC").decimals
+                await contracts.FOUNDRY_AGOBTC.methods.stake(formatToDecimal(cnbtcStakeInput, dec)).send({from: account})
+                changeTokenBalance([{name: "CNBTC", amount: cnbtcStakeInput, sub: true}])
+    
+            }
+
+            await getInfo();
+
+            message.success({content: "Foundry stake is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
 
         }
-        await getInfo();
+        catch(e) {
+            message.error({content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+        }
+
+
     }
 
     const handleWithdraw = async (currency) => {
 
-        if (currency === "USD") {
-            const dec = tokens.find((item) => item.symbol === "CNUSD").decimals
-            await contracts.FOUNDRY_AGOUSD.methods.withdraw(formatToDecimal(cnusdWithdrawInput, dec)).send({from: account})
-            changeTokenBalance([{name: "CNUSD", amount: cnusdWithdrawInput, sub: false}])
+        try {
+
+            message.loading({content: "Foundry unstake in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
+
+
+            if (currency === "USD") {
+                const dec = tokens.find((item) => item.symbol === "CNUSD").decimals
+                await contracts.FOUNDRY_AGOUSD.methods.withdraw(formatToDecimal(cnusdWithdrawInput, dec)).send({from: account})
+                changeTokenBalance([{name: "CNUSD", amount: cnusdWithdrawInput, sub: false}])
+    
+            }
+            else {
+                const dec = tokens.find((item) => item.symbol === "CNBTC").decimals
+                await contracts.FOUNDRY_AGOBTC.methods.withdraw(formatToDecimal(cnbtcWithdrawInput, dec)).send({from: account})
+                changeTokenBalance([{name: "CNBTC", amount: cnbtcWithdrawInput, sub: false}])
+    
+            }
+            await getInfo();
+
+            message.success({content: "Foundry unstake is done", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
 
         }
-        else {
-            const dec = tokens.find((item) => item.symbol === "CNBTC").decimals
-            await contracts.FOUNDRY_AGOBTC.methods.withdraw(formatToDecimal(cnbtcWithdrawInput, dec)).send({from: account})
-            changeTokenBalance([{name: "CNBTC", amount: cnbtcWithdrawInput, sub: false}])
 
+        catch(e) {
+            message.error({content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
         }
-        await getInfo();
+
+
 
     }
 
     const handleCollectReward = async (currency) => {
 
-        if (currency === "USD") {
-            await contracts.FOUNDRY_AGOUSD.methods.claimReward().send({from: account})
-            changeTokenBalance([{name: "USDT", amount: info.cnusd.collateralEarned, sub: false}])
+        try {
+
+            message.loading({content: "Foundry claim reward in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
+
+            if (currency === "USD") {
+                await contracts.FOUNDRY_AGOUSD.methods.claimReward().send({from: account})
+                changeTokenBalance([{name: "USDT", amount: info.cnusd.collateralEarned, sub: false}])
+            }
+            else {
+                await contracts.FOUNDRY_AGOBTC.methods.claimReward().send({from: account})
+            }
+            await getInfo();
+
+            message.success({content: "Foundry claim reward is done", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+
+
         }
-        else {
-            await contracts.FOUNDRY_AGOBTC.methods.claimReward().send({from: account})
-            changeTokenBalance([{name: "WBTC", amount: info.cnbtc.collateralEarned, sub: false}])
+
+        catch(e) {
+            message.error({content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
         }
-        await getInfo();
+
 
     }
-
-    console.log(info.cnusd.collateralEarned);
 
     return (
         <div className='foundry__actions'> 
@@ -203,9 +251,8 @@ const FoundryActions = () => {
                     <TokenIcon iconName={"WBTC"}/>
                     <p>WBTC</p>
                 </div>
-                
-                <p className='amount'>{formattedNum(info.cnbtc.collateralEarned)}</p>
-                <button disabled={+info.cnbtc.collateralEarned === 0} onClick={() => handleCollectReward("USD")}>  {+info.cnbtc.collateralEarned === 0 ? "No rewards" : "Collect reward"} </button>
+                <p className='amount'> {formattedNum(info.cnbtc.collateralEarned)} </p>
+                <button disabled={+info.cnbtc.collateralEarned === 0} onClick={() => handleCollectReward("WBTC")}> {+info.cnbtc.collateralEarned === 0 ? "No rewards" : "Collect reward"} </button>
             </div>
         </div>
     )

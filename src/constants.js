@@ -54,6 +54,7 @@ export const COINGECKO_IDS = {
 export const DEX_ADDRESESS = {
     FACTORY: "0xdAc31E70c2C4Fea0629e85e7B67222127A8672d8",
     ROUTER: "0xD3d28e4958bAa48a7c4bDC2e486E0f6D7501f0d8",
+    QUICK_ROUTER: "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
 }
 
 const STABLE_COINS = {
@@ -67,15 +68,15 @@ const SHARE_COINS = {
 }
 
 const LOGIC_CONTRACTS_USD = {
-    FOUNDRY_AGOUSD: "0x6729d1E5dcDBb01da9045312af255A4a35cbd3A0",
+    FOUNDRY_AGOUSD: "0x3A1a9540266558aA59f1A203Dd4B8E6E412022ec",
     POOL_AGOUSD: "0x250EFcd45D9f83036f2D403223c7cCb2E1e9D00b",
-    TREASURY_AGOUSD: "0x7fc76857ef263f3A6eEbDA2178A57e53a45B47F6",
+    TREASURY_AGOUSD: "0xdDE0015724Eb9e561A2756F60610657c0ABD4742",
 }
 
 const LOGIC_CONTRACTS_BTC = {
-    FOUNDRY_AGOBTC: "0xb4825e19050715feeD3f636053E811871661Fbdc",
+    FOUNDRY_AGOBTC: "0xa3E8EE534d998d66370379d6a4D05AFe0A9df7D1",
     POOL_AGOBTC: "0x610094adF401626D6B62df62bF6E67A7A6E22043",
-    TREASURY_AGOBTC: "0xb8C21036Dc1aA2688d30c41000056e1d8a6f0255",
+    TREASURY_AGOBTC: "0x4447AC5De661FC7ed148d97a13D7FC1de42c56f4",
 }
 
 const PAIRS_DEX = {
@@ -116,29 +117,29 @@ export const CONTRACT_ADRESESS = {
 // CNBTC/WMATIC /CNBTC => 0xe9B7920Cb7a18CB30EA8E58f6b5AD11D12f11081
 
 export const SINGLE_STAKING_POOL = [
-    {name: "AGOy", address: "0x49881Fa26F4B6EEBF6791E85247b56d412039264"},
-    {name: "AGOUSD", address: "0x2b99ba7d51D4Be00852C27dD61dFeCFBC77121c7"},
-    {name: "AGOBTC", address: "0x8de26d4Bfd311aF2D727383f9DEdc023BDdAF808"}
+    { name: "AGOy", address: "0x49881Fa26F4B6EEBF6791E85247b56d412039264" },
+    { name: "AGOUSD", address: "0x2b99ba7d51D4Be00852C27dD61dFeCFBC77121c7" },
+    { name: "AGOBTC", address: "0x8de26d4Bfd311aF2D727383f9DEdc023BDdAF808" }
 ]
 
 export const LP_STAKING_POOL = [
-    {name: "AGOUSD-USDT", address: "0xAcEF71144D5e01e89CEDD53eBB5b7E422d030834"},
-    {name: "CNUSD-WMATIC", address: "0x4c99AF184e4598360a5D17b7d6539b900B8B269c"},
-    {name: "AGOBTC-WBTC", address: "0xe9269671c2a9a95354b3b02AB34063c31AECe378"},
-    {name: "CNBTC-WMATIC", address: "0xe9B7920Cb7a18CB30EA8E58f6b5AD11D12f11081"},
+    { name: "AGOUSD-USDT", address: "0x9016A216747900978CdEe75F0Ac2d41Ec3Dc137d" },
+    { name: "CNUSD-WMATIC", address: "0x4c99AF184e4598360a5D17b7d6539b900B8B269c" },
+    { name: "AGOBTC-WBTC", address: "0x1225b03908fef48a4a7080c6c64907d0094f42cd" },
+    { name: "CNBTC-WMATIC", address: "0xe9B7920Cb7a18CB30EA8E58f6b5AD11D12f11081" },
 ]
 
-export const LOADER_INDICATOR =             <LoadingOutlined 
-style={{ 
-    fontSize: "7vw",
-    color: "#40BA93",
-    position: "absolute",
-    top: "50%", left: "50%"
-}} />    
+export const LOADER_INDICATOR = <LoadingOutlined
+    style={{
+        fontSize: "7vw",
+        color: "#40BA93",
+        position: "absolute",
+        top: "50%", left: "50%"
+    }} />
 
 export const LOADER_INDICATOR_LOCAL = <LoadingOutlined style={{ fontSize: "3vw", color: "#40BA93", position: "absolute", top: "50%", left: "50%" }} />
 
-export const LOADER_INDICATOR_MINI = <LoadingOutlined style={{ fontSize: "1.5vw", color: "#40BA93"}} />
+export const LOADER_INDICATOR_MINI = <LoadingOutlined style={{ fontSize: "1.5vw", color: "#40BA93" }} />
 
 // Connectors
 export const metaMask = new InjectedConnector({ supportedChainIds: [137] });
@@ -183,3 +184,5 @@ export const TXS_ICONS = {
     STAKE: lockIcon,
     UNSTAKE: downArrowIcon
 }
+
+export const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#EA8C00", "#47867d", "#1BB8DB", "#9018EE"]

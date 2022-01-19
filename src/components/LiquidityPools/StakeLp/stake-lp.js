@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {isPunctuatorTokenKind} from "graphql/language/lexer";
-import {useWeb3React} from "@web3-react/core";
-import {CONTRACT_ADRESESS, MAX_INT} from "../../../constants";
-import {useSystemContext} from "../../../systemProvider";
-import {formatFromDecimal, formatToDecimal} from "../../../utils/helpers";
+import React, { useEffect, useState } from 'react';
+import { useWeb3React } from "@web3-react/core";
+import { message } from 'antd';
+import { MINT_REDEEM_KEY, MAX_INT } from "../../../constants";
+import { useSystemContext } from "../../../systemProvider";
+import { formatFromDecimal, formatToDecimal } from "../../../utils/helpers";
 import { LP_STAKING_POOL } from '../../../constants';
 import STAKING_POOL_ABI from '../../../abi/SIngleChef.json';
 import { TokenIcon } from '../../TokenIcon/token_icon';
 import stake_icon_white from '../../../assets/icons/nav-links/active/staking-active.svg';
 
-export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpTokenAddress}) => {
+export const StakeLp = ({ token0, token1, lpTokenContract, lpUserBalance, lpTokenAddress }) => {
 
-    const {account, library} = useWeb3React();
-    const {contracts, tokens, approveModal, setApproveModal, setApproveDataForModal} = useSystemContext();
+    const { account, library } = useWeb3React();
+    const { contracts, tokens, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
     const [pid, setPid] = useState(null);
     const [depositWithdrawInput, setDepositWithdrawInput] = useState(0);
     const [allowance, setAllowance] = useState(false);
@@ -20,7 +20,7 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpToken
     const [earned, setEarned] = useState(0);
 
     const [poolContract, setPoolContract] = useState(null);
-    const [rewardTokenSymbol, setRewardTokeSymbol] = useState(""); 
+    const [rewardTokenSymbol, setRewardTokeSymbol] = useState("");
 
     useEffect(() => {
 
@@ -77,35 +77,65 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpToken
         setApproveDataForModal({
             destination: poolContract.address,
             approves: [
-                {name: [token0.symbol, token1.symbol], address: lpTokenAddress, alreadyApproved: allowance, lpToken: true},
+                { name: [token0.symbol, token1.symbol], address: lpTokenAddress, alreadyApproved: allowance, lpToken: true },
             ]
         })
 
         setApproveModal(true)
-
-        // await lpTokenContract.methods.approve(poolContract.address, MAX_INT).send({from: account});
-
-        // await getAllowance()
     }
 
     const handleStake = async () => {
-        const lpDec = await lpTokenContract.methods.decimals().call()
 
-        await poolContract.contract.methods.deposit(formatToDecimal(depositWithdrawInput, lpDec)).send({from: account});
-        await getStakeInfo()
+        try {
+            message.loading({ content: "Stake LP in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
+
+            const lpDec = await lpTokenContract.methods.decimals().call()
+
+            await poolContract.contract.methods.deposit(formatToDecimal(depositWithdrawInput, lpDec)).send({ from: account });
+            await getStakeInfo()
+
+            message.success({ content: "Stake LP is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
+
+        }
+        catch (e) {
+            message.error({ content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
+        }
+
     }
 
     const handleUnstake = async () => {
-        const lpDec = await lpTokenContract.methods.decimals().call()
 
-        await poolContract.contract.methods.withdraw(formatToDecimal(depositWithdrawInput, lpDec)).send({from: account});
-        await getStakeInfo()
+        try {
+            message.loading({ content: "Unstake LP in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
+
+            const lpDec = await lpTokenContract.methods.decimals().call()
+
+            await poolContract.contract.methods.withdraw(formatToDecimal(depositWithdrawInput, lpDec)).send({ from: account });
+            await getStakeInfo()
+
+            message.success({ content: "Unstake LP is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
+
+
+        }
+        catch (e) {
+            message.error({ content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
+        }
 
     }
 
     const handleClaimReward = async () => {
-        await poolContract.contract.methods.withdraw(0).send({from: account});
-        await getStakeInfo()
+
+        try {
+            message.loading({ content: "Claim LP in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
+
+            await poolContract.contract.methods.withdraw(0).send({ from: account });
+            await getStakeInfo()
+
+            message.success({ content: "Claim LP is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
+        }
+        catch (e) {
+            message.error({ content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
+        }
     }
 
     const maxInput = () => {
@@ -125,34 +155,22 @@ export const StakeLp = ({token0, token1, lpTokenContract, lpUserBalance, lpToken
             <div className='stake-lp-wrapper__info'>
                 <div>
                     <h3> Input Lp to deposit </h3>
-                    <span> <TokenIcon iconName={rewardTokenSymbol}/> <h5>{rewardTokenSymbol}</h5> </span>
-                    <h3> CNUSD-WMATIC </h3>
+                    <span> <TokenIcon iconName={rewardTokenSymbol} /> <h5>{rewardTokenSymbol}</h5> </span>
+                    <h3> {token0.symbol}-{token1.symbol} </h3>
                     <h3> Balance </h3>
                 </div>
-                <div className='stake-lp-wrapper__info__data'>
-                    <div className='stake-lp-wrapper__info__data__input'>
-                        <input type={"number"} placeholder='0' onChange={(e) => setDepositWithdrawInput(e.target.value)}/>
-                        <button className='stake-lp-wrapper__info__data__input__max' onClick={maxInput()}>Max</button>
-                    </div>
-                    
-                    <h3> {token0.symbol}-{token1.symbol} </h3>
+                <div>
+                    <input type={"number"} onChange={(e) => setDepositWithdrawInput(e.target.value)} placeholder='0' />
+                    <h3> {earned} </h3>
                     <h3> {staked} Lp </h3>
                     <h3> {lpUserBalance} </h3>
                 </div>
             </div>
             <div className='stake-lp-wrapper__buttons'>
-                <button className='stake-lp-wrapper__buttons__claim-reward' onClick={() => handleClaimReward()}> <img src={stake_icon_white}/> Claim reward </button>
-                <button className='stake-lp-wrapper__buttons__stake' onClick={() => allowance ? handleStake() : handleApprove()}> {allowance ? "Stake" : "Approve"} </button>
+                <button className='stake-lp-wrapper__buttons__claim-reward' onClick={() => handleClaimReward()}> <img src={stake_icon_white} /> Claim reward </button>
+                <button disabled={lpUserBalance < depositWithdrawInput} className='stake-lp-wrapper__buttons__stake' onClick={() => allowance ? handleStake() : handleApprove()}> {allowance ? lpUserBalance < depositWithdrawInput ? "No balance" : "Stake" : "Approve"} </button>
                 <button className='stake-lp-wrapper__buttons__unstake' onClick={() => handleUnstake()} > Unstake </button>
             </div>
-            {/* <h5> Deposit/Withdraw </h5>
-            <input type="number" onChange={(e) => setDepositWithdrawInput(e.target.value)} placeholder={"Input LP to deposit"}/>
-            <button onClick={() => allowance ? handleStake() : handleApprove()}> {allowance ? "Stake" : "Approve"} </button>
-            <button onClick={() => handleUnstake()}> Unstake </button>
-            <button onClick={() => handleClaimReward()}> Claim reward </button>
-            <h5> Earned {rewardTokenSymbol}: {earned} {rewardTokenSymbol}</h5>
-            <h5> STAKED {token0.symbol}-{token1.symbol}: {staked} LP</h5>
-            <p>User Lp balance: {lpUserBalance}</p> */}
         </div>
     )
 

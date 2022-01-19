@@ -12,9 +12,10 @@ import { useMediaQuery } from 'react-responsive';
 import { useThemeContext } from '../layout';
 import { SideBarWrapper, LinkList, LinkListItem, SocialMediasList, BottomLinks} from './styles';
 
-export const SideBar = () => {
+export const SideBar = ({history}) => {
 
-  const history = useHistory();
+  console.log("history");
+
   const [expandSocMedias, setExpandSocMedias] = useState(false);
   const [openDoc, setOpenDoc] = useState(false);
   const [activeTab, setActiveTab] = useState(history.location.pathname);
@@ -28,6 +29,14 @@ export const SideBar = () => {
       setOpenDoc(false);
     }
   };
+
+  useEffect(() => {
+
+    if (history.location.pathname) {
+      setActiveTab(history.location.pathname);
+    }
+    
+  }, [history.location.pathname])
 
   useEffect(() => {
     document.addEventListener('click', handleClickOutside, true);

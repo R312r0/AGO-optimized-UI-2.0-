@@ -10,9 +10,11 @@ import TradingFilters from './trading-filters/trading-filters';
 import styled from "styled-components";
 import { TokenIcon } from "../TokenIcon/token_icon";
 import { useQuery } from "@apollo/client";
-import { LIQ_POOLS_TRADING } from "../../api/client";
+import { LIQ_POOLS_TRADING, quickswapClient } from "../../api/client";
 import { formattedNum } from "../../utils/helpers";
 import { useThemeContext } from '../Layout/layout';
+import { CONTRACT_ADRESESS } from '../../constants';
+import { SINGLE_PAIR_QUERY } from '../../api/quickswapQueries';
 
 const ContentHeader = styled.div`
   width: 100%;
@@ -29,7 +31,7 @@ const TradingBar = styled.div`
 
   position: relative;
   display: flex;
-  color:${props => props.light ? "#333333": "#fff"};
+  color:${props => props.light ? "#333333" : "#fff"};
   margin-left: 4.583vw;
   height: 46px;
 
@@ -53,7 +55,7 @@ const TradingBar = styled.div`
     
     border: 0.052vw solid #4F4F4F;
     border-radius: 1.302vw;
-    background: ${props => props.light ? "#fff": "linear-gradient(94.62deg, rgba(150, 17, 255, 0.4) 0%, rgba(61, 27, 87, 0.4) 116.74%), #212121"};
+    background: ${props => props.light ? "#fff" : "linear-gradient(94.62deg, rgba(150, 17, 255, 0.4) 0%, rgba(61, 27, 87, 0.4) 116.74%), #212121"};
 
     img {
       &:not(:first-child) {
@@ -75,8 +77,8 @@ const TradingBar = styled.div`
       width: 0.052vw;
       height: 100%;
       & path, & line{
-        fill:${props => props.light ? "#333333": "#fff"};
-        stroke:${props => props.light ? "#333333": "#fff"};
+        fill:${props => props.light ? "#333333" : "#fff"};
+        stroke:${props => props.light ? "#333333" : "#fff"};
       }
       
 
@@ -89,7 +91,7 @@ const TradingBar = styled.div`
     span {
       font-weight: 400;
       font-size: 0.938vw;
-      color: ${props => props.light ? "#333333": "#828282"};
+      color: ${props => props.light ? "#333333" : "#828282"};
     }
 
     b {
@@ -99,7 +101,7 @@ const TradingBar = styled.div`
       font-size: 0.938vw;
       font-weight: 500;
 
-      color:${props => props.light ? "#333333": "#fff"};
+      color:${props => props.light ? "#333333" : "#fff"};
     }
 
     .expanded-liquidity-list {
@@ -115,6 +117,7 @@ const TradingBar = styled.div`
         display: grid;
         grid-template-columns: 1fr 3.125vw 1fr;
         padding: 0.5vw 1vw;
+        margin-bottom: 5px;
         
         border-radius: 1vw;
         transition: 0.3s;
@@ -127,6 +130,14 @@ const TradingBar = styled.div`
           background: rgba(0, 0, 0, 0.3);
         }
       }
+
+      .quick-swap-pool-item {
+        grid-template-columns: 0.25fr 1fr 0.1fr 1fr;
+        background-color: rgb(33, 114, 229);
+        &:hover {
+          background-color: rgb(22, 63, 121);;
+        }
+      }
     }
   }
 `
@@ -135,7 +146,7 @@ const TradingTabButton = styled.button`
   padding: 0.417vw 1.875vw;
   font-size: 0.729vw;
   cursor: pointer;
-  color: ${props => props.active && props.light && "#fff" };
+  color: ${props => props.active && props.light && "#fff"};
   border: none;
   border-radius: 25px;
   background: ${props => props.active ? "#40BA93" : "transparent"};
@@ -168,6 +179,7 @@ export const Trading = () => {
   const [chartDimensions, setChartDimensions] = useState(null);
   const [tradingTab, setTradingTab] = useState(SIMPLE_SWAP)
   const [chosedPool, setChosedPool] = useState(null);
+  const [quickswapPools, setQuickSwapPools] = useState(null);
 
   useEffect(() => {
 
@@ -194,6 +206,33 @@ export const Trading = () => {
     setChartDimensions()
   }, [chartBlockRef])
 
+
+  useEffect(() => {
+
+    getQuickSwapPools()
+
+  }, [])
+
+  const getQuickSwapPools = async () => {
+
+    const WMATIC_WBTC = (await quickswapClient.query({
+
+      query: SINGLE_PAIR_QUERY,
+      variables: { id: "0xf6b87181bf250af082272e3f448ec3238746ce3d" }
+
+    })).data.pair
+
+    const WMATIC_USDT = (await quickswapClient.query({
+
+      query: SINGLE_PAIR_QUERY,
+      variables: { id: "0x604229c960e5cacf2aaeac8be68ac07ba9df81c3" }
+
+    })).data.pair
+
+    setQuickSwapPools(await Promise.all([{ ...WMATIC_WBTC, isQuickSwapPool: true }, { ...WMATIC_USDT, isQuickSwapPool: true }]));
+
+  }
+
   return (
     <>
       <ContentHeader light={theme === "light"}>
@@ -202,9 +241,23 @@ export const Trading = () => {
           <main onClick={() => setExpandLiqPoolsList(!expandLiqPoolsList)} ref={pools}>
             {expandLiqPoolsList ?
               <ul className='expanded-liquidity-list'>
-                {data?.pairs.filter(item => item.token0.symbol !== "AGO" && item.token1.symbol !== "AGO").map((item, _ind) => {
+                {data?.pairs.filter(item => item.token0.symbol !== "AGO" && item.token1.symbol !== "AGO" && item.token1.symbol !== "AGOBTC" && item.token0.symbol !== "AGOUSD").map((item, _ind) => {
                   return (
                     <li onClick={() => setChosedPool(item)} key={_ind + "_pool" + item.id}>
+                      <div className='data-wrapper'>
+                        <TokenIcon iconName={item.token0.symbol} />
+                        <TokenIcon iconName={item.token1.symbol} />
+                        <p> {item.token0.symbol}-{item.token1.symbol}</p>
+                      </div>
+                      <svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white" /></svg>
+                      <span>Liquidity: <b>${formattedNum(item.reserveUSD)}</b></span>
+                    </li>
+                  )
+                })}
+                {quickswapPools.map((item, _ind) => {
+                  return (
+                    <li onClick={() => setChosedPool(item)} key={_ind + "_pool" + item.id} className='quick-swap-pool-item'>
+                      <TokenIcon iconName={"QUICK"} />
                       <div className='data-wrapper'>
                         <TokenIcon iconName={item.token0.symbol} />
                         <TokenIcon iconName={item.token1.symbol} />
@@ -239,7 +292,7 @@ export const Trading = () => {
       </ContentHeader>
       <div className={`trading-wrapper ${theme === "light" ? " trading-wrapper-light" : ""}`}>
         <div className='trading-container'>
-          <TradingWindow light={theme === "light"}/>
+          <TradingWindow light={theme === "light"} />
           <div className='trading-window-box trading-wrapper-txs'>
             <div className='trading-wrapper-txs__header'>
               <p>Pairs</p>

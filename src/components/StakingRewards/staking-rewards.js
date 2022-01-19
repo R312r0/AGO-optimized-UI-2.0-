@@ -1,8 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useSystemContext } from '../../systemProvider';
 import { TokenIcon } from '../TokenIcon/token_icon';
-import line from '../../assets/icons/line.svg';
-import vector from '../../assets/icons/vector.svg';
 import claimRewardIcon from './claim-reward.svg';
 import './staking-rewards.scss';
 import { StakingItem } from "./StakingItem/staking-item";

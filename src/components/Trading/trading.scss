@@ -620,6 +620,10 @@
             h1 {
                 color: white;
                 font-size: 1.25vw;
+                img {
+                    width: 30px;
+                    height: 30px;
+                }
             }
 
             &__buttons {
@@ -677,6 +681,20 @@
                 justify-content: space-between
             }
 
+            .matic-header {
+                display: grid;
+                grid-template-columns: 0.5fr 0.5fr 2fr;
+
+                button {
+                    border: 1px solid #333333;
+                    width: 36px;
+                    height: 36px;
+                    justify-self: center;
+                    box-sizing: border-box;
+                    border-radius: 10px;
+                }
+            }
+
             h5 {
                 font-size: 0.938vw;
             }
@@ -698,6 +716,7 @@
             h3 {
                 font-size: 0.938vw;
                 color: #828282;
+                align-self: center;
             }
 
             h5 {
@@ -828,6 +847,11 @@
         box-shadow: 0 0.208vw 2.083vw rgba(0, 0, 0, 0.25);
         border-radius: 2.083vw;
     }
+
+    .quick-swap-trade {
+        background: radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(59, 175, 211, 0.342) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
+    }
+
 }
 
 // LIGHT THEME

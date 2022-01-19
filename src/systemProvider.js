@@ -17,16 +17,16 @@ import { useDataContext } from './dataProvider';
 const SystemContext = React.createContext();
 export const useSystemContext = () => useContext(SystemContext);
 
-export const SystemProvider = ({children}) => {
+export const SystemProvider = ({ children }) => {
 
-    const {account, activate, active, library, deactivate, error} = useWeb3React();
+    const { account, activate, active, library, deactivate, error } = useWeb3React();
 
     const [contracts, setContracts] = useState(null);
     const [balances, setBalances] = useState(null);
 
     const [isWalletModal, setIsWalletModal] = useState(false);
 
-    const {tokens} = useDataContext();
+    const { tokens } = useDataContext();
 
     const [mintRedeemCurrencyModal, setMintRedeemCurrencyModal] = useState(false);
 
@@ -40,40 +40,40 @@ export const SystemProvider = ({children}) => {
     // 1. Check if user are already connected trough MetaMask if yes then connect him again.
     useEffect(() => {
         metaMask.isAuthorized()
-        .then((res) => {
-            if (res) {
-                try {
-                    activate(metaMask);
-                }
-                catch(e) {
-                    alert("Some error due activate")
-                }
-                
-            }
-            else {
-                try {
-                    activate(network);
-                }
+            .then((res) => {
+                if (res) {
+                    try {
+                        activate(metaMask);
+                    }
+                    catch (e) {
+                        alert("Some error due activate")
+                    }
 
-                catch(e) {
-                    alert("Some error due activate")
                 }
-                
-            }
-        })
+                else {
+                    try {
+                        activate(network);
+                    }
+
+                    catch (e) {
+                        alert("Some error due activate")
+                    }
+
+                }
+            })
     }, [])
 
 
     useEffect(() => {
-    
-        if (error instanceof UnsupportedChainIdError ) {
-            message.error({content: "You choose wrong network in your wallet please change it to Polygon Mainnet", key: "NETWORK", className: "ant-argano-message", duration: 3000})
+
+        if (error instanceof UnsupportedChainIdError) {
+            message.error({ content: "You choose wrong network in your wallet please change it to Polygon Mainnet", key: "NETWORK", className: "ant-argano-message", duration: 3000 })
         }
         else {
-            message.success({content: "Success!", key: "NETWORK", className: "ant-argano-message", duration: 3})
+            message.success({ content: "Success!", key: "NETWORK", className: "ant-argano-message", duration: 3 })
         }
-    
-    
+
+
     }, [error])
 
     useEffect(() => {
@@ -93,7 +93,7 @@ export const SystemProvider = ({children}) => {
                 initContracts();
             }
 
-            catch(e) {
+            catch (e) {
                 alert("Some error due init tokens and contracts");
             }
 
@@ -114,6 +114,7 @@ export const SystemProvider = ({children}) => {
             return [item.symbol, new library.eth.Contract(ERC20_ABI, item.address)];
         }))
 
+        const WETH = new library.eth.Contract(ERC20_ABI, "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619");
         const POOL_AGOUSD = new library.eth.Contract(STABLE_POOL_ABI, CONTRACT_ADRESESS.POOL_AGOUSD);
         const TREASURY_AGOUSD = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOUSD);
         const FOUNDRY_AGOUSD = new library.eth.Contract(FOUNDRY_ABI, CONTRACT_ADRESESS.FOUNDRY_AGOUSD);
@@ -121,9 +122,9 @@ export const SystemProvider = ({children}) => {
         const TREASURY_AGOBTC = new library.eth.Contract(TREASURY_ABI, CONTRACT_ADRESESS.TREASURY_AGOBTC);
         const FOUNDRY_AGOBTC = new library.eth.Contract(FOUNDRY_ABI, CONTRACT_ADRESESS.FOUNDRY_AGOBTC);
         const ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.ROUTER)
-        
+        const QUICKSWAP_ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.QUICK_ROUTER);
 
-        setContracts({ ...tokensContractsObj, ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, FOUNDRY_AGOUSD, FOUNDRY_AGOBTC})
+        setContracts({ ...tokensContractsObj, QUICKSWAP_ROUTER, WETH, ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, FOUNDRY_AGOUSD, FOUNDRY_AGOBTC })
     }
 
     const getUserPortfolio = async () => {
@@ -133,8 +134,8 @@ export const SystemProvider = ({children}) => {
             const tokenContract = contracts[item.symbol];
             const nativeBalance = parseFloat(formatFromDecimal(await tokenContract.methods.balanceOf(account).call(), item.decimals));
             const usdBalance = nativeBalance * item.priceUSD;
-            
-            return {symbol: item.symbol, nativeBalance, usdBalance};
+
+            return { symbol: item.symbol, nativeBalance, usdBalance };
 
         })
 
@@ -143,8 +144,8 @@ export const SystemProvider = ({children}) => {
         console.log(res);
 
         res.sort((a, b) => {
-            if(a.symbol < b.symbol) { return -1; }
-            if(a.symbol > b.symbol) { return 1; }
+            if (a.symbol < b.symbol) { return -1; }
+            if (a.symbol > b.symbol) { return 1; }
             return 0;
         })
 
@@ -164,24 +165,24 @@ export const SystemProvider = ({children}) => {
             }
 
             else {
-                let balCopy = {...balancesArr[findedIndex]}
-    
+                let balCopy = { ...balancesArr[findedIndex] }
+
                 if (item.sub) {
                     balCopy.nativeBalance -= parseFloat(item.amount)
                 }
 
                 else {
-                    balCopy.nativeBalance += parseFloat(item.amount) 
+                    balCopy.nativeBalance += parseFloat(item.amount)
                 }
-                
+
                 balCopy.usdBalance = balCopy.nativeBalance * tokens.find((itemTok) => itemTok.symbol === item.name).priceUSD;
                 balancesArr[findedIndex] = balCopy;
-            }            
+            }
         })
 
         balancesArr.sort((a, b) => {
-            if(a.symbol < b.symbol) { return -1; }
-            if(a.symbol > b.symbol) { return 1; }
+            if (a.symbol < b.symbol) { return -1; }
+            if (a.symbol > b.symbol) { return 1; }
             return 0;
         });
 
@@ -196,7 +197,7 @@ export const SystemProvider = ({children}) => {
                 activate(metaMask);
                 localStorage.setItem('connected Wallet', wallet);
                 break;
-            default: 
+            default:
                 activate(network);
                 localStorage.setItem('connected Wallet', wallet);
                 break;
@@ -229,7 +230,7 @@ export const SystemProvider = ({children}) => {
     }
 
     return (
-        <SystemContext.Provider value={systemValue}> 
+        <SystemContext.Provider value={systemValue}>
             {children}
         </SystemContext.Provider>
     )

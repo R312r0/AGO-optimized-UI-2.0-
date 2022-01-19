@@ -13,6 +13,7 @@ import { useSystemContext } from '../../systemProvider';
 import { Spin } from 'antd';
 import { LOADER_INDICATOR } from '../../constants';
 import { ApproveModal } from '../ApproveModal/approve-modal';
+import { useHistory, Link } from 'react-router-dom';
 
 
 const ThemeContext = React.createContext();
@@ -24,6 +25,7 @@ const Layout = ({children}) => {
     const isMobileScreen = useMediaQuery({query: '(max-width: 750px)'})
     const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
     const { web3Loading } = useSystemContext();
+    const history = useHistory();
 
     return (
         <ThemeContext.Provider value={{theme, setTheme}}>
@@ -33,11 +35,11 @@ const Layout = ({children}) => {
                     <>
                       <MobileHeader>
                         <MobileMainHeader>
-                          <AgoLogo mobile={isMobileScreen} src={ago_icon} alt="ago-coin" />
+                            <AgoLogo mobile={isMobileScreen} src={ago_icon} alt="ago-coin" />
                           {/* <PageName mobile={isMobileScreen}>{PAGES.find(item => item.path === history.location.pathname).name}</PageName> */}
                           <BurgerButton onClick={() => setShowMobileSideBar(true)} mobile={isMobileScreen}>
                             <img src={burger_menu} alt="burger-mobile"/>
-                          </BurgerButton>
+                          </BurgerButton> 
                         </MobileMainHeader>
                         <BalancesTab/>
                       </MobileHeader>
@@ -48,13 +50,14 @@ const Layout = ({children}) => {
                     <>
                       <Header mobile={isMobileScreen}>
                         <AgoLogo 
+                        onClick={() => history.push("/")}
                         mobile={isMobileScreen} 
                         src={ago_icon} alt="ago-coin"
                         />
                         <BalancesTab/>
                         <ConnectWalletButton/>
                       </Header>
-                      <SideBar/>
+                      <SideBar history={history}/>
                     </>
                   }
 

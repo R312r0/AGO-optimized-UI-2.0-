@@ -16,6 +16,8 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
     const [chart, setChart] = useState(null);
     const [lineSeries, setLineSeries] = useState(null);
 
+    console.log(lineData);
+
     const chartItem = useSubscription(TOKEN_PRICE_CHART, {
         variables: {id: tokens?.find(item => item.symbol === token)?.address}
     });
@@ -219,7 +221,15 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
                 // candleSeries.setData(candles)
             }
             else {
-                const lineChartData = lineData.map(item => ({time: parseInt(item.timestamp), value: item.valueUSD}))
+                const lineChartDataRaw = lineData.map(item => ({time: parseInt(item.timestamp), value: parseFloat(item.valueUSD)}))
+
+                const lineChartData = lineChartDataRaw.filter((item, pos) => {
+                    let prevPos = pos === 0 ? pos : pos - 1;
+                    let prevTimeValue = lineChartDataRaw[prevPos].time;
+
+                    return prevTimeValue !== item.time;
+                    
+                });
 
                 lineSeries.setData(lineChartData)
                 // candleSeries.setData([])

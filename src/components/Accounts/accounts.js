@@ -20,11 +20,10 @@ import {TOKENS_FOR_USER_BALANCES} from "../../api/client";
 import AccountPieChart from './AccountPieChart';
 import { useThemeContext } from '../Layout/layout';
 import { Spin } from 'antd';
-import { LOADER_INDICATOR } from '../../constants';
+import { LOADER_INDICATOR, tokenColors } from '../../constants';
 import { useDataContext } from '../../dataProvider';
 import { LIQ_POOLS_ACCOUNTS } from '../../api/client';
 
-const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#EA8C00", "#47867d", "#1BB8DB", "#9018EE"]
 
 
 export const Accounts = () => {
@@ -41,12 +40,13 @@ export const Accounts = () => {
     useEffect(() => {
 
         if (account && balances && tokens) {
-            const res = balances.map((item) => {
+            const res = balances.filter(item => item.symbol !== "AGOy").map((item, _index) => {
                 const name = item.symbol;
                 const nativeBalance = item.nativeBalance;
                 const usdBalance = tokens.find(tok => tok.symbol === name).priceUSD;
+                const tokenColor = tokenColors[_index];
 
-                return {name, nativeBalance, usdBalance: usdBalance * nativeBalance}
+                return {name, nativeBalance, usdBalance: usdBalance * nativeBalance, tokenColor}
             });
             
             setUserPortfolio(res);
@@ -94,7 +94,7 @@ export const Accounts = () => {
                                 <div className='accounts-wrapper-portoflio-assets__assets-chart-info'> 
                                     
                                     <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
-                                        <AccountPieChart userBalanceData={balances}/>
+                                        <AccountPieChart userBalanceData={userPortfolio}/>
                                         <ul> 
                                             {userPortfolio && userPortfolio.map((item, _ind) => {
                                                 return <li key={item.name}>
@@ -114,7 +114,7 @@ export const Accounts = () => {
                                                 return (
                                                     <li key={`li_${_ind}`}>
                                                         <p>{percentDiff.toFixed(2)}%</p>
-                                                        <span style={{ height: `${(percentDiff * 0.1) + 1}vh`, backgroundColor: tokenColors[_ind] }}/>
+                                                        <span style={{ height: `${(percentDiff * 0.1) + 1}vh`, backgroundColor: item.tokenColor }}/>
                                                         <p>{item.name}</p>
                                                     </li>
                                                 )

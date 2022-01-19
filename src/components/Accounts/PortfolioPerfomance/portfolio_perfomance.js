@@ -72,8 +72,8 @@ export const PortfolioPerfomance = () => {
             const CnUsdToDollar =  parseFloat(formatFromDecimal(CNUSDBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "CNUSD")
             const CnBtcToDollar =  parseFloat(formatFromDecimal(CNBTCBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "CNBTC")
             const WmaticToDollar =  parseFloat(formatFromDecimal(WMATICBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "WMATIC")
-            const USDTToDollar = parseFloat(formatFromDecimal(USDTBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "USDT");
-            const WBTCToDollar = parseFloat(formatFromDecimal(WBTCBalance, 18)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "WBTC");
+            const USDTToDollar = parseFloat(formatFromDecimal(USDTBalance, 6)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "USDT");
+            const WBTCToDollar = parseFloat(formatFromDecimal(WBTCBalance, 8)) * findNearestPortfolioTokenPrice(tokens, item.timestamp, "WBTC");
 
             const newTime = new Date(item.timestamp * 1000).getMinutes();
             const sum = parseFloat((AgoToDollar + AgoUsdToDollar + AgoBtcToDollar + CnUsdToDollar + CnBtcToDollar + WmaticToDollar +  USDTToDollar +  WBTCToDollar).toFixed(2))

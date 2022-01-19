@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { TokenIcon } from "../../TokenIcon/token_icon";
 import { useQuery } from "@apollo/client";
 import { TOKENS_FOR_LIQUIDITY_POOLS } from "../../../api/client";
-import { CONTRACT_ADRESESS, DEX_ADDRESESS, LOADER_INDICATOR_LOCAL, MAX_INT } from "../../../constants";
+import { MINT_REDEEM_KEY, CONTRACT_ADRESESS, DEX_ADDRESESS, LOADER_INDICATOR_LOCAL, MAX_INT } from "../../../constants";
+import { message } from 'antd';
 import { useSystemContext } from "../../../systemProvider";
 import { useWeb3React } from "@web3-react/core";
 import ERC20_ABI from '../../../abi/ERC20.json';
@@ -277,11 +278,17 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
         const token0AmountFormatted = formatToDecimal(token0Amount, token0.decimals);
         const token1AmountFormatted = formatToDecimal(token1Amount, token1.decimals);
 
+        try {
+            message.loading({content: "Create pair in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
 
-        console.log(token0);
-        console.log(token1);
+            await contracts.ROUTER.methods.addLiquidity(token0.id, token1.id, token0AmountFormatted, token1AmountFormatted, 0, 0, account, 9999999999).send({ from: account });
 
-        await contracts.ROUTER.methods.addLiquidity(token0.id, token1.id, token0AmountFormatted, token1AmountFormatted, 0, 0, account, 9999999999).send({ from: account });
+            message.success({content: "Create pair is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+
+        }
+        catch(e) {
+            message.error({content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+        }
 
     }
 

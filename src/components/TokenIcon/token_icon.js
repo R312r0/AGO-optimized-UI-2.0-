@@ -5,8 +5,8 @@ import ago from './svg/AGO.svg'
 import agoy from './svg/AGOy.svg'
 import agoUsd from './svg/AGOUSD.svg'
 import agoBtc from './svg/AGOBTC.svg'
-import cnUsd from './svg/CNUSD.png'
-import cnBtc from './svg/CNBTC.png'
+import cnUsd from './svg/CNUSD.svg'
+import cnBtc from './svg/CNBTC.svg'
 // import real_matic from './svg/real_matic.svg';
 
 // Market icons import
@@ -16,14 +16,15 @@ import usdt from './svg/USDT.svg'
 import wbtc from './svg/WBTC.svg'
 import dai from './svg/DAI.svg';
 import usdc from './svg/USDC.svg';
+import quick from './svg/QUICK.png';
 
 // Unknonw token icon
 import unknow from './svg/UNKNOWN_TOKEN.png';
 
-export const TokenIcon = ({iconName}) => {
+export const TokenIcon = ({ iconName }) => {
     const tokens = [
         { name: "AGO", icon: ago },
-        { name: "AGOy", icon: agoy},
+        { name: "AGOy", icon: agoy },
         { name: "AGOUSD", icon: agoUsd },
         { name: "MATIC", icon: real_matic },
         { name: "AGOBTC", icon: agoBtc },
@@ -34,8 +35,10 @@ export const TokenIcon = ({iconName}) => {
         { name: "WBTC", icon: wbtc },
         { name: "DAI", icon: dai },
         { name: "USDC", icon: usdc },
+        { name: "QUICK", icon: quick },
+
     ]
-    
+
     const returnedToken = tokens.find(item => item.name === iconName)
 
     return <img src={returnedToken?.icon ? returnedToken?.icon : unknow} />

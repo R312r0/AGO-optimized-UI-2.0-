@@ -8,6 +8,7 @@ import {Spin} from "antd";
 import {TokenIcon} from "../../TokenIcon/token_icon";
 import SINGLE_STAKING_ABI from '../../../abi/SIngleChef.json';
 import { SINGLE_STAKING_POOL } from '../../../constants';
+import { useHistory } from 'react-router-dom';
 
 const AccountsStaking = () => {
 
@@ -17,6 +18,7 @@ const AccountsStaking = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [dataPaginated, setDataPaginated] = useState(0);
     const [currentClickedNumber, setCurrentClickedNumber] = useState(1);
+    const history = useHistory();
 
     useEffect(() => {
 
@@ -130,7 +132,7 @@ const AccountsStaking = () => {
                                    <p>{item.stakeTokenName}</p>
                                </div>
                                 <span> {item.staked} {item.stakeTokenName} </span>
-                                <span> {formattedNum(item.userReward)} {item.rewardTokenName} / {formattedNum(item.userUSDReward)}$ </span>
+                                <span style={{color: "#40BA93"}}> + {formattedNum(item.userReward)} {item.rewardTokenName} / {formattedNum(item.userUSDReward)}$ </span>
                             </li>
                         )
                     }
@@ -142,7 +144,7 @@ const AccountsStaking = () => {
                                 <p>{item.stakeTokenName}</p>
                             </div>
                             <span>{item.staked} {item.stakeTokenName}</span>
-                            <span> {formattedNum(item.userReward)} {item.rewardTokenName} / {formattedNum(item.userUSDReward)}$ </span>
+                            <span style={{color: "#40BA93"}}> + {formattedNum(item.userReward)} {item.rewardTokenName} / {formattedNum(item.userUSDReward)}$ </span>
                         </li>
                     )
                 })
@@ -166,8 +168,7 @@ const AccountsStaking = () => {
             </div>
             
             <div className='accounts-wrapper-use-staking-pools__buttons'>
-                <button className='active'>Add</button>
-                <button>Withdraw</button>
+                <button onClick={() => history.push("/staking")} className='active'>Manage</button>
             </div>
         </div>
     )

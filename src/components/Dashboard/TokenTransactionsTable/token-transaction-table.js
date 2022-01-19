@@ -45,6 +45,9 @@ export const TokenTransactionTable = () => {
             let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`
             let acc = formatAddress(item.from);
             let time = calculateTimeDifference(item.timestamp);
+
+            console.log(item);
+
             switch (item.name) {
                 case SWAP:
                     txName = `${item.name} ${item.token0} for ${item.token1}`

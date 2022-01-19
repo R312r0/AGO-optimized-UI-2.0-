@@ -29,11 +29,11 @@ const FoundryData = ({data}) => {
                 </svg>
             </div>
 
-            <div className='foundry__data-item'>
+            <div className='foundry__data-item '>
                 <main>
-                    <p className='foundry__data-item__heading'>Estimated Allocation</p>
-                    <div className='foundry__data-item__wrapper'>
-                        <b>48,65%</b>
+                    <p className='foundry__data-item__heading'>Time until next allocate </p>
+                    <div className='foundry__data-item__wrapper single-string'>
+                        <b style={{fontWeight: 300, color: "#828282"}}>Allocation not started yet</b>
                     </div>
                 </main>
 

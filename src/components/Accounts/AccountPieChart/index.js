@@ -3,6 +3,7 @@ import { Doughnut } from 'react-chartjs-2'
 import styled from 'styled-components';
 import { useThemeContext } from '../../Layout/layout';
 import { formattedNum } from '../../../utils/helpers';
+import { tokenColors } from '../../../constants';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -72,14 +73,13 @@ const AccountPieChart = ({userBalanceData}) => {
 
     const chartCanvasRef = useRef(null);
 
-    const labels = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#EA8C00", "#47867d", "#1BB8DB", "#9018EE"];
 
     useEffect(() => {
 
         if (userBalanceData) {
 
             const dataSets = userBalanceData.map((item) => item.usdBalance);
-            setChartData({datasets: [{data: dataSets, backgroundColor: labels}]})   
+            setChartData({datasets: [{data: dataSets, backgroundColor: tokenColors}]})   
 
         }
 
