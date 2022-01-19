@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useSystemContext } from '../../../systemProvider';
 import styled from 'styled-components';
 import { Spin } from "antd";
-import {LOADER_INDICATOR, LOADER_INDICATOR_LOCAL} from "../../../constants";
+import { LOADER_INDICATOR, LOADER_INDICATOR_LOCAL } from "../../../constants";
 import { useThemeContext } from '../../Layout/layout';
 import { useQuery } from '@apollo/client';
 import { DASHBOAR_TXS } from '../../../api/queries';
@@ -29,58 +29,57 @@ export const TokenTransactionTable = () => {
   useEffect(() => {
 
     if (convertedTxs) {
-      determineNumberOfPages(convertedTxs);  
+      determineNumberOfPages(convertedTxs);
     }
-  
+
   }, [convertedTxs])
 
 
-      const convertTransactionsData = (data) => {
-        const { SWAP, ADD, BURN, MINT, REDEEM, COLLECT_REDEMPTION, STAKE, UNSTAKE } = TXS_NAME;
+  const convertTransactionsData = (data) => {
+    const { SWAP, ADD, BURN, MINT, REDEEM, COLLECT_REDEMPTION, STAKE, UNSTAKE } = TXS_NAME;
 
-        const res = data.map(item => {
-            let txName;
-            let totalValue = formattedNum((+item.amountTotalUSD).toFixed(2));
-            let token0Amount = `${(+item.amount0).toFixed(2)} ${item.token0}`
-            let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`
-            let acc = formatAddress(item.from);
-            let time = calculateTimeDifference(item.timestamp);
+    const res = data.map(item => {
+      let txName;
+      let totalValue = formattedNum((+item.amountTotalUSD).toFixed(2));
+      let token0Amount = `${(+item.amount0).toFixed(2)} ${item.token0}`
+      let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`
+      let acc = formatAddress(item.from);
+      let time = calculateTimeDifference(item.timestamp);
 
-            console.log(item);
 
-            switch (item.name) {
-                case SWAP:
-                    txName = `${item.name} ${item.token0} for ${item.token1}`
-                    break;
-                case ADD:
-                    txName = `${item.name} ${item.token0} and ${item.token1}`
-                    break;
-                case BURN:
-                    txName = `${item.name} ${item.token0} and ${item.token1}`
-                    break;
-                case MINT:
-                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare > 0 ? item.tokenShare : ""}`
-                    break;
-                case REDEEM:
-                    txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare > 0 ?  item.tokenShare : ""}`
-                    break;
-                case COLLECT_REDEMPTION:
-                    txName = `${item.name} ${item.token0} ${+item.amountShare > 0 ? item.tokenShare + " and" : ""}`
-                    break;
-                case STAKE:
-                    txName = `${item.name} ${item.token0}`
-                    break;
-                case UNSTAKE:
-                    txName = `${item.name} ${item.token0}`
-                    break;
-                default: 
-                  txName = "Transaction";
-                  break;
-            }
-            return { txName, totalValue, token0Amount, token1Amount, acc, time }
-        })
-        return res;
-    }
+      switch (item.name) {
+        case SWAP:
+          txName = `${item.name} ${item.token0} for ${item.token1}`
+          break;
+        case ADD:
+          txName = `${item.name} ${item.token0} and ${item.token1}`
+          break;
+        case BURN:
+          txName = `${item.name} ${item.token0} and ${item.token1}`
+          break;
+        case MINT:
+          txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare > 0 ? item.tokenShare : ""}`
+          break;
+        case REDEEM:
+          txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare > 0 ? item.tokenShare : ""}`
+          break;
+        case COLLECT_REDEMPTION:
+          txName = `${item.name} ${item.token0} ${+item.amountShare > 0 ? item.tokenShare + " and" : ""}`
+          break;
+        case STAKE:
+          txName = `${item.name} ${item.token0}`
+          break;
+        case UNSTAKE:
+          txName = `${item.name} ${item.token0}`
+          break;
+        default:
+          txName = "Transaction";
+          break;
+      }
+      return { txName, totalValue, token0Amount, token1Amount, acc, time }
+    })
+    return res;
+  }
 
   const determineNumberOfPages = (arr) => {
     const itemsPerPage = 10;

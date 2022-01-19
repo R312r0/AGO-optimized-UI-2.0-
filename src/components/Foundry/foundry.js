@@ -31,7 +31,6 @@ export const Foundry = () => {
         const cnUsdFoundryBalance = formatFromDecimal(await contracts.CNUSD.methods.balanceOf(CONTRACT_ADRESESS.FOUNDRY_AGOUSD).call(), cnusdToken.decimals);
         const cnBtcFoundryBalance = formatFromDecimal(await contracts.CNBTC.methods.balanceOf(CONTRACT_ADRESESS.FOUNDRY_AGOBTC).call(), cnbtcToken.decimals);
 
-        console.log(await contracts.TREASURY_AGOBTC.methods.calcCollateralBalance().call());
 
         const usdCollateralBalance = await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call();
         const wbtcCollateralBalance = await contracts.TREASURY_AGOBTC.methods.calcCollateralBalance().call();

@@ -181,9 +181,7 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
 
             const searchToken0 = contracts[token0Select?.symbol];
             const searchToken1 = contracts[token1Select?.symbol];
-    
-            console.log(searchToken0);
-            console.log(searchToken1);
+
 
             if (searchToken0) {
                 allowanceForRouter(searchToken0, 0)
@@ -194,7 +192,7 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
                 allowanceForRouter(contr, 0);
                 checkTokenBalance(contr, 0)
             }
-    
+
             if (searchToken1) {
                 allowanceForRouter(searchToken1, 1);
                 checkTokenBalance(searchToken1, 1)
@@ -279,15 +277,15 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
         const token1AmountFormatted = formatToDecimal(token1Amount, token1.decimals);
 
         try {
-            message.loading({content: "Create pair in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
+            message.loading({ content: "Create pair in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
             await contracts.ROUTER.methods.addLiquidity(token0.id, token1.id, token0AmountFormatted, token1AmountFormatted, 0, 0, account, 9999999999).send({ from: account });
 
-            message.success({content: "Create pair is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+            message.success({ content: "Create pair is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
 
         }
-        catch(e) {
-            message.error({content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+        catch (e) {
+            message.error({ content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
         }
 
     }
@@ -295,7 +293,6 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
     const allowanceForRouter = async (contract, tokenInd) => {
         const allowance = await contract.methods.allowance(account, DEX_ADDRESESS.ROUTER).call()
 
-        console.log(allowance);
 
         if (tokenInd === 0) {
             setToken0Allowance(allowance.length === MAX_INT.length);

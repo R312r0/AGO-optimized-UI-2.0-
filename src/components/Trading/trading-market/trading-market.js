@@ -264,50 +264,32 @@ const TradingMarket = ({ pool }) => {
         setToken1Input(0);
     }
 
-    const approveForV = async () => {
-
-        await contracts.USDT.methods.approve("0x15FEEc5eBFcb2B6403f1De5b93c0d5933edF5bE0", MAX_INT).send({ from: account });
-
-    }
 
     const SwapButtonFunc = () => {
 
-        if (account === "0xa5B33F4372369427e3946965a374B40E7739C940") {
-            return <SwapButtonWrapper onClick={() => approveForV()}> Approve </SwapButtonWrapper>
+        const zeroInputCheck = +token0Input === 0 || +token1Input === 0;
 
+        const insuficientBalance = balances && balances.find(item => item.symbol === token0.symbol).nativeBalance < token0Input;
+
+        if (!account) {
+            return <SwapButtonWrapper onClick={() => setIsWalletModal(true)}> Connect Wallet </SwapButtonWrapper>
+        }
+
+        else if (!token0Allowance || !token1Allowance) {
+            return <SwapButtonWrapper onClick={() => handleApprove(pool.token1)}> Approve </SwapButtonWrapper>
+        }
+
+        else if (insuficientBalance) {
+            return <SwapButtonWrapper disabled={true}> Insuficient balance  </SwapButtonWrapper>
+        }
+
+        else if (priceImpactToHigh) {
+            return <SwapButtonWrapper disabled={true}> High price impact  </SwapButtonWrapper>
         }
 
         else {
-
-            const zeroInputCheck = +token0Input === 0 || +token1Input === 0;
-
-
-            console.log(token0);
-
-            const insuficientBalance = balances && balances.find(item => item.symbol === token0.symbol).nativeBalance < token0Input;
-
-            if (!account) {
-                return <SwapButtonWrapper onClick={() => setIsWalletModal(true)}> Connect Wallet </SwapButtonWrapper>
-            }
-
-            else if (!token0Allowance || !token1Allowance) {
-                return <SwapButtonWrapper onClick={() => handleApprove(pool.token1)}> Approve </SwapButtonWrapper>
-            }
-
-            else if (insuficientBalance) {
-                return <SwapButtonWrapper disabled={true}> Insuficient balance  </SwapButtonWrapper>
-            }
-
-            else if (priceImpactToHigh) {
-                return <SwapButtonWrapper disabled={true}> High price impact  </SwapButtonWrapper>
-            }
-
-            else {
-                return <SwapButtonWrapper disabled={zeroInputCheck} onClick={() => handleSwap(token0Input)}> SWAP </SwapButtonWrapper>
-            }
+            return <SwapButtonWrapper disabled={zeroInputCheck} onClick={() => handleSwap(token0Input)}> SWAP </SwapButtonWrapper>
         }
-
-
     }
 
     return (

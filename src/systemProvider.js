@@ -141,7 +141,6 @@ export const SystemProvider = ({ children }) => {
 
         const res = await Promise.all(balancesResult)
 
-        console.log(res);
 
         res.sort((a, b) => {
             if (a.symbol < b.symbol) { return -1; }

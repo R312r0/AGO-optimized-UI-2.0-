@@ -6,20 +6,19 @@ import { useThemeContext } from '../../Layout/layout';
 import { useSubscription } from '@apollo/client';
 import { TOKEN_PRICE_CHART } from '../../../api/subscriptions';
 
-export const TradingChart = ({token, candleData, lineData, chartType }) => {
+export const TradingChart = ({ token, candleData, lineData, chartType }) => {
 
 
     const ref = useRef();
     const parentRef = useRef(null);
     const { tokens } = useSystemContext();
-    const {theme} = useThemeContext();
+    const { theme } = useThemeContext();
     const [chart, setChart] = useState(null);
     const [lineSeries, setLineSeries] = useState(null);
 
-    console.log(lineData);
 
     const chartItem = useSubscription(TOKEN_PRICE_CHART, {
-        variables: {id: tokens?.find(item => item.symbol === token)?.address}
+        variables: { id: tokens?.find(item => item.symbol === token)?.address }
     });
 
     useEffect(() => {
@@ -27,14 +26,14 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
         if (chartItem?.data && !chartItem?.loading) {
             if (lineSeries) {
                 const chartElem = chartItem.data.token.lineChartUSD[0];
-                lineSeries.update({time: parseInt(chartElem.timestamp), value: parseFloat(chartElem.valueUSD)})
+                lineSeries.update({ time: parseInt(chartElem.timestamp), value: parseFloat(chartElem.valueUSD) })
             }
         }
 
     }, [chartItem?.data, chartItem?.loading])
 
     // const [candleSeries, setCandleSeries] = useState(null);
-    
+
     // const calculateChangeBetweenCandles = (firstCandle, secondCandle) => {
     //
     //
@@ -66,7 +65,7 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
     useEffect(() => {
 
         if (chart) {
-            if (theme === "light"){
+            if (theme === "light") {
                 chart.applyOptions({
                     layout: {
                         textColor: 'black',
@@ -132,7 +131,7 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
 
         if (parentRef) {
 
-            const chartInst = createChart(ref.current, {  width: parentRef.current.offsetWidth, height: parentRef.current.offsetHeight });
+            const chartInst = createChart(ref.current, { width: parentRef.current.offsetWidth, height: parentRef.current.offsetHeight });
 
             chartInst.applyOptions({
                 //TODO:  replace chart options to new file some sort "trade-chart-conf.js" and add CONST for light theme too. 
@@ -157,10 +156,10 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
                     },
                 },
                 localization: {
-                    priceFormatter:(price) =>  formattedNum(+price),
+                    priceFormatter: (price) => formattedNum(+price),
                 },
                 priceScale: {
-                    
+
                     // autoScale: true,
                     invertScale: false,
                     alignLabels: false,
@@ -172,9 +171,9 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
                     },
                 },
             })
-    
+
             // TODO: https://github.com/tradingview/lightweight-charts/issues/50 => Spot this Issue to figure out multiple panes on chart. In our case this is a volume
-    
+
             const candlestickSeries = chartInst.addCandlestickSeries({
                 upColor: '#40BA93',
                 downColor: '#EF3725',
@@ -183,7 +182,7 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
                 wickUpColor: "#40BA93",
                 wickDownColor: "#EF3725",
             });
-    
+
             const lineSeriesInst = chartInst.addLineSeries({
                 color: '#40BA93',
                 lineWidth: 3,
@@ -195,7 +194,7 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
             setChart(chartInst);
             setLineSeries(lineSeriesInst);
             // setCandleSeries(candlestickSeries);
-    
+
         }
     }, [parentRef]);
 
@@ -221,14 +220,14 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
                 // candleSeries.setData(candles)
             }
             else {
-                const lineChartDataRaw = lineData.map(item => ({time: parseInt(item.timestamp), value: parseFloat(item.valueUSD)}))
+                const lineChartDataRaw = lineData.map(item => ({ time: parseInt(item.timestamp), value: parseFloat(item.valueUSD) }))
 
                 const lineChartData = lineChartDataRaw.filter((item, pos) => {
                     let prevPos = pos === 0 ? pos : pos - 1;
                     let prevTimeValue = lineChartDataRaw[prevPos].time;
 
                     return prevTimeValue !== item.time;
-                    
+
                 });
 
                 lineSeries.setData(lineChartData)
@@ -238,39 +237,39 @@ export const TradingChart = ({token, candleData, lineData, chartType }) => {
     }, [chartType, chart, candleData, lineData, token]);
 
 
-     return (
+    return (
         <>
-            <div ref={parentRef} className='chart-self'> 
+            <div ref={parentRef} className='chart-self'>
                 <div ref={ref} id='chart'></div>
             </div>
-            
-            <div className='chart-control-data'> 
-            {/*{tradingInfo && chartType === "candle" ? */}
-            {/*    <>*/}
-            {/*        <data> {tradingInfo.time} </data>*/}
-            {/*        <main>*/}
-            {/*            <ul> */}
-            {/*                <li><span>O:</span><b>{tradingInfo.open}</b></li>*/}
-            {/*                <li><span>H:</span><b>{tradingInfo.high}</b></li>*/}
-            {/*                <li><span>L:</span><b>{tradingInfo.low}</b></li>*/}
-            {/*                <li><span>C:</span><b>{tradingInfo.close}</b></li>*/}
-            {/*            </ul>*/}
-            {/*            <ul> */}
-            {/*                <li><span>MA(7):</span><b>{tradingInfo.open}</b></li>*/}
-            {/*                <li><span>MA(25):</span><b>{tradingInfo.high}</b></li>*/}
-            {/*                <li><span>MA(99):</span><b>{tradingInfo.low}</b></li>*/}
-            {/*            </ul>*/}
-            {/*            <ul> */}
-            {/*                <li><span>CHANGE:</span><b>0.00%</b></li>*/}
-            {/*                <li><span>AMPLITUDE:</span><b>3.99%</b></li>*/}
-            {/*            </ul>*/}
 
-            {/*            <button>Reset</button>*/}
-            {/*        </main>*/}
-            {/*    </>*/}
-            {/*    :*/}
-            {/*    ""*/}
-            {/*}*/}
+            <div className='chart-control-data'>
+                {/*{tradingInfo && chartType === "candle" ? */}
+                {/*    <>*/}
+                {/*        <data> {tradingInfo.time} </data>*/}
+                {/*        <main>*/}
+                {/*            <ul> */}
+                {/*                <li><span>O:</span><b>{tradingInfo.open}</b></li>*/}
+                {/*                <li><span>H:</span><b>{tradingInfo.high}</b></li>*/}
+                {/*                <li><span>L:</span><b>{tradingInfo.low}</b></li>*/}
+                {/*                <li><span>C:</span><b>{tradingInfo.close}</b></li>*/}
+                {/*            </ul>*/}
+                {/*            <ul> */}
+                {/*                <li><span>MA(7):</span><b>{tradingInfo.open}</b></li>*/}
+                {/*                <li><span>MA(25):</span><b>{tradingInfo.high}</b></li>*/}
+                {/*                <li><span>MA(99):</span><b>{tradingInfo.low}</b></li>*/}
+                {/*            </ul>*/}
+                {/*            <ul> */}
+                {/*                <li><span>CHANGE:</span><b>0.00%</b></li>*/}
+                {/*                <li><span>AMPLITUDE:</span><b>3.99%</b></li>*/}
+                {/*            </ul>*/}
+
+                {/*            <button>Reset</button>*/}
+                {/*        </main>*/}
+                {/*    </>*/}
+                {/*    :*/}
+                {/*    ""*/}
+                {/*}*/}
             </div>
         </>
     )

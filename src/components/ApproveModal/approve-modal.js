@@ -11,9 +11,9 @@ import { LOADER_INDICATOR_MINI } from '../../constants';
 
 export const ApproveModal = () => {
 
-    const {library, account} = useWeb3React();
+    const { library, account } = useWeb3React();
 
-    const {approveModal, setApproveModal, approveDataForModal} = useSystemContext();
+    const { approveModal, setApproveModal, approveDataForModal } = useSystemContext();
     const [approveLoading, serApproveLoading] = useState([false, false])
 
 
@@ -37,7 +37,7 @@ export const ApproveModal = () => {
         })
 
         const contr = new library.eth.Contract(ERC20ABI, address);
-        await contr.methods.approve(approveLocalState.destination, MAX_INT).send({from: account});
+        await contr.methods.approve(approveLocalState.destination, MAX_INT).send({ from: account });
 
         serApproveLoading(prevState => {
             let arr = [...prevState];
@@ -51,28 +51,27 @@ export const ApproveModal = () => {
 
     const changeSwitchApprove = (name) => {
 
-        const stateCopy = {...approveLocalState};
+        const stateCopy = { ...approveLocalState };
 
         const findItemInd = stateCopy.approves.findIndex((item) => item.name === name);
-        const findItemCopy = {...stateCopy.approves[findItemInd]};
-        
+        const findItemCopy = { ...stateCopy.approves[findItemInd] };
+
         findItemCopy.alreadyApproved = true;
 
         stateCopy.approves[findItemInd] = findItemCopy;
 
-        setApproveLocalState({...stateCopy});
+        setApproveLocalState({ ...stateCopy });
 
     }
 
-    console.log(approveLoading);
 
     return (
         <>
-            {approveModal && approveDataForModal ? 
-                <div className='approve-modal-wrapper'> 
-                    <div className='approve-modal modal-switch'> 
+            {approveModal && approveDataForModal ?
+                <div className='approve-modal-wrapper'>
+                    <div className='approve-modal modal-switch'>
                         <a href="#" onClick={() => setApproveModal(false)}> <ExitIcon /> </a>
-                        <h2> Before interacting with the application, you need <br/> to approve token spending in your wallet </h2>
+                        <h2> Before interacting with the application, you need <br /> to approve token spending in your wallet </h2>
                         <div className='approves-wrapper'>
                             {approveLocalState && approveLocalState.approves.map((item, _ind) => {
 
@@ -82,23 +81,23 @@ export const ApproveModal = () => {
                                     <div className='approve-item'>
                                         <div className='approve-item__token'>
                                             {
-                                                item.lpToken ? 
-                                                <>
-                                                    <TokenIcon iconName={item.name[0]}/>
-                                                    <TokenIcon iconName={item.name[1]}/>
-                                                    <h5>{name}</h5>
-                                                </>
-                                                :
-                                                <>
-                                                    <TokenIcon iconName={name}/>
-                                                    <h5>{name}</h5>
-                                                </>
+                                                item.lpToken ?
+                                                    <>
+                                                        <TokenIcon iconName={item.name[0]} />
+                                                        <TokenIcon iconName={item.name[1]} />
+                                                        <h5>{name}</h5>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <TokenIcon iconName={name} />
+                                                        <h5>{name}</h5>
+                                                    </>
 
                                             }
 
-                                        </div>                                        
-                                        {approveLoading[_ind] ? <Spin style={{display: "grid", justifyItems: "flex-end"}} indicator={LOADER_INDICATOR_MINI}/>  : <Switch checked={item.alreadyApproved} onChange={() => !item.alreadyApproved ? handleApprove(item.address, item.name, _ind) : null}/>}
-                                    
+                                        </div>
+                                        {approveLoading[_ind] ? <Spin style={{ display: "grid", justifyItems: "flex-end" }} indicator={LOADER_INDICATOR_MINI} /> : <Switch checked={item.alreadyApproved} onChange={() => !item.alreadyApproved ? handleApprove(item.address, item.name, _ind) : null} />}
+
                                     </div>
                                 )
                             })}

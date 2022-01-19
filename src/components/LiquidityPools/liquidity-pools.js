@@ -117,10 +117,6 @@ export const LiquidityPools = () => {
             const lpTokenPrice = (liquidityUSD / lpTotalSupply);
             const myLiquidity = lpTokenPrice * lpUserBalance;
 
-            // rewardPerBlock()
-
-            // console.log(item);
-
             const findedStakingPool = LP_STAKING_POOL.find(itemPool => {
                 let searchPattern = `${item.token0.symbol}-${item.token1.symbol}`
                 let revertSearchPattern = `${item.token1.symbol}-${item.token0.symbol}`

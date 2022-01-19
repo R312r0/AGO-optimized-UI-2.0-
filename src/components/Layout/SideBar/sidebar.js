@@ -10,11 +10,9 @@ import styled from 'styled-components';
 import { ThemeSwitcher } from '../ThemeSwitcher/theme-switcher';
 import { useMediaQuery } from 'react-responsive';
 import { useThemeContext } from '../layout';
-import { SideBarWrapper, LinkList, LinkListItem, SocialMediasList, BottomLinks} from './styles';
+import { SideBarWrapper, LinkList, LinkListItem, SocialMediasList, BottomLinks } from './styles';
 
-export const SideBar = ({history}) => {
-
-  console.log("history");
+export const SideBar = ({ history }) => {
 
   const [expandSocMedias, setExpandSocMedias] = useState(false);
   const [openDoc, setOpenDoc] = useState(false);
@@ -35,7 +33,7 @@ export const SideBar = ({history}) => {
     if (history.location.pathname) {
       setActiveTab(history.location.pathname);
     }
-    
+
   }, [history.location.pathname])
 
   useEffect(() => {
@@ -79,17 +77,17 @@ export const SideBar = ({history}) => {
         </LinkListItem>
       </LinkList>
       <div className='document__box' onClick={() => setOpenDoc(!openDoc)} ref={links} >
-      <div className={`document__box__links ${openDoc && 'document__box__links__open'}`}>
-        <BottomLinks light={theme === "light"}>
-          <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
-          <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
-          <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
-          <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
-        </BottomLinks>
+        <div className={`document__box__links ${openDoc && 'document__box__links__open'}`}>
+          <BottomLinks light={theme === "light"}>
+            <a href="https://argano-1.gitbook.io/argano-ecosystem/algorithmic-functionality/rebalancing" target="_blank" rel="noreferrer">White Paper</a>
+            <a href="https://argano-1.gitbook.io/argano-ecosystem/" target="_blank" rel="noreferrer">GitBook</a>
+            <a href="https://github.com/Tibereum/obelisk-audits/blob/main/Argano.pdf" target="_blank" rel="noreferrer">Audit Report</a>
+            <a href="https://argano-1.gitbook.io/argano-ecosystem/smart-contracts-structure" target="_blank" rel="noreferrer">$AGO contracts</a>
+          </BottomLinks>
+        </div>
+        <Documentsvg />
       </div>
-      <Documentsvg />
-    </div>
-  {/* <ThemeSwitcher /> */}
+      {/* <ThemeSwitcher /> */}
     </SideBarWrapper >
   )
 }

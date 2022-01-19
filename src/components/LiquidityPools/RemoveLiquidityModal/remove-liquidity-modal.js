@@ -84,7 +84,7 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
     const [allowance, setAllowance] = useState(false);
 
     const [lpBalance, setLpBalance] = useState(0)
- 
+
     useEffect(() => {
 
         if (account && lpTokenContract) {
@@ -105,7 +105,6 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
 
     const handleApprove = async () => {
 
-        console.log("Approve");
 
         await lpTokenContract.methods.approve(DEX_ADDRESESS.ROUTER, MAX_INT).send({ from: account });
         await checkAllowance()
@@ -114,16 +113,16 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
     const handleRemove = async (val) => {
 
         try {
-            message.loading({content: "Remove Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
+            message.loading({ content: "Remove Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
             await contracts.ROUTER.methods.removeLiquidity(CONTRACT_ADRESESS.USDT, CONTRACT_ADRESESS.WMATIC, formatToDecimal("1.5", 18), 0, 0, account, 999999999999999).send({ from: account });
 
-            message.success({content: "Remove Liquidity is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+            message.success({ content: "Remove Liquidity is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
 
         }
 
-        catch(e) {
-            message.error({content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+        catch (e) {
+            message.error({ content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
         }
 
 
@@ -154,10 +153,10 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
                 </div>
             </ModaBox>
             <div className='button-area'>
-            <button className='enter' onClick={() => allowance ? handleRemove(removeValue) : handleApprove()}>{allowance ? "Submit" : "Approve LP for Router"}</button>
-            <button className='back' onClick={() => setVisible(false)}>Back</button>
+                <button className='enter' onClick={() => allowance ? handleRemove(removeValue) : handleApprove()}>{allowance ? "Submit" : "Approve LP for Router"}</button>
+                <button className='back' onClick={() => setVisible(false)}>Back</button>
             </div>
-            
+
 
             {/* <h3>Pair <TokenIcon iconName={token0.symbol} />{token0.symbol} <TokenIcon iconName={token1.symbol} />{token1.symbol}</h3>
             <h3>LP balance: {lpUserBalance}</h3>

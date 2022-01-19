@@ -39,12 +39,6 @@ export const MintRedeem = () => {
         let poolBalance;
         let collateralPrice;
 
-        // const poolInfo = await contracts.POOL_AGOUSD.methods.info().call();
-
-        // console.log("poolInfo");
-        // console.log(poolInfo);
-
-
         if (currency === "AGOUSD") {
             info = await contracts.TREASURY_AGOUSD.methods.info(account).call();
             collateralPrice = await contracts.POOL_AGOUSD.methods.getCollateralPrice().call();
@@ -55,17 +49,6 @@ export const MintRedeem = () => {
             collateralPrice = await contracts.POOL_AGOBTC.methods.getCollateralPrice().call();
             poolBalance = formatFromDecimal(await contracts.POOL_AGOBTC.methods.collateralDollarBalance().call(), 18);
         }
-
-        // console.log(`Dollar price: ${info["0"]} `)
-        // console.log(`Collateral price: ${collateralPrice} `)
-        // const dollarTotalSupply = await contracts["AGOUSD"].methods.totalSupply().call();
-
-        // console.log(`Dollar total supply ${dollarTotalSupply}`);
-        // console.log(`ECR ${info["3"]}`)
-
-        // console.log(await contracts.POOL_AGOUSD.methods.unclaimed_pool_collateral().call());
-
-        // console.log(await contracts.POOL_AGOUSD.methods.info().call())
 
         setMintRedeemInfo({
             stablePrice: formatFromDecimal(info["0"], 6),
@@ -80,9 +63,6 @@ export const MintRedeem = () => {
         })
 
     }, [account, contracts]);
-
-
-    console.log(mintRedeemInfo);
 
     return (
         <>
