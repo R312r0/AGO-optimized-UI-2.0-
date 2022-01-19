@@ -269,7 +269,7 @@ const TradingMarket = ({ pool }) => {
 
         const zeroInputCheck = +token0Input === 0 || +token1Input === 0;
 
-        const insuficientBalance = balances && balances.find(item => item.symbol === token0.symbol).nativeBalance < token0Input;
+        const insuficientBalance = balances && balances.find(item => item.symbol === "MATIC" ? item.symbol === "WMATIC" : token0.symbol);
 
         if (!account) {
             return <SwapButtonWrapper onClick={() => setIsWalletModal(true)}> Connect Wallet </SwapButtonWrapper>
@@ -279,7 +279,7 @@ const TradingMarket = ({ pool }) => {
             return <SwapButtonWrapper onClick={() => handleApprove(pool.token1)}> Approve </SwapButtonWrapper>
         }
 
-        else if (insuficientBalance) {
+        else if (insuficientBalance.nativeBalance < token0Input) {
             return <SwapButtonWrapper disabled={true}> Insuficient balance  </SwapButtonWrapper>
         }
 
