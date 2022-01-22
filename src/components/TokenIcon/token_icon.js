@@ -1,12 +1,13 @@
 import React from 'react'
 
 // Protocol icons import
-import ago from './svg/AGO.svg'
-import agoy from './svg/AGOy.svg'
-import agoUsd from './svg/AGOUSD.svg'
-import agoBtc from './svg/AGOBTC.svg'
-import cnUsd from './svg/CNUSD.svg'
-import cnBtc from './svg/CNBTC.svg'
+import ago from './svg/newIcons/AGO.svg'
+import agoy from './svg/newIcons/AGOy.svg'
+import agoyx2 from './svg/AGOYX2.svg'
+import agoUsd from './svg/newIcons/AGOUSD.svg'
+import agoBtc from './svg/newIcons/AGOBTC.svg'
+import cnUsd from './svg/newIcons/CNUSD.svg'
+import cnBtc from './svg/newIcons/CNBTC.svg'
 // import real_matic from './svg/real_matic.svg';
 
 // Market icons import
@@ -25,6 +26,7 @@ export const TokenIcon = ({ iconName }) => {
     const tokens = [
         { name: "AGO", icon: ago },
         { name: "AGOy", icon: agoy },
+        { name: "AGOyX2", icon: agoyx2 },
         { name: "AGOUSD", icon: agoUsd },
         { name: "MATIC", icon: real_matic },
         { name: "AGOBTC", icon: agoBtc },

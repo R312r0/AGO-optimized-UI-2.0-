@@ -9,7 +9,7 @@ import { message } from 'antd';
 
 const FoundryActions = () => {
 
-    const { contracts, tokens, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
+    const { contracts, tokens, balances, changeTokenBalance, approveModal, setApproveModal, setApproveDataForModal } = useSystemContext();
     const { account } = useWeb3React();
 
     const [wbtcApproved, setWbtcApproved] = useState(false);
@@ -35,11 +35,11 @@ const FoundryActions = () => {
 
 
 
-    const [cnusdStakeInput, setCnusdStakeInput] = useState(0);
-    const [cnbtcStakeInput, setCnbtcStakeInput] = useState(0);
+    const [cnusdStakeInput, setCnusdStakeInput] = useState("");
+    const [cnbtcStakeInput, setCnbtcStakeInput] = useState("");
 
-    const [cnusdWithdrawInput, setCnusdWithdrawInput] = useState(0);
-    const [cnbtcWithdrawInput, setCnbtcWithdrawInput] = useState(0);
+    const [cnusdWithdrawInput, setCnusdWithdrawInput] = useState("");
+    const [cnbtcWithdrawInput, setCnbtcWithdrawInput] = useState("");
 
 
     useEffect(() => {
@@ -197,6 +197,34 @@ const FoundryActions = () => {
             message.error({ content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
         }
 
+    }
+
+    const handleMaxButton = async (token, action) => {
+
+        if (token === "CNUSD") {
+
+            if (action === "STAKE") {
+                const bal = balances.find(item => item.symbol === "CNUSD");
+                setCnusdStakeInput(bal.nativeBalance);
+            }
+            else {
+                const withdrawAmount = info.cnusd.isWithdrawAvailable ? formatFromDecimal(await contracts.FOUNDRY_AGOUSD.methods.balances(account).call(), 18) : 0;
+                setCnusdWithdrawInput(withdrawAmount)
+            }
+
+        }
+        else {
+
+            if (action === "STAKE") {
+                const bal = balances.find(item => item.symbol === "CNBTC");
+                setCnbtcStakeInput(bal.nativeBalance);
+            }
+            else {
+                const withdrawAmount = info.cnbtc.isWithdrawAvailable ? formatFromDecimal(await contracts.FOUNDRY_AGOBTC.methods.balanceOf(account).call(), 18) : 0;
+                setCnbtcWithdrawInput(withdrawAmount)
+            }
+
+        }
 
     }
 
@@ -211,10 +239,32 @@ const FoundryActions = () => {
                 </div>
 
                 <p className='amount'>Staked: {info.cnusd.staked}</p>
-                <input type="number" placeholder={"Stake your CNUSD"} onChange={(e) => setCnusdStakeInput(e.target.value)} />
+                <div className='foundry__actions-item__number'>0</div>
+                <div className='foundry__actions-item__input'>
+                    <input
+                        type="number"
+                        placeholder="Stake your CNUSD"
+                        onFocus={(e) => e.target.placeholder = ""}
+                        onBlur={(e) => e.target.placeholder = "Stake your CNUSD"}
+                        onChange={(e) => setCnusdStakeInput(e.target.value)}
+                        value={cnusdStakeInput}
+                    />
+                    <button onClick={() => handleMaxButton("CNUSD", "STAKE")} className='maxButton'>Max</button>
+                </div>
+
                 <button disabled={allowance.cnusd && cnusdStakeInput <= 0} onClick={() => allowance.cnusd ? handleStake("USD") : handleApprove("USD")}> {allowance.cnusd ? "Stake" : "Approve"} </button>
 
-                <input type="number" placeholder={"Withdraw your CNUSD"} onChange={(e) => setCnusdStakeInput(e.target.value)} />
+                <div className='foundry__actions-item__input'>
+                    <input
+                        type="number"
+                        placeholder="Withdraw your CNUSD"
+                        onFocus={(e) => e.target.placeholder = ""}
+                        onBlur={(e) => e.target.placeholder = "Withdraw your CNUSD"}
+                        onChange={(e) => setCnusdWithdrawInput(e.target.value)}
+                        value={cnusdWithdrawInput}
+                    />
+                    <button onClick={() => handleMaxButton("CNUSD", "UNSTAKE")} className='maxButton'>Max</button>
+                </div>
                 <button disabled={!info.cnbtc.isWithdrawAvailable || cnusdWithdrawInput <= 0} onClick={() => handleWithdraw("USD")}> {!info.cnbtc.isWithdrawAvailable ? "Blocked" : "Withdraw"} </button>
             </div>
 
@@ -237,10 +287,33 @@ const FoundryActions = () => {
                 </div>
 
                 <p className='amount'>Staked: {formattedNum(info.cnbtc.staked)}</p>
-                <input type="number" placeholder={"Stake/Withdraw your CNBTC"} onChange={(e) => setCnbtcStakeInput(e.target.value)} />
+                <div className='foundry__actions-item__number'>0</div>
+                <div className='foundry__actions-item__input'>
+                    <input
+                        type="number"
+                        placeholder="Stake/Withdraw your CNBTC"
+                        onFocus={(e) => e.target.placeholder = ""}
+                        onBlur={(e) => e.target.placeholder = "Stake/Withdraw your CNBTC"}
+                        onChange={(e) => setCnbtcStakeInput(e.target.value)}
+                        value={cnbtcStakeInput}
+                    />
+                    <button onClick={() => handleMaxButton("CNBTC", "STAKE")} className='maxButton'>Max</button>
+                </div>
+
                 <button disabled={allowance.cnusd && cnbtcStakeInput <= 0} onClick={() => allowance.cnbtc ? handleStake("BTC") : handleApprove("BTC")}> {allowance.cnbtc ? "Stake" : "Approve"}  </button>
 
-                <input type="number" placeholder={"Withdraw your CNUSD"} onChange={(e) => setCnusdStakeInput(e.target.value)} />
+                <div className='foundry__actions-item__input'>
+                    <input
+                        type="number"
+                        placeholder="Withdraw your CNUSD"
+                        onFocus={(e) => e.target.placeholder = ""}
+                        onBlur={(e) => e.target.placeholder = "Withdraw your CNBTC"}
+                        onChange={(e) => setCnbtcWithdrawInput(e.target.value)}
+                        value={cnbtcWithdrawInput}
+                    />
+                    <button onClick={() => handleMaxButton("CNBTC", "UNSTAKE")} className='maxButton'>Max</button>
+                </div>
+
                 <button disabled={!info.cnbtc.isWithdrawAvailable || cnusdWithdrawInput <= 0} onClick={() => handleWithdraw("USD")}> {!info.cnbtc.isWithdrawAvailable ? "Blocked" : "Withdraw"} </button>
             </div>
 
@@ -250,8 +323,9 @@ const FoundryActions = () => {
                     <TokenIcon iconName={"WBTC"} />
                     <p>WBTC</p>
                 </div>
-                <p className='amount'> {formattedNum(info.cnbtc.collateralEarned)} </p>
-                <button disabled={+info.cnbtc.collateralEarned === 0} onClick={() => handleCollectReward("WBTC")}> {+info.cnbtc.collateralEarned === 0 ? "No rewards" : "Collect reward"} </button>
+
+                <p className='amount'>{formattedNum(info.cnbtc.collateralEarned)}</p>
+                <button disabled={+info.cnbtc.collateralEarned === 0} onClick={() => handleCollectReward("USD")}>  {+info.cnbtc.collateralEarned === 0 ? "No rewards" : "Collect reward"} </button>
             </div>
         </div>
     )

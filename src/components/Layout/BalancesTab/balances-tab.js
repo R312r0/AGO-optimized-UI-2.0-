@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 // import { useSwipeable } from 'react-swipeable';
 
 import { ReactComponent as Pig_icon } from '../../../assets/icons/pig-balances.svg';
-import {BalancesTabWrapper, BalanceListDesktop, BalanceListItemDesktop} from './styles';
+import { BalancesTabWrapper, BalanceListDesktop, BalanceListItemDesktop } from './styles';
 import { useThemeContext } from '../layout';
 const BalancesTab = () => {
 
@@ -75,7 +75,7 @@ const BalancesTab = () => {
 
             <BalanceListDesktop opened={balancesExpanded} onMouseEnter={handleShiftKey} id='balanceList'>
               {balances && balances.filter(b => b.nativeBalance > 0).map((item, _ind) => {
-                return <BalanceTabItem key={item.symbol + _ind} balance={item} theme={theme}/>
+                return <BalanceTabItem key={item.symbol + _ind} balance={item} theme={theme} />
 
               })}
             </BalanceListDesktop>
@@ -89,7 +89,7 @@ const BalancesTab = () => {
 }
 
 
-const BalanceTabItem = ({balance: {symbol, nativeBalance, usdBalance}, theme}) => {
+const BalanceTabItem = ({ balance: { symbol, nativeBalance, usdBalance }, theme }) => {
 
   return (
     <>
@@ -97,7 +97,7 @@ const BalanceTabItem = ({balance: {symbol, nativeBalance, usdBalance}, theme}) =
         <TokenIcon iconName={symbol} />
         <span> {formattedNum(nativeBalance).startsWith("<") ? "0" : formattedNum(nativeBalance)}{symbol}/{formattedNum(usdBalance)}$ </span>
       </BalanceListItemDesktop>
-  </>
+    </>
   )
 
 }

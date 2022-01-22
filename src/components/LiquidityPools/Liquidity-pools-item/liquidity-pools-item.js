@@ -6,9 +6,11 @@ import { Liquidity } from '../Liquidity/liquidity';
 import { RemoveLiquidityModal } from "../RemoveLiquidityModal/remove-liquidity-modal";
 import { useSystemContext } from "../../../systemProvider";
 import { useWeb3React } from "@web3-react/core";
-import { DEX_ADDRESESS, MAX_INT, CONTRACT_ADRESESS } from "../../../constants";
+import { LP_STAKING_POOL } from "../../../constants";
 import { Transactions } from "../Transactions/transactions";
 import { StakeLp } from "../StakeLp/stake-lp";
+import STAKING_ABI from "../../../abi/SIngleChef.json"
+import { formatFromDecimal, formattedNum } from '../../../utils/helpers';
 
 const TABS = {
     PROVIDE_LIQUIDITY: "Provide liquidity",
@@ -21,9 +23,24 @@ const TABS = {
 export const LiquidityPoolsItem = ({ pool: { apr, address, token0, token1, liqiuidityUSD, isEarnAgo, myLiquidity, volChart, liqChart, lpTokenContract, lpUserBalance }, earnGovToken }) => {
 
     const { PROVIDE_LIQUIDITY, VOLUME, LIQUIDITY, TRANSACTIONS, STAKE_LP } = TABS;
+    const { library } = useWeb3React();
     const [windowExpanded, setWindowExpanded] = useState(false);
     const [chosenWindow, setChosenWindow] = useState(PROVIDE_LIQUIDITY);
     const [removeLiquidityModal, setRemoveLiquidityModal] = useState(false);
+    const [rewardPerBlockAgo, setRewardPerBlockAgo] = useState(0);
+
+
+    useEffect(() => {
+
+        if (isEarnAgo && earnGovToken) {
+
+            const poolAddress = LP_STAKING_POOL.find(item => item.name === `${token0.symbol}-${token1.symbol}`).address;
+            const poolContract = new library.eth.Contract(STAKING_ABI, poolAddress);
+            poolContract.methods.rewardPerBlock().call().then((res) => setRewardPerBlockAgo(formatFromDecimal(res, 18)))
+
+        }
+
+    }, [])
 
     const ExpandedTab = () => {
         switch (chosenWindow) {
@@ -57,10 +74,10 @@ export const LiquidityPoolsItem = ({ pool: { apr, address, token0, token1, liqiu
                     <h3> {liqiuidityUSD}$ </h3>
                     <h3>  {myLiquidity}$ </h3>
                     <div className={`apr ${!isEarnAgo ? "not-reward" : ""}`}>
-                        <h3> {apr.toFixed(2)}% </h3>
+                        <h3> {earnGovToken ? formattedNum(rewardPerBlockAgo) + " AGOy" : apr.toFixed(2) + "%"} </h3>
                     </div>
                     <div>
-                        {isEarnAgo ? earnGovToken ? <TokenIcon iconName={"AGOy"} /> : token1.symbol === "CNBTC" ? <TokenIcon iconName={"CNBTC"} /> : <TokenIcon iconName={"CNUSD"} /> : null}
+                        {isEarnAgo ? earnGovToken ? <TokenIcon iconName={"AGOyX2"} /> : token1.symbol === "CNBTC" ? <TokenIcon iconName={"CNBTC"} /> : <TokenIcon iconName={"CNUSD"} /> : null}
                     </div>
                     <button className='chart-expand'
                         onClick={() => setWindowExpanded(!windowExpanded)}> {windowExpanded ?

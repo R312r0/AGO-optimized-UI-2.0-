@@ -35,17 +35,19 @@ export const Foundry = () => {
         const usdCollateralBalance = await contracts.TREASURY_AGOUSD.methods.calcCollateralBalance().call();
         const wbtcCollateralBalance = await contracts.TREASURY_AGOBTC.methods.calcCollateralBalance().call();
 
-        const usdtEstimatedAllocation = usdCollateralBalance._exceeded ? formatFromDecimal(usdCollateralBalance._collateral_value, 18) : 0;
-        const wbtcEstimatedAllocation = wbtcCollateralBalance._exceeded ? formatFromDecimal(wbtcCollateralBalance._collateral_value, 18) : 0;
+        const usdtCollateralPrice = formatFromDecimal(await contracts.USDT_CHAINLINK.methods.latestAnswer().call(), 8);
+        const wbtcCollateralPrice = formatFromDecimal(await contracts.WBTC_CHAINLINK.methods.latestAnswer().call(), 8);
 
+        const usdtEstimatedAllocation = usdCollateralBalance._exceeded ? formatFromDecimal(usdCollateralBalance._collateral_value, 18) / usdtCollateralPrice : 0;
+        const wbtcEstimatedAllocation = wbtcCollateralBalance._exceeded ? formatFromDecimal(wbtcCollateralBalance._collateral_value, 18) / wbtcCollateralPrice : 0;
 
         const tvl = (parseFloat(cnUsdFoundryBalance) * parseFloat(cnusdToken.priceUSD)) + (parseFloat(cnBtcFoundryBalance) * parseFloat(cnbtcToken.priceUSD));
 
         setFoundryStaked({
             cnusd: cnUsdFoundryBalance,
             cnbtc: cnBtcFoundryBalance,
-            usdt: usdtEstimatedAllocation,
-            wbtc: wbtcEstimatedAllocation,
+            usdt: usdtEstimatedAllocation - (usdtEstimatedAllocation * 0.05),
+            wbtc: wbtcEstimatedAllocation - (wbtcEstimatedAllocation * 0.05),
             tvl
         })
 

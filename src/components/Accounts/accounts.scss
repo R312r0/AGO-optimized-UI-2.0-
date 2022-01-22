@@ -432,6 +432,7 @@
             .accounts-wrapper-portoflio-assets__assets-chart-info__assets-list {
                 display: flex;
                 justify-content: space-between;
+                column-gap: 20px;
 
                 h3 {
                     color: #828282;
@@ -667,25 +668,40 @@
             }
 
             button {
-                color: white;
+                padding: 6px 32px;
+                border: 1px solid #4F4F4F;
+                border-radius: 20px;
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 21px;
 
-                padding: 0.313vw 1.458vw;
-                font-size: 0.729vw;
+                color: #4F4F4F;
+
+                // color: white;
+
+                // padding: 0.313vw 1.458vw;
+                // font-size: 0.729vw;
                 
-                border: 0.052vw solid #40BA93;
-                background: transparent;
-                box-shadow: 0 0.208vw 0.156vw rgba(0, 0, 0, 0.25);
-                border-radius: 1.042vw;
+                // border: 0.052vw solid #40BA93;
+                // background: transparent;
+                // box-shadow: 0 0.208vw 0.156vw rgba(0, 0, 0, 0.25);
+                // border-radius: 1.042vw;
 
                 transition: .4s ease;
 
-                &:first-child {
-                    margin-right: 1.042vw;
-                }
+                // &:first-child {
+                //     margin-right: 1.042vw;
+                // }
 
                 &:hover {
-                    border: 0.052vw solid #40BA93;
-                    background: #40BA93;
+                    background: linear-gradient(104.49deg, #40BA93 25.52%, #9421EE 153.12%);
+                    border: 1px solid #40BA93;
+                    border-radius: 20px;
+                    font-weight: normal;
+                    font-size: 14px;
+                    line-height: 21px;
+                    color: #FFFFFF;
+                    opacity: 1;
                 }
             }
         }

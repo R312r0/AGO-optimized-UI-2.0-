@@ -12,6 +12,13 @@ const Table = styled.div`
   max-height: 353px;
   overflow: hidden;
 
+  @media(max-width: 1440px){
+        height: 253px;
+    }
+  @media(max-width: 1300px){
+        height: 200px;
+    }
+
   background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
   color: white;
 

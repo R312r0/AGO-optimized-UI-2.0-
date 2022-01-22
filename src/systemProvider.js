@@ -7,6 +7,7 @@ import ROUTER_ABI from './abi/Router.json';
 import TREASURY_ABI from './abi/TREASURY.json';
 import FOUNDRY_ABI from './abi/Foundry.json';
 import STABLE_POOL_ABI from './abi/STABLE_POOL.json';
+import CHAINLINK_ORACLE_ABI from './abi/OracleChainLink.json';
 
 import { CONTRACT_ADRESESS, DEX_ADDRESESS, metaMask, network } from './constants';
 import { formatFromDecimal } from './utils/helpers';
@@ -123,8 +124,11 @@ export const SystemProvider = ({ children }) => {
         const FOUNDRY_AGOBTC = new library.eth.Contract(FOUNDRY_ABI, CONTRACT_ADRESESS.FOUNDRY_AGOBTC);
         const ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.ROUTER)
         const QUICKSWAP_ROUTER = new library.eth.Contract(ROUTER_ABI, DEX_ADDRESESS.QUICK_ROUTER);
+        const USDT_CHAINLINK = new library.eth.Contract(CHAINLINK_ORACLE_ABI, CONTRACT_ADRESESS.USDT_CHAINLINK);
+        const WBTC_CHAINLINK = new library.eth.Contract(CHAINLINK_ORACLE_ABI, CONTRACT_ADRESESS.WBTC_CHAINLINK);
 
-        setContracts({ ...tokensContractsObj, QUICKSWAP_ROUTER, WETH, ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, FOUNDRY_AGOUSD, FOUNDRY_AGOBTC })
+
+        setContracts({ ...tokensContractsObj, USDT_CHAINLINK, WBTC_CHAINLINK, QUICKSWAP_ROUTER, WETH, ROUTER, POOL_AGOUSD, TREASURY_AGOUSD, POOL_AGOBTC, TREASURY_AGOBTC, FOUNDRY_AGOUSD, FOUNDRY_AGOBTC })
     }
 
     const getUserPortfolio = async () => {
@@ -140,7 +144,6 @@ export const SystemProvider = ({ children }) => {
         })
 
         const res = await Promise.all(balancesResult)
-
 
         res.sort((a, b) => {
             if (a.symbol < b.symbol) { return -1; }

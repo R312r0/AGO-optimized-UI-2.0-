@@ -96,7 +96,7 @@ const AccountsPools = ({ data }) => {
                                 <p>{item.token0}-{item.token1}</p>
                             </div>
                             <span>${formattedNum(parseFloat(item.userLpUsdBalance).toFixed(2))} ({item.percentPartInPool}%) </span>
-                            <span style={{ color: "rgb(64, 186, 147)" }}>{formattedNum(parseFloat(item.userLpBalance).toFixed(2))}</span>
+                            <span style={{ color: "rgb(64, 186, 147)" }}>{formattedNum(item.userLpBalance)}</span>
                         </li>
                     )
                 }) : <h1> No Pools </h1>}

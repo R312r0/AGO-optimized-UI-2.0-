@@ -190,10 +190,10 @@ export const BottomLinks = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin-top: 1.4vw;
+  /* margin-top: 1.4vw; */
 
   a {
-    margin-left: 2.083vw;
+    /* margin-left: 2.083vw; */
     font-size: 0.729vw;
     font-weight: 300;
     color: ${props => props.light ? '#4F4F4F' : '#fff'};

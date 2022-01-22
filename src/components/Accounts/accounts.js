@@ -15,8 +15,8 @@ import AccountsSynthetic from './accounts-synthetic/accounts-synthetic';
 import AccountsTrading from './accounts-trading/accounts-trading';
 import AccountsStaking from './accounts-staking/accounts-staking';
 import AccountsPools from './accounts-pools/accounts-pools';
-import {useQuery} from "@apollo/client";
-import {TOKENS_FOR_USER_BALANCES} from "../../api/client";
+import { useQuery } from "@apollo/client";
+import { TOKENS_FOR_USER_BALANCES } from "../../api/client";
 import AccountPieChart from './AccountPieChart';
 import { useThemeContext } from '../Layout/layout';
 import { Spin } from 'antd';
@@ -28,42 +28,47 @@ import { LIQ_POOLS_ACCOUNTS } from '../../api/client';
 
 export const Accounts = () => {
     const { tokens } = useDataContext();
-    const { balances, setIsWalletModal} = useSystemContext();
+    const { balances, setIsWalletModal } = useSystemContext();
     const { data } = useQuery(LIQ_POOLS_ACCOUNTS);
     const [sumUserBalances, setSumUserBalances] = useState(0.00);
     const [syntheticAssets, setSyntheticAssets] = useState(null);
     const [userPortfolio, setUserPortfolio] = useState(null);
-    const {account} = useWeb3React();
+    const [agoyBalance, setAgoyBalance] = useState(0);
 
-    const {theme} = useThemeContext();
+    const { account } = useWeb3React();
+
+    const { theme } = useThemeContext();
 
     useEffect(() => {
 
         if (account && balances && tokens) {
+
+            setAgoyBalance(balances.find(item => item.symbol === "AGOy").nativeBalance);
+
             const res = balances.filter(item => item.symbol !== "AGOy").map((item, _index) => {
                 const name = item.symbol;
                 const nativeBalance = item.nativeBalance;
                 const usdBalance = tokens.find(tok => tok.symbol === name).priceUSD;
                 const tokenColor = tokenColors[_index];
 
-                return {name, nativeBalance, usdBalance: usdBalance * nativeBalance, tokenColor}
+                return { name, nativeBalance, usdBalance: usdBalance * nativeBalance, tokenColor }
             });
-            
+
             setUserPortfolio(res);
             setSyntheticAssets(res.filter(item => item.name === "AGOUSD" || item.name === "CNUSD" || item.name === "AGOBTC" || item.name === "CNBTC"))
-            setSumUserBalances(res.reduce((a, {usdBalance}) => a + usdBalance, 0))
+            setSumUserBalances(res.reduce((a, { usdBalance }) => a + usdBalance, 0))
         }
-    
+
     }, [account, balances, tokens])
- 
+
     const [historyOpened, setHistoryOpened] = useState(false);
 
-    const CustomToolTip = ({active, payload, label}) => {
+    const CustomToolTip = ({ active, payload, label }) => {
 
         if (active) {
             return (
-                <div className='pie-account-custom'> 
-                    <TokenIcon iconName={payload[0].name}/>
+                <div className='pie-account-custom'>
+                    <TokenIcon iconName={payload[0].name} />
                     <span> {payload[0].name} </span>
                     <span> {formattedNum(payload[0].value)}$ </span>
                 </div>
@@ -72,81 +77,87 @@ export const Accounts = () => {
 
         return null;
     }
-    
+
     return (
         <>
-        {
-            !account ? 
-            <div className='connect-wallet-to-view-page'>
-                <h3>Please connect wallet to view this page!</h3>
-                <button onClick={()=>setIsWalletModal(true)}>Connect Wallet</button>
-            </div> 
-            :
-            <>
-                {balances ? 
-                    <div className={`accounts-wrapper ${theme === "light" ? " accounts-wrapper-light" : ""}`}> 
-                    <AccHistory isOpened={historyOpened} setIsOpened={setHistoryOpened}/>
-            
-                    <div className='accounts-container'>
-                        <div className='accounts-container-duo'>
-                            <PortfolioPerfomance/>
-                            <div className="accounts-wrapper-portoflio-assets cosmetical-wrapper"> 
-                                <div className='accounts-wrapper-portoflio-assets__assets-chart-info'> 
-                                    
-                                    <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
-                                        <AccountPieChart userBalanceData={userPortfolio}/>
-                                        <ul> 
-                                            {userPortfolio && userPortfolio.map((item, _ind) => {
-                                                return <li key={item.name}>
-                                                    <span><TokenIcon iconName={item.name}/> {item.name} </span>
-                                                    <b> {formattedNum(item.nativeBalance)} </b>
-                                                </li> 
-                                            })}
-                                        </ul>
+            {
+                !account ?
+                    <div className='connect-wallet-to-view-page'>
+                        <h3>Please connect wallet to view this page!</h3>
+                        <button onClick={() => setIsWalletModal(true)}>Connect Wallet</button>
+                    </div>
+                    :
+                    <>
+                        {balances ?
+                            <div className={`accounts-wrapper ${theme === "light" ? " accounts-wrapper-light" : ""}`}>
+                                <AccHistory isOpened={historyOpened} setIsOpened={setHistoryOpened} />
+
+                                <div className='accounts-container'>
+                                    <div className='accounts-container-duo'>
+                                        <PortfolioPerfomance />
+                                        <div className="accounts-wrapper-portoflio-assets cosmetical-wrapper">
+                                            <div className='accounts-wrapper-portoflio-assets__assets-chart-info'>
+
+                                                <div className='accounts-wrapper-portoflio-assets__assets-chart-info__assets-list'>
+                                                    <AccountPieChart userBalanceData={userPortfolio} />
+                                                    <ul>
+                                                        {/* FIXME: Fix this when native AGO token will be presented */}
+                                                        <li key={"AGOy"}>
+                                                            <span><TokenIcon iconName={"AGOy"} /> AGOy </span>
+                                                            <b> {formattedNum(agoyBalance)} </b>
+                                                        </li>
+                                                        {userPortfolio && userPortfolio.map((item, _ind) => {
+
+                                                            return <li key={item.name}>
+                                                                <span><TokenIcon iconName={item.name} /> {item.name} </span>
+                                                                <b> {formattedNum(item.nativeBalance)} </b>
+                                                            </li>
+                                                        })}
+                                                    </ul>
+                                                </div>
+
+                                                <div className='accounts-wrapper-portoflio-assets__assets-chart-info__bars'>
+                                                    <ul>
+                                                        {userPortfolio && userPortfolio.filter(data => data.nativeBalance > 0).map((item, _ind) => {
+
+                                                            const percentDiff = item.usdBalance !== 0 ? ((item.usdBalance / sumUserBalances) * 100) : 0;
+
+                                                            return (
+                                                                <li key={`li_${_ind}`}>
+                                                                    <p>{percentDiff.toFixed(2)}%</p>
+                                                                    <span style={{ height: `${(percentDiff * 0.1) + 1}vh`, backgroundColor: item.tokenColor }} />
+                                                                    <p>{item.name}</p>
+                                                                </li>
+                                                            )
+                                                        })}
+                                                    </ul>
+
+                                                    <button onClick={() => setHistoryOpened(true)}>
+                                                        <img src={history_accounts} alt={"history"} />
+                                                        History
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-    
-                                    <div className='accounts-wrapper-portoflio-assets__assets-chart-info__bars'>
-                                        <ul>
-                                            {userPortfolio && userPortfolio.filter(data => data.nativeBalance > 0).map((item, _ind) => {
-    
-                                                const percentDiff = item.usdBalance !== 0 ? ((item.usdBalance / sumUserBalances) * 100) : 0;
-                                                
-                                                return (
-                                                    <li key={`li_${_ind}`}>
-                                                        <p>{percentDiff.toFixed(2)}%</p>
-                                                        <span style={{ height: `${(percentDiff * 0.1) + 1}vh`, backgroundColor: item.tokenColor }}/>
-                                                        <p>{item.name}</p>
-                                                    </li>
-                                                )
-                                            })}
-                                        </ul>
-    
-                                        <button onClick={() => setHistoryOpened(true)}>
-                                            <img src={history_accounts} alt={"history"}/> 
-                                            History 
-                                        </button>
+
+                                    <div className='accounts-container-duo'>
+                                        <AccountsSynthetic sytheticAssets={syntheticAssets} />
+                                        <AccountsTrading />
+                                    </div>
+
+                                    <div className='accounts-container-duo'>
+                                        <AccountsStaking />
+                                        <AccountsPools data={data} />
                                     </div>
                                 </div>
+
                             </div>
-                        </div>
-    
-                        <div className='accounts-container-duo'>
-                            <AccountsSynthetic sytheticAssets={syntheticAssets}/>
-                            <AccountsTrading />
-                        </div>
-    
-                        <div className='accounts-container-duo'>
-                            <AccountsStaking/>
-                            <AccountsPools data={data}/>
-                        </div>
-                    </div>
-                    
-                </div>
-                :
-                    <Spin indicator={LOADER_INDICATOR}/>
-                }
-            </>
-        }       
+                            :
+                            <Spin indicator={LOADER_INDICATOR} />
+                        }
+                    </>
+            }
         </>
     )
 }

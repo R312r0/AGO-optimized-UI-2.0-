@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {useQuery} from '@apollo/client';
-import {TOKENS_PAIRS} from './api/client';
+import { useQuery } from '@apollo/client';
+import { TOKENS_PAIRS } from './api/client';
 import { CONTRACT_ADRESESS } from './constants';
 
 const DataContext = React.createContext();
 
 export const useDataContext = () => useContext(DataContext);
 
-export const DataProvider = ({children}) => {
+export const DataProvider = ({ children }) => {
 
 
-    const {data, loading, error} = useQuery(TOKENS_PAIRS);
+    const { data, loading, error } = useQuery(TOKENS_PAIRS);
     const [mainData, setMainData] = useState(null);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export const DataProvider = ({children}) => {
                     symbol: item.symbol,
                     decimals: item.decimals,
                     isProtocolMain: item.isProtocolMain,
-                    priceUSD: parseFloat(item.priceUSD).toFixed(2) 
+                    priceUSD: parseFloat(item.priceUSD).toFixed(2)
                 }
             })
 
@@ -32,7 +32,7 @@ export const DataProvider = ({children}) => {
                 symbol: "AGOy",
                 decimals: 18,
                 isProtocolMain: true,
-                priceUSD: 0 
+                priceUSD: 0
             })
 
             setMainData(dataArr);
@@ -41,7 +41,7 @@ export const DataProvider = ({children}) => {
     }, [data, loading])
 
     return (
-        <DataContext.Provider value={{tokens: mainData}}>
+        <DataContext.Provider value={{ tokens: mainData }}>
             {/* TODO: MAKE ERROR COMPONENT */}
             {error ? <h1> Server error please reload page </h1> : children}
         </DataContext.Provider>

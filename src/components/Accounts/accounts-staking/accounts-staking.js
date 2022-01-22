@@ -123,6 +123,9 @@ const AccountsStaking = () => {
                 {dataPaginated && dataPaginated[`${currentClickedNumber}`] ? dataPaginated[`${currentClickedNumber}`].map((item) => {
                     if (item.stakeTokenName.indexOf("-") !== -1) {
                         const symbols = item.stakeTokenName.split("-")
+
+                        console.log(item)
+
                         return (
                             <li>
                                 <div>
@@ -130,7 +133,7 @@ const AccountsStaking = () => {
                                     <TokenIcon iconName={symbols[1]} />
                                     <p>{item.stakeTokenName}</p>
                                 </div>
-                                <span> {item.staked} {item.stakeTokenName} </span>
+                                <span> {formattedNum(item.staked)} {item.stakeTokenName} </span>
                                 <span style={{ color: "#40BA93" }}> + {formattedNum(item.userReward)} {item.rewardTokenName} / {formattedNum(item.userUSDReward)}$ </span>
                             </li>
                         )

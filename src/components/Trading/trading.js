@@ -184,7 +184,7 @@ export const Trading = () => {
   useEffect(() => {
 
     if (!loading && data) {
-      setChosedPool(data.pairs[0]);
+      setChosedPool(data.pairs.find(item => item.token1.symbol === "CNBTC"));
     }
 
   }, [data, loading]);

