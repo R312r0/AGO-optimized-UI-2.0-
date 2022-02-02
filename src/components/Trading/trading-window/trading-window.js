@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import line_active from "../../../assets/icons/chart-switcher/line-active.svg";
 import { useSystemContext } from "../../../systemProvider";
@@ -38,6 +39,7 @@ const TradingWindow = () => {
         data.tokens.find((item) => item.symbol === activeToken).lineChartUSD
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeToken]);
 
 
