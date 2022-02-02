@@ -27,6 +27,7 @@ import {
   ExchangeContainer,
   HeadingText,
   ExchangeInputContainer,
+  HeadingButton,
   Text,
   HDiv,
 } from "./styled";
@@ -43,6 +44,7 @@ const TradingMarket = ({ pool }) => {
     setApproveModal,
     setApproveDataForModal,
   } = useSystemContext();
+
   const { account } = useWeb3React();
 
   const [token0, setToken0] = useState(null);
@@ -332,30 +334,24 @@ const TradingMarket = ({ pool }) => {
     if (!account) {
       return (
         <SwapButtonWrapper onClick={() => setIsWalletModal(true)}>
-          {" "}
-          Connect Wallet{" "}
+          Connect Wallet
         </SwapButtonWrapper>
       );
     } else if (!token0Allowance || !token1Allowance) {
       return (
-        <SwapButtonWrapper onClick={() => handleApprove(pool.token1)}>
-          {" "}
-          Approve{" "}
+        <SwapButtonWrapper onClick={() => handleApprove(pool.token1)} approveButton={true}>
+          Approve
         </SwapButtonWrapper>
       );
     } else if (insuficientBalance.nativeBalance < token0Input) {
       return (
         <SwapButtonWrapper disabled={true}>
-          {" "}
-          Insuficient balance{" "}
+          Insuficient balance
         </SwapButtonWrapper>
       );
     } else if (priceImpactToHigh) {
       return (
-        <SwapButtonWrapper disabled={true}>
-          {" "}
-          High price impact{" "}
-        </SwapButtonWrapper>
+        <SwapButtonWrapper disabled={true}>High price impact</SwapButtonWrapper>
       );
     } else {
       return (
@@ -363,28 +359,26 @@ const TradingMarket = ({ pool }) => {
           disabled={zeroInputCheck}
           onClick={() => handleSwap(token0Input)}
         >
-          {" "}
-          SWAP{" "}
+          SWAP
         </SwapButtonWrapper>
       );
     }
   };
 
   return (
-    <>
-      {/* <div
-        className={`trading-wrapper-exchange trading-window-box ${
-          pool?.isQuickSwapPool ? " quick-swap-trade" : ""
-        }`}
-      >
-        <div className="trading-wrapper-exchange__header">
-          <h1>
-            {" "}
-            {pool?.isQuickSwapPool ? "QuickSwap" : ""} Market{" "}
-            {pool?.isQuickSwapPool ? <TokenIcon iconName={"QUICK"} /> : ""}{" "}
-          </h1>
-          <div className="trading-wrapper-exchange__header__buttons">
-            <button>
+    <TradingWindowContainer>
+      <HDiv>
+        <>
+          <HeadingText>
+            {pool?.isQuickSwapPool ? "QuickSwap" : ""} Market
+          </HeadingText>
+          {pool?.isQuickSwapPool ? (
+            <TokenIcon iconName={"QUICK"} width="36px" height="36px" />
+          ) : null}
+        </>
+        <>
+          <div style={{ visibility: "hidden" }}>
+            <HeadingButton>
               <svg
                 width="20"
                 height="20"
@@ -397,8 +391,8 @@ const TradingMarket = ({ pool }) => {
                   fill="#40BA93"
                 />
               </svg>
-            </button>
-            <button>
+            </HeadingButton>
+            <HeadingButton>
               <svg
                 width="28"
                 height="20"
@@ -411,22 +405,18 @@ const TradingMarket = ({ pool }) => {
                   fill="white"
                 />
               </svg>
-            </button>
+            </HeadingButton>
           </div>
-        </div>
-
-        {token0 && token1 ? (
-          <>
-            <h4 className="trading-wrapper-exchange__title">You Pay</h4>
-            <div className="trading-wrapper-exchange__swap-input">
-              <div
-                className={`trading-wrapper-exchange__swap-input__header ${
-                  token0.symbol === "WMATIC" || token0.symbol === "MATIC"
-                    ? "matic-header"
-                    : ""
-                }`}
-              >
-                <h3> {token0.symbol} </h3>
+        </>
+      </HDiv>
+      {token0 && token1 ? (
+        <>
+          <Text marginLeft="21px">You Pay</Text>
+          <ExchangeContainer height="138px" marginTop="3px">
+            <HDiv>
+              <div>
+                <TokenIcon iconName={token0.symbol} width="28px" />
+                <Text marginLeft="9px">{token0.symbol}</Text>
                 {token0.symbol === "WMATIC" || token0.symbol === "MATIC" ? (
                   <button
                     onClick={() =>
@@ -448,66 +438,37 @@ const TradingMarket = ({ pool }) => {
                     <img src={wmatic_for_matic} alt="change" />
                   </button>
                 ) : null}
-                <h5> =${formattedNum(token0Price)} </h5>і
               </div>
-              <main>
-                <span
-                  onClick={() =>
-                    token0.symbol === "WMATIC"
-                      ? setToken0({
-                          id: token0.id,
-                          priceUSD: token0.priceUSD,
-                          symbol: "MATIC",
-                          name: "MAITC",
-                        })
-                      : setToken0({
-                          id: token0.id,
-                          priceUSD: token0.priceUSD,
-                          symbol: "WMATIC",
-                          name: "WMAITC",
-                        })
-                  }
-                >
-                  <TokenIcon iconName={token0?.symbol} />
-                  <h3> {token0.symbol} </h3>
-                </span>
-                <div className="trading-wrapper-exchange__swap-input__input">
-                  <input
-                    type="number"
-                    placeholder="Enter amount"
-                    onFocus={(e) => (e.target.placeholder = "")}
-                    onBlur={(e) => (e.target.placeholder = "Enter amount")}
-                    value={token0Input}
-                    onChange={(e) => setToken0Input(e.target.value)}
-                  />
-                  <button
-                    onClick={() => handleMaxButton(1)}
-                    className="maxButton reverse"
-                  >
-                    Max
-                  </button>
-                </div>
-              </main>
-            </div>
-
-            <img
-              className="arrow-swap"
-              src={theme === "light" ? swap_trading_dark : swap_trading}
-              alt="swap"
-              onClick={() => setTokenChangeSwap(!tokenChangeSwap)}
-            />
-
-            <h4 className="trading-wrapper-exchange__title">You Receive</h4>
-            <div className="trading-wrapper-exchange__swap-input">
-              <div
-                className={`trading-wrapper-exchange__swap-input__header ${
-                  token1.symbol === "WMATIC" || token1.symbol === "MATIC"
-                    ? "matic-header"
-                    : ""
-                }`}
-              >
-                <h3> {token1.symbol} </h3>
-
+              <Text>
+                <b>=${formattedNum(token0Price)}</b>
+              </Text>
+            </HDiv>
+            <ExchangeInputContainer light={theme === "light"}>
+              <input
+                type="number"
+                placeholder="Enter amount"
+                onFocus={(e) => (e.target.placeholder = "")}
+                onBlur={(e) => (e.target.placeholder = "Enter amount")}
+                value={token0Input}
+                onChange={(e) => setToken0Input(e.target.value)}
+              />
+              <button onClick={() => handleMaxButton(1)}>
+                <Text color="#FFF">Max</Text>
+              </button>
+            </ExchangeInputContainer>
+          </ExchangeContainer>
+          <img
+            className="arrow-swap"
+            src={theme === "light" ? swap_trading_dark : swap_trading}
+            alt="swap"
+            onClick={() => setTokenChangeSwap(!tokenChangeSwap)}
+          />
+          <Text marginLeft="21px">You Receive</Text>
+          <ExchangeContainer height="138px" marginTop="3px">
+            <HDiv>
+              <div>
+                <TokenIcon iconName={token1.symbol} width="28px" />
+                <Text marginLeft="9px">{token1.symbol} </Text>
                 {token1.symbol === "WMATIC" || token1.symbol === "MATIC" ? (
                   <button
                     onClick={() =>
@@ -529,199 +490,62 @@ const TradingMarket = ({ pool }) => {
                     <img src={wmatic_for_matic} alt="change" />
                   </button>
                 ) : null}
-
-                <h5> =${formattedNum(token1Price)} </h5>
               </div>
-              <main>
-                <span
-                  onClick={() =>
-                    token1.symbol === "WMATIC"
-                      ? setToken1({
-                          id: token1.id,
-                          priceUSD: token1.priceUSD,
-                          symbol: "MATIC",
-                          name: "MAITC",
-                        })
-                      : setToken0({
-                          id: token1.id,
-                          priceUSD: token1.priceUSD,
-                          symbol: "WMATIC",
-                          name: "WMAITC",
-                        })
-                  }
-                >
-                  <TokenIcon iconName={token1.symbol} />
-                  <h3> {token1.symbol} </h3>
-                </span>
-                <div className="trading-wrapper-exchange__swap-input__input">
-                  <input
-                    type="number"
-                    placeholder="Enter amount"
-                    onFocus={(e) => (e.target.placeholder = "")}
-                    onBlur={(e) => (e.target.placeholder = "Enter amount")}
-                    value={token1Input}
-                  />
-                  <button
-                    onClick={() => handleMaxButton(2)}
-                    className="maxButton reverse"
-                  >
-                    Max
-                  </button>
-                </div>
-              </main>
-            </div>
-            <div className="trading-wrapper-exchange__tx-info-block">
-              <span>
-                {" "}
-                <h3> Rate </h3>{" "}
-                <h3>
-                  {" "}
-                  1 {token0.symbol} ={" "}
-                  <b>{parseFloat(token0PairPrice).toFixed(2)}</b>{" "}
-                  {token1.symbol}{" "}
-                </h3>{" "}
-              </span>
-              <span>
-                {" "}
-                <h3> Inverse Rate </h3>{" "}
-                <h3>
-                  {" "}
-                  1 {token1.symbol} ={" "}
-                  <b>{parseFloat(token1PairPrice).toFixed(2)}</b>{" "}
-                  {token0.symbol}{" "}
-                </h3>{" "}
-              </span>
-              <span>
-                {" "}
-                <h3> Estimated Fee </h3>{" "}
+              <Text>
+                <b> =${formattedNum(token1Price)}</b>{" "}
+              </Text>
+            </HDiv>
+            <ExchangeInputContainer light={theme === "light"}>
+              <input
+                type="number"
+                placeholder="Enter amount"
+                onFocus={(e) => (e.target.placeholder = "")}
+                onBlur={(e) => (e.target.placeholder = "Enter amount")}
+                value={token1Input}
+              />
+              <button onClick={() => handleMaxButton(2)}>
+                <Text color="#FFF">Max</Text>
+              </button>
+            </ExchangeInputContainer>
+          </ExchangeContainer>
+          <ExchangeContainer height="203px" marginTop="28px">
+            <HDiv>
+              <Text>Rate</Text>
+              <Text>
+                1 {token0.symbol} =
+                <b>{parseFloat(token0PairPrice).toFixed(2)} </b>
+                {token1.symbol}
+              </Text>
+            </HDiv>
+            <HDiv>
+              <Text>Inverse Rate</Text>
+              <Text>
+                1 {token1.symbol} ={" "}
+                <b>{parseFloat(token1PairPrice).toFixed(2)}</b>
+                {token0.symbol}
+              </Text>
+            </HDiv>
+            <HDiv>
+              <Text>Estimated Fee</Text>
+              <Text>
                 <b>
-                  {" "}
                   = ${(((token0Price * token0Input) / 100) * 0.3).toFixed(4)}
-                </b>{" "}
-              </span>
-              <span>
-                {" "}
-                <h3> USD amount </h3>{" "}
-                <b className="active">
-                  {" "}
-                  = ${(token0Price * token0Input).toFixed(4)}{" "}
-                </b>{" "}
-              </span>
-            </div>
-            <SwapButtonFunc />
-          </>
-        ) : (
-          <Spin indicator={LOADER_INDICATOR_LOCAL} />
-        )}
-      </div> */}
-
-      <TradingWindowContainer>
-        <HeadingText>Market</HeadingText>
-        {token0 && token1 ? (
-          <>
-            <Text color="#828282" marginLeft="21px">
-              You Pay
-            </Text>
-            <ExchangeContainer height="138px" marginTop="3px">
-              <HDiv>
-                <div>
-                  <Text color="#828282">{token0.symbol}</Text>
-                  {token0.symbol === "WMATIC" || token0.symbol === "MATIC" ? (
-                    <button
-                      onClick={() =>
-                        token0.symbol === "WMATIC"
-                          ? setToken0({
-                              id: token0.id,
-                              priceUSD: token0.priceUSD,
-                              symbol: "MATIC",
-                              name: "MAITC",
-                            })
-                          : setToken0({
-                              id: token0.id,
-                              priceUSD: token0.priceUSD,
-                              symbol: "WMATIC",
-                              name: "WMAITC",
-                            })
-                      }
-                    >
-                      <img src={wmatic_for_matic} alt="change" />
-                    </button>
-                  ) : null}
-                </div>
-                <Text color="#FFF"> =${formattedNum(token0Price)} </Text>
-              </HDiv>
-              <ExchangeInputContainer>
-                <input
-                  type="number"
-                  placeholder="Enter amount"
-                  onFocus={(e) => (e.target.placeholder = "")}
-                  onBlur={(e) => (e.target.placeholder = "Enter amount")}
-                  value={token0Input}
-                  onChange={(e) => setToken0Input(e.target.value)}
-                />
-                <button onClick={() => handleMaxButton(1)}>
-                  <Text color="#FFF">Max</Text>
-                </button>
-              </ExchangeInputContainer>
-            </ExchangeContainer>
-            <img
-              className="arrow-swap"
-              src={theme === "light" ? swap_trading_dark : swap_trading}
-              alt="swap"
-              onClick={() => setTokenChangeSwap(!tokenChangeSwap)}
-            />
-            <Text color="#828282" marginLeft="21px">
-              You Receive
-            </Text>
-            <ExchangeContainer height="138px" marginTop="3px">
-              <HDiv>
-                <div>
-                  <Text color="#828282">{token1.symbol} </Text>
-                  {token0.symbol === "WMATIC" || token0.symbol === "MATIC" ? (
-                    <button
-                      onClick={() =>
-                        token0.symbol === "WMATIC"
-                          ? setToken0({
-                              id: token0.id,
-                              priceUSD: token0.priceUSD,
-                              symbol: "MATIC",
-                              name: "MAITC",
-                            })
-                          : setToken0({
-                              id: token0.id,
-                              priceUSD: token0.priceUSD,
-                              symbol: "WMATIC",
-                              name: "WMAITC",
-                            })
-                      }
-                    >
-                      <img src={wmatic_for_matic} alt="change" />
-                    </button>
-                  ) : null}
-                </div>
-                <Text color="#FFF"> =${formattedNum(token1Price)} </Text>
-              </HDiv>
-              <ExchangeInputContainer>
-                <input
-                  type="number"
-                  placeholder="Enter amount"
-                  onFocus={(e) => (e.target.placeholder = "")}
-                  onBlur={(e) => (e.target.placeholder = "Enter amount")}
-                  value={token1Input}
-                />
-                <button onClick={() => handleMaxButton(2)}>
-                  <Text color="#FFF">Max</Text>
-                </button>
-              </ExchangeInputContainer>
-            </ExchangeContainer>
-            <ExchangeContainer height="203px" marginTop="10px"></ExchangeContainer>
-                        <SwapButtonFunc />
-          </>
-        ) : (
-          <Spin indicator={LOADER_INDICATOR_LOCAL} />
-        )}
-      </TradingWindowContainer>
-    </>
+                </b>
+              </Text>
+            </HDiv>
+            <HDiv>
+              <Text>USD Amount</Text>
+              <Text color="#40BA93">
+                = ${(token0Price * token0Input).toFixed(4)}
+              </Text>
+            </HDiv>
+          </ExchangeContainer>
+          <SwapButtonFunc />
+        </>
+      ) : (
+        <Spin indicator={LOADER_INDICATOR_LOCAL} />
+      )}
+    </TradingWindowContainer>
   );
 };
 
