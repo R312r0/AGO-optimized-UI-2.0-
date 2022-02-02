@@ -37,12 +37,20 @@ export const TradingWindowContainer = styled.div`
       ? "#FFF"
       : "radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1d1d1d 2.18%, #232323 104.4%)"};
   box-shadow: 0 4px 40px rgba(0, 0, 0, 0.25);
-  padding: 42px 3.854vw 99px 3.854vw;
-  border-radius: 40px;
+  border-radius: 2.083vw;
   position: relative;
   flex-direction: column;
   width: 100%;
   display: flex;
+  padding: 42px 1.5vw 99px 1.5vw;
+
+  @media screen and (min-width: 1440px) {
+    padding: 42px 1.5vw 99px 1.5vw;
+  }
+
+  @media screen and (min-width: 1600px) {
+    padding: 42px 3.854vw 99px 3.854vw;
+  }
 
   .arrow-swap {
     cursor: pointer;
@@ -91,8 +99,11 @@ export const Text = styled.div`
   margin-left: ${(props) => props.marginLeft};
   min-width: 76px;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 15.5px;
   height: 27px;
+  @media screen and (min-width: 1440px) {
+    font-size: 18px;
+  }
 `;
 export const ExchangeContainer = styled.div`
   margin-top: ${(props) => props.marginTop};
@@ -102,6 +113,10 @@ export const ExchangeContainer = styled.div`
   background-color: ${() =>
     useThemeContext().theme === "light" ? "#E0E0E0" : "#1f1e20"};
   width: 100%;
+
+  @media screen and (min-width: 1440px) {
+    width: 100%;
+  }
 
   button {
     border: 1px solid #333333;
@@ -133,19 +148,23 @@ export const HDiv = styled.div`
 
 export const ExchangeInputContainer = styled.div`
   display: flex;
+  border: 1px solid #333333;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #333333;
   padding: 0 9px 0 20px;
   margin-top: 15px;
   border-radius: 30px;
+
   width: 100%;
   height: 55px;
   color: #828282;
 
   button {
-    background: #2C2C2C;
+    background: #2c2c2c;
     border-radius: 40px;
-    color: red;
+    min-width: 81px;
+    @media screen and (min-width: 1180px) {
+      margin-left: -34px;
+    }
   }
 `;
