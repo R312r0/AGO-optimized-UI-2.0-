@@ -1,26 +1,26 @@
 import React from "react";
-
 // Protocol icons import
 import ago from "./svg/newIcons/AGO.svg";
+import agoBtc from "./svg/newIcons/AGOBTC.svg";
+import agoUsd from "./svg/newIcons/AGOUSD.svg";
 import agoy from "./svg/newIcons/AGOy.svg";
 import agoyx2 from "./svg/AGOYX2.svg";
-import agoUsd from "./svg/newIcons/AGOUSD.svg";
-import agoBtc from "./svg/newIcons/AGOBTC.svg";
-import cnUsd from "./svg/newIcons/CNUSD.svg";
 import cnBtc from "./svg/newIcons/CNBTC.svg";
-// import real_matic from './svg/real_matic.svg';
-
+import cnUsd from "./svg/newIcons/CNUSD.svg";
+import dai from "./svg/DAI.svg";
+import matic from "./svg/MATIC.svg";
+import quick from "./svg/QUICK.png";
 // Market icons import
 import real_matic from "./svg/real_matic.svg";
-import matic from "./svg/MATIC.svg";
-import usdt from "./svg/USDT.svg";
-import wbtc from "./svg/WBTC.svg";
-import dai from "./svg/DAI.svg";
-import usdc from "./svg/USDC.svg";
-import quick from "./svg/QUICK.png";
-
 // Unknonw token icon
 import unknow from "./svg/UNKNOWN_TOKEN.png";
+import usdc from "./svg/USDC.svg";
+import usdt from "./svg/USDT.svg";
+import wbtc from "./svg/WBTC.svg";
+
+// import real_matic from './svg/real_matic.svg';
+
+
 
 export const TokenIcon = ({ iconName, width, height }) => {
   const tokens = [
