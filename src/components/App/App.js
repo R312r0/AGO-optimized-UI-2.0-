@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { WalletModal } from "../WalletModal/wallet_modal"
-import { CurrencySwitchModal } from '../MintRedeem/CurrencySwitchModal/currency-switch-modal';
 
 // Pages
 import Dashboard from '../Dashboard/dashboard';
-import MintRedeem from '../MintRedeem/mint_redeem';
+// import MintRedeem from '../MintRedeem/mint_redeem';
+import MintRedeem from '../../pages/mint-redeem';
 import { StakingRewards } from '../StakingRewards/staking-rewards';
 import LiquidityPools from '../LiquidityPools/liquidity-pools';
 import { Trading } from '../Trading/trading';

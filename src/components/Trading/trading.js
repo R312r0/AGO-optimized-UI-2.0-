@@ -291,7 +291,7 @@ export const Trading = () => {
         </TradingBar>
       </ContentHeader>
       <div className={`trading-wrapper ${theme === "light" ? " trading-wrapper-light" : ""}`}>
-        <div className='trading-container'>
+        {/* <div className='trading-container'>
           <TradingWindow light={theme === "light"} />
           <div className='trading-window-box trading-wrapper-txs'>
             <div className='trading-wrapper-txs__header'>
@@ -303,7 +303,7 @@ export const Trading = () => {
               <p>Edit</p>
             </div>
           </div>
-        </div>
+        </div> */}
         {tradingTab === SIMPLE_SWAP ? <TradingMarket pool={chosedPool} /> : <TradingFilters />}
       </div>
     </>

@@ -30,6 +30,7 @@ import {
   HeadingButton,
   Text,
   HDiv,
+  SwapIconContainer,
 } from "./styled";
 
 const TradingMarket = ({ pool }) => {
@@ -373,15 +374,15 @@ const TradingMarket = ({ pool }) => {
             {pool?.isQuickSwapPool ? "QuickSwap" : ""} Market
           </HeadingText>
           {pool?.isQuickSwapPool ? (
-            <TokenIcon iconName={"QUICK"} width="36px" height="36px" />
+            <TokenIcon iconName={"QUICK"}/>
           ) : null}
         </>
         <>
           <div style={{ visibility: "hidden" }}>
             <HeadingButton>
               <svg
-                width="20"
-                height="20"
+                width="1.042vw"
+                height="1.042vw"
                 viewBox="0 0 20 20"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -394,8 +395,8 @@ const TradingMarket = ({ pool }) => {
             </HeadingButton>
             <HeadingButton>
               <svg
-                width="28"
-                height="20"
+                width="1.458vw"
+                height="1.042vw"
                 viewBox="0 0 28 20"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -411,12 +412,12 @@ const TradingMarket = ({ pool }) => {
       </HDiv>
       {token0 && token1 ? (
         <>
-          <Text marginLeft="21px">You Pay</Text>
-          <ExchangeContainer height="138px" marginTop="3px">
-            <HDiv>
+          <Text ml="1.094vw" mt="0.781vw">You Pay</Text>
+          <ExchangeContainer height="7.188vw" mt="0.156vw">
+            <HDiv minH="1.875vw">
               <div>
-                <TokenIcon iconName={token0.symbol} width="28px" />
-                <Text marginLeft="9px">{token0.symbol}</Text>
+                <TokenIcon iconName={token0.symbol} />
+                <Text>{token0.symbol}</Text>
                 {token0.symbol === "WMATIC" || token0.symbol === "MATIC" ? (
                   <button
                     onClick={() =>
@@ -435,7 +436,7 @@ const TradingMarket = ({ pool }) => {
                           })
                     }
                   >
-                    <img src={wmatic_for_matic} alt="change" />
+                    <img src={wmatic_for_matic} alt="change"                   className="swap-icon"/>
                   </button>
                 ) : null}
               </div>
@@ -443,7 +444,7 @@ const TradingMarket = ({ pool }) => {
                 <b>=${formattedNum(token0Price)}</b>
               </Text>
             </HDiv>
-            <ExchangeInputContainer light={theme === "light"}>
+            <ExchangeInputContainer light={theme === "light"} mt="0.781vw">
               <input
                 type="number"
                 placeholder="Enter amount"
@@ -457,18 +458,19 @@ const TradingMarket = ({ pool }) => {
               </button>
             </ExchangeInputContainer>
           </ExchangeContainer>
+          <SwapIconContainer>
+          <Text ml="1.094vw">You Receive</Text>
           <img
-            className="arrow-swap"
             src={theme === "light" ? swap_trading_dark : swap_trading}
             alt="swap"
             onClick={() => setTokenChangeSwap(!tokenChangeSwap)}
           />
-          <Text marginLeft="21px">You Receive</Text>
-          <ExchangeContainer height="138px" marginTop="3px">
-            <HDiv>
+          </SwapIconContainer>
+          <ExchangeContainer height="7.188vw">
+            <HDiv minH="1.875vw">
               <div>
-                <TokenIcon iconName={token1.symbol} width="28px" />
-                <Text marginLeft="9px">{token1.symbol} </Text>
+                <TokenIcon iconName={token1.symbol} />
+                <Text >{token1.symbol} </Text>
                 {token1.symbol === "WMATIC" || token1.symbol === "MATIC" ? (
                   <button
                     onClick={() =>
@@ -492,10 +494,10 @@ const TradingMarket = ({ pool }) => {
                 ) : null}
               </div>
               <Text>
-                <b> =${formattedNum(token1Price)}</b>{" "}
+                <b> =${formattedNum(token1Price)}</b>
               </Text>
             </HDiv>
-            <ExchangeInputContainer light={theme === "light"}>
+            <ExchangeInputContainer light={theme === "light"} mt="1.094vw">
               <input
                 type="number"
                 placeholder="Enter amount"
@@ -508,24 +510,24 @@ const TradingMarket = ({ pool }) => {
               </button>
             </ExchangeInputContainer>
           </ExchangeContainer>
-          <ExchangeContainer height="203px" marginTop="28px">
-            <HDiv>
+          <ExchangeContainer height="9.740vw" mt="0.729vw">
+            <HDiv mt="0.781vw">
               <Text>Rate</Text>
               <Text>
-                1 {token0.symbol} =
-                <b>{parseFloat(token0PairPrice).toFixed(2)} </b>
+                1 {token0.symbol} =&nbsp;
+                <b>{parseFloat(token0PairPrice).toFixed(2)}&nbsp;</b>
                 {token1.symbol}
               </Text>
             </HDiv>
-            <HDiv>
+            <HDiv mt="0.625vw">
               <Text>Inverse Rate</Text>
               <Text>
-                1 {token1.symbol} ={" "}
-                <b>{parseFloat(token1PairPrice).toFixed(2)}</b>
+                1 {token1.symbol} =&nbsp;
+                <b>{parseFloat(token1PairPrice).toFixed(2)}&nbsp;</b>
                 {token0.symbol}
               </Text>
             </HDiv>
-            <HDiv>
+            <HDiv mt="0.625vw">
               <Text>Estimated Fee</Text>
               <Text>
                 <b>
@@ -533,7 +535,7 @@ const TradingMarket = ({ pool }) => {
                 </b>
               </Text>
             </HDiv>
-            <HDiv>
+            <HDiv mt="0.625vw">
               <Text>USD Amount</Text>
               <Text color="#40BA93">
                 = ${(token0Price * token0Input).toFixed(4)}

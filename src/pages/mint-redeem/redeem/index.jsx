@@ -4,13 +4,13 @@ import {
   CollectBtn,
   Divider,
   HDiv,
-  HeadingText,
+  MintRedeemSwitcher,
   RedeemBtn,
   RedeemExchangeContainer,
   RedeemExchangeInputContainer,
-  RedeemModalButton,
   RedeemWindowContainer,
   RedemptionContainer,
+  SwithButton,
   Text,
 } from "./styled";
 import { CONTRACT_ADRESESS, MINT_REDEEM_KEY } from "../../../constants";
@@ -21,22 +21,25 @@ import {
   formattedNum,
 } from "../../../utils/helpers";
 
-import { ApproveModal } from "../../ApproveModal/approve-modal";
 import ArrowDownIcon from "../../../assets/icons/ArrowDownIcon";
 import ArrowRightIcon from "../../../assets/icons/ArrowRightIcon";
 import { DEPLOYER_ADDRESS } from "../../../constants";
 import { MAX_INT } from "../../../constants";
 import PlusIcon from "../../../assets/icons/PlusIcon";
-import { TokenIcon } from "../../TokenIcon/token_icon";
+import { TokenIcon } from "../../../components/TokenIcon/token_icon";
 import { message } from "antd";
-import setting_cog from "../../../assets/icons/setting-cog.svg";
 import { useSystemContext } from "../../../systemProvider";
 import { useWeb3React } from "@web3-react/core";
+import CurrencySwitchModal from "../currency-switch-modal";
 
 export const Redeem = ({
   info,
+  activeTab,
+  setActiveTab,
   mintRedeemCurrency,
-  setMintRedeemCurrencyModal,
+  setMintRedeemCurrency,
+  mintRedeemSlipage,
+  setMintRedeemSlipage,
 }) => {
   const { account } = useWeb3React();
   const {
@@ -69,6 +72,7 @@ export const Redeem = ({
 
       getRedemption();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, mintRedeemCurrency, approveModal]);
 
   useEffect(() => {
@@ -78,6 +82,7 @@ export const Redeem = ({
       setCollateralOutput("");
       setCatenaOutput("");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input]);
 
   const getAllowance = async () => {
@@ -392,7 +397,8 @@ export const Redeem = ({
             </Text>
           </HDiv>
         </RedemptionContainer>
-        <ActiveMintingContainer style={{visibility: "hidden"}}>
+        {/* ActiveMintingBlock */}
+        <ActiveMintingContainer style={{ visibility: "hidden" }}>
           <HDiv>
             <Text fontSize="inherit">
               <b>Active Minting</b>
@@ -421,12 +427,29 @@ export const Redeem = ({
       </AdditionalBlocksContainer>
       <RedeemWindowContainer>
         <HDiv>
-          <HeadingText>Redeem</HeadingText>
-          <RedeemModalButton onClick={() => setMintRedeemCurrencyModal(true)}>
-            <img src={setting_cog} alt="settings" />
-          </RedeemModalButton>
+          <div />
+          <MintRedeemSwitcher>
+            <SwithButton
+              onClick={() => setActiveTab("Mint")}
+              isActive={activeTab === "Mint"}
+            >
+              Mint
+            </SwithButton>
+            <SwithButton
+              onClick={() => setActiveTab("Redeem")}
+              isActive={activeTab === "Redeem"}
+            >
+              Redeem
+            </SwithButton>
+          </MintRedeemSwitcher>
+          <CurrencySwitchModal
+            mintRedeemCurrency={mintRedeemCurrency}
+            setMintRedeemCurrency={setMintRedeemCurrency}
+            mintRedeemSlipage={mintRedeemSlipage}
+            setMintRedeemSlipage={setMintRedeemSlipage}
+          />
         </HDiv>
-        <RedeemExchangeContainer height="9.063vw" mt="1.979vw">
+        <RedeemExchangeContainer height="9.063vw" mt="1.094vw">
           <HDiv pl="1.120vw" pr="0.938vw">
             <Text>Input:</Text>
             <Text isBalance>

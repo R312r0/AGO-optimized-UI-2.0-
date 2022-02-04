@@ -2,12 +2,12 @@ import {
   ActiveMintingContainer,
   Divider,
   HDiv,
-  HeadingText,
   MintBtn,
   MintExchangeContainer,
   MintExchangeInputContainer,
-  MintModalButton,
+  MintRedeemSwitcher,
   MintWindowContainer,
+  SwithButton,
   TCRInput,
   Text,
 } from "./styled";
@@ -17,30 +17,28 @@ import {
   MINT_REDEEM_KEY,
 } from "../../../constants";
 import React, { useEffect, useState } from "react";
-import {
-  formatFromDecimal,
-  formatToDecimal,
-  formattedNum,
-} from "../../../utils/helpers";
+import { formatToDecimal, formattedNum } from "../../../utils/helpers";
 
-import { ApproveModal } from "../../ApproveModal/approve-modal";
 import ArrowDownIcon from "../../../assets/icons/ArrowDownIcon";
 import ArrowRightIcon from "../../../assets/icons/ArrowRightIcon";
 import { DEPLOYER_ADDRESS } from "../../../constants";
-import ORACLE_ABI from "../../../abi/CustomTokenOracle.json";
 import PlusIcon from "../../../assets/icons/PlusIcon";
-import { TokenIcon } from "../../TokenIcon/token_icon";
+import { TokenIcon } from "../../../components/TokenIcon/token_icon";
 import { message } from "antd";
-import setting_cog from "../../../assets/icons/setting-cog.svg";
 import { useSystemContext } from "../../../systemProvider";
 import { useWeb3React } from "@web3-react/core";
+import CurrencySwitchModal from "../currency-switch-modal";
 
 export const Mint = ({
   info,
+  activeTab,
+  setActiveTab,
   mintRedeemCurrency,
-  setMintRedeemCurrencyModal,
+  setMintRedeemCurrency,
+  mintRedeemSlipage,
+  setMintRedeemSlipage,
 }) => {
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const {
     contracts,
     tokens,
@@ -55,6 +53,7 @@ export const Mint = ({
   const [catenaInput, setCatenaInput] = useState(null);
   const [outputInput, setOutputInput] = useState(null);
 
+  // eslint-disable-next-line no-unused-vars
   const [stableBalance, setStableBalance] = useState(0);
   const [collateralBalance, setCollateralBalance] = useState(0);
   const [shareBalance, setShareBalance] = useState(0);
@@ -72,6 +71,7 @@ export const Mint = ({
         getAllowance();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, mintRedeemCurrency, approveModal]);
 
   useEffect(() => {
@@ -126,6 +126,7 @@ export const Mint = ({
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balances, mintRedeemCurrency]);
 
   useEffect(() => {
@@ -135,12 +136,14 @@ export const Mint = ({
       setOutputInput("");
       setCatenaInput("");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collateralInput]);
 
   const getAllowance = async () => {
     let collateral;
     let share;
 
+    // eslint-disable-next-line no-unused-vars
     const agousd = contracts.AGOBTC;
 
     if (mintRedeemCurrency === "AGOUSD") {
@@ -381,53 +384,45 @@ export const Mint = ({
           disabled={mintButtonDisabled}
           onClick={() => handleApprove("collateral")}
           mt="1.875vw"
-          style={{ transition: "ease 10s" }}
         >
           Approve
         </MintBtn>
       );
     } else if (collateralBalance < +collateralInput) {
       return (
-        <button disabled={true} className="mint-window-run-mint withoutBg">
+        <MintBtn disabled={true}>
           Insuficcient {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}{" "}
-          balance{" "}
-        </button>
+          balance
+        </MintBtn>
       );
     } else if (info.targetCollateralRatio !== 100) {
       if (shareBalance < +catenaInput) {
         return (
-          <button disabled={true} className="mint-window-run-mint withoutBg">
+          <MintBtn disabled={true}>
             Insufficient {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}{" "}
-            balance{" "}
-          </button>
+            balance
+          </MintBtn>
         );
       } else {
         return (
-          <button
-            disabled={mintButtonDisabled}
-            className="mint-window-run-mint withoutBg"
-            onClick={handleMint}
-          >
-            Mint{" "}
-          </button>
+          <MintBtn disabled={mintButtonDisabled} onClick={handleMint}>
+            Mint
+          </MintBtn>
         );
       }
     } else {
       return (
-        <button
-          disabled={mintButtonDisabled}
-          className="mint-window-run-mint withoutBg"
-          onClick={handleMint}
-        >
+        <MintBtn disabled={mintButtonDisabled} onClick={handleMint}>
           Mint
-        </button>
+        </MintBtn>
       );
     }
   };
 
   return (
     <>
-      <ActiveMintingContainer style={{visibility: "hidden"}}>
+      {/* ActiveMintingBlock */}
+      <ActiveMintingContainer style={{ visibility: "hidden" }}>
         <HDiv>
           <Text fontSize="inherit">
             <b>Active Minting</b>
@@ -455,12 +450,29 @@ export const Mint = ({
       </ActiveMintingContainer>
       <MintWindowContainer>
         <HDiv>
-          <HeadingText>Mint</HeadingText>
-          <MintModalButton onClick={() => setMintRedeemCurrencyModal(true)}>
-            <img src={setting_cog} alt="settings" />
-          </MintModalButton>
+          <div />
+          <MintRedeemSwitcher>
+            <SwithButton
+              onClick={() => setActiveTab("Mint")}
+              isActive={activeTab === "Mint"}
+            >
+              Mint
+            </SwithButton>
+            <SwithButton
+              onClick={() => setActiveTab("Redeem")}
+              isActive={activeTab === "Redeem"}
+            >
+              Redeem
+            </SwithButton>
+          </MintRedeemSwitcher>
+          <CurrencySwitchModal
+            mintRedeemCurrency={mintRedeemCurrency}
+            setMintRedeemCurrency={setMintRedeemCurrency}
+            mintRedeemSlipage={mintRedeemSlipage}
+            setMintRedeemSlipage={setMintRedeemSlipage}
+          />
         </HDiv>
-        <MintExchangeContainer height="9.063vw" mt="1.979vw">
+        <MintExchangeContainer height="9.063vw" mt="1.094vw">
           <HDiv pl="1.120vw" pr="0.938vw">
             <Text>Input:</Text>
             <Text isBalance>
@@ -484,9 +496,7 @@ export const Mint = ({
               <TokenIcon
                 iconName={mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}
               />
-              <b marginLeft="30px" className="with-icon">
-                {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}
-              </b>
+              <b>{mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}</b>
             </Text>
           </HDiv>
           <MintExchangeInputContainer mt="0.260vw">
