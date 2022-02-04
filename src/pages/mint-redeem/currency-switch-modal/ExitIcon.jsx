@@ -4,6 +4,7 @@ function ExitIcon({
   height = "0.729vw",
   width = "0.729vw",
   color = "#828282",
+  onClick,
   style,
 }) {
   return (
@@ -14,6 +15,7 @@ function ExitIcon({
       fill="none"
       viewBox="0 0 14 14"
       style={style}
+      onClick={onClick}
     >
       <path
         fill={color}
