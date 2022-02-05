@@ -16,7 +16,7 @@ export const TOKEN_DASHBOARD_CHARTS = gql(`
 export const TVL_VOLUME_QUERY = gql(`
     query dashboard($id: String!) {
         uniswapFactory(id: $id) {
-          totalValueLocked(orderBy: timestamp, orderDirection: asc) {
+          totalValueLocked(first: 1000, orderBy: timestamp, orderDirection: asc) {
             value
             timestamp
           }
@@ -31,6 +31,7 @@ export const TVL_VOLUME_QUERY = gql(`
 export const DASHBOAR_TXS = gql(`
     query pairTxs {
         transactions(first: 100, orderBy: timestamp, orderDirection: desc) {
+			id
             name
             from
             token0

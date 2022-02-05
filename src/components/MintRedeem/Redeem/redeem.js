@@ -66,7 +66,6 @@ export const Redeem = ({ info, mintRedeemCurrency, setMintRedeemCurrencyModal })
             token = await contracts.AGOBTC.methods.allowance(account, CONTRACT_ADRESESS.POOL_AGOBTC).call();
         }
 
-
         setApproved(token.length === MAX_INT.length)
 
     }

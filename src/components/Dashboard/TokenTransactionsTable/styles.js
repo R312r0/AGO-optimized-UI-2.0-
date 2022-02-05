@@ -133,6 +133,12 @@ export const TableBody = styled.div`
     padding-right: 1vw;
   }
 
+  a {
+	font-size: 0.8vw;
+    font-weight: 300;
+    font-style: normal;
+  }
+
   div {
     font-style: normal;
     font-weight: 300;

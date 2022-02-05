@@ -220,7 +220,31 @@ export const TradingChart = ({ token, candleData, lineData, chartType }) => {
                 // candleSeries.setData(candles)
             }
             else {
-                const lineChartDataRaw = lineData.map(item => ({ time: parseInt(item.timestamp), value: parseFloat(item.valueUSD) }))
+
+                const lineChartDataRaw = lineData.filter(item => {
+					if (token === "AGOBTC") {
+						if (+item.timestamp === 1641995927) {
+							return false;
+						}
+						else {
+							return item;
+						}
+					}
+
+					else if (token === "CNBTC") {
+						if (+item.timestamp === 1641322877 || +item.timestamp === 1641323005) {
+							return false;
+						}
+						else {
+							return item;
+						}
+					}
+
+					else {
+						return item;
+					}
+
+				}).map(item => ({ time: parseInt(item.timestamp), value: parseFloat(item.valueUSD) }))
 
                 const lineChartData = lineChartDataRaw.filter((item, pos) => {
                     let prevPos = pos === 0 ? pos : pos - 1;

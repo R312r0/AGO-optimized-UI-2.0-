@@ -10,8 +10,6 @@ import liquidity_pools_black from './assets/icons/nav-links/dark-theme/liquidity
 import trading_black from './assets/icons/nav-links/dark-theme/trading-black.svg';
 import accounts_black from './assets/icons/nav-links/dark-theme/accounts-black.svg';
 // Light theme icons.
-
-
 //component svg
 
 import { ReactComponent as Dashboard_black } from './assets/icons/nav-links/dark-theme/dashboard-black.svg';
@@ -72,13 +70,13 @@ const SHARE_COINS = {
 const LOGIC_CONTRACTS_USD = {
     FOUNDRY_AGOUSD: "0x3A1a9540266558aA59f1A203Dd4B8E6E412022ec",
     POOL_AGOUSD: "0x250EFcd45D9f83036f2D403223c7cCb2E1e9D00b",
-    TREASURY_AGOUSD: "0x5dB447bBb542dde63CeF3C8f088878d8F4E45873",
+    TREASURY_AGOUSD: "0x51d532725399ecaE69cC0b6826967CC7cd69171E",
 }
 
 const LOGIC_CONTRACTS_BTC = {
     FOUNDRY_AGOBTC: "0xa3E8EE534d998d66370379d6a4D05AFe0A9df7D1",
     POOL_AGOBTC: "0x610094adF401626D6B62df62bF6E67A7A6E22043",
-    TREASURY_AGOBTC: "0x98bA72E22D9F107D5659D293568bDd11840839e2",
+    TREASURY_AGOBTC: "0xd38BA370CbfB0918a56295152fE4915559b23064",
 }
 
 const PAIRS_DEX = {
@@ -112,17 +110,6 @@ export const CONTRACT_ADRESESS = {
     ...READY_TOKENS,
     ...ORACLES
 }
-
-// // SINGLE_CHEF
-// AGLIQUIDITY / AGOLIQUIDITY => 0x49881Fa26F4B6EEBF6791E85247b56d412039264
-// AGOUSD / AGOLIQUIDITY => 0x2b99ba7d51D4Be00852C27dD61dFeCFBC77121c7
-// AGOBTC / AGOLIQUIDTY => 0x8de26d4Bfd311aF2D727383f9DEdc023BDdAF808
-
-// // LP_CHEF
-// AGOUSD/USD /CNUSD => 0xAcEF71144D5e01e89CEDD53eBB5b7E422d030834
-// CNUSD/WMATIC /CNUSD => 0x4c99AF184e4598360a5D17b7d6539b900B8B269c
-// AGOBTC/WBTC /CNBTC => 0xe9269671c2a9a95354b3b02AB34063c31AECe378
-// CNBTC/WMATIC /CNBTC => 0xe9B7920Cb7a18CB30EA8E58f6b5AD11D12f11081
 
 export const SINGLE_STAKING_POOL = [
     { name: "AGOy", address: "0x49881Fa26F4B6EEBF6791E85247b56d412039264" },
@@ -193,4 +180,4 @@ export const TXS_ICONS = {
     UNSTAKE: downArrowIcon
 }
 
-export const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#EA8C00", "#47867d", "#1BB8DB", "#9018EE"]
+export const tokenColors = ["#40BA93", "#DB1BB1", "#EAD200", "#DB1B60", "#EA8C00", "#2bbdf7",  "#47867d", "#1BB8DB", "#9018EE"]

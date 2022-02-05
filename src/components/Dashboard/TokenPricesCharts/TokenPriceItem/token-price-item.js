@@ -66,7 +66,36 @@ const TokenPriceItem = ({ token, _ind, expandWindow }) => {
         0 : ((tokenItem.priceUSD - latestRecordChange.valueUSD) / latestRecordChange.valueUSD * 100).toFixed(2)
     }
 
-    const newLineChartData = chartArr.map(item => {
+
+    let newLineChartData = chartArr.filter(item => {
+
+		if (tokenItem.symbol === "AGOBTC") {
+			console.log(item);
+
+			if (+item.timestamp === 1641995927) {
+				return false
+			}
+			else {
+				return item;
+			}
+		}
+
+		else if (tokenItem.symbol === "CNBTC") {
+
+			if (+item.timestamp === 1641322877 || +item.timestamp === 1641323005) {
+				return false;
+			}
+			else {
+				return item;
+			}
+
+		}
+
+		else {
+			return item;
+		}
+
+	}).map(item => {
       const date = new Date(item.timestamp * 1000);
       const time = `${date.getHours()}:${date.getMinutes()}`
 
@@ -75,6 +104,7 @@ const TokenPriceItem = ({ token, _ind, expandWindow }) => {
         time
       })
     })
+
 
     return {
       symbol: tokenItem.symbol,

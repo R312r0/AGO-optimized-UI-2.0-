@@ -35,6 +35,17 @@ export const DataProvider = ({ children }) => {
                 priceUSD: 0
             })
 
+			const wmatic = data.tokens.find(item => item.symbol === "WMATIC");
+
+			dataArr.push({
+				address: wmatic.id,
+				symbol: "MATIC",
+				decimals: 18,
+				isProtocolMain: true,
+				priceUSD: wmatic.priceUSD
+
+			})
+
             setMainData(dataArr);
         }
 

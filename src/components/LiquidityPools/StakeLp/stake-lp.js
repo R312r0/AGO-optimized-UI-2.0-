@@ -104,7 +104,7 @@ export const StakeLp = ({ token0, token1, lpTokenContract, lpUserBalance, lpToke
 
         }
         catch (e) {
-            message.error({ content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
+            message.error({ content: `Something went wrong please reload page.`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
         }
 
     }
@@ -128,7 +128,7 @@ export const StakeLp = ({ token0, token1, lpTokenContract, lpUserBalance, lpToke
 
         }
         catch (e) {
-            message.error({ content: `Some error occured: ${e.message}`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
+            message.error({ content: `Something went wrong please reload page`, className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 5 });
         }
 
     }

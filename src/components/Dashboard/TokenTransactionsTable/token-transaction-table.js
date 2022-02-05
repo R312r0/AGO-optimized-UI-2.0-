@@ -43,6 +43,8 @@ export const TokenTransactionTable = () => {
       let totalValue = formattedNum((+item.amountTotalUSD).toFixed(2));
       let token0Amount = `${(+item.amount0).toFixed(2)} ${item.token0}`
       let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`
+	  let txId = item.id;
+	  let addr = item.from;
       let acc = formatAddress(item.from);
       let time = calculateTimeDifference(item.timestamp);
 
@@ -76,7 +78,7 @@ export const TokenTransactionTable = () => {
           txName = "Transaction";
           break;
       }
-      return { txName, totalValue, token0Amount, token1Amount, acc, time }
+      return { txName, totalValue, txId, token0Amount, token1Amount, acc, addr, time }
     })
     return res;
   }
@@ -134,11 +136,11 @@ export const TokenTransactionTable = () => {
 
               return (
                 <Fragment key={`table_${index}`}>
-                  <div className='operation'>{item.txName}</div>
+                  <a target={"_blank"}  href={`https://polygonscan.com/tx/${item.txId}`} className='operation' rel="noreferrer">{item.txName}</a>
                   <div>{item.totalValue}$</div>
                   <div>{item.token0Amount}</div>
                   <div>{item.token1Amount}</div>
-                  <div className='acc'>{item.acc}</div>
+                  <a target={"_blank"}  href={`https://polygonscan.com/address/${item.addr}`} className='acc' rel="noreferrer">{item.acc}</a>
                   <div className='time'>{item.time}</div>
                 </Fragment>
               );

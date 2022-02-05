@@ -95,12 +95,8 @@ const TradingMarket = ({ pool }) => {
           setToken1(pool.token1);
         }
       } else {
-        const tok0Price = tokens.find(
-          (item) => item.symbol === pool.token0.symbol
-        ).priceUSD;
-        const tok1Price = tokens.find(
-          (item) => item.symbol === pool.token1.symbol
-        ).priceUSD;
+        const tok0Price = tokens.find((item) => item.symbol === pool.token0.symbol).priceUSD;
+        const tok1Price = tokens.find((item) => item.symbol === pool.token1.symbol).priceUSD;
 
         if (tokenChangeSwap) {
           setToken0Price(tok1Price);
@@ -251,6 +247,22 @@ const TradingMarket = ({ pool }) => {
             .send({ from: account });
         }
       } else {
+
+		if (pool.id === "matic-wmatic-wrap-unwrap") {
+			if (token0.symbol === "MATIC") {
+
+				console.log("Wrap")
+
+				await contracts.WMATIC.methods.deposit().send({from: account, value: formatToDecimal(token0Input, 18)});
+			}
+			else {
+
+				console.log("Unwrap")
+
+				await contracts.WMATIC.methods.withdraw(formatToDecimal(token0Input, 18)).send({from: account});
+			}
+		}
+
         if (token0.symbol === "MATIC") {
           await contracts.ROUTER.methods
             .swapExactETHForTokens(
@@ -258,8 +270,7 @@ const TradingMarket = ({ pool }) => {
               [token0.id, token1.id],
               account,
               999999999999
-            )
-            .send({ from: account, value: formatToDecimal(token0Input, 18) });
+            ).send({ from: account, value: formatToDecimal(token0Input, 18) });
         } else if (token1.symbol === "MATIC") {
           await contracts.ROUTER.methods
             .swapTokensForExactETH(
@@ -268,8 +279,7 @@ const TradingMarket = ({ pool }) => {
               [token1.id, token0.id],
               account,
               999999999999
-            )
-            .send({ from: account, value: formatToDecimal(token0Input, 18) });
+            ).send({ from: account, value: formatToDecimal(token0Input, 18) });
         } else {
           await contracts.ROUTER.methods
             .swapExactTokensForTokens(
@@ -278,8 +288,7 @@ const TradingMarket = ({ pool }) => {
               [token0.id, token1.id],
               account,
               999999999999
-            )
-            .send({ from: account });
+            ).send({ from: account });
         }
       }
 
@@ -324,45 +333,46 @@ const TradingMarket = ({ pool }) => {
 
   const SwapButtonFunc = () => {
     const zeroInputCheck = +token0Input === 0 || +token1Input === 0;
-
-    const insuficientBalance =
-      balances &&
-      balances.find((item) =>
-        item.symbol === "MATIC" ? item.symbol === "WMATIC" : token0.symbol
-      );
-
     if (!account) {
       return (
         <SwapButtonWrapper onClick={() => setIsWalletModal(true)}>
           Connect Wallet
         </SwapButtonWrapper>
       );
-    } else if (!token0Allowance || !token1Allowance) {
-      return (
-        <SwapButtonWrapper onClick={() => handleApprove(pool.token1)} approveButton={true}>
-          Approve
-        </SwapButtonWrapper>
-      );
-    } else if (insuficientBalance.nativeBalance < token0Input) {
-      return (
-        <SwapButtonWrapper disabled={true}>
-          Insuficient balance
-        </SwapButtonWrapper>
-      );
-    } else if (priceImpactToHigh) {
-      return (
-        <SwapButtonWrapper disabled={true}>High price impact</SwapButtonWrapper>
-      );
-    } else {
-      return (
-        <SwapButtonWrapper
-          disabled={zeroInputCheck}
-          onClick={() => handleSwap(token0Input)}
-        >
-          SWAP
-        </SwapButtonWrapper>
-      );
     }
+	else {
+
+		const insuficientBalance = balances && balances.find((item) => item.symbol === token0.symbol);
+  
+		if (!token0Allowance || !token1Allowance) {
+			return (
+			  <SwapButtonWrapper onClick={() => handleApprove(pool.token1)} approveButton={true}>
+				Approve
+			  </SwapButtonWrapper>
+			);
+		  } else if (insuficientBalance?.nativeBalance < token0Input) {
+			return (
+			  <SwapButtonWrapper disabled={true}>
+				Insuficient balance
+			  </SwapButtonWrapper>
+			);
+		  } else if (priceImpactToHigh) {
+			return (
+			  <SwapButtonWrapper disabled={true}>High price impact</SwapButtonWrapper>
+			);
+		  } else {
+			return (
+			  <SwapButtonWrapper
+				disabled={zeroInputCheck}
+				onClick={() => handleSwap(token0Input)}
+			  >
+				SWAP
+			  </SwapButtonWrapper>
+			);
+		  }
+	}
+	
+
   };
 
   return (
@@ -417,27 +427,34 @@ const TradingMarket = ({ pool }) => {
               <div>
                 <TokenIcon iconName={token0.symbol} width="28px" />
                 <Text marginLeft="9px">{token0.symbol}</Text>
-                {token0.symbol === "WMATIC" || token0.symbol === "MATIC" ? (
-                  <button
-                    onClick={() =>
-                      token0.symbol === "WMATIC"
-                        ? setToken0({
-                            id: token0.id,
-                            priceUSD: token0.priceUSD,
-                            symbol: "MATIC",
-                            name: "MAITC",
-                          })
-                        : setToken0({
-                            id: token0.id,
-                            priceUSD: token0.priceUSD,
-                            symbol: "WMATIC",
-                            name: "WMAITC",
-                          })
-                    }
-                  >
-                    <img src={wmatic_for_matic} alt="change" />
-                  </button>
-                ) : null}
+					{pool.id !== "matic-wmatic-wrap-unwrap" ? 
+						<>
+							{token0.symbol === "WMATIC" || token0.symbol === "MATIC" ? (
+							<button
+								onClick={() =>
+								token0.symbol === "WMATIC"
+									? setToken0({
+										id: token0.id,
+										priceUSD: token0.priceUSD,
+										symbol: "MATIC",
+										name: "MAITC",
+									})
+									: setToken0({
+										id: token0.id,
+										priceUSD: token0.priceUSD,
+										symbol: "WMATIC",
+										name: "WMAITC",
+									})
+								}
+							>
+								<img src={wmatic_for_matic} alt="change" />
+							</button>
+							) : null}
+						</>
+						:
+						null
+					}
+
               </div>
               <Text>
                 <b>=${formattedNum(token0Price)}</b>
@@ -469,27 +486,35 @@ const TradingMarket = ({ pool }) => {
               <div>
                 <TokenIcon iconName={token1.symbol} width="28px" />
                 <Text marginLeft="9px">{token1.symbol} </Text>
-                {token1.symbol === "WMATIC" || token1.symbol === "MATIC" ? (
-                  <button
-                    onClick={() =>
-                      token1.symbol === "WMATIC"
-                        ? setToken1({
-                            id: token1.id,
-                            priceUSD: token1.priceUSD,
-                            symbol: "MATIC",
-                            name: "MAITC",
-                          })
-                        : setToken1({
-                            id: token1.id,
-                            priceUSD: token1.priceUSD,
-                            symbol: "WMATIC",
-                            name: "WMAITC",
-                          })
-                    }
-                  >
-                    <img src={wmatic_for_matic} alt="change" />
-                  </button>
-                ) : null}
+				{
+					pool.id !== "matic-wmatic-wrap-unwrap" ? 
+					<>
+						{token1.symbol === "WMATIC" || token1.symbol === "MATIC" ? (
+						<button
+							onClick={() =>
+							token1.symbol === "WMATIC"
+								? setToken1({
+									id: token1.id,
+									priceUSD: token1.priceUSD,
+									symbol: "MATIC",
+									name: "MAITC",
+								})
+								: setToken1({
+									id: token1.id,
+									priceUSD: token1.priceUSD,
+									symbol: "WMATIC",
+									name: "WMAITC",
+								})
+							}
+						>
+							<img src={wmatic_for_matic} alt="change" />
+						</button>
+						) : null}
+					</>
+					:
+					null
+				}
+
               </div>
               <Text>
                 <b> =${formattedNum(token1Price)}</b>{" "}

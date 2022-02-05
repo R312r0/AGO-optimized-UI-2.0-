@@ -205,7 +205,7 @@ const FoundryActions = () => {
 
             if (action === "STAKE") {
                 const bal = balances.find(item => item.symbol === "CNUSD");
-                setCnusdStakeInput(bal.nativeBalance);
+                setCnusdStakeInput((bal.nativeBalance) - (bal.nativeBalance * 0.0005));
             }
             else {
                 const withdrawAmount = info.cnusd.isWithdrawAvailable ? formatFromDecimal(await contracts.FOUNDRY_AGOUSD.methods.balances(account).call(), 18) : 0;
@@ -217,7 +217,7 @@ const FoundryActions = () => {
 
             if (action === "STAKE") {
                 const bal = balances.find(item => item.symbol === "CNBTC");
-                setCnbtcStakeInput(bal.nativeBalance);
+                setCnbtcStakeInput((bal.nativeBalance) - (bal.nativeBalance * 0.0005));
             }
             else {
                 const withdrawAmount = info.cnbtc.isWithdrawAvailable ? formatFromDecimal(await contracts.FOUNDRY_AGOBTC.methods.balanceOf(account).call(), 18) : 0;

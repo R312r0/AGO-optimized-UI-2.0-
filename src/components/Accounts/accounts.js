@@ -46,13 +46,18 @@ export const Accounts = () => {
             setAgoyBalance(balances.find(item => item.symbol === "AGOy").nativeBalance);
 
             const res = balances.filter(item => item.symbol !== "AGOy").map((item, _index) => {
+
+				console.log(item);
+
                 const name = item.symbol;
                 const nativeBalance = item.nativeBalance;
-                const usdBalance = tokens.find(tok => tok.symbol === name).priceUSD;
+                const usdBalance = item.usdBalance;
                 const tokenColor = tokenColors[_index];
 
-                return { name, nativeBalance, usdBalance: usdBalance * nativeBalance, tokenColor }
+                return { name, nativeBalance, usdBalance, tokenColor }
             });
+
+			console.log(res);
 
             setUserPortfolio(res);
             setSyntheticAssets(res.filter(item => item.name === "AGOUSD" || item.name === "CNUSD" || item.name === "AGOBTC" || item.name === "CNBTC"))

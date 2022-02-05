@@ -3,6 +3,7 @@ import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 
 // ABIS
 import ERC20_ABI from './abi/ERC20.json';
+import WMATIC_ABI from './abi/WMATIC.json';
 import ROUTER_ABI from './abi/Router.json';
 import TREASURY_ABI from './abi/TREASURY.json';
 import FOUNDRY_ABI from './abi/Foundry.json';
@@ -112,6 +113,11 @@ export const SystemProvider = ({ children }) => {
     const initContracts = () => {
 
         const tokensContractsObj = Object.fromEntries(tokens.map((item) => {
+
+			if (item.symbol === "WMATIC") {
+				return [item.symbol, new library.eth.Contract(WMATIC_ABI, item.address)]
+			}
+
             return [item.symbol, new library.eth.Contract(ERC20_ABI, item.address)];
         }))
 
@@ -136,14 +142,24 @@ export const SystemProvider = ({ children }) => {
         const balancesResult = tokens.filter((item) => item.isProtocolMain).map(async (item) => {
 
             const tokenContract = contracts[item.symbol];
-            const nativeBalance = parseFloat(formatFromDecimal(await tokenContract.methods.balanceOf(account).call(), item.decimals));
+			let nativeBalance;
+
+			if (item.symbol === "MATIC") {
+				const maticTokenBal = parseFloat(formatFromDecimal(await library.eth.getBalance(account), 18)).toFixed(2) ;
+				nativeBalance = +maticTokenBal;
+
+			}
+			else {
+				nativeBalance = parseFloat(formatFromDecimal(await tokenContract.methods.balanceOf(account).call(), item.decimals));
+			}
+
             const usdBalance = nativeBalance * item.priceUSD;
 
             return { symbol: item.symbol, nativeBalance, usdBalance };
 
         })
 
-        const res = await Promise.all(balancesResult)
+        const res = await Promise.all(balancesResult);		
 
         res.sort((a, b) => {
             if (a.symbol < b.symbol) { return -1; }
@@ -177,7 +193,7 @@ export const SystemProvider = ({ children }) => {
                     balCopy.nativeBalance += parseFloat(item.amount)
                 }
 
-                balCopy.usdBalance = balCopy.nativeBalance * tokens.find((itemTok) => itemTok.symbol === item.name).priceUSD;
+                balCopy.usdBalance = balCopy.nativeBalance * tokens.find((itemTok) => balCopy.symbol === "MATIC" ? itemTok.symbol === "WMATIC" : itemTok.symbol === item.name).priceUSD;
                 balancesArr[findedIndex] = balCopy;
             }
         })

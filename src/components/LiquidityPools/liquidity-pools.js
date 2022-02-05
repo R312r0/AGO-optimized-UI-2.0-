@@ -15,6 +15,7 @@ import { ReactComponent as CreatePairPlus } from '../../assets/icons/plus_create
 import { useThemeContext } from '../Layout/layout';
 import { CONTRACT_ADRESESS } from '../../constants';
 import SINGLE_STAKING_ABI from '../../abi/SIngleChef.json';
+import fromExponential from 'from-exponential';
 
 const SearchBar = styled.div`
   width: 39.271vw;
@@ -115,7 +116,7 @@ export const LiquidityPools = () => {
             const token1 = { symbol: item.token1.symbol, address: item.token1.id, price: item.token1.priceUSD, priceInToken0: item.token0Price }
             const liquidityUSD = item.reserveUSD;
             const lpTokenPrice = (liquidityUSD / lpTotalSupply);
-            const myLiquidity = lpTokenPrice * lpUserBalance;
+            let myLiquidity = lpTokenPrice * lpUserBalance;
 
             const findedStakingPool = LP_STAKING_POOL.find(itemPool => {
                 let searchPattern = `${item.token0.symbol}-${item.token1.symbol}`
@@ -135,10 +136,22 @@ export const LiquidityPools = () => {
                 const rewardToken = tokens.find(tok => tok.address === rewardTokenAddress.toLowerCase());
                 const tokenPerBlock = formatFromDecimal(await stakingContract.methods.rewardPerBlock().call(), rewardToken.decimals);
                 const tokensStaked = formatFromDecimal(await stakingContract.methods.tokensStaked().call(), 18);
+				const userStaked = await stakingContract.methods.userInfo(account).call();
 
-                const totalRewardPricePerYear = rewardToken.priceUSD ** tokenPerBlock;
-                const totalStakingTokenInPool = lpTokenPrice ** tokensStaked;
-                apr = (totalRewardPricePerYear / totalStakingTokenInPool) * 100
+				console.log(userStaked);
+
+				console.log(`${token0.symbol}-${token1.symbol}`)
+				console.log("Reward token price " + rewardToken.priceUSD);
+				console.log("LP token price " + lpTokenPrice);
+
+                const totalRewardPricePerYear = parseFloat(rewardToken.priceUSD) * tokenPerBlock * 86400*30*12/2;
+                const totalStakingTokenInPool = parseFloat(lpTokenPrice) * tokensStaked;
+
+				console.log(totalRewardPricePerYear);
+				console.log(totalStakingTokenInPool);
+
+                apr = (totalRewardPricePerYear  / totalStakingTokenInPool) * 100;
+				myLiquidity = myLiquidity + (+formatFromDecimal(userStaked.amount, 18) * lpTokenPrice);
             }
 
 

@@ -173,6 +173,7 @@ export const Trading = () => {
   const { theme } = useThemeContext();
   const { data, loading } = useQuery(LIQ_POOLS_TRADING);
 
+  const {tokens} = useSystemContext();
   const chartBlockRef = useRef(null);
   const pools = useRef(null);
   const [expandLiqPoolsList, setExpandLiqPoolsList] = useState(false);
@@ -180,6 +181,24 @@ export const Trading = () => {
   const [tradingTab, setTradingTab] = useState(SIMPLE_SWAP)
   const [chosedPool, setChosedPool] = useState(null);
   const [quickswapPools, setQuickSwapPools] = useState(null);
+
+  const wmaticMaticPairObj = {
+	id: "matic-wmatic-wrap-unwrap",
+	token0: {
+		id: "wmatic",
+		name: "Wrapped Matic",
+		symbol: "WMATIC",
+		priceUSD: tokens?.find(item => item.symbol === "WMATIC").priceUSD
+	},
+	token1: {
+		id: "matic",
+		name: "Matic",
+		symbol: "MATIC",
+		priceUSD: tokens?.find(item => item.symbol === "WMATIC").priceUSD
+	},
+	token0Price: "1",
+	token1Price: "1"
+  }
 
   useEffect(() => {
 
@@ -238,10 +257,18 @@ export const Trading = () => {
       <ContentHeader light={theme === "light"}>
         <h1 className='main__heading__page'>Trading</h1>
         <TradingBar listExapned={expandLiqPoolsList} light={theme === "light"}>
-          <main onClick={() => setExpandLiqPoolsList(!expandLiqPoolsList)} ref={pools}>
+          <main style={{background: chosedPool?.isQuickSwapPool ? "radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(59, 175, 211, 0.342) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%)" : ""}}
+		   onClick={() => setExpandLiqPoolsList(!expandLiqPoolsList)} ref={pools}>
             {expandLiqPoolsList ?
               <ul className='expanded-liquidity-list'>
-                {data?.pairs.filter(item => item.token0.symbol !== "AGO" && item.token1.symbol !== "AGO" && item.token1.symbol !== "AGOBTC" && item.token0.symbol !== "AGOUSD").map((item, _ind) => {
+				<li onClick={() => setChosedPool(wmaticMaticPairObj)} key={"wmatic-matic_pool_0"}>
+					<div className='data-wrapper'>
+					<TokenIcon iconName={"WMATIC"} />
+					<TokenIcon iconName={"MATIC"} />
+					<p> WMATIC-MATIC</p>
+					</div>
+				</li>
+				{data?.pairs && data?.pairs.filter(item => item.token0.symbol !== "AGO" && item.token1.symbol !== "AGO" && item.token1.symbol !== "AGOBTC" && item.token0.symbol !== "AGOUSD").map((item, _ind) => {		
                   return (
                     <li onClick={() => setChosedPool(item)} key={_ind + "_pool" + item.id}>
                       <div className='data-wrapper'>
@@ -254,7 +281,7 @@ export const Trading = () => {
                     </li>
                   )
                 })}
-                {quickswapPools.map((item, _ind) => {
+                {quickswapPools && quickswapPools.map((item, _ind) => {
                   return (
                     <li onClick={() => setChosedPool(item)} key={_ind + "_pool" + item.id} className='quick-swap-pool-item'>
                       <TokenIcon iconName={"QUICK"} />
@@ -274,12 +301,20 @@ export const Trading = () => {
                 <TokenIcon iconName={chosedPool?.token0.symbol} />
                 <TokenIcon iconName={chosedPool?.token1.symbol} />
                 <p> {chosedPool?.token0.symbol}-{chosedPool?.token1.symbol}</p>
-                <svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white" /></svg>
-                <span>Liquidity:</span>
-                <b>${formattedNum(chosedPool?.reserveUSD)}</b>
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 0.901211L5 6L0 0.901211L0.88375 0L5 4.19758L9.11625 0" fill="white" />
-                </svg>
+				{chosedPool?.id !== "matic-wmatic-wrap-unwrap" ? 
+					<>
+						<svg width="1" height="27" viewBox="0 0 1 27"><line x1="0.5" y1="2.1857e-08" x2="0.499999" y2="27" stroke="white" /></svg>
+
+						<span>Liquidity:</span>
+						<b>${formattedNum(chosedPool?.reserveUSD)}</b>
+						<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M10 0.901211L5 6L0 0.901211L0.88375 0L5 4.19758L9.11625 0" fill="white" />
+						</svg>
+					</>
+					:
+					null
+				}
+
               </>
             }
           </main>
