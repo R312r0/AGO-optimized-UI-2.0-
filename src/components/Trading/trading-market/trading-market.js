@@ -28,6 +28,7 @@ import {
   HeadingText,
   ExchangeInputContainer,
   HeadingButton,
+  SwapIconContainer,
   Text,
   HDiv,
 } from "./styled";
@@ -95,8 +96,12 @@ const TradingMarket = ({ pool }) => {
           setToken1(pool.token1);
         }
       } else {
-        const tok0Price = tokens.find((item) => item.symbol === pool.token0.symbol).priceUSD;
-        const tok1Price = tokens.find((item) => item.symbol === pool.token1.symbol).priceUSD;
+        const tok0Price = tokens.find(
+          (item) => item.symbol === pool.token0.symbol
+        ).priceUSD;
+        const tok1Price = tokens.find(
+          (item) => item.symbol === pool.token1.symbol
+        ).priceUSD;
 
         if (tokenChangeSwap) {
           setToken0Price(tok1Price);
@@ -247,21 +252,21 @@ const TradingMarket = ({ pool }) => {
             .send({ from: account });
         }
       } else {
+        if (pool.id === "matic-wmatic-wrap-unwrap") {
+          if (token0.symbol === "MATIC") {
+            console.log("Wrap");
 
-		if (pool.id === "matic-wmatic-wrap-unwrap") {
-			if (token0.symbol === "MATIC") {
+            await contracts.WMATIC.methods
+              .deposit()
+              .send({ from: account, value: formatToDecimal(token0Input, 18) });
+          } else {
+            console.log("Unwrap");
 
-				console.log("Wrap")
-
-				await contracts.WMATIC.methods.deposit().send({from: account, value: formatToDecimal(token0Input, 18)});
-			}
-			else {
-
-				console.log("Unwrap")
-
-				await contracts.WMATIC.methods.withdraw(formatToDecimal(token0Input, 18)).send({from: account});
-			}
-		}
+            await contracts.WMATIC.methods
+              .withdraw(formatToDecimal(token0Input, 18))
+              .send({ from: account });
+          }
+        }
 
         if (token0.symbol === "MATIC") {
           await contracts.ROUTER.methods
@@ -270,7 +275,8 @@ const TradingMarket = ({ pool }) => {
               [token0.id, token1.id],
               account,
               999999999999
-            ).send({ from: account, value: formatToDecimal(token0Input, 18) });
+            )
+            .send({ from: account, value: formatToDecimal(token0Input, 18) });
         } else if (token1.symbol === "MATIC") {
           await contracts.ROUTER.methods
             .swapTokensForExactETH(
@@ -279,7 +285,8 @@ const TradingMarket = ({ pool }) => {
               [token1.id, token0.id],
               account,
               999999999999
-            ).send({ from: account, value: formatToDecimal(token0Input, 18) });
+            )
+            .send({ from: account, value: formatToDecimal(token0Input, 18) });
         } else {
           await contracts.ROUTER.methods
             .swapExactTokensForTokens(
@@ -288,7 +295,8 @@ const TradingMarket = ({ pool }) => {
               [token0.id, token1.id],
               account,
               999999999999
-            ).send({ from: account });
+            )
+            .send({ from: account });
         }
       }
 
@@ -333,46 +341,45 @@ const TradingMarket = ({ pool }) => {
 
   const SwapButtonFunc = () => {
     const zeroInputCheck = +token0Input === 0 || +token1Input === 0;
+
+    const insuficientBalance =
+      balances &&
+      balances.find((item) =>
+        item.symbol === "MATIC" ? item.symbol === "WMATIC" : token0.symbol
+      );
+
     if (!account) {
       return (
         <SwapButtonWrapper onClick={() => setIsWalletModal(true)}>
           Connect Wallet
         </SwapButtonWrapper>
       );
+    } else if (!token0Allowance || !token1Allowance) {
+      return (
+        <SwapButtonWrapper onClick={() => handleApprove(pool.token1)} approveButton={true}>
+          Approve
+        </SwapButtonWrapper>
+      );
+    } else if (insuficientBalance.nativeBalance < token0Input) {
+      return (
+        <SwapButtonWrapper disabled={true}>
+          Insuficient balance
+        </SwapButtonWrapper>
+      );
+    } else if (priceImpactToHigh) {
+      return (
+        <SwapButtonWrapper disabled={true}>High price impact</SwapButtonWrapper>
+      );
+    } else {
+      return (
+        <SwapButtonWrapper
+          disabled={zeroInputCheck}
+          onClick={() => handleSwap(token0Input)}
+        >
+          SWAP
+        </SwapButtonWrapper>
+      );
     }
-	else {
-
-		const insuficientBalance = balances && balances.find((item) => item.symbol === token0.symbol);
-  
-		if (!token0Allowance || !token1Allowance) {
-			return (
-			  <SwapButtonWrapper onClick={() => handleApprove(pool.token1)} approveButton={true}>
-				Approve
-			  </SwapButtonWrapper>
-			);
-		  } else if (insuficientBalance?.nativeBalance < token0Input) {
-			return (
-			  <SwapButtonWrapper disabled={true}>
-				Insuficient balance
-			  </SwapButtonWrapper>
-			);
-		  } else if (priceImpactToHigh) {
-			return (
-			  <SwapButtonWrapper disabled={true}>High price impact</SwapButtonWrapper>
-			);
-		  } else {
-			return (
-			  <SwapButtonWrapper
-				disabled={zeroInputCheck}
-				onClick={() => handleSwap(token0Input)}
-			  >
-				SWAP
-			  </SwapButtonWrapper>
-			);
-		  }
-	}
-	
-
   };
 
   return (
@@ -382,16 +389,14 @@ const TradingMarket = ({ pool }) => {
           <HeadingText>
             {pool?.isQuickSwapPool ? "QuickSwap" : ""} Market
           </HeadingText>
-          {pool?.isQuickSwapPool ? (
-            <TokenIcon iconName={"QUICK"} width="36px" height="36px" />
-          ) : null}
+          {pool?.isQuickSwapPool ? <TokenIcon iconName={"QUICK"} /> : null}
         </>
         <>
           <div style={{ visibility: "hidden" }}>
             <HeadingButton>
               <svg
-                width="20"
-                height="20"
+                width="1.042vw"
+                height="1.042vw"
                 viewBox="0 0 20 20"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -404,8 +409,8 @@ const TradingMarket = ({ pool }) => {
             </HeadingButton>
             <HeadingButton>
               <svg
-                width="28"
-                height="20"
+                width="1.458vw"
+                height="1.042vw"
                 viewBox="0 0 28 20"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -421,46 +426,45 @@ const TradingMarket = ({ pool }) => {
       </HDiv>
       {token0 && token1 ? (
         <>
-          <Text marginLeft="21px">You Pay</Text>
-          <ExchangeContainer height="138px" marginTop="3px">
-            <HDiv>
+          <Text ml="1.094vw" mt="0.781vw">
+            You Pay
+          </Text>
+          <ExchangeContainer height="7.188vw" mt="0.156vw">
+            <HDiv minH="1.875vw">
               <div>
-                <TokenIcon iconName={token0.symbol} width="28px" />
-                <Text marginLeft="9px">{token0.symbol}</Text>
-					{pool.id !== "matic-wmatic-wrap-unwrap" ? 
-						<>
-							{token0.symbol === "WMATIC" || token0.symbol === "MATIC" ? (
-							<button
-								onClick={() =>
-								token0.symbol === "WMATIC"
-									? setToken0({
-										id: token0.id,
-										priceUSD: token0.priceUSD,
-										symbol: "MATIC",
-										name: "MAITC",
-									})
-									: setToken0({
-										id: token0.id,
-										priceUSD: token0.priceUSD,
-										symbol: "WMATIC",
-										name: "WMAITC",
-									})
-								}
-							>
-								<img src={wmatic_for_matic} alt="change" />
-							</button>
-							) : null}
-						</>
-						:
-						null
-					}
-
+                <TokenIcon iconName={token0.symbol} />
+                <Text>{token0.symbol}</Text>
+                {token0.symbol === "WMATIC" || token0.symbol === "MATIC" ? (
+                  <button
+                    onClick={() =>
+                      token0.symbol === "WMATIC"
+                        ? setToken0({
+                            id: token0.id,
+                            priceUSD: token0.priceUSD,
+                            symbol: "MATIC",
+                            name: "MAITC",
+                          })
+                        : setToken0({
+                            id: token0.id,
+                            priceUSD: token0.priceUSD,
+                            symbol: "WMATIC",
+                            name: "WMAITC",
+                          })
+                    }
+                  >
+                    <img
+                      src={wmatic_for_matic}
+                      alt="change"
+                      className="swap-icon"
+                    />
+                  </button>
+                ) : null}
               </div>
               <Text>
                 <b>=${formattedNum(token0Price)}</b>
               </Text>
             </HDiv>
-            <ExchangeInputContainer light={theme === "light"}>
+            <ExchangeInputContainer light={theme === "light"} mt="0.781vw">
               <input
                 type="number"
                 placeholder="Enter amount"
@@ -474,53 +478,46 @@ const TradingMarket = ({ pool }) => {
               </button>
             </ExchangeInputContainer>
           </ExchangeContainer>
-          <img
-            className="arrow-swap"
-            src={theme === "light" ? swap_trading_dark : swap_trading}
-            alt="swap"
-            onClick={() => setTokenChangeSwap(!tokenChangeSwap)}
-          />
-          <Text marginLeft="21px">You Receive</Text>
-          <ExchangeContainer height="138px" marginTop="3px">
-            <HDiv>
+          <SwapIconContainer>
+            <Text ml="1.094vw">You Receive</Text>
+            <img
+              src={theme === "light" ? swap_trading_dark : swap_trading}
+              alt="swap"
+              onClick={() => setTokenChangeSwap(!tokenChangeSwap)}
+            />
+          </SwapIconContainer>
+          <ExchangeContainer height="7.188vw">
+            <HDiv minH="1.875vw">
               <div>
-                <TokenIcon iconName={token1.symbol} width="28px" />
-                <Text marginLeft="9px">{token1.symbol} </Text>
-				{
-					pool.id !== "matic-wmatic-wrap-unwrap" ? 
-					<>
-						{token1.symbol === "WMATIC" || token1.symbol === "MATIC" ? (
-						<button
-							onClick={() =>
-							token1.symbol === "WMATIC"
-								? setToken1({
-									id: token1.id,
-									priceUSD: token1.priceUSD,
-									symbol: "MATIC",
-									name: "MAITC",
-								})
-								: setToken1({
-									id: token1.id,
-									priceUSD: token1.priceUSD,
-									symbol: "WMATIC",
-									name: "WMAITC",
-								})
-							}
-						>
-							<img src={wmatic_for_matic} alt="change" />
-						</button>
-						) : null}
-					</>
-					:
-					null
-				}
-
+                <TokenIcon iconName={token1.symbol} />
+                <Text>{token1.symbol} </Text>
+                {token1.symbol === "WMATIC" || token1.symbol === "MATIC" ? (
+                  <button
+                    onClick={() =>
+                      token1.symbol === "WMATIC"
+                        ? setToken1({
+                            id: token1.id,
+                            priceUSD: token1.priceUSD,
+                            symbol: "MATIC",
+                            name: "MAITC",
+                          })
+                        : setToken1({
+                            id: token1.id,
+                            priceUSD: token1.priceUSD,
+                            symbol: "WMATIC",
+                            name: "WMAITC",
+                          })
+                    }
+                  >
+                    <img src={wmatic_for_matic} alt="change" />
+                  </button>
+                ) : null}
               </div>
               <Text>
-                <b> =${formattedNum(token1Price)}</b>{" "}
+                <b> =${formattedNum(token1Price)}</b>
               </Text>
             </HDiv>
-            <ExchangeInputContainer light={theme === "light"}>
+            <ExchangeInputContainer light={theme === "light"} mt="1.094vw">
               <input
                 type="number"
                 placeholder="Enter amount"
@@ -533,24 +530,24 @@ const TradingMarket = ({ pool }) => {
               </button>
             </ExchangeInputContainer>
           </ExchangeContainer>
-          <ExchangeContainer height="203px" marginTop="28px">
-            <HDiv>
+          <ExchangeContainer height="9.740vw" mt="0.729vw">
+            <HDiv mt="0.781vw">
               <Text>Rate</Text>
               <Text>
-                1 {token0.symbol} =
-                <b>{parseFloat(token0PairPrice).toFixed(2)} </b>
+                1 {token0.symbol} =&nbsp;
+                <b>{parseFloat(token0PairPrice).toFixed(2)}&nbsp;</b>
                 {token1.symbol}
               </Text>
             </HDiv>
-            <HDiv>
+            <HDiv mt="0.625vw">
               <Text>Inverse Rate</Text>
               <Text>
-                1 {token1.symbol} ={" "}
-                <b>{parseFloat(token1PairPrice).toFixed(2)}</b>
+                1 {token1.symbol} =&nbsp;
+                <b>{parseFloat(token1PairPrice).toFixed(2)}&nbsp;</b>
                 {token0.symbol}
               </Text>
             </HDiv>
-            <HDiv>
+            <HDiv mt="0.625vw">
               <Text>Estimated Fee</Text>
               <Text>
                 <b>
@@ -558,7 +555,7 @@ const TradingMarket = ({ pool }) => {
                 </b>
               </Text>
             </HDiv>
-            <HDiv>
+            <HDiv mt="0.625vw">
               <Text>USD Amount</Text>
               <Text color="#40BA93">
                 = ${(token0Price * token0Input).toFixed(4)}
