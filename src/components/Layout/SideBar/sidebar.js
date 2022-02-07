@@ -67,7 +67,6 @@ export const SideBar = ({ history }) => {
             <NavLink to={item.path} onClick={() => setActiveTab(item.path)} key={`side_bar_${index}`}>
               <LinkListItem isActive={item.path === activeTab} name={item.name} light={theme === "light"}>
                 {item.icon}
-                {console.log(item.component)}
                 <div className='hover_title'>{item.name}</div>
               </LinkListItem>
             </NavLink>
