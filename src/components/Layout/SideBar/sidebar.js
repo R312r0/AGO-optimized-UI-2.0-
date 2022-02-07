@@ -65,8 +65,9 @@ export const SideBar = ({ history }) => {
         {PAGES.map((item, index) => {
           return (
             <NavLink to={item.path} onClick={() => setActiveTab(item.path)} key={`side_bar_${index}`}>
-              <LinkListItem active={item.path === activeTab} name={item.name} light={theme === "light"}>
-                {React.createElement(item.component, {})}
+              <LinkListItem isActive={item.path === activeTab} name={item.name} light={theme === "light"}>
+                {item.icon}
+                {console.log(item.component)}
                 <div className='hover_title'>{item.name}</div>
               </LinkListItem>
             </NavLink>

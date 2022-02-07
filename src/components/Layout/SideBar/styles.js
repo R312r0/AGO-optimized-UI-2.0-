@@ -137,8 +137,8 @@ export const LinkListItem = styled.li`
       height: 2vw;
     }
   }
-
-  background-color: ${props => props.active ? "#40BA93" : "transparent"};
+  
+  background-color: ${(props) => (props.isActive ? "#40BA93" : "transparent")};
 
 
   & .hover_title{
@@ -158,16 +158,14 @@ export const LinkListItem = styled.li`
   }
 
   &:hover {
-    background-color: ${props => props.active ? "#40BA93" : (props.light ? "#E0E0E0" : "#2D2C2C")};
+    background-color: ${(props) =>
+      props.isActive ? "#40BA93" : props.light ? "#E0E0E0" : "#2D2C2C"};
     transition: 0.3s background-color;
     border-radius: 12px;
 
-      & .hover_title{
-        opacity: 1;
-      
+    & .hover_title {
+      opacity: 1;
     }
-
-    
   }
 
   &:last-child {
@@ -176,11 +174,15 @@ export const LinkListItem = styled.li`
     border-radius: 0.6vw;
   }
 
-  & svg{
-    max-width: 22px;
-    width: 100%;
-    fill:  ${props => props.active ? "#fff" : (props.light ? "#828282" : "#4F4F4F")};
-    /* stroke:  ${props => props.active ? "#fff" : "#4F4F4F"}; */
+  & svg {
+    fill: ${(props) =>
+      props.theme.light
+        ? props.isActive
+          ? "#fff"
+          : "#BDBDBD"
+        : props.isActive
+        ? "#fff"
+        : "#4F4F4F"};
   }
  
 `
