@@ -36,43 +36,43 @@ export const TradingWindowContainer = styled.div`
     useThemeContext().theme === "light"
       ? "#FFF"
       : "radial-gradient(94.26% 94.26% at 47.39% 30.04%, rgba(64, 186, 147, 0.16) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(90.99deg, #1d1d1d 2.18%, #232323 104.4%)"};
-  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0.208vw 2.083vw rgba(0, 0, 0, 0.25);
   border-radius: 2.083vw;
   position: relative;
   flex-direction: column;
-  width: 100%;
+  width: 33.438vw;
   display: flex;
-  padding: 42px 1.5vw 99px 1.5vw;
+  padding: 1.25vw 2.344vw 1.563vw 2.344vw;
+  min-height: 20.833vw;
+`;
 
-  @media screen and (min-width: 1440px) {
-    padding: 42px 1.5vw 99px 1.5vw;
-  }
+export const SwapIconContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
 
-  @media screen and (min-width: 1600px) {
-    padding: 42px 3.854vw 99px 3.854vw;
-  }
-
-  .arrow-swap {
+  img {
     cursor: pointer;
-    margin: 18px 0;
-    height: 36px;
+    margin-bottom: 0.625vw;
+    margin-top: 0.625vw;
+    margin-left: 6.979vw;
+    height: 1.875vw;
   }
 `;
 
 export const HeadingText = styled.h1`
   display: flex;
   text-align: left;
-  margin-bottom: 36px;
+  margin-left: 1.51vw;
   font-weight: 500;
-  font-size: 24px;
-  line-height: 36px;
-  color: ${() => (useThemeContext().theme === "light" ? "#000" : "#fff")};
+  font-size: 1.25vw;
+  line-height: 1.875vw;
+  color: ${(props) => (props.theme.light ? "#333" : "#fff")};
 `;
 
 export const HeadingButton = styled.button`
   display: flex;
-  width: 44px;
-  height: 44px;
+  width: 2.292vw;
+  height: 2.292vw;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -80,7 +80,7 @@ export const HeadingButton = styled.button`
   border: none;
   background-color: ${() =>
     useThemeContext().theme === "light" ? "#828282" : "#1f1e20"};
-  border-radius: 10px;
+  border-radius: 0.521vw;
   &:first-child {
     margin-right: 1.25vw;
   }
@@ -96,75 +96,91 @@ export const HeadingButton = styled.button`
 
 export const Text = styled.div`
   color: ${(props) => props.color ?? "#828282"};
-  margin-left: ${(props) => props.marginLeft};
-  min-width: 76px;
+  margin-left: ${(props) => props.ml};
+  margin-top: ${(props) => props.mt};
   font-weight: 500;
-  font-size: 15.5px;
-  height: 27px;
-  @media screen and (min-width: 1440px) {
-    font-size: 18px;
-  }
+  font-size: 0.938vw;
+  line-height: 1.406vw;
+  min-width: 3.958vw;
 `;
 export const ExchangeContainer = styled.div`
-  margin-top: ${(props) => props.marginTop};
-  padding: 0 22px 0 22px;
+  background-color: ${(props) => (props.theme.light ? "#E0E0E0" : "#1f1e20")};
+  margin-top: ${(props) => props.mt};
+  padding: 0.521vw 1.094vw 1.146vw 1.094vw;
   height: ${(props) => props.height};
-  border-radius: 30px;
-  background-color: ${() =>
-    useThemeContext().theme === "light" ? "#E0E0E0" : "#1f1e20"};
-  width: 100%;
-
-  @media screen and (min-width: 1440px) {
-    width: 100%;
-  }
+  border-radius: 1.563vw;
+  width: 28.75vw;
 
   button {
-    border: 1px solid #333333;
-    box-sizing: border-box;
-    border-radius: 10px;
-    margin-left: 1.302vw;
-    min-width: 36px;
-    height: 36px;
+    border: 0.052vw solid #333333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.521vw;
+    margin-left: 2.188vw;
+    width: 1.875vw;
+    height: 1.875vw;
+
+    img {
+      width: 1.042vw;
+      height: 0.625vw;
+    }
   }
 `;
 
 export const HDiv = styled.div`
-  display: flex;
-  margin-top: 10px;
+  margin-top: ${(props) => props.mt};
   justify-content: space-between;
+  align-items: center;
+  display: flex;
+  min-height: ${(props) => props.minH};
 
   div {
     display: flex;
-    height: 36px;
     align-items: center;
   }
 
   b {
     color: ${() => (useThemeContext().theme === "light" ? "#000" : "#fff")};
     font-weight: 500;
-    margin: 0 4px;
+  }
+
+  img {
+    margin-left: 0.625vw;
+    margin-right: 0.469vw;
+    width: 1.458vw;
+    height: 1.458vw;
+  }
+
+  .swap-icon {
+    margin: 0;
   }
 `;
 
 export const ExchangeInputContainer = styled.div`
-  display: flex;
-  border: 1px solid #333333;
-  align-items: center;
+  margin-top: ${(props) => props.mt};
   justify-content: space-between;
-  padding: 0 9px 0 20px;
-  margin-top: 15px;
-  border-radius: 30px;
+  align-items: center;
+  border: 0.052vw solid #333333;
+  align-items: center;
+  display: flex;
+  padding: 0 0.521vw 0 1.25vw;
+  border-radius: 1.563vw;
+  font-size: 0.938vw;
 
-  width: 100%;
-  height: 55px;
+  width: 26.563vw;
+  height: 2.865vw;
   color: #828282;
 
   button {
     background: #2c2c2c;
-    border-radius: 40px;
-    min-width: 81px;
-    @media screen and (min-width: 1180px) {
-      margin-left: -34px;
+    font-size: 0.938vw;
+    border-radius: 2.083vw;
+    width: 4.219vw;
+    height: 1.875vw;
+
+    &:hover {
+      opacity: 0.8;
     }
   }
 `;
