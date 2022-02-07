@@ -390,7 +390,7 @@ export const Mint = ({
       );
     } else if (collateralBalance < +collateralInput) {
       return (
-        <MintBtn disabled={true}>
+        <MintBtn disabled={true} mt="1.875vw">
           Insuficcient {mintRedeemCurrency === "AGOUSD" ? "USDT" : "WBTC"}{" "}
           balance
         </MintBtn>
@@ -398,21 +398,21 @@ export const Mint = ({
     } else if (info.targetCollateralRatio !== 100) {
       if (shareBalance < +catenaInput) {
         return (
-          <MintBtn disabled={true}>
+          <MintBtn disabled={true} mt="1.875vw">
             Insufficient {mintRedeemCurrency === "AGOUSD" ? "CNUSD" : "CNBTC"}{" "}
             balance
           </MintBtn>
         );
       } else {
         return (
-          <MintBtn disabled={mintButtonDisabled} onClick={handleMint}>
+          <MintBtn disabled={mintButtonDisabled} onClick={handleMint}  mt="1.875vw">
             Mint
           </MintBtn>
         );
       }
     } else {
       return (
-        <MintBtn disabled={mintButtonDisabled} onClick={handleMint}>
+        <MintBtn disabled={mintButtonDisabled} onClick={handleMint} mt="1.875vw">
           Mint
         </MintBtn>
       );
