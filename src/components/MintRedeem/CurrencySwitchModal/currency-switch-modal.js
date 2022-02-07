@@ -1,55 +1,91 @@
-import React from 'react';
-import { Switch } from 'antd';
-import './currency-switch-modal.scss';
-import { useSystemContext } from '../../../systemProvider';
-import { useThemeContext } from '../../Layout/layout';
-import { ReactComponent as ExitIcon } from './exit-icon.svg';
-import { ReactComponent as SwapIcon } from './swap_icon.svg';
+/* eslint-disable no-unused-vars */
+import React from "react";
+import ExitIcon from "./ExitIcon";
+import SwapIcon from "./SwapIcon";
+import setting_cog from "../../../assets/icons/setting-cog.svg";
+import {
+  CurrencySwitchModalContainer,
+  Divider,
+  HDiv,
+  ModalButton,
+  Text,
+  IOSSwitch,
+} from "./styled";
+import { CurrencySwitchModalContent } from "./styled";
 
-export const CurrencySwitchModal = ({mintRedeemCurrency, setMintRedeemCurrency, mintRedeemSlipage, setMintRedeemSlipage, mintRedeemCurrencyModal, setMintRedeemCurrencyModal }) => {
+const CurrencySwitchModal = ({
+  mintRedeemCurrency,
+  setMintRedeemCurrency,
+  mintRedeemSlipage,
+  setMintRedeemSlipage,
+}) => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-    const {theme} = useThemeContext();
-    
+  // TODO: Should be slippage here.
 
-    // TODO: Should be slippage here.
-
-    const handleSlippageChange = (value) => {
-
-        if (value > 100) {
-            setMintRedeemSlipage(100)
-        }
-        else if (value < 0) {
-            setMintRedeemSlipage(0)
-        }
-        else if (value === "") {
-            setMintRedeemSlipage(0)
-        }
-        else {
-            setMintRedeemSlipage(parseInt(value));
-        }
+  const handleSlippageChange = (value) => {
+    if (value > 100) {
+      setMintRedeemSlipage(100);
+    } else if (value < 0) {
+      setMintRedeemSlipage(0);
+    } else if (value === "") {
+      setMintRedeemSlipage(0);
+    } else {
+      setMintRedeemSlipage(parseInt(value));
     }
+  };
 
-    return (
-        <>
-        {mintRedeemCurrencyModal ? 
-                <div className='currency-switch-wrapper '> 
-                    <div className='currency-switch-modal modal-switch'> 
-                        <a href="#" onClick={() => setMintRedeemCurrencyModal(false)}> <ExitIcon /> </a>
-                        {/* <a href="#" onClick={() => setMintRedeemCurrencyModal(false)}> <i className="fas fa-times"></i> </a> */}
-                        <h2> Switch between</h2>
-                        <div className='modal-switch__swap-block'>
-                            <div>AGOUSD </div>
-                            <SwapIcon />
-                            <div>AGOBTC</div>
-                        </div>
-                        <Switch checked={mintRedeemCurrency === "AGOBTC" ? true : false} onChange={() => setMintRedeemCurrency(mintRedeemCurrency === "AGOUSD" ? "AGOBTC" : "AGOUSD")}/>
-                        {/* <span> Set slippage: </span>
-                        <input type='number' min={0} max={100} onChange={(e) => handleSlippageChange(e.target.value)} value={mintRedeemSlipage}/> */}
-                    </div>
-                </div>
-                :
-                ""
-        }
-        </>
-    )
-}
+  return (
+    <div>
+      <ModalButton onClick={handleOpen}>
+        <img src={setting_cog} alt="settings" />
+      </ModalButton>
+      <CurrencySwitchModalContainer
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <CurrencySwitchModalContent>
+          <ExitIcon
+            onClick={handleClose}
+            style={{
+              cursor: "pointer",
+              alignSelf: "flex-end",
+              marginRight: "-1.302vw",
+            }}
+          />
+          <Text fontSize="0.938vw" lineHeight="1.406vw" fontWeight={400}>
+            Switch between
+          </Text>
+          <HDiv>
+            <Text>AGOUSD</Text>
+            <SwapIcon />
+            <Text>AGOBTC</Text>
+          </HDiv>
+          <Divider />
+          <IOSSwitch
+            checked={mintRedeemCurrency === "AGOBTC" ? true : false}
+            onChange={() =>
+              setMintRedeemCurrency(
+                mintRedeemCurrency === "AGOUSD" ? "AGOBTC" : "AGOUSD"
+              )
+            }
+          />
+          {/* <span> Set slippage: </span>
+          <input
+            type="number"
+            min={0}
+            max={100}
+            onChange={(e) => handleSlippageChange(e.target.value)}
+            value={mintRedeemSlipage}
+          /> */}
+        </CurrencySwitchModalContent>
+      </CurrencySwitchModalContainer>
+    </div>
+  );
+};
+
+export default CurrencySwitchModal;
