@@ -74,14 +74,20 @@ export const ProvideLiquidity = ({ token0, token1, setRemoveLiqModal }) => {
             await contracts.wbtc.methods.approve(DEPLOYER_ADDRESS, MAX_INT).send({ from: account });
         }
 
+		const token0Decimals = parseInt(tokens.find(item => item.symbol === token0.symbol).decimals);
+		const token1Decimals = parseInt(tokens.find(item => item.symbol === token1.symbol).decimals);
+
+		console.log(parseFloat(formatToDecimal(input0, token0Decimals)).toFixed(0),);
+		console.log(parseFloat(formatToDecimal(input1, token1Decimals)).toFixed(0));
+
         try {
             message.loading({ content: "Provide Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
             await contracts.ROUTER.methods.addLiquidity(
                 token0.address,
                 token1.address,
-                formatToDecimal(input0, 18),
-                formatToDecimal(input1, 18),
+                parseFloat(formatToDecimal(input0, token0Decimals)).toFixed(0),
+                parseFloat(formatToDecimal(input1, token1Decimals)).toFixed(0),
                 0,
                 0,
                 account,
