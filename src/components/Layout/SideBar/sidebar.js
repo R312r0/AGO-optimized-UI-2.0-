@@ -1,16 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useHistory } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { BottomLinks, LinkList, LinkListItem, SideBarWrapper, SocialMediasList } from './styles';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { ReactComponent as Comments_black } from '../../../assets/icons/nav-links/dark-theme/comment-black.svg';
 import { ReactComponent as Documentsvg } from '../../../assets/icons/nav-links/document.svg';
-import document_icon from './../../../assets/icons/sidebar-documents.svg';
+import { NavLink } from 'react-router-dom';
 import { PAGES } from '../../../constants';
-import { useSystemContext } from '../../../systemProvider';
-import styled from 'styled-components';
 import { ThemeSwitcher } from '../ThemeSwitcher/theme-switcher';
+import document_icon from './../../../assets/icons/sidebar-documents.svg';
+import styled from 'styled-components';
+import { useHistory } from 'react-router';
 import { useMediaQuery } from 'react-responsive';
+import { useSystemContext } from '../../../systemProvider';
 import { useThemeContext } from '../layout';
-import { SideBarWrapper, LinkList, LinkListItem, SocialMediasList, BottomLinks } from './styles';
 
 export const SideBar = ({ history }) => {
 
@@ -87,7 +88,7 @@ export const SideBar = ({ history }) => {
         </div>
         <Documentsvg />
       </div>
-      {/* <ThemeSwitcher /> */}
+      <ThemeSwitcher />
     </SideBarWrapper >
   )
 }

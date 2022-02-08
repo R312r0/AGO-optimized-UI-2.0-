@@ -48,10 +48,6 @@ button {
     border: none;
     background-color: transparent;
     transition: all 0.3s;
-    &:hover {
-        color: #fff !important;
-        opacity: 0.8;
-    }
 }
 
 input {
@@ -218,12 +214,6 @@ body {
         
         .main__heading__page {
             color: #333333;
-        }
-
-        button {
-            &:hover {
-                color: #b0b0b0 !important;
-            }
         }
 
         .connect-wallet-to-view-page {
