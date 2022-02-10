@@ -3,14 +3,14 @@ import {
   ExpandedDataWrapper,
   HDiv,
   HarvestBtn,
+  StackingBtn,
+  StackingBtnContainer,
   StakingInputContainer,
   StakingItemContainer,
   Text,
   ToggleBtnWrapper,
-  Wrapper,
   VDiv,
-  StackingBtn,
-  StackingBtnContainer,
+  Wrapper,
 } from "./styled";
 import React, { useEffect, useState } from "react";
 import {
@@ -267,7 +267,7 @@ export const StakingItem = ({ pool }) => {
 
   return (
     <>
-      <StakingItemContainer isExpanded={windowExpanded}>
+      <StakingItemContainer isExpanded={windowExpanded} id={`item_${address}`}>
         <HDiv isExpanded={windowExpanded} alignItems="center">
           <div>
             <TokenIcon iconName={name} />
@@ -369,7 +369,9 @@ export const StakingItem = ({ pool }) => {
                   ? "Low balance"
                   : "Stake"}
               </StackingBtn>
-              <StackingBtn onClick={() => handleUnstake()} mt="0.625vw">Unstake</StackingBtn>
+              <StackingBtn onClick={() => handleUnstake()} mt="0.625vw">
+                Unstake
+              </StackingBtn>
             </StackingBtnContainer>
           </ExpandedDataWrapper>
         ) : null}

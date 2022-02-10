@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const StakingItemContainer = styled.div`
+  backface-visibility: hidden;
   background: ${(props) =>
     props.theme.light
       ? "#fff"
@@ -14,18 +15,15 @@ export const StakingItemContainer = styled.div`
   height: ${(props) => (props.isExpanded ? "18.271vw" : "5.573vw")};
   margin-top: 0.938vw;
   border-radius: 2.083vw;
-  width: 81.823vw;
-  transform: scale(1);
-  transition: 0.4s ease;
+  width: 81.771vw;
   transition: all 0.2s ease-in-out;
-  transform: scale(1);
 
   &:hover {
-    transform: scale(1.01);
+    transform: ${(props) => (props.isExpanded ? "scale(1.01)" : "scale(1.01)")};
   }
 `;
 
-export const Text = styled.span.attrs((props) => props.isExpanded)`
+export const Text = styled.span`
   color: ${(props) =>
     !props.theme.light ? props.color ?? "#4F4F4F" : "#4F4F4F"};
   min-width: ${(props) => props.minW};
@@ -38,7 +36,6 @@ export const Text = styled.span.attrs((props) => props.isExpanded)`
   line-height: 1.406vw;
   font-size: 0.938vw;
   font-weight: 300;
-  animation-play-state: ${(props) => (props.isExpanded ? "paused" : "running")};
 
   b {
     color: ${(props) => (props.theme.light ? "#333" : "#fff")};
@@ -182,32 +179,32 @@ export const ToggleBtnWrapper = styled.div`
 
 export const ExpandedDataWrapper = styled.div`
   width: 59.948vw;
-  opacity: 0;
-  animation: show 0.25s 1;
-  animation-fill-mode: forwards;
   display: flex;
+  animation: 0.2s show ease-in-out;
+  animation-delay: 0.2s;
+  animation-fill-mode: backwards;
 
   @keyframes show {
-    0% {
+    from {
       opacity: 0;
     }
-    100% {
+    to {
       opacity: 1;
     }
   }
 `;
 
 export const StackingBtnContainer = styled.div`
-margin-left: 4.688vw;
-flex-direction: column;
-display: flex;
-justify-content: flex-end;
-`
+  margin-left: 4.688vw;
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-end;
+`;
 export const StackingBtn = styled.button`
   background: ${(props) => (props.stake ? "#40BA93" : "transparent")};
   margin-top: ${(props) => props.mt};
   color: ${(props) =>
-    props.theme.light ? (props.stake ? "#fff" : "333") : "#333"};
+    props.theme.light ? (props.stake ? "#fff" : "333") : "#fff"};
   border: ${(props) => (props.stake ? "unset" : "0.052vw solid")};
   border-color: ${(props) => (props.stake ? "unset" : "#4F4F4F")};
   display: flex;
@@ -218,10 +215,9 @@ export const StackingBtn = styled.button`
   font-size: 0.938vw;
   min-width: 7.552vw;
 
-  &:hover{
+  &:hover {
     opacity: 0.8;
   }
-
 `;
 
 export const HarvestBtn = styled.button`
@@ -252,42 +248,42 @@ export const Wrapper = styled.div`
 `;
 
 export const StakingInputContainer = styled.div`
-  color: ${(props) =>
-    props.placeholderColor ?? (props.theme.light ? "#333" : "#fff")};
-  padding-left: 0.833vw;
-  justify-content: space-between;
-  font-weight: 300;
-  border: 0.052vw solid;
-  border-color: ${(props) => (props.theme.light ? "#E0E0E0" : "#333")};
-  border-radius: 2.083vw;
-  align-items: center;
-  font-size: 1.15vw;
-  display: flex;
-  margin-top: 0.156vw;
-
-  width: 16.250vw;
-  height: 2.865vw;
-
-  input {
-    ::placeholder {
-      color: ${(props) =>
-        props.placeholderColor ?? (props.theme.light ? "#828282" : "#333")};
-    }
-  }
-
-  button {
-    font-size: 0.729vw;
+    color: ${(props) =>
+      props.placeholderColor ?? (props.theme.light ? "#333" : "#fff")};
+    padding-left: 0.833vw;
+    justify-content: space-between;
+    font-weight: 300;
+    border: 0.052vw solid;
+    border-color: ${(props) => (props.theme.light ? "#E0E0E0" : "#333")};
     border-radius: 2.083vw;
-    width: 4.219vw;
-    height: 1.875vw;
-    background: ${(props) =>
-      props.theme.light
-        ? "linear-gradient(288.26deg, #9421EE -65.56%, #40BA93 74.1%)"
-        : "#2c2c2c"};
-    color: #fff;
+    align-items: center;
+    font-size: 1.15vw;
+    display: flex;
+    margin-top: 0.156vw;
 
-    &:hover {
-      opacity: 0.8;
-      color: #fff;
+    width: 16.250vw;
+    height: 2.865vw;
+
+    input {
+      ::placeholder {
+        color: ${(props) =>
+          props.placeholderColor ?? (props.theme.light ? "#828282" : "#333")};
+      }
     }
-`;
+
+    button {
+      font-size: 0.729vw;
+      border-radius: 2.083vw;
+      width: 4.219vw;
+      height: 1.875vw;
+      background: ${(props) =>
+        props.theme.light
+          ? "linear-gradient(288.26deg, #9421EE -65.56%, #40BA93 74.1%)"
+          : "#2c2c2c"};
+      color: #fff;
+
+      &:hover {
+        opacity: 0.8;
+        color: #fff;
+      }
+  `;
