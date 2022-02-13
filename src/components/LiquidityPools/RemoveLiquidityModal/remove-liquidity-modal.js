@@ -119,7 +119,6 @@ export const RemoveLiquidityModal = ({ visible, setVisible, token0, token1, lpTo
         try {
             message.loading({ content: "Remove Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });
 
-			console.log(token0);
 
             await contracts.ROUTER.methods.removeLiquidity(token0.address, token1.address, (+formatToDecimal(val, 18)).toFixed(0), 0, 0, account, 999999999999999).send({ from: account });
 

@@ -124,7 +124,6 @@ const AccountsStaking = () => {
                     if (item.stakeTokenName.indexOf("-") !== -1) {
                         const symbols = item.stakeTokenName.split("-")
 
-                        console.log(item)
 
                         return (
                             <li>

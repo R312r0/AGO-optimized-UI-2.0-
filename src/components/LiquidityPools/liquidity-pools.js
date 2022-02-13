@@ -138,17 +138,9 @@ export const LiquidityPools = () => {
                 const tokensStaked = formatFromDecimal(await stakingContract.methods.tokensStaked().call(), 18);
 				const userStaked = await stakingContract.methods.userInfo(account).call();
 
-				console.log(userStaked);
-
-				console.log(`${token0.symbol}-${token1.symbol}`)
-				console.log("Reward token price " + rewardToken.priceUSD);
-				console.log("LP token price " + lpTokenPrice);
-
                 const totalRewardPricePerYear = parseFloat(rewardToken.priceUSD) * tokenPerBlock * 86400*30*12/2;
                 const totalStakingTokenInPool = parseFloat(lpTokenPrice) * tokensStaked;
 
-				console.log(totalRewardPricePerYear);
-				console.log(totalStakingTokenInPool);
 
                 apr = (totalRewardPricePerYear  / totalStakingTokenInPool) * 100;
 				myLiquidity = myLiquidity + (+formatFromDecimal(userStaked.amount, 18) * lpTokenPrice);

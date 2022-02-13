@@ -70,7 +70,6 @@ const TokenPriceItem = ({ token, _ind, expandWindow }) => {
     let newLineChartData = chartArr.filter(item => {
 
 		if (tokenItem.symbol === "AGOBTC") {
-			console.log(item);
 
 			if (+item.timestamp === 1641995927) {
 				return false

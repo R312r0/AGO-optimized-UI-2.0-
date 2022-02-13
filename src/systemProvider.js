@@ -146,6 +146,8 @@ export const SystemProvider = ({ children }) => {
 
 			if (item.symbol === "MATIC") {
 				const maticTokenBal = parseFloat(formatFromDecimal(await library.eth.getBalance(account), 18)).toFixed(2) ;
+
+
 				nativeBalance = +maticTokenBal;
 
 			}
@@ -172,39 +174,39 @@ export const SystemProvider = ({ children }) => {
 
     const changeTokenBalance = (operations) => {
 
-        let balancesArr = [...balances];
+        // let balancesArr = [...balances];
 
-        operations.forEach((item) => {
+        // operations.forEach((item) => {
 
-            let findedIndex = balancesArr.findIndex(bal => bal.symbol === item.name);
+        //     let findedIndex = balancesArr.findIndex(bal => bal.symbol === item.name);
 
-            if (findedIndex === -1) {
-                return;
-            }
+        //     if (findedIndex === -1) {
+        //         return;
+        //     }
 
-            else {
-                let balCopy = { ...balancesArr[findedIndex] }
+        //     else {
+        //         let balCopy = { ...balancesArr[findedIndex] }
 
-                if (item.sub) {
-                    balCopy.nativeBalance -= parseFloat(item.amount)
-                }
+        //         if (item.sub) {
+        //             balCopy.nativeBalance -= parseFloat(item.amount)
+        //         }
 
-                else {
-                    balCopy.nativeBalance += parseFloat(item.amount)
-                }
+        //         else {
+        //             balCopy.nativeBalance += parseFloat(item.amount)
+        //         }
 
-                balCopy.usdBalance = balCopy.nativeBalance * tokens.find((itemTok) => balCopy.symbol === "MATIC" ? itemTok.symbol === "WMATIC" : itemTok.symbol === item.name).priceUSD;
-                balancesArr[findedIndex] = balCopy;
-            }
-        })
+        //         balCopy.usdBalance = balCopy.nativeBalance * tokens.find((itemTok) => balCopy.symbol === "MATIC" ? itemTok.symbol === "WMATIC" : itemTok.symbol === item.name).priceUSD;
+        //         balancesArr[findedIndex] = balCopy;
+        //     }
+        // })
 
-        balancesArr.sort((a, b) => {
-            if (a.symbol < b.symbol) { return -1; }
-            if (a.symbol > b.symbol) { return 1; }
-            return 0;
-        });
+        // balancesArr.sort((a, b) => {
+        //     if (a.symbol < b.symbol) { return -1; }
+        //     if (a.symbol > b.symbol) { return 1; }
+        //     return 0;
+        // });
 
-        setBalances(balancesArr);
+        // setBalances(balancesArr);
 
     }
 

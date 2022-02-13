@@ -77,8 +77,6 @@ export const ProvideLiquidity = ({ token0, token1, setRemoveLiqModal }) => {
 		const token0Decimals = parseInt(tokens.find(item => item.symbol === token0.symbol).decimals);
 		const token1Decimals = parseInt(tokens.find(item => item.symbol === token1.symbol).decimals);
 
-		console.log(parseFloat(formatToDecimal(input0, token0Decimals)).toFixed(0),);
-		console.log(parseFloat(formatToDecimal(input1, token1Decimals)).toFixed(0));
 
         try {
             message.loading({ content: "Provide Liquidity in process", className: "ant-argano-message", key: MINT_REDEEM_KEY, duration: 3000 });

@@ -47,7 +47,6 @@ export const Accounts = () => {
 
             const res = balances.filter(item => item.symbol !== "AGOy").map((item, _index) => {
 
-				console.log(item);
 
                 const name = item.symbol;
                 const nativeBalance = item.nativeBalance;
@@ -57,7 +56,6 @@ export const Accounts = () => {
                 return { name, nativeBalance, usdBalance, tokenColor }
             });
 
-			console.log(res);
 
             setUserPortfolio(res);
             setSyntheticAssets(res.filter(item => item.name === "AGOUSD" || item.name === "CNUSD" || item.name === "AGOBTC" || item.name === "CNBTC"))

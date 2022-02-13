@@ -32,6 +32,7 @@ import {
   Text,
   HDiv,
 } from "./styled";
+import Item from "antd/lib/list/Item";
 
 const TradingMarket = ({ pool }) => {
   const {
@@ -206,6 +207,8 @@ const TradingMarket = ({ pool }) => {
   }, [token0Input]);
 
   const handleSwap = async (tokenInput) => {
+
+
     if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
       await contracts.wbtc.methods
         .approve(DEPLOYER_ADDRESS, MAX_INT)
@@ -254,13 +257,11 @@ const TradingMarket = ({ pool }) => {
       } else {
         if (pool.id === "matic-wmatic-wrap-unwrap") {
           if (token0.symbol === "MATIC") {
-            console.log("Wrap");
 
             await contracts.WMATIC.methods
               .deposit()
               .send({ from: account, value: formatToDecimal(token0Input, 18) });
           } else {
-            console.log("Unwrap");
 
             await contracts.WMATIC.methods
               .withdraw(formatToDecimal(token0Input, 18))
@@ -288,6 +289,8 @@ const TradingMarket = ({ pool }) => {
             )
             .send({ from: account, value: formatToDecimal(token0Input, 18) });
         } else {
+
+
           await contracts.ROUTER.methods
             .swapExactTokensForTokens(
               formatToDecimal(tokenInput, token0.decimals),
@@ -340,13 +343,10 @@ const TradingMarket = ({ pool }) => {
   };
 
   const SwapButtonFunc = () => {
+
     const zeroInputCheck = +token0Input === 0 || +token1Input === 0;
 
-    const insuficientBalance =
-      balances &&
-      balances.find((item) =>
-        item.symbol === "MATIC" ? item.symbol === "WMATIC" : token0.symbol
-      );
+	const token0UserBalance = balances?.find(item => item.symbol === token0.symbol);
 
     if (!account) {
       return (
@@ -360,7 +360,7 @@ const TradingMarket = ({ pool }) => {
           Approve
         </SwapButtonWrapper>
       );
-    } else if (insuficientBalance.nativeBalance < token0Input) {
+    } else if (token0UserBalance?.nativeBalance < +token0Input) {
       return (
         <SwapButtonWrapper disabled={true}>
           Insuficient balance
@@ -443,12 +443,14 @@ const TradingMarket = ({ pool }) => {
                             priceUSD: token0.priceUSD,
                             symbol: "MATIC",
                             name: "MAITC",
+							decimals: 18
                           })
                         : setToken0({
                             id: token0.id,
                             priceUSD: token0.priceUSD,
                             symbol: "WMATIC",
                             name: "WMAITC",
+							decimals: 18
                           })
                     }
                   >

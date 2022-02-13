@@ -85,10 +85,6 @@ const AccountPieChart = ({ userBalanceData }) => {
         if (userBalanceData) {
             const dataSets = userBalanceData.filter(item => item.name !== "AGOy").map((item) => item.usdBalance);
 
-
-            console.log(userBalanceData.filter(item => item.name !== "AGOy"));
-
-
             setChartData({ datasets: [{ data: dataSets, backgroundColor: tokenColors }] })
 
         }
