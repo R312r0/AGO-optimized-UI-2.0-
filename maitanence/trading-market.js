@@ -254,13 +254,11 @@ const TradingMarket = ({ pool }) => {
       } else {
         if (pool.id === "matic-wmatic-wrap-unwrap") {
           if (token0.symbol === "MATIC") {
-            console.log("Wrap");
 
             await contracts.WMATIC.methods
               .deposit()
               .send({ from: account, value: formatToDecimal(token0Input, 18) });
           } else {
-            console.log("Unwrap");
 
             await contracts.WMATIC.methods
               .withdraw(formatToDecimal(token0Input, 18))
