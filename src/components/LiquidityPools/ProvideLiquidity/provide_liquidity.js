@@ -97,12 +97,6 @@ export const ProvideLiquidity = ({
   };
 
   const provideLiquidity = async () => {
-    if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
-      await contracts.wbtc.methods
-        .approve(DEPLOYER_ADDRESS, MAX_INT)
-        .send({ from: account });
-    }
-
     try {
       message.loading({
         content: "Provide Liquidity in process",
