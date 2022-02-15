@@ -208,7 +208,6 @@ const TradingMarket = ({ pool }) => {
 
   const handleSwap = async (tokenInput) => {
 
-
     if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
       await contracts.wbtc.methods
         .approve(DEPLOYER_ADDRESS, MAX_INT)
@@ -257,11 +256,13 @@ const TradingMarket = ({ pool }) => {
       } else {
         if (pool.id === "matic-wmatic-wrap-unwrap") {
           if (token0.symbol === "MATIC") {
+            console.log("Wrap");
 
             await contracts.WMATIC.methods
               .deposit()
               .send({ from: account, value: formatToDecimal(token0Input, 18) });
           } else {
+            console.log("Unwrap");
 
             await contracts.WMATIC.methods
               .withdraw(formatToDecimal(token0Input, 18))
@@ -290,6 +291,9 @@ const TradingMarket = ({ pool }) => {
             .send({ from: account, value: formatToDecimal(token0Input, 18) });
         } else {
 
+			console.log("We are here.");
+			console.log(token0.decimals);
+			console.log(token0);
 
           await contracts.ROUTER.methods
             .swapExactTokensForTokens(

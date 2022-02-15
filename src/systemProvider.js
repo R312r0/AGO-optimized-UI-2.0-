@@ -161,7 +161,9 @@ export const SystemProvider = ({ children }) => {
 
         })
 
-        const res = await Promise.all(balancesResult);		
+        const res = await Promise.all(balancesResult);
+		const maticTokenBal = parseFloat(formatFromDecimal(await library.eth.getBalance(account), 18)).toFixed(2) ;
+		res.push({symbol: "MATIC", nativeBalance: +maticTokenBal,  usdBalance: tokens.find(item => item.symbol === "WMATIC").priceUSD * +maticTokenBal})
 
         res.sort((a, b) => {
             if (a.symbol < b.symbol) { return -1; }

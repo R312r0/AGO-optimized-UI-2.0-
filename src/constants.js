@@ -1,7 +1,5 @@
-import { InjectedConnector } from "@web3-react/injected-connector";
-import { NetworkConnector } from "@web3-react/network-connector";
-import { styled } from "styled-components";
-
+import { InjectedConnector } from '@web3-react/injected-connector';
+import { NetworkConnector } from '@web3-react/network-connector';
 // Active icons.
 import { LoadingOutlined } from "@ant-design/icons";
 
