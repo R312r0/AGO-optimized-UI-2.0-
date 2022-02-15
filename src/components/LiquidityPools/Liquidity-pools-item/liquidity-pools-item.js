@@ -1,141 +1,222 @@
-import React, { useEffect, useState } from 'react';
-import { TokenIcon } from '../../TokenIcon/token_icon';
-import { ProvideLiquidity } from '../ProvideLiquidity/provide_liquidity';
-import { Volume } from '../Volume/volume';
-import { Liquidity } from '../Liquidity/liquidity';
-import { RemoveLiquidityModal } from "../RemoveLiquidityModal/remove-liquidity-modal";
-import { useSystemContext } from "../../../systemProvider";
-import { useWeb3React } from "@web3-react/core";
+import {
+  AprValueWrapper,
+  Divider,
+  ExpandedDataWrapper,
+  HDiv,
+  IconWrapper,
+  LiquidityInfoContainer,
+  LiquidityPoolsItemContainer,
+  Tab,
+  TabContentWrapper,
+  TabPanel,
+  Tabs,
+  TabsList,
+  Text,
+  ToggleExpandBtn,
+} from "./styled";
+import React, { useEffect, useState } from "react";
+import { formatFromDecimal, formattedNum } from "../../../utils/helpers";
+
+import ChartLineIcon from "./ChartLineIcon";
+import CloseIcon from "./CloseIcon";
 import { LP_STAKING_POOL } from "../../../constants";
-import { Transactions } from "../Transactions/transactions";
+import { Liquidity } from "../Liquidity/liquidity";
+import { ProvideLiquidity } from "../ProvideLiquidity/provide_liquidity";
+import STAKING_ABI from "../../../abi/SIngleChef.json";
 import { StakeLp } from "../StakeLp/stake-lp";
-import STAKING_ABI from "../../../abi/SIngleChef.json"
-import { formatFromDecimal, formattedNum } from '../../../utils/helpers';
+import { ThemeProvider } from "styled-components";
+import { TokenIcon } from "../../TokenIcon/token_icon";
+import { Transactions } from "../Transactions/transactions";
+import { Volume } from "../Volume/volume";
+import { useThemeContext } from "../../Layout/layout";
+import { useWeb3React } from "@web3-react/core";
 
-const TABS = {
-    PROVIDE_LIQUIDITY: "Provide liquidity",
-    VOLUME: "Volume",
-    LIQUIDITY: "Liquidity",
-    TRANSACTIONS: "Transactions",
-    STAKE_LP: "Stake LP"
-}
+export const LiquidityPoolsItem = ({
+  pool: {
+    apr,
+    address,
+    token0,
+    token1,
+    liqiuidityUSD,
+    isEarnAgo,
+    myLiquidity,
+    volChart,
+    liqChart,
+    lpTokenContract,
+    lpUserBalance,
+  },
+  earnGovToken,
+  color,
+}) => {
+  const { library } = useWeb3React();
+  const [windowExpanded, setWindowExpanded] = useState(false);
+  const [rewardPerBlockAgo, setRewardPerBlockAgo] = useState(0);
+  const { theme } = useThemeContext();
+  const tabColor = {
+    color: color,
+  };
 
-export const LiquidityPoolsItem = ({ pool: { apr, address, token0, token1, liqiuidityUSD, isEarnAgo, myLiquidity, volChart, liqChart, lpTokenContract, lpUserBalance }, earnGovToken }) => {
-
-    const { PROVIDE_LIQUIDITY, VOLUME, LIQUIDITY, TRANSACTIONS, STAKE_LP } = TABS;
-    const { library } = useWeb3React();
-    const [windowExpanded, setWindowExpanded] = useState(false);
-    const [chosenWindow, setChosenWindow] = useState(PROVIDE_LIQUIDITY);
-    const [removeLiquidityModal, setRemoveLiquidityModal] = useState(false);
-    const [rewardPerBlockAgo, setRewardPerBlockAgo] = useState(0);
-
-
-    useEffect(() => {
-
-        if (isEarnAgo && earnGovToken) {
-
-            const poolAddress = LP_STAKING_POOL.find(item => item.name === `${token0.symbol}-${token1.symbol}`).address;
-            const poolContract = new library.eth.Contract(STAKING_ABI, poolAddress);
-            poolContract.methods.rewardPerBlock().call().then((res) => setRewardPerBlockAgo(formatFromDecimal(res, 18)))
-
-        }
-
-    }, [])
-
-    const ExpandedTab = () => {
-        switch (chosenWindow) {
-            case PROVIDE_LIQUIDITY:
-                return (<ProvideLiquidity token0={token0} token1={token1} setRemoveLiqModal={setRemoveLiquidityModal} />)
-            case VOLUME:
-                return (<Volume data={volChart} />)
-            case LIQUIDITY:
-                return (<Liquidity data={liqChart} />)
-            case TRANSACTIONS:
-                return (<Transactions token0={token0} token1={token1} />)
-            case STAKE_LP:
-                return (<StakeLp token0={token0} token1={token1} lpTokenContract={lpTokenContract} lpUserBalance={lpUserBalance} lpTokenAddress={address} />)
-            default:
-                return (<ProvideLiquidity />)
-        };
-    };
-
-    const openItem = () => {
-        setWindowExpanded(!windowExpanded)
+  useEffect(() => {
+    if (isEarnAgo && earnGovToken) {
+      const poolAddress = LP_STAKING_POOL.find(
+        (item) => item.name === `${token0.symbol}-${token1.symbol}`
+      ).address;
+      const poolContract = new library.eth.Contract(STAKING_ABI, poolAddress);
+      poolContract.methods
+        .rewardPerBlock()
+        .call()
+        .then((res) => setRewardPerBlockAgo(formatFromDecimal(res, 18)));
     }
-    return (
-        <>
-            <li className={`luqidity-pools-wrapper-list-item ${windowExpanded ? "liq-item-opened" : ""}`} id={`item_${address}`}>
-                <div className='luqidity-pools-wrapper-list-item__header' onClick={openItem}>
-                    <div className='pair'>
-                        <TokenIcon iconName={token0.symbol} />
-                        <TokenIcon iconName={token1.symbol} />
-                        <h3> {token0.symbol}-{token1.symbol} </h3>
-                    </div>
-                    <h3> {liqiuidityUSD}$ </h3>
-                    <h3>  {myLiquidity}$ </h3>
-                    <div className={`apr ${!isEarnAgo ? "not-reward" : ""}`}>
-                        <h3> {earnGovToken ? formattedNum(rewardPerBlockAgo) + " AGOy" : apr.toFixed(2) + "%"} </h3>
-                    </div>
-                    <div>
-                        {isEarnAgo ? earnGovToken ? <TokenIcon iconName={"AGOyX2"} /> : token1.symbol === "CNBTC" ? <TokenIcon iconName={"CNBTC"} /> : <TokenIcon iconName={"CNUSD"} /> : null}
-                    </div>
-                    <button className='chart-expand'
-                        onClick={() => setWindowExpanded(!windowExpanded)}> {windowExpanded ?
-                            <i className="fas fa-times" /> : <i className="fas fa-chart-line" />} </button>
-                </div>
-                {windowExpanded ?
-                    <div className='control-panel'>
-                        <div className='control-panel__header'>
-                            <button onClick={() => setChosenWindow(PROVIDE_LIQUIDITY)}
-                                className={`${chosenWindow === PROVIDE_LIQUIDITY ? "active" : ""}`}> Provide
-                                Liquidity
-                            </button>
-                            <button onClick={() => setChosenWindow(VOLUME)}
-                                className={`${chosenWindow === VOLUME ? "active" : ""}`}> Volume
-                            </button>
-                            <button onClick={() => setChosenWindow(LIQUIDITY)}
-                                className={`${chosenWindow === LIQUIDITY ? "active" : ""}`}> Liquidity
-                            </button>
-                            <button onClick={() => setChosenWindow(TRANSACTIONS)}
-                                className={`${chosenWindow === TRANSACTIONS ? "active" : ""}`}> Transactions
-                            </button>
-                            {isEarnAgo ?
-                                <button onClick={() => setChosenWindow(STAKE_LP)}
-                                    className={`${chosenWindow === STAKE_LP ? "active" : ""}`}> Stake Lp
-                                </button>
-                                :
-                                null
-                            }
-                        </div>
-                        <div className="control-panel__content">
-                            <ExpandedTab />
-                            {chosenWindow !== TRANSACTIONS && chosenWindow !== PROVIDE_LIQUIDITY ?
+  }, []);
 
-                                <div className='liq-info'>
-                                    <span> <h5>Liquidity </h5> <b> ${liqiuidityUSD} </b> </span>
-                                    <span> <h5>Volume (24H) </h5> <b> $ volume </b> </span>
-                                    <span> <h5>Earnings (24H) </h5> <b> $51,544 </b> </span>
-                                    <span> <h5>Total APR </h5> <b> {apr.toFixed(2)}% </b> </span>
-                                    <span> <h5>My Liquidity </h5> <b> ${myLiquidity} </b> </span>
-                                </div>
-                                :
-                                null
-                            }
-                        </div>
-                    </div>
-                    :
-                    null
-                }
-            </li>
-            <RemoveLiquidityModal visible={removeLiquidityModal}
-                setVisible={setRemoveLiquidityModal}
-                poolAddress={address}
-                token0={token0}
-                token1={token1}
-                lpTokenContract={lpTokenContract}
-                lpUserBalance={lpUserBalance}
-                lpTokenAddress={address}
-            />
-        </>
-    )
-}
+  const renderLiquidityInfo = (ml) => (
+    <ThemeProvider theme={tabColor}>
+    <LiquidityInfoContainer ml={ml}>
+      <HDiv justifyContent="space-between" alignItems="center">
+        <Text>Liquidity</Text>
+        <Text>
+          <b>${liqiuidityUSD}</b>
+        </Text>
+      </HDiv>
+      <Divider />
+      <HDiv justifyContent="space-between" alignItems="center">
+        <Text>Volume (24H)</Text>
+        <Text>
+          <b>$volume</b>
+        </Text>
+      </HDiv>
+      <Divider />
+      <HDiv justifyContent="space-between" alignItems="center">
+        <Text>Earnings (24H)</Text>
+        <Text>
+          <b>$51,544</b>
+        </Text>
+      </HDiv>
+      <Divider />
+      <HDiv justifyContent="space-between" alignItems="center">
+        <Text>Total APR </Text>
+        <Text>
+          <b>{apr.toFixed(2)}%</b>
+        </Text>
+      </HDiv>
+      <Divider />
+      <HDiv justifyContent="space-between" alignItems="center">
+        <Text>Liquidity</Text>
+        <Text>
+          <b>${myLiquidity}</b>
+        </Text>
+      </HDiv>
+    </LiquidityInfoContainer>
+    </ThemeProvider>
+  );
+
+  return (
+    <>
+      <ThemeProvider theme={tabColor}>
+        <LiquidityPoolsItemContainer
+          id={`item_${address}`}
+          isExpanded={windowExpanded}
+        >
+          <HDiv alignItems="center">
+            <IconWrapper mr="0.417vw">
+              <TokenIcon iconName={token0.symbol} />
+            </IconWrapper>
+            <IconWrapper mr="0.990vw">
+              <TokenIcon iconName={token1.symbol} />
+            </IconWrapper>
+            <Text minW="19.917vw">
+              <b>
+                {token0.symbol}-{token1.symbol}
+              </b>
+            </Text>
+            <Text minW="16.917vw">
+              <b>{liqiuidityUSD}$ </b>
+            </Text>
+            <Text minW="12.6vw">
+              <b>{myLiquidity === 0 ? `-` : `${myLiquidity}$`} </b>
+            </Text>
+            <AprValueWrapper>
+              {earnGovToken
+                ? formattedNum(rewardPerBlockAgo) + " AGOy"
+                : apr.toFixed(2) + "%"}
+            </AprValueWrapper>
+            <div style={{ width: "2.552vw" }}>
+              {isEarnAgo ? (
+                earnGovToken ? (
+                  <IconWrapper left="2.8vw" w="3.3vw" h="3.3vw" withoutWrapper>
+                    <TokenIcon iconName={"AGOyX2"} />
+                  </IconWrapper>
+                ) : token1.symbol === "CNBTC" ? (
+                  <IconWrapper left="2.8vw">
+                    <TokenIcon iconName={"CNBTC"} />
+                  </IconWrapper>
+                ) : (
+                  <IconWrapper left="2.8vw">
+                    <TokenIcon iconName={"CNUSD"} />
+                  </IconWrapper>
+                )
+              ) : null}
+            </div>
+            <ToggleExpandBtn onClick={() => setWindowExpanded(!windowExpanded)}>
+              {windowExpanded ? <CloseIcon /> : <ChartLineIcon />}
+            </ToggleExpandBtn>
+          </HDiv>
+          {windowExpanded ? (
+            <ExpandedDataWrapper>
+              <Tabs defaultValue={0}>
+                <TabsList
+                  style={{
+                    color: color ? "#fff" : theme === "light" ? "#333" : "#fff",
+                  }}
+                >
+                  <Tab>Provide Liquidity</Tab>
+                  <Tab>Volume</Tab>
+                  <Tab>Liquidity</Tab>
+                  <Tab>Transactions</Tab>
+                  {color ? <Tab>Stake Lp</Tab> : null}
+                </TabsList>
+                <TabPanel value={0}>
+                  <ProvideLiquidity
+                    token0={token0}
+                    token1={token1}
+                    poolAddress={address}
+                    lpTokenContract={lpTokenContract}
+                    lpUserBalance={lpUserBalance}
+                    lpTokenAddress={address}
+                  />
+                </TabPanel>
+                <TabPanel value={1}>
+                  <TabContentWrapper>
+                    <Volume data={volChart} />
+                    {renderLiquidityInfo("8.021vw")}
+                  </TabContentWrapper>
+                </TabPanel>
+                <TabPanel value={2}>
+                  <TabContentWrapper>
+                    <Liquidity data={liqChart} />
+                    {renderLiquidityInfo("17.813vw")}
+                  </TabContentWrapper>
+                </TabPanel>
+                <TabPanel value={3}>
+                  <Transactions token0={token0} token1={token1} />
+                </TabPanel>
+                <TabPanel value={4}>
+                  <TabContentWrapper>
+                    <StakeLp
+                      token0={token0}
+                      token1={token1}
+                      lpTokenContract={lpTokenContract}
+                      lpUserBalance={lpUserBalance}
+                      lpTokenAddress={address}
+                    />
+                    {renderLiquidityInfo("1.823vw")}
+                  </TabContentWrapper>
+                </TabPanel>
+              </Tabs>
+            </ExpandedDataWrapper>
+          ) : null}
+        </LiquidityPoolsItemContainer>
+      </ThemeProvider>
+    </>
+  );
+};

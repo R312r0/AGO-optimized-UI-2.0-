@@ -64,7 +64,7 @@ export const MintWindowContainer = styled.div`
   box-shadow: ${(props) =>
     props.theme.light
       ? "box-shadow: 0 0.208vw 3.125vw rgba(187, 187, 187, 0.25);"
-      : "box-shadow: 0 0.208vw 0.833vw rgba(0, 0, 0, 0.25);"}
+      : "box-shadow: 0 0.208vw 0.833vw rgba(0, 0, 0, 0.25);"};
   width: 100%;
   padding: 1.198vw 2.969vw 2.031vw 2.969vw;
   max-width: 41.563vw;

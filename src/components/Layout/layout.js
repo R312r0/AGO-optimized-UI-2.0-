@@ -1,31 +1,31 @@
-import React, { useContext, useState } from "react";
-import { SideBar } from "./SideBar/sidebar";
-import ago_icon from "../../assets/icons/ago-logo.svg";
-import burger_menu from "../../assets/icons/burger-menu.svg";
-import BalancesTab from "./BalancesTab/balances-tab";
-import { useMediaQuery } from "react-responsive";
-import { SideBarMobile } from "./SideBarMobile/sidebar-mobile";
-import { ConnectWalletButton } from "./ConnectWallet/connect-wallet";
-import { WalletModal } from "../WalletModal/wallet_modal";
-import { CurrencySwitchModal } from "../MintRedeem/CurrencySwitchModal/currency-switch-modal";
-import ComingSoonImage from "../../assets/ComingSoonImage.png";
 import {
+  AgoLogo,
+  BurgerButton,
+  ComingSoonMessageBox,
+  Content,
+  Header,
   LayoutWrapper,
   MobileHeader,
   MobileMainHeader,
-  AgoLogo,
-  BurgerButton,
-  Header,
-  Content,
-  ComingSoonMessageBox,
   Text,
 } from "./styles";
-import { useSystemContext } from "../../systemProvider";
+import React, { useContext, useState } from "react";
+
+import { ApproveModal } from "../ApproveModal/approve-modal";
+import BalancesTab from "./BalancesTab/balances-tab";
+import ComingSoonImage from "../../assets/ComingSoonImage.png";
+import { ConnectWalletButton } from "./ConnectWallet/connect-wallet";
+import { LOADER_INDICATOR } from "../../constants";
+import { SideBar } from "./SideBar/sidebar";
+import { SideBarMobile } from "./SideBarMobile/sidebar-mobile";
 import { Spin } from "antd";
 import { ThemeProvider } from "styled-components";
-import { LOADER_INDICATOR } from "../../constants";
-import { ApproveModal } from "../ApproveModal/approve-modal";
+import { WalletModal } from "../WalletModal/wallet_modal";
+import ago_icon from "../../assets/icons/ago-logo.svg";
+import burger_menu from "../../assets/icons/burger-menu.svg";
 import { useHistory } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
+import { useSystemContext } from "../../systemProvider";
 
 const ThemeContext = React.createContext();
 export const useThemeContext = () => useContext(ThemeContext);

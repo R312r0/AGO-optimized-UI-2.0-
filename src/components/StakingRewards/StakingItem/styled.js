@@ -248,42 +248,43 @@ export const Wrapper = styled.div`
 `;
 
 export const StakingInputContainer = styled.div`
-    color: ${(props) =>
-      props.placeholderColor ?? (props.theme.light ? "#333" : "#fff")};
-    padding-left: 0.833vw;
-    justify-content: space-between;
-    font-weight: 300;
-    border: 0.052vw solid;
-    border-color: ${(props) => (props.theme.light ? "#E0E0E0" : "#333")};
-    border-radius: 2.083vw;
-    align-items: center;
-    font-size: 1.15vw;
-    display: flex;
-    margin-top: 0.156vw;
+  color: ${(props) =>
+    props.placeholderColor ?? (props.theme.light ? "#333" : "#fff")};
+  padding-left: 0.833vw;
+  font-weight: 300;
+  border: 0.052vw solid;
+  border-color: ${(props) => (props.theme.light ? "#E0E0E0" : "#333")};
+  border-radius: 2.083vw;
+  align-items: center;
+  font-size: 1vw;
+  display: flex;
+  margin-top: 0.156vw;
 
-    width: 16.250vw;
-    height: 2.865vw;
+  width: 16.25vw;
+  height: 2.865vw;
 
-    input {
-      ::placeholder {
-        color: ${(props) =>
-          props.placeholderColor ?? (props.theme.light ? "#828282" : "#333")};
-      }
+  input {
+    width: 100%;
+    ::placeholder {
+      color: ${(props) =>
+        props.placeholderColor ?? (props.theme.light ? "#828282" : "#333")};
     }
+  }
 
-    button {
-      font-size: 0.729vw;
-      border-radius: 2.083vw;
-      width: 4.219vw;
-      height: 1.875vw;
-      background: ${(props) =>
-        props.theme.light
-          ? "linear-gradient(288.26deg, #9421EE -65.56%, #40BA93 74.1%)"
-          : "#2c2c2c"};
+  button {
+    font-size: 0.729vw;
+    border-radius: 2.083vw;
+    width: 4.219vw;
+    height: 1.875vw;
+    background: ${(props) =>
+      props.theme.light
+        ? "linear-gradient(288.26deg, #9421EE -65.56%, #40BA93 74.1%)"
+        : "#2c2c2c"};
+    color: #fff;
+
+    &:hover {
+      opacity: 0.8;
       color: #fff;
-
-      &:hover {
-        opacity: 0.8;
-        color: #fff;
-      }
-  `;
+    }
+  }
+`;
