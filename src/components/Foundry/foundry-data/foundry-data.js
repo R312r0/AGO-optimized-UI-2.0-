@@ -17,8 +17,8 @@ import { formattedNum } from "../../../utils/helpers";
 const FoundryData = ({ data }) => {
   return (
     <FoundryDataContainer>
-      <FoundryDataItemContainer>
-        <HDiv>
+      <FoundryDataItemContainer animationDelay="0s">
+        <HDiv animationDelay="0.2s">
           <VDiv>
             <Text>Estimated Allocation</Text>
             <HDiv mt="0.781vw">
@@ -44,8 +44,8 @@ const FoundryData = ({ data }) => {
           <TargetIcon />
         </HDiv>
       </FoundryDataItemContainer>
-      <FoundryDataItemContainer>
-        <HDiv>
+      <FoundryDataItemContainer animationDelay="0.2s">
+        <HDiv animationDelay="0.4s">
           <VDiv>
             <Text>Time until next allocate</Text>
             <HDiv mt="0.781vw">
@@ -57,8 +57,8 @@ const FoundryData = ({ data }) => {
           <StonksIcon />
         </HDiv>
       </FoundryDataItemContainer>
-      <FoundryDataItemContainer>
-        <HDiv>
+      <FoundryDataItemContainer animationDelay="0.4s">
+        <HDiv animationDelay="0.6s">
           <VDiv>
             <Text>CNUSD / CNBTC Staked</Text>
             <HDiv mt="0.781vw">
@@ -84,8 +84,8 @@ const FoundryData = ({ data }) => {
           <ChainIcon />
         </HDiv>
       </FoundryDataItemContainer>
-      <FoundryDataItemContainer>
-        <HDiv>
+      <FoundryDataItemContainer animationDelay="0.6s">
+        <HDiv animationDelay="0.8s">
           <VDiv>
             <Text>Total Value Locked</Text>
             <HDiv mt="0.781vw">

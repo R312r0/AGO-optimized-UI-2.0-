@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const FoundryContainer = styled.div`
   margin-right: 6.146vw;
+  margin-left: 1vw;
 `;
 
 export const Text = styled.span`

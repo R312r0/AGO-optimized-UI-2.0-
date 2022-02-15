@@ -1,103 +1,140 @@
-import React, {useState, useRef, useContext} from 'react';
-import { BarChart, XAxis, Bar, Tooltip, ResponsiveContainer, Cell, YAxis, CartesianGrid } from 'recharts';
-import { useSystemContext } from '../../../systemProvider';
-import { formattedNum } from '../../../utils/helpers';
-import {CustomToolTip} from "../../ChartCustomTooltip/chart-custom-tooltip";
-import { useThemeContext } from '../../Layout/layout';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import React, { useRef } from "react";
 
-export const Volume = ({data}) => {
+import { CustomToolTip } from "../../ChartCustomTooltip/chart-custom-tooltip";
+import styled from "styled-components";
+import { useThemeContext } from "../../Layout/layout";
 
-    const {theme} = useThemeContext();
-    const block = useRef(null)
+export const Volume = ({ data }) => {
+  const { theme } = useThemeContext();
+  const block = useRef(null);
 
-    const CustomBar = ({
-        x,
-        y,
-        width,
-        height,
-        fill,
-      }) => {
-        return (
-          <g>
-            <rect x={x} y={y} fill={fill} width="0.521vw" height={height} rx="0.25vw" />
-          </g>
-        )
-    }
-
+  const CustomBar = ({ x, y, width, height, fill }) => {
     return (
-        <div className="vol-chart">
-            <ResponsiveContainer className="vol-chart" width={"100%"} height={"100%"}>
-                <BarChart
-                    // margin="0.260vw 1.563vw 0.052vw 1.042vw"
-                    data={data}
-                    >
-                    <defs>
-                        <linearGradient
-                        id="colorUv"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="100%"
-                        gradientUnits="userSpaceOnUse"
-                        >
-                        <stop offset="0" stopColor="#40BA93" />
-                        <stop offset="1" stopColor="rgba(64, 186, 147, 0)" />
-                        </linearGradient>
-                        <linearGradient id="colorUvLightTheme" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0" stopColor="#40BA93"/>
-                            <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)"/>
-                        </linearGradient>
-                        <linearGradient id="colorUvSecondLightTheme" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0" stopColor="#40BA93"/>
-                            <stop offset="1" stopColor="#114D3A"/>
-                        </linearGradient>
-                    </defs>
-                    <defs> 
-                        <linearGradient
-                        id="colorUvSecond"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="100%"
-                        gradientUnits="userSpaceOnUse"
-                        >
-                        <stop offset="0" stopColor="#40BA93" />
-                        <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)" />
-                        </linearGradient>
-                    </defs>
-                <CartesianGrid stroke={theme === "light" ? "white" : "#3A3C45"} strokeDasharray="7 7"/>
-                <Bar
-                    dataKey="value"
-                    radius={20}
-                    
-                    // shape={<CustomBar/>} // TODO: when we will have more data then return this staff back
-                >
-                    {data.map((entry, _ind )=> {
-                        return <Cell fill={_ind % 2 === 0 || _ind % 3 === 0 ? 'url(#colorUvLightTheme)' : 'url(#colorUvSecondLightTheme)' }/>
-                    })}
-                </Bar>
+      <g>
+        <rect
+          x={x}
+          y={y}
+          fill={fill}
+          width="0.521vw"
+          height={height}
+          rx="0.25vw"
+        />
+      </g>
+    );
+  };
 
-                <Tooltip
-                    content={CustomToolTip}
-                    // contentStyle={{ display: 'none' }}
-                    cursor={{ fill: "rgba(255, 255, 255, 0.15)" }}
-                />
-                <XAxis
-                    dataKey="time"
-                    axisLine={false}
-                    tickLine={false}
-                    stroke={theme === "light" ? "black" : "white"}
-                />
-                <YAxis
-                    dataKey="value"
-                    axisLine={false}
-                    tickLine={false}
-                    stroke={theme === "light" ? "black" : "white"}
-                />
+  const VolumeChartWrapper = styled.div`
+    margin-top: 2.292vw;
+    padding: 1vw;
+    background-color: rosybrown;
+    font-size: 0.521vw;
+    width: 47.833vw;
+    height: 12.521vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
 
-                </BarChart>
-            </ResponsiveContainer>
-        </div>
-    )
+  return (
+    <VolumeChartWrapper>
+      <ResponsiveContainer width={"100%"} height={"100%"}>
+        <BarChart data={data}>
+          <defs>
+            <linearGradient
+              id="colorUv"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="100%"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0" stopColor="#40BA93" />
+              <stop offset="1" stopColor="rgba(64, 186, 147, 0)" />
+            </linearGradient>
+            <linearGradient id="colorUvLightTheme" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#40BA93" />
+              <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)" />
+            </linearGradient>
+            <linearGradient
+              id="colorUvSecondLightTheme"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop offset="0" stopColor="#40BA93" />
+              <stop offset="1" stopColor="#114D3A" />
+            </linearGradient>
+          </defs>
+          <defs>
+            <linearGradient
+              id="colorUvSecond"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="100%"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0" stopColor="#40BA93" />
+              <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)" />
+            </linearGradient>
+          </defs>
+          <CartesianGrid
+            stroke={theme === "light" ? "#66D6B2" : "#3A3C45"}
+            // strokeDasharray="10"
+            // verticalPoints={[75, 200, 325, 450, 575, 700, 825, 950]}
+            // horizontal={false}
+            // vertical
+          />
+          <Bar
+            dataKey="value"
+            radius={20}
 
-}
+            // shape={<CustomBar/>} // TODO: when we will have more data then return this staff back
+          >
+            {data.map((entry, _ind) => {
+              return (
+                <Cell
+                  fill={
+                    _ind % 2 === 0 || _ind % 3 === 0
+                      ? "url(#colorUvLightTheme)"
+                      : "url(#colorUvSecondLightTheme)"
+                  }
+                />
+              );
+            })}
+          </Bar>
+
+          <Tooltip
+            content={CustomToolTip}
+            cursor={{ fill: "rgba(255, 255, 255, 0.15)" }}
+          />
+          <XAxis
+            // padding={{ left: 100 }}
+            dataKey="time"
+            axisLine={false}
+            tickLine={false}
+            stroke={theme === "light" ? "black" : "white"}
+          />
+          <YAxis
+            // padding={{ bottom: 100 }}
+            dataKey="value"
+            axisLine={false}
+            tickLine={false}
+            stroke={theme === "light" ? "black" : "white"}
+          />
+        </BarChart>
+      </ResponsiveContainer>
+    </VolumeChartWrapper>
+  );
+};

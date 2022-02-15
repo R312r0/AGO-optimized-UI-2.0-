@@ -1,190 +1,151 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { useSystemContext } from '../../../systemProvider';
-import { formatFromDecimal, calculateTimeDifference, formattedNum, formatAddress } from '../../../utils/helpers';
-import { CONTRACT_ADRESESS, LOADER_INDICATOR_LOCAL, TXS_NAME } from '../../../constants';
+import {
+  BtnWrapper,
+  Divider,
+  Table,
+  TableRow,
+  TalbleCell,
+  Text,
+  TransactionsBtn,
+  TransactionsContainer,
+  TransactionsInfoContainer,
+} from "./styled";
+import { LOADER_INDICATOR_LOCAL, TXS_NAME } from "../../../constants";
+import React, { useEffect, useState } from "react";
+import {
+  calculateTimeDifference,
+  formatAddress,
+  formattedNum,
+} from "../../../utils/helpers";
+
+import { GET_PAIR_TXS } from "../../../api/client";
 import { Spin } from "antd";
 import { useQuery } from "@apollo/client";
-import { GET_PAIR_TXS } from "../../../api/client";
-
-const Table = styled.div`
-  width: 100%;
-  max-height: 353px;
-  overflow: hidden;
-
-  @media(max-width: 1440px){
-        height: 253px;
-    }
-  @media(max-width: 1300px){
-        height: 200px;
-    }
-
-  background: linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%);
-  color: white;
-
-  padding: 0.625vw 1.823vw 1.458vw 2.344vw;
-  border-radius: 2.083vw;
-
-  .token-transaction-separator {
-    width: 100%;
-    height: 0.052vw;
-
-    background-color: #333;
-    border-radius: 0.260vw;
-    margin-bottom: 20px;
-  }
-`
-const TableHead = styled.div`
-  display: grid;
-  grid-template-columns: 20% 11.5% 13% 13% 27% 14%;
-
-  position: relative !important;
-  margin-bottom: 8px;
-
-  span {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 0.8vw;
-
-    &:last-child {
-      justify-self: flex-end;
-      padding-right: 2.344vw;
-    }
-
-    @media only screen and (max-width: 1024px) {
-      font-size: 0.9vw;
-    }
-  }
-`
-
-const TableBody = styled.ul`
-  display: grid;
-  grid-template-columns: 1fr;
-  row-gap: 18px;
-  height: 230px;
-  overflow: auto;
-
-  .item__row{
-    display: grid;
-    height: 27px;
-    grid-template-columns: 20% 11.5% 13% 13% 27% 15%; 
-    font-weight: 300;
-    font-size: 0.8vw;
-    color: #BDBDBD;
-    line-height: 1.2vw;
-  }
-
-  & * {
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    padding-right: 1vw;
-  }
-
-  &::-webkit-scrollbar {
-    width: 0.208vw;
-
-    background: #4F4F4F;
-    border-radius: 0.260vw;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #333333;
-    border-radius: 0.260vw;
-  }
-
-  .operation {
-    color: #40BA93;
-  }
-
-  .acc {
-    color: #40BA93;
-  }
-
-  .time {
-    justify-self: flex-end;
-  }
-`
 
 export const Transactions = ({ token0, token1 }) => {
-
   const { data, loading } = useQuery(GET_PAIR_TXS, {
-    variables: { token0: token0.symbol, token1: token1.symbol }
+    variables: { token0: token0.symbol, token1: token1.symbol },
   });
 
   const [convertedData, setConvertedData] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [loadingReadyData, setLoadingReadyData] = useState(true);
-
+  const [currentActiveBtn, setCurrentActiveBtn] = useState(0);
 
   useEffect(() => {
-
     if (data && !loading) {
       setConvertedData(convertTxsData(data));
     }
-
-  }, [data])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const convertTxsData = () => {
     const { SWAP, ADD, BURN } = TXS_NAME;
 
-    const res = data.transactions.map(item => {
+    const res = data.transactions.map((item) => {
       let txName;
       let totalValue = formattedNum((+item.amountTotalUSD).toFixed(2));
-      let token0Amount = `${(+item.amount0).toFixed(2)} ${item.token0}`
-      let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`
+      let token0Amount = `${(+item.amount0).toFixed(2)} ${item.token0}`;
+      let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`;
       let acc = formatAddress(item.from);
       let time = calculateTimeDifference(item.timestamp);
+      // eslint-disable-next-line default-case
       switch (item.name) {
         case SWAP:
-          txName = `${item.name} ${item.token0} for ${item.token1}`
+          txName = `${item.name} ${item.token0} for ${item.token1}`;
           break;
         case ADD:
-          txName = `${item.name} ${item.token0} and ${item.token1}`
+          txName = `${item.name} ${item.token0} and ${item.token1}`;
           break;
         case BURN:
-          txName = `${item.name} ${item.token0} and ${item.token1}`
+          txName = `${item.name} ${item.token0} and ${item.token1}`;
           break;
       }
-      return { txName, totalValue, token0Amount, token1Amount, acc, time }
-    })
+      return { txName, totalValue, token0Amount, token1Amount, acc, time };
+    });
     return res;
-  }
+  };
 
   return (
-    <div className="transactions-wrapper">
-      <div className="transactions-wrapper__switch-buttons">
-        <button className="transanction-tabs-wrapper-active">All</button>
-        <button>Swaps</button>
-        <button>Adds</button>
-        <button>Removes</button>
-      </div>
-      <Table>
-        <TableHead>
-          <span></span>
-          <span>Total Value</span>
-          <span>Token Amount</span>
-          <span>Token Amount</span>
-          <span>Account</span>
-          <span>Time</span>
-        </TableHead>
-        <div className="token-transaction-separator"></div>
-        <TableBody>
-          {!convertedData ? <Spin indicator={LOADER_INDICATOR_LOCAL} /> : null}
-          {convertedData && convertedData.map((item) => {
-
-            return (
-              <li className='item__row'>
-                <div className='operation'>{item.txName}</div>
-                <div>{item.totalValue}</div>
-                <div>{item.token0Amount}</div>
-                <div>{item.token1Amount}</div>
-                <div className='acc'>{item.acc}</div>
-                <div className='time'>{item.time}</div>
-              </li>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
+    <>
+      <TransactionsContainer>
+        <BtnWrapper>
+          <TransactionsBtn
+            isActive={currentActiveBtn === 0}
+            onClick={() => setCurrentActiveBtn(0)}
+          >
+            All
+          </TransactionsBtn>
+          <TransactionsBtn
+            isActive={currentActiveBtn === 1}
+            onClick={() => setCurrentActiveBtn(1)}
+          >
+            Swaps
+          </TransactionsBtn>
+          <TransactionsBtn
+            isActive={currentActiveBtn === 2}
+            onClick={() => setCurrentActiveBtn(2)}
+          >
+            Adds
+          </TransactionsBtn>
+          <TransactionsBtn
+            isActive={currentActiveBtn === 3}
+            onClick={() => setCurrentActiveBtn(3)}
+          >
+            Removes
+          </TransactionsBtn>
+        </BtnWrapper>
+        <TransactionsInfoContainer>
+          <TableRow>
+            <Text minW="21vw" />
+            <Text minW="8.5vw">
+              <b>Total Value</b>
+            </Text>
+            <Text minW="9.5vw">
+              <b>Token Amount</b>
+            </Text>
+            <Text minW="9.5vw">
+              <b>Token Amount</b>
+            </Text>
+            <Text minW="10vw">
+              <b>Account</b>
+            </Text>
+            <Text minW="11vw">
+              <b>Time</b>
+            </Text>
+          </TableRow>
+          <Divider />
+          <Table>
+            {!convertedData ? (
+              <Spin indicator={LOADER_INDICATOR_LOCAL} />
+            ) : (
+              convertedData.map((item, idx) => (
+                <TableRow key={idx} idx={idx}>
+                  <TalbleCell minW="21vw">
+                    <Text color="#40BA93">{item.txName}</Text>
+                  </TalbleCell>
+                  <TalbleCell minW="8.5vw">
+                    <Text>${item.totalValue}</Text>
+                  </TalbleCell>
+                  <TalbleCell minW="9.5vw">
+                    <Text>{item.token0Amount}</Text>
+                  </TalbleCell>
+                  <TalbleCell minW="9.5vw">
+                    <Text>{item.token1Amount}</Text>
+                  </TalbleCell>
+                  <TalbleCell minW="10vw">
+                    <Text color="#40BA93">{item.acc}</Text>
+                  </TalbleCell>
+                  <TalbleCell minW="11vw">
+                    <Text>
+                      <b>{item.time}</b>
+                    </Text>
+                  </TalbleCell>
+                </TableRow>
+              ))
+            )}
+          </Table>
+        </TransactionsInfoContainer>
+      </TransactionsContainer>
+    </>
   );
-}
+};

@@ -310,7 +310,7 @@ export const StakingItem = ({ pool }) => {
                     Deposit lockup - 7d
                   </Text>
                   <HarvestBtn>
-                    <img src={claimRewardIcon} />
+                    <img src={claimRewardIcon}  alt="ico"/>
                     Harvest
                   </HarvestBtn>
                 </HDiv>

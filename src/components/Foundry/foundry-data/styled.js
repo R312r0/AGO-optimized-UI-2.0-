@@ -22,19 +22,51 @@ export const FoundryDataItemContainer = styled.div`
   flex-direction: column;
   display: flex;
   border-radius: 2.083vw;
+  overflow: hidden;
   height: 7.188vw;
   width: 31.25vw;
+
+  opacity: 0;
+
+  -webkit-animation: growElement 0.2s 1;
+  animation: growElement 0.2s 1;
+  animation-delay: ${(props) => props.animationDelay};
+  animation-fill-mode: forwards;
+
+  ${(props) => console.log(props.animationDelay)}
+
+  @keyframes growElement {
+    from {
+      -webkit-transform: scale(1.5, 1.5);
+      transform: scale(1.5, 1.5);
+    }
+    to {
+      opacity: 1;
+      -webkit-transform: scale(1, 1);
+      transform: scale(1, 1);
+    }
+  }
 `;
 
 export const HDiv = styled.div`
   margin-top: ${(props) => props.mt};
   justify-content: space-between;
   flex-direction: row;
+  position: relative;
   display: flex;
 
   svg {
     fill: ${(props) => (props.theme.light ? "#fff" : "#1E7559")};
     align-self: center;
+  }
+
+  animation: slide 0.5s forwards;
+  animation-delay: ${(props) => props.animationDelay};
+  bottom: 10vw;
+  @keyframes slide {
+    100% {
+      bottom: 0;
+    }
   }
 `;
 
