@@ -309,7 +309,7 @@ export const StakingItem = ({ pool }) => {
                   <Text left="2.4vw" color="#fff">
                     Deposit lockup - 7d
                   </Text>
-                  <HarvestBtn>
+                  <HarvestBtn onClick={() => handleClaimReward()}>
                     <img src={claimRewardIcon}  alt="ico"/>
                     Harvest
                   </HarvestBtn>
