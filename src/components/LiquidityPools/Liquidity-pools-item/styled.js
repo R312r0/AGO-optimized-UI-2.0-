@@ -77,7 +77,7 @@ export const Text = styled.span`
       ? props.theme.color
         ? "#fff"
         : "#828282"
-      : "#4f4f4f"};
+      : "#fff"};
   margin-left: ${(props) => props.ml};
   min-width: ${(props) => props.minW};
   display: flex;
