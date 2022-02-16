@@ -31,10 +31,10 @@ export const HDiv = styled.div`
 
 export const IconWrapper = styled.div`
   margin-right: 0.521vw;
-  background: ${(props) =>
+  /* background: ${(props) =>
     props.theme.light
       ? props.withoutWrapper ?? "#F2F2F2"
-      : props.withoutWrapper ?? "#1f1e20"};
+      : props.withoutWrapper ?? "#1f1e20"}; */
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -42,8 +42,8 @@ export const IconWrapper = styled.div`
   height: 2.552vw;
   width: 2.552vw;
   img {
-    height: ${(props) => props.h ?? "1.771vw"};
-    width: ${(props) => props.w ?? "1.771vw"};
+    height: ${(props) => props.h ?? "2.552vw"};
+    width: ${(props) => props.w ?? "2.552vw"};
   }
 `;
 
