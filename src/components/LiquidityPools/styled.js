@@ -119,4 +119,6 @@ export const SortArrowsContainer = styled.div`
 export const LiquidityPoolsTable = styled.ul`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  min-height: 6vw;
 `;

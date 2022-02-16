@@ -1,22 +1,20 @@
+import AccountIcon from "./assets/icons/nav-links/AccountIcon";
+import DashboardIcon from "./assets/icons/nav-links/DashboardIcon";
+import FoundryIcon from "./assets/icons/nav-links/FoundryIcon";
 import { InjectedConnector } from '@web3-react/injected-connector';
-import { NetworkConnector } from '@web3-react/network-connector';
+import LiquidityPoolsIcon from "./assets/icons/nav-links/LiquidityPoolsIcon";
 // Active icons.
 import { LoadingOutlined } from "@ant-design/icons";
-
+import MintRedeemIcon from "./assets/icons/nav-links/MintRedeemIcon";
+import { NetworkConnector } from '@web3-react/network-connector';
+import StakingIcon from "./assets/icons/nav-links/StakingIcon";
+import TradingIcon from "./assets/icons/nav-links/TradingIcon";
+import documentIcon from "./assets/icons/document-history.svg";
+import downArrowIcon from "./assets/icons/down-arrow-history.svg";
+import downloadIcon from "./assets/icons/download-history.svg";
 // User txs icons
 import lateralArrowsIcon from "./assets/icons/lateral-arrows-history.svg";
-import downloadIcon from "./assets/icons/download-history.svg";
-import downArrowIcon from "./assets/icons/down-arrow-history.svg";
 import lockIcon from "./assets/icons/lock-history.svg";
-import documentIcon from "./assets/icons/document-history.svg";
-
-import DashboardIcon from "./assets/icons/nav-links/DashboardIcon";
-import MintRedeemIcon from "./assets/icons/nav-links/MintRedeemIcon";
-import LiquidityPoolsIcon from "./assets/icons/nav-links/LiquidityPoolsIcon";
-import StakingIcon from "./assets/icons/nav-links/StakingIcon";
-import FoundryIcon from "./assets/icons/nav-links/FoundryIcon";
-import TradingIcon from "./assets/icons/nav-links/TradingIcon";
-import AccountIcon from "./assets/icons/nav-links/AccountIcon";
 
 export const COINGECKO_IDS = {
   AGO: "uniswap",
@@ -136,6 +134,15 @@ export const LOADER_INDICATOR_LOCAL = (
       position: "absolute",
       top: "50%",
       left: "50%",
+    }}
+  />
+);
+
+export const LOADER_INDICATOR_INNER = (
+  <LoadingOutlined
+    style={{
+      fontSize: "3vw",
+      color: "#40BA93",
     }}
   />
 );
