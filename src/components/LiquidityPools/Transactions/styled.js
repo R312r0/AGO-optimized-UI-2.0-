@@ -29,12 +29,17 @@ export const Text = styled.span`
   line-height: 1.406vw;
   font-size: 0.938vw;
   font-weight: 300;
-  color: ${(props) => props.theme.light ? props.theme.color ? "#fff" : "#828282" : props.color ?? "#BDBDBD"};
+  color: ${(props) =>
+    props.theme.light
+      ? props.theme.color
+        ? "#fff"
+        : "#828282"
+      : props.color ?? "#BDBDBD"};
 
   b {
     font-weight: 500;
-    color: ${(props) => props.theme.light ? props.theme.color ? "#fff" : "#828282" : "#fff"};
-;
+    color: ${(props) =>
+      props.theme.light ? (props.theme.color ? "#fff" : "#828282") : "#fff"};
   }
 `;
 
@@ -46,7 +51,14 @@ export const BtnWrapper = styled.div`
 
 export const TransactionsBtn = styled.button`
   background: ${(props) => (props.isActive ? "#40ba93" : "transparent")};
-  color: ${(props) => (props.isActive ? "#fff" : props.theme.light && props.theme.color ? "#fff" : "#b0b0b0")};
+  color: ${(props) =>
+    props.isActive
+      ? "#fff"
+      : props.theme.light && props.theme.color
+      ? "#fff"
+      : props.theme.color === "green"
+      ? "#fff"
+      : "#b0b0b0"};
   font-weight: ${(props) => (props.isActive ? 700 : 300)};
   justify-content: center;
   padding: 0.26vw 1.302vw;
@@ -69,20 +81,31 @@ export const Divider = styled.div`
 `;
 
 export const Table = styled.div`
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
   overflow-y: scroll;
   margin-top: 1.302vw;
   height: 13.3vw;
   width: 70.792vw;
+  display: flex;
+  margin-right: -2vw;
 
   &::-webkit-scrollbar {
     width: 0.208vw;
 
-    background: ${(props) => props.theme.light ? props.theme.color ? "#828282" : "#bdbdbd" : "#4f4f4f"};
+    background: ${(props) =>
+      props.theme.light
+        ? props.theme.color
+          ? "#828282"
+          : "#bdbdbd"
+        : "#4f4f4f"};
     border-radius: 0.26vw;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: ${(props) => props.theme.light ? props.theme.color ? "#fff" : "#828282" : "#333"};
+    background: ${(props) =>
+      props.theme.light ? (props.theme.color ? "#fff" : "#828282") : "#333"};
     border-radius: 0.26vw;
   }
 `;

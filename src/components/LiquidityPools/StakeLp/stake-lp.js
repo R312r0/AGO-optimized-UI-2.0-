@@ -60,7 +60,7 @@ export const StakeLp = ({
       contract: pool,
       address: findedPool,
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -274,13 +274,13 @@ export const StakeLp = ({
               <button onClick={() => maxInput()}>Max</button>
             </StakeLPInputContainer>
             <Text ml="1.250vw" minW="7.4vw">
-              <b>{earned}</b>
+              <b>{earned.toString().substring(0, 12)}</b>
             </Text>
             <Text minW="11.3vw">
-              <b>{staked}</b>
+              <b>{staked.toString().substring(0, 12)}</b>
             </Text>
             <Text>
-              <b>{lpUserBalance}</b>
+              <b>{lpUserBalance.toString().substring(0, 12)}</b>
             </Text>
           </HDiv>
         </StakeLPInfoContainer>

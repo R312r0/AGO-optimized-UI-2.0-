@@ -128,7 +128,7 @@ export const RemoveLiquidityModal = ({
             <Text>
               <b>Remove liquidity</b>
             </Text>
-            <CloseBtn>
+            <CloseBtn onClick={handleClose}>
               <CloseIcon />
             </CloseBtn>
           </HDiv>

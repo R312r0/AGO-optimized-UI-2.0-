@@ -11,9 +11,6 @@ export const RemoveLiqudityModalContainer = styledMUI(Modal)(() => ({
 }));
 
 export const LiqSlider = styledMUI(Slider)({
-  // position: "relative",
-  // top: "0.1vw",
-  //   marginBottom: "-0.8vw",
   width: "12.188vw",
   color: "#40BA93",
   height: "0.260vw",
@@ -77,7 +74,8 @@ export const CloseBtn = styled.button`
 export const ChartBtn = styled.button`
   border-radius: 1.563vw;
   background: #40ba93;
-  min-height: 1.51vw;
+  margin-top: 1.2vw;
+  height: 1.51vw;
   font-size: 0.729vw;
   width: 5.521vw;
   color: #fff;
