@@ -74,7 +74,6 @@ export const CloseBtn = styled.button`
 export const ChartBtn = styled.button`
   border-radius: 1.563vw;
   background: #40ba93;
-  margin-top: 1.2vw;
   height: 1.51vw;
   font-size: 0.729vw;
   width: 5.521vw;

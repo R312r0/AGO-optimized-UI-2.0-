@@ -120,7 +120,7 @@ export const RemoveLiquidityModal = ({
   };
 
   return (
-    <div>
+    <div style={{display: "flex"}}>
       <ChartBtn onClick={handleOpen}>Remove</ChartBtn>
       <RemoveLiqudityModalContainer open={open} onClose={handleClose}>
         <RemoveLiqudityModalContent>

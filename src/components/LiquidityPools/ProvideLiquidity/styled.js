@@ -125,8 +125,11 @@ export const PieChartContainer = styled.div`
 
 export const BtnWrapper = styled.div`
   transform: matrix(-1, 0, 0, 1, 0, 0);
-  height: 1.510vw;
+  margin-top: 1.2vw;
+  max-height: 1.510vw;
   display: flex;
+  align-items: center;
+  background: red;
 
   button:last-child {
     margin-left: 0.5vw;
@@ -136,7 +139,6 @@ export const BtnWrapper = styled.div`
 export const ChartBtn = styled.button`
   border-radius: 1.563vw;
   background: #40ba93;
-  margin-top: 1.2vw;
   height: 1.510vw;
   font-size: 0.729vw;
   width: 5.521vw;
