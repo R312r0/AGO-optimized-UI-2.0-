@@ -15,7 +15,7 @@ export const LiquidityPoolsItemContainer = styled.div`
   margin-top: 0.833vw;
   width: 81.823vw;
   display: flex;
-  /* background: ${(props) =>
+  background: ${(props) =>
     props.isExpanded
       ? props.theme.light
         ? props.theme.color === "green"
@@ -38,7 +38,7 @@ export const LiquidityPoolsItemContainer = styled.div`
       ? "linear-gradient(90.44deg, #0a8080 -0.21%, #33d8a3 106.52%)"
       : props.theme.color === "violet"
       ? "linear-gradient(90.19deg, #560397 -3.27%, #3D1B57 103.63%)"
-      : "linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%)"}; */
+      : "linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%)"};
 
   box-shadow: 0 0.208vw 1vw rgba(0, 0, 0, 0.25);
   z-index: 0;
