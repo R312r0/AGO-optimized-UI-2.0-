@@ -71,7 +71,7 @@ export const Text = styled.span`
 
 export const LiquidityPoolsInputContainer = styled.div`
   color: ${(props) =>
-    props.placeholderColor ?? (props.theme.light ? "#333" : "#fff")};
+    props.placeholderColor ?? (props.theme.light ? props.theme.color ? "#fff" : "#333" : "#fff")};
   border: 0.052vw solid;
   border-color: ${(props) =>
     props.theme.light
