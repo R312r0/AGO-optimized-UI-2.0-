@@ -36,7 +36,7 @@ export const Volume = ({ data }) => {
   const VolumeChartWrapper = styled.div`
     margin-top: 2.292vw;
     padding: 1vw;
-    background-color: rosybrown;
+    /* background-color: rosybrown; */
     font-size: 0.521vw;
     width: 47.833vw;
     height: 12.521vw;
