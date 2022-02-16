@@ -271,7 +271,7 @@ export const StakingItem = ({ pool }) => {
         isExpanded={windowExpanded}
         id={`item_${address}`}
         onClick={(e) =>
-          e.target.id === "item_0x49881Fa26F4B6EEBF6791E85247b56d412039264"
+          e.target.id.includes("item_0x")
             ? setWindowExpanded(!windowExpanded)
             : null
         }

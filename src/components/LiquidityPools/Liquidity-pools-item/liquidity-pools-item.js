@@ -118,7 +118,7 @@ export const LiquidityPoolsItem = ({
           id={`item_${address}`}
           isExpanded={windowExpanded}
           onClick={(e) =>
-            e.target.id === "item_0x206a734e79fdf5134ef6a0b14d10a170de196717"
+            e.target.id.includes("item_0x")
               ? setWindowExpanded(!windowExpanded)
               : null
           }
