@@ -10,7 +10,7 @@ import {
   Text,
   ToggleBtnWrapper,
   VDiv,
-  Wrapper,
+  Wrapper, ChangeActionButton,
 } from "./styled";
 import React, { useEffect, useState } from "react";
 import {
@@ -25,6 +25,11 @@ import claimRewardIcon from "../claim-reward.svg";
 import { message } from "antd";
 import { useSystemContext } from "../../../systemProvider";
 import { useWeb3React } from "@web3-react/core";
+
+const STAKING_ACTIONS = {
+  DEPOSIT: "deposit",
+  WITHDRAW: "withdraw"
+}
 
 export const StakingItem = ({ pool }) => {
   const { name, address } = pool;
@@ -48,6 +53,7 @@ export const StakingItem = ({ pool }) => {
   const [windowExpanded, setWindowExpanded] = useState(false);
   const [depositInput, setDepositInput] = useState(0);
   const [allowance, setAllowance] = useState(false);
+  const [stakingActionSelected, setStakingActionSelected] = useState(STAKING_ACTIONS.DEPOSIT);
 
   useEffect(() => {
     if (library && !poolContract) {
@@ -202,6 +208,20 @@ export const StakingItem = ({ pool }) => {
     }
   };
 
+  const handleMaxButton = async () => {
+
+      if (stakingActionSelected === STAKING_ACTIONS.DEPOSIT) {
+        const userBalance = balances.find(item => item.symbol === pool.name);
+        setDepositInput(userBalance.nativeBalance);
+      }
+      else {
+        setDepositInput(stakingInfo.staked);
+      }
+
+
+
+  }
+
   const handleClaimReward = async () => {
     if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
       await contracts.wbtc.methods
@@ -269,14 +289,8 @@ export const StakingItem = ({ pool }) => {
     <>
       <StakingItemContainer
         isExpanded={windowExpanded}
-        id={`item_${address}`}
-        onClick={(e) =>
-          e.target.id === "item_0x49881Fa26F4B6EEBF6791E85247b56d412039264"
-            ? setWindowExpanded(!windowExpanded)
-            : null
-        }
       >
-        <HDiv isExpanded={windowExpanded} alignItems="center">
+        <HDiv onClick={() => setWindowExpanded(!windowExpanded)} isExpanded={windowExpanded} alignItems="center">
           <div>
             <TokenIcon iconName={name} />
             <Text isExpanded={windowExpanded} minW="7vw" inactive>
@@ -335,14 +349,18 @@ export const StakingItem = ({ pool }) => {
                   </VDiv>
                   <VDiv left="2.8vw">
                     <div>
-                      <Text ml="0.9vw">Deposit/Withdraw</Text>
-                      <button>Max</button>
+                      <Text ml="0.9vw">
+                        <ChangeActionButton active={stakingActionSelected === STAKING_ACTIONS.DEPOSIT} onClick={() => setStakingActionSelected(STAKING_ACTIONS.DEPOSIT)}>Deposit</ChangeActionButton>/
+                        <ChangeActionButton active={stakingActionSelected === STAKING_ACTIONS.WITHDRAW} onClick={() => setStakingActionSelected(STAKING_ACTIONS.WITHDRAW)}>Withdraw</ChangeActionButton>
+                      </Text>
+                      <button onClick={() => handleMaxButton()}>Max</button>
                     </div>
                     <StakingInputContainer>
                       <input
                         type="number"
                         placeholder={`Put ${name} token amount`}
                         onChange={(e) => setDepositInput(e.target.value)}
+                        value={depositInput}
                       />
                     </StakingInputContainer>
                   </VDiv>

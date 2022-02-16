@@ -27,7 +27,7 @@ export const ThemeSwitcher = () => {
       },0)
     },[theme])
     return (
-        <ThemeSwitcherWrapper style={{visibility: ""}} theme={theme} mobile={isMobileScreen}>
+        <ThemeSwitcherWrapper style={{visibility: "hidden"}} theme={theme} mobile={isMobileScreen}>
             <svg width="9" height="14" viewBox="0 0 9 14" fill={theme === "dark" ? '#40BA93' : '#333'} xmlns="http://www.w3.org/2000/svg">
             <path d="M6.92308 0C7.65 0 8.34231 0.112 9 0.322C6.18923 1.211 4.15385 3.864 4.15385 7C4.15385 10.136 6.18923 12.789 9 13.678C8.34231 13.888 7.65 14 6.92308 14C3.10154 14 0 10.864 0 7C0 3.136 3.10154 0 6.92308 0Z" />
             </svg>

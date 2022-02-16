@@ -140,7 +140,7 @@ export const LiquidityPoolsItem = ({
                 <b>{liqiuidityUSD}$ </b>
               </Text>
               <Text minW="12.6vw">
-                <b>{myLiquidity === 0 ? `-` : `${myLiquidity}$`} </b>
+                <b>{myLiquidity === 0 ? `0$` : `${myLiquidity}$`} </b>
               </Text>
               <AprValueWrapper>
                 {earnGovToken
