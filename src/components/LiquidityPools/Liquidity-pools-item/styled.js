@@ -41,6 +41,11 @@ export const LiquidityPoolsItemContainer = styled.div`
       : "linear-gradient(90.99deg, #1D1D1D 2.18%, #232323 104.4%)"};
 
   box-shadow: 0 0.208vw 1vw rgba(0, 0, 0, 0.25);
+  z-index: 0;
+
+  &:hover {
+    transform: scale(1.01);
+  }
 `;
 
 export const HDiv = styled.div`
@@ -49,15 +54,16 @@ export const HDiv = styled.div`
   margin-top: ${(props) => props.mt};
   flex-direction: row;
   display: flex;
+  z-index: -10;
 `;
 
 export const IconWrapper = styled.div`
   margin-right: ${(props) => props.mr};
   left: ${(props) => props.left};
-  background: ${(props) =>
+  /* background: ${(props) =>
     props.theme.light
       ? props.withoutWrapper ?? "#F2F2F2"
-      : props.withoutWrapper ?? "#1f1e20"};
+      : props.withoutWrapper ?? "#1f1e20"}; */
   border-radius: 50%;
   position: relative;
   display: flex;
@@ -65,9 +71,10 @@ export const IconWrapper = styled.div`
   align-items: center;
   height: 2.552vw;
   width: 2.552vw;
+  z-index: -10;
   img {
-    height: ${(props) => props.h ?? "1.771vw"};
-    width: ${(props) => props.w ?? "1.771vw"};
+    height: ${(props) => props.h ?? "2.552vw;"};
+    width: ${(props) => props.w ?? "2.552vw;"};
   }
 `;
 
@@ -87,6 +94,7 @@ export const Text = styled.span`
     font-size: 0.938vw;
     font-weight: 500;
   }
+  z-index: 10;
 `;
 
 export const ExpandedDataWrapper = styled.div`
@@ -102,6 +110,7 @@ export const ExpandedDataWrapper = styled.div`
       opacity: 1;
     }
   }
+  z-index: 10;
 `;
 
 export const AprValueWrapper = styled.div`
@@ -126,6 +135,7 @@ export const AprValueWrapper = styled.div`
   height: 2.031vw;
   width: 5.521vw;
   display: flex;
+  z-index: 10;
 `;
 
 export const ToggleExpandBtn = styled.button`
@@ -137,6 +147,7 @@ export const ToggleExpandBtn = styled.button`
   height: 1.615vw;
   width: 3.542vw;
   display: flex;
+  z-index: 10;
 
   svg {
     height: 0.729vw;
@@ -168,9 +179,11 @@ export const LiquidityInfoContainer = styled.div`
   font-size: 0.729vw;
   line-height: 1.094vw;
   color: #828282;
+  z-index: 10;
 
   b {
-    color: ${(props) => (props.theme.light ? props.theme.color ? "#fff" : "#828282" : "#fff")};
+    color: ${(props) =>
+      props.theme.light ? (props.theme.color ? "#fff" : "#828282") : "#fff"};
     font-weight: 500;
     font-size: 0.729vw;
     line-height: 1.094vw;
@@ -182,11 +195,13 @@ export const Divider = styled.div`
   width: 15.052vw;
   height: 0.052vw;
   margin: 0.417vw 0;
+  z-index: 10;
 `;
 
 export const TabContentWrapper = styled.div`
   padding-top: 1.823vw;
   display: flex;
+  z-index: 10;
 `;
 
 export const Tabs = styledMUI(TabsUnstyled)(() => ({

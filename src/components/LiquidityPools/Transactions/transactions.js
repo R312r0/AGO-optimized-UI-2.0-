@@ -9,7 +9,12 @@ import {
   TransactionsContainer,
   TransactionsInfoContainer,
 } from "./styled";
-import { LOADER_INDICATOR_LOCAL, TXS_NAME } from "../../../constants";
+import {
+  LOADER_INDICATOR,
+  LOADER_INDICATOR_INNER,
+  LOADER_INDICATOR_LOCAL,
+  TXS_NAME,
+} from "../../../constants";
 import React, { useEffect, useState } from "react";
 import {
   calculateTimeDifference,
@@ -116,7 +121,14 @@ export const Transactions = ({ token0, token1 }) => {
           <Divider />
           <Table>
             {!convertedData ? (
-              <Spin indicator={LOADER_INDICATOR_LOCAL} />
+              <Spin
+                indicator={LOADER_INDICATOR_INNER}
+                style={{
+                  justifySelf: "center",
+                  alignSelf: "center",
+                  display: "flex",
+                }}
+              />
             ) : (
               convertedData.map((item, idx) => (
                 <TableRow key={idx} idx={idx}>

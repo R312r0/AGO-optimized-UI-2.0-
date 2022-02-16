@@ -267,7 +267,15 @@ export const StakingItem = ({ pool }) => {
 
   return (
     <>
-      <StakingItemContainer isExpanded={windowExpanded} id={`item_${address}`}>
+      <StakingItemContainer
+        isExpanded={windowExpanded}
+        id={`item_${address}`}
+        onClick={(e) =>
+          e.target.id === "item_0x49881Fa26F4B6EEBF6791E85247b56d412039264"
+            ? setWindowExpanded(!windowExpanded)
+            : null
+        }
+      >
         <HDiv isExpanded={windowExpanded} alignItems="center">
           <div>
             <TokenIcon iconName={name} />
@@ -310,7 +318,7 @@ export const StakingItem = ({ pool }) => {
                     Deposit lockup - 7d
                   </Text>
                   <HarvestBtn onClick={() => handleClaimReward()}>
-                    <img src={claimRewardIcon}  alt="ico"/>
+                    <img src={claimRewardIcon} alt="ico" />
                     Harvest
                   </HarvestBtn>
                 </HDiv>
