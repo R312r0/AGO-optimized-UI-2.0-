@@ -129,7 +129,6 @@ export const BtnWrapper = styled.div`
   max-height: 1.510vw;
   display: flex;
   align-items: center;
-  background: red;
 
   button:last-child {
     margin-left: 0.5vw;
