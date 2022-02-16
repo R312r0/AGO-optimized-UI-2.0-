@@ -124,7 +124,11 @@ export const LiquidityPoolsItem = ({
           }
         >
           <div style={{ position: "relative" }}>
-            <HDiv alignItems="center">
+            <HDiv
+              alignItems="center"
+              onClick={() => setWindowExpanded(!windowExpanded)}
+              style={{cursor: "pointer"}}
+            >
               <IconWrapper mr="0.417vw">
                 <TokenIcon iconName={token0.symbol} />
               </IconWrapper>
@@ -140,7 +144,7 @@ export const LiquidityPoolsItem = ({
                 <b>{liqiuidityUSD}$ </b>
               </Text>
               <Text minW="12.6vw">
-                <b>{myLiquidity === 0 ? `-` : `${myLiquidity}$`} </b>
+                <b>{myLiquidity === 0 ? `0$` : `${myLiquidity}$`} </b>
               </Text>
               <AprValueWrapper>
                 {earnGovToken

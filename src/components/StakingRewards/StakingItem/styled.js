@@ -13,6 +13,7 @@ export const StakingItemContainer = styled.div`
       ? "1.25vw 2.813vw 1.25vw 3.906vw"
       : "1.25vw 2.813vw 1.25vw 3.906vw"};
   height: ${(props) => (props.isExpanded ? "18.271vw" : "5.573vw")};
+  cursor: ${props => props.isExpanded ? "default" : "pointer"};
   margin-top: 0.938vw;
   border-radius: 2.083vw;
   width: 81.771vw;
@@ -109,7 +110,7 @@ export const VDiv = styled.div`
     justify-content: space-between;
     align-items: center;
   }
-
+  
   button {
     border-radius: 2.083vw;
     background: ${(props) =>
@@ -125,6 +126,16 @@ export const VDiv = styled.div`
       opacity: 0.8;
     }
   }
+`;
+
+export const ChangeActionButton = styled.span`
+  transition: 0.3s all;
+  cursor: pointer;
+  color: ${props => props.active ? "#40BA93" : "#4f4f4f"};
+  &:hover {
+    color: white;
+  }
+    
 `;
 
 export const ToggleBtnWrapper = styled.div`
