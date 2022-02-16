@@ -9,8 +9,7 @@ import {
   Text,
 } from "./styled";
 import {
-  LOADER_INDICATOR,
-  LOADER_INDICATOR_LOCAL,
+  LOADER_INDICATOR_INNER,
   LP_STAKING_POOL,
 } from "../../constants";
 import React, { useEffect, useState } from "react";
@@ -389,7 +388,7 @@ export const LiquidityPools = () => {
             </HDiv>
             <LiquidityPoolsTable>
               {poolsPreparing ? (
-                <Spin size="large" indicator={LOADER_INDICATOR_LOCAL} />
+                <Spin size="large" indicator={LOADER_INDICATOR_INNER} />
               ) : (
                 <>
                   {earnAgoPoolsFormatted.map((item) => (
@@ -481,7 +480,7 @@ export const LiquidityPools = () => {
             </HDiv>
             <LiquidityPoolsTable>
               {poolsPreparing ? (
-                <Spin size="large" indicator={LOADER_INDICATOR_LOCAL} />
+                <Spin size="large" indicator={LOADER_INDICATOR_INNER} />
               ) : (
                 <>
                   {earnPoolsFormatted.map((item) => (
@@ -569,7 +568,7 @@ export const LiquidityPools = () => {
             </HDiv>
             <LiquidityPoolsTable>
               {poolsPreparing ? (
-                <Spin size="large" indicator={LOADER_INDICATOR_LOCAL} />
+                <Spin size="large" indicator={LOADER_INDICATOR_INNER} />
               ) : (
                 <>
                   {poolsFormatted.map((item) => (
