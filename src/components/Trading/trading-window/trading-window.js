@@ -1,29 +1,31 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
-import line_active from "../../../assets/icons/chart-switcher/line-active.svg";
-import { useSystemContext } from "../../../systemProvider";
-import { TradingChart } from "../trading-chart/trading-chart";
 import "../trading.scss";
-import { useQuery, useSubscription } from "@apollo/client";
-import { TOKENS_TRADING } from "../../../api/client";
-import { useThemeContext } from "../../Layout/layout";
-import { styled } from "@mui/material/styles";
-import { MenuItem, Select } from "@mui/material";
+
+import {
+  ChartSwitchBtn,
+  ChartWrapper,
+  DropdownMenu,
+  DropdownMenuItem,
+  HDiv,
+  ResetBtn,
+  Text,
+  TradingChartContainer,
+} from "./styled";
+import React, { useEffect, useState } from "react";
+
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import LineActiveIcon from "../../../assets/icons/chart-switcher/LineActiveIcon";
 import { Spin } from "antd";
-import { TOKEN_PRICE_CHART } from "../../../api/subscriptions";
-import axios from "axios";
-import line from "../../../assets/icons/chart-switcher/line.svg";
-import candle from "../../../assets/icons/chart-switcher/candle.svg";
-import candle_active from "../../../assets/icons/chart-switcher/candle-active.svg";
-import { COINGECKO_IDS, LOADER_INDICATOR_LOCAL } from "../../../constants";
+import { TOKENS_TRADING } from "../../../api/client";
+import { TradingChart } from "../trading-chart/trading-chart";
+import { useQuery } from "@apollo/client";
+import { useThemeContext } from "../../Layout/layout";
 
 const TradingWindow = () => {
-  const { tokens } = useSystemContext();
   const { theme } = useThemeContext();
   const { data, loading } = useQuery(TOKENS_TRADING);
 
   const [activeToken, setActiveToken] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [candleChart, setCandleChart] = useState(null);
   const [lineChart, setLineChart] = useState(null);
 
@@ -39,59 +41,27 @@ const TradingWindow = () => {
         data.tokens.find((item) => item.symbol === activeToken).lineChartUSD
       );
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeToken]);
 
-
-  const DropdownMenu = styled(Select)(() => ({
-    color: theme === "dark" ? "white" : "black",
-    ".MuiOutlinedInput-notchedOutline": {
-      border: "none",
-    },
-    ".MuiSelect-icon": {
-      color: theme === "dark" ? "white" : "black",
-    },
-    border: "1px solid #40BA93",
-    width: "100%",
-    minWidth: "121px",
-    height: "38px",
-    borderRadius: "10px",
-  }));
-
-  const DropdownMenuItem = styled(MenuItem)(() => ({
-    color: theme === "dark" ? "white" : "black",
-    "&.MuiMenuItem-root": {
-      "&:hover, &.Mui-focusVisible": {
-        background:
-          theme === "dark"
-            ? "rgb(10%, 10%, 10%, .9)"
-            : "rgb(10%, 10%, 10%, .2)",
-      },
-      "&.Mui-selected": {
-        background:
-          theme === "dark" ? "rgb(10%, 10%, 10%, 1)" : "rgb(10%, 10%, 10%, .5)",
-        "&:hover": {
-          background:
-            theme === "dark"
-              ? "rgb(10%, 10%, 10%, .9)"
-              : "rgb(10%, 10%, 10%, .2)",
-        },
-      },
-    },
-  }));
-
   return (
-    <div className="trading-wrapper-chart trading-window-box">
-      {loading && !activeToken ? null : (
-        <>
-          <div className="trading-wrapper-chart__header">
-            <h1> Chart </h1>
-            <div className="trading-wrapper-chart__control-panel">
+    <>
+      <TradingChartContainer>
+        {loading && !activeToken ? null : (
+          <>
+            <HDiv alignItems="center" justifyContent="flex-end">
               <DropdownMenu
                 onChange={(e) => setActiveToken(e.target.value)}
                 value={activeToken}
                 IconComponent={KeyboardArrowDownIcon}
-                MenuProps={{'MenuListProps': {'sx': {backgroundColor: theme === "dark" ? "#31283D" : "none",}}}}
+                MenuProps={{
+                  MenuListProps: {
+                    sx: {
+                      background: theme === "dark" ? "#31283D" : "radial-gradient(131.68% 131.68% at 50.41% 82.78%, rgba(150, 81, 237, 0.2) 0%, rgba(153, 80, 244, 0.052) 100%), #D19AFF",
+                    },
+                  },
+                }}
+                theme={theme}
               >
                 {data.tokens
                   .filter(
@@ -106,35 +76,39 @@ const TradingWindow = () => {
                         selected={false}
                         key={`index_opt_${index}`}
                         value={item.symbol}
+                        theme={theme}
                       >
                         {item.symbol}
                       </DropdownMenuItem>
                     );
                   })}
               </DropdownMenu>
-              <div className="chart-switcher">
-                <button
-                  onClick={() => console.log("lineChart")}
-                  className={"active-chart-type"}
-                >
-                  <img src={line_active} width={20} height={20} alt="line" />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="trading-wrapper-chart__chart-graph">
-            {lineChart ? (
-              <TradingChart
-                token={activeToken}
-                candleData={candleChart}
-                lineData={lineChart}
-                chartType={"line"}
-              />
-            ) : null}
-          </div>
-        </>
-      )}
-    </div>
+              <ChartSwitchBtn onClick={() => console.log("lineChart")}>
+                <LineActiveIcon color="red"/>
+              </ChartSwitchBtn>
+            </HDiv>
+            <HDiv ml="1.250vw">
+              <Text>
+                <b>Chart</b>
+              </Text>
+            </HDiv>
+            <ChartWrapper>
+              {lineChart ? (
+                <TradingChart
+                  token={activeToken}
+                  candleData={candleChart}
+                  lineData={lineChart}
+                  chartType={"line"}
+                />
+              ) : null}
+            </ChartWrapper>
+            <HDiv justifyContent="flex-end">
+              <ResetBtn>Reset</ResetBtn>
+            </HDiv>
+          </>
+        )}
+      </TradingChartContainer>
+    </>
   );
 };
 export default TradingWindow;
