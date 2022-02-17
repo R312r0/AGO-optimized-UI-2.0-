@@ -1,17 +1,26 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { useSystemContext } from '../../../systemProvider';
-import styled from 'styled-components';
-import { Spin } from "antd";
 import { LOADER_INDICATOR, LOADER_INDICATOR_LOCAL } from "../../../constants";
-import { useThemeContext } from '../../Layout/layout';
-import { useQuery } from '@apollo/client';
-import { DASHBOAR_TXS } from '../../../api/queries';
-import { TokenTransactionTableWrapper, Table, TableHead, TableBody, TablePagination } from './styles';
-import { formattedNum, formatAddress, calculateTimeDifference } from '../../../utils/helpers';
-import { TXS_NAME } from '../../../constants';
+import React, { Fragment, useEffect, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TablePagination,
+  ToFirstBtn,
+  TokenTransactionTableWrapper,
+} from "./styles";
+import {
+  calculateTimeDifference,
+  formatAddress,
+  formattedNum,
+} from "../../../utils/helpers";
+
+import { DASHBOAR_TXS } from "../../../api/queries";
+import { Spin } from "antd";
+import { TXS_NAME } from "../../../constants";
+import { useQuery } from "@apollo/client";
+import { useThemeContext } from "../../Layout/layout";
 
 export const TokenTransactionTable = () => {
-
   const { theme } = useThemeContext();
   const { data, loading, error } = useQuery(DASHBOAR_TXS);
   const [totalPages, setTotalPages] = useState(null);
@@ -23,65 +32,84 @@ export const TokenTransactionTable = () => {
     if (data && !loading) {
       setConvertedTxs(convertTransactionsData(data.transactions));
     }
-
-  }, [data, loading])
+  }, [data, loading]);
 
   useEffect(() => {
-
     if (convertedTxs) {
       determineNumberOfPages(convertedTxs);
     }
-
-  }, [convertedTxs])
-
+  }, [convertedTxs]);
 
   const convertTransactionsData = (data) => {
-    const { SWAP, ADD, BURN, MINT, REDEEM, COLLECT_REDEMPTION, STAKE, UNSTAKE } = TXS_NAME;
+    const {
+      SWAP,
+      ADD,
+      BURN,
+      MINT,
+      REDEEM,
+      COLLECT_REDEMPTION,
+      STAKE,
+      UNSTAKE,
+    } = TXS_NAME;
 
-    const res = data.map(item => {
+    const res = data.map((item) => {
       let txName;
       let totalValue = formattedNum((+item.amountTotalUSD).toFixed(2));
-      let token0Amount = `${(+item.amount0).toFixed(2)} ${item.token0}`
-      let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`
-	  let txId = item.id;
-	  let addr = item.from;
+      let token0Amount = `${(+item.amount0).toFixed(2)} ${item.token0}`;
+      let token1Amount = `${(+item.amount1).toFixed(2)} ${item.token1}`;
+      let txId = item.id;
+      let addr = item.from;
       let acc = formatAddress(item.from);
       let time = calculateTimeDifference(item.timestamp);
 
-
       switch (item.name) {
         case SWAP:
-          txName = `${item.name} ${item.token0} for ${item.token1}`
+          txName = `${item.name} ${item.token0} for ${item.token1}`;
           break;
         case ADD:
-          txName = `${item.name} ${item.token0} and ${item.token1}`
+          txName = `${item.name} ${item.token0} and ${item.token1}`;
           break;
         case BURN:
-          txName = `${item.name} ${item.token0} and ${item.token1}`
+          txName = `${item.name} ${item.token0} and ${item.token1}`;
           break;
         case MINT:
-          txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare > 0 ? item.tokenShare : ""}`
+          txName = `${item.name} ${item.token0} for ${item.token1} ${
+            +item.amountShare > 0 ? item.tokenShare : ""
+          }`;
           break;
         case REDEEM:
-          txName = `${item.name} ${item.token0} for ${item.token1} ${+item.amountShare > 0 ? item.tokenShare : ""}`
+          txName = `${item.name} ${item.token0} for ${item.token1} ${
+            +item.amountShare > 0 ? item.tokenShare : ""
+          }`;
           break;
         case COLLECT_REDEMPTION:
-          txName = `${item.name} ${item.token0} ${+item.amountShare > 0 ? item.tokenShare + " and" : ""}`
+          txName = `${item.name} ${item.token0} ${
+            +item.amountShare > 0 ? item.tokenShare + " and" : ""
+          }`;
           break;
         case STAKE:
-          txName = `${item.name} ${item.token0}`
+          txName = `${item.name} ${item.token0}`;
           break;
         case UNSTAKE:
-          txName = `${item.name} ${item.token0}`
+          txName = `${item.name} ${item.token0}`;
           break;
         default:
           txName = "Transaction";
           break;
       }
-      return { txName, totalValue, txId, token0Amount, token1Amount, acc, addr, time }
-    })
+      return {
+        txName,
+        totalValue,
+        txId,
+        token0Amount,
+        token1Amount,
+        acc,
+        addr,
+        time,
+      };
+    });
     return res;
-  }
+  };
 
   const determineNumberOfPages = (arr) => {
     const itemsPerPage = 10;
@@ -105,11 +133,10 @@ export const TokenTransactionTable = () => {
     setDataPaginated(paginatedDataObject);
   };
 
-
   return (
     <TokenTransactionTableWrapper light={theme === "light"}>
       <div className="transanction-tabs-wrapper">
-        <h2 className={'transactions-heading'}>Transactions</h2>
+        <h2 className={"transactions-heading"}>Transactions</h2>
         {/* <div>
           <button className="transanction-tabs-wrapper-active">All</button>
           <button>Swaps</button>
@@ -127,40 +154,68 @@ export const TokenTransactionTable = () => {
           <span>Time</span>
         </TableHead>
         <div className="token-transaction-separator"></div>
-        {!dataPaginated
-          ?
+        {!dataPaginated ? (
           <Spin indicator={LOADER_INDICATOR_LOCAL} />
-          :
+        ) : (
           <TableBody light={theme === "light"}>
-            {dataPaginated && dataPaginated[`${currentClickedNumber}`].map((item, index) => {
-
-              return (
-                <Fragment key={`table_${index}`}>
-                  <a target={"_blank"}  href={`https://polygonscan.com/tx/${item.txId}`} className='operation' rel="noreferrer">{item.txName}</a>
-                  <div>{item.totalValue}$</div>
-                  <div>{item.token0Amount}</div>
-                  <div>{item.token1Amount}</div>
-                  <a target={"_blank"}  href={`https://polygonscan.com/address/${item.addr}`} className='acc' rel="noreferrer">{item.acc}</a>
-                  <div className='time'>{item.time}</div>
-                </Fragment>
-              );
-            })}
+            {dataPaginated &&
+              dataPaginated[`${currentClickedNumber}`].map((item, index) => {
+                return (
+                  <Fragment key={`table_${index}`}>
+                    <a
+                      target={"_blank"}
+                      href={`https://polygonscan.com/tx/${item.txId}`}
+                      className="operation"
+                      rel="noreferrer"
+                    >
+                      {item.txName}
+                    </a>
+                    <div>{item.totalValue}$</div>
+                    <div>{item.token0Amount}</div>
+                    <div>{item.token1Amount}</div>
+                    <a
+                      target={"_blank"}
+                      href={`https://polygonscan.com/address/${item.addr}`}
+                      className="acc"
+                      rel="noreferrer"
+                    >
+                      {item.acc}
+                    </a>
+                    <div className="time">{item.time}</div>
+                  </Fragment>
+                );
+              })}
           </TableBody>
-        }
+        )}
       </Table>
       <TablePagination light={theme === "light"}>
+        <ToFirstBtn onClick={() => setCurrentClickedNumber(1)}>
+          First
+        </ToFirstBtn>
         <div>
           <button
-            onClick={() => setCurrentClickedNumber(prevNum => prevNum !== 1 ? prevNum - 1 : prevNum)}>
+            onClick={() =>
+              setCurrentClickedNumber((prevNum) =>
+                prevNum !== 1 ? prevNum - 1 : prevNum
+              )
+            }
+          >
             Prev
           </button>
-          <span>Page {currentClickedNumber} of {totalPages} </span>
+          <span>
+            Page {currentClickedNumber} of {totalPages}{" "}
+          </span>
           <button
-            onClick={() => setCurrentClickedNumber(prevNum => prevNum < totalPages ? prevNum + 1 : prevNum)}>
+            onClick={() =>
+              setCurrentClickedNumber((prevNum) =>
+                prevNum < totalPages ? prevNum + 1 : prevNum
+              )
+            }
+          >
             Next
           </button>
         </div>
       </TablePagination>
     </TokenTransactionTableWrapper>
-  )
-}
+  );
+};
