@@ -395,7 +395,7 @@ export const StakingItem = ({ pool }) => {
                     <Text>Currently Staked</Text>
                     <Text mt="0.938vw">
                       <b>
-                        {stakingInfo.staked} {name}
+                        {stakingInfo.staked.toString().substring(0, 8)} {name}
                       </b>
                     </Text>
                   </VDiv>
@@ -403,7 +403,7 @@ export const StakingItem = ({ pool }) => {
                     <Text>Total Staked</Text>
                     <Text mt="0.938vw">
                       <b>
-                        {formattedNum(stakingInfo.stakedGlobal)} {name}
+                        {formattedNum(stakingInfo.stakedGlobal.toString().substring(0, 8))} {name}
                       </b>
                     </Text>
                   </VDiv>
