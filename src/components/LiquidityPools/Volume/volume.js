@@ -33,6 +33,14 @@ export const Volume = ({ data }) => {
     );
   };
 
+  const VolumeTooltip = styled.div`
+  border-radius: 0.833vw;
+  background: #171717;
+  height: 2.760vw;
+  width: 6.667vw;
+
+  `
+
   const VolumeChartWrapper = styled.div`
     margin-top: 2.292vw;
     padding: 1vw;

@@ -1,30 +1,40 @@
-import {formattedNum} from "../../utils/helpers";
 import React from "react";
-import styled from 'styled-components';
+import { formattedNum } from "../../utils/helpers";
+import styled from "styled-components";
 
 const CustomToolTipWrapper = styled.div`
-    background: #171717;
-    box-shadow: -0.417vw -0.417vw 1.042vw rgba(28, 27, 27, 0.25), 0.208vw 0.208vw 0.521vw rgba(0, 0, 0, 0.25);
-    border-radius: 0.833vw;
-    color: white;
-    padding: 0.5vw 1vw;
-    place-items: center;
-`
+  padding: 0.677vw 1.563vw;
+  border-radius: 0.833vw;
+  background: #171717;
+  height: 2.76vw;
+  width: 6.667vw;
+  display: flex;
+  justify-content: center;
+  font-size: 0.938vw;
+  align-items: center;
+  color: #fff;
 
-export const CustomToolTip = ({active, payload, label}) => {
+  span {
+    color: #4f4f4f;
+  }
+`;
 
-
-    if (payload[0]) {
-        const value = formattedNum(payload[0].payload.value);
-        if (active) {
-            return (
-                <CustomToolTipWrapper>
-                    <span> {value}$ </span>
-                </CustomToolTipWrapper>
-            )
-        }
+export const CustomToolTip = ({ active, payload, label }) => {
+  if (payload[0]) {
+    const value = formattedNum(payload[0].payload.value);
+    if (active) {
+      return (
+        <CustomToolTipWrapper>
+          ${value.toString().split(".")[0]}
+          <span>
+            {value.toString().split(".")[1]
+              ? `.${value.toString().split(".")[1]}`
+              : ""}
+          </span>
+        </CustomToolTipWrapper>
+      );
     }
+  }
 
-    return null;
-
-}
+  return null;
+};
