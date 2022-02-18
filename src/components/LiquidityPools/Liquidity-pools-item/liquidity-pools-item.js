@@ -47,14 +47,14 @@ export const LiquidityPoolsItem = ({
     lpUserBalance,
   },
   earnGovToken,
-  color,
+  clr,
 }) => {
   const { library } = useWeb3React();
   const [windowExpanded, setWindowExpanded] = useState(false);
   const [rewardPerBlockAgo, setRewardPerBlockAgo] = useState(0);
   const { theme } = useThemeContext();
   const tabColor = {
-    color: color,
+    color: clr,
   };
 
   useEffect(() => {
@@ -184,7 +184,7 @@ export const LiquidityPoolsItem = ({
                 <Tabs defaultValue={0}>
                   <TabsList
                     style={{
-                      color: color
+                      color: clr
                         ? "#fff"
                         : theme === "light"
                         ? "#333"
@@ -195,7 +195,7 @@ export const LiquidityPoolsItem = ({
                     <Tab>Volume</Tab>
                     <Tab>Liquidity</Tab>
                     <Tab>Transactions</Tab>
-                    {color ? <Tab>Stake Lp</Tab> : null}
+                    {clr ? <Tab>Stake Lp</Tab> : null}
                   </TabsList>
                   <TabPanel value={0}>
                     <ProvideLiquidity
@@ -209,7 +209,7 @@ export const LiquidityPoolsItem = ({
                   </TabPanel>
                   <TabPanel value={1}>
                     <TabContentWrapper>
-                      <Volume data={volChart} />
+                      <Volume data={volChart} color={clr}/>
                       {renderLiquidityInfo("8.021vw")}
                     </TabContentWrapper>
                   </TabPanel>
