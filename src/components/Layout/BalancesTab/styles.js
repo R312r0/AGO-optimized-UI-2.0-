@@ -1,4 +1,15 @@
-import styled from "styled-components"
+import styled from "styled-components";
+
+export const IconWrapper = styled.div`
+  margin-right: ${(props) => props.mr};
+  margin-left: ${(props) => props.ml};
+  height: 1.5vw;
+  width:  1.5vw;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export const BalancesTabWrapper = styled.div`
   max-width: 100%;
@@ -6,14 +17,17 @@ export const BalancesTabWrapper = styled.div`
   /* width: ${props => props.opened ? "fit-content" : "20%"}; */
   width: fit-content;
   align-self: center;
-  height: 52px;
+  height: 2.708vw;
   transition: all .5s ease;
+  line-height: 1.094vw;
+  font-size: 0.729vw;
+  font-weight: 500;
 
   padding: 0.4vw ${props => props.account ? "0.8vw 0.4vw 0.5vw" : "1.2vw"};
   margin: 0.4vw 0 0.45vw 0.5vw;
 
-  background: ${props => props.mobile ? "transparent" : props.light ? "#40BA93" : "linear-gradient(95.07deg, rgba(58, 58, 58, 0.4) -21.03%, rgba(0, 0, 0, 0.4) 139.31%), rgba(51, 51, 51, 0.1)"};
-  border: ${props => props.mobile ? "0" : props.light ? "1px solid #BDBDBD" : "0.052vw solid #333333"};
+  background: ${props => props.mobile ? "transparent" : props.light ? "#D19AFF" : "linear-gradient(95.07deg, rgba(58, 58, 58, 0.4) -21.03%, rgba(0, 0, 0, 0.4) 139.31%), rgba(51, 51, 51, 0.1)"};
+  border: ${props => props.mobile ? "0" : props.light ? "0.052vw solid #BDBDBD" : "0.052vw solid #333333"};
   box-sizing: border-box;
   border-radius: 1.302vw;
 
@@ -21,35 +35,22 @@ export const BalancesTabWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  font-size: 0.65vw;
   overflow: hidden;
   overflow-x: auto;
   cursor: pointer;
 
   &::-webkit-scrollbar {
-      height:0px;
+      height: 0vw;
     }
-    
+
     &::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      box-shadow: inset 0 0 0.313vw rgba(0, 0, 0, 0.3);
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background-color: darkgrey;
-      outline: 1px solid slategrey;
+      outline: 0.052vw solid slategrey;
     }
-
-  @media screen and (max-width: 1024px) {
-    font-size: 0.9vw;
-  }
-
-  @media screen and (max-width: 750px) {
-    width: 100%;
-    height: auto;
-
-    margin: 0;
-    font-size: 2.5vw;
-  }
 
   .vector {
     width: 0.521vw;
@@ -58,7 +59,7 @@ export const BalancesTabWrapper = styled.div`
 
     margin: auto auto auto ${props => props.opened ? "0.2vw" : "0.7vw"};
     transform: ${props => props.opened ? "rotate(180deg)" : "none"};
-    
+
     @media screen and (max-width: 1024px) {
       width: 0.938vw;
       height: 0.938vw;
@@ -81,7 +82,7 @@ export const BalancesTabWrapper = styled.div`
     display: flex;
     align-items: center;
     margin-right: auto;
-    
+
     @media screen and (max-width: 750px) {
       display: grid;
       grid-template-columns: repeat(2, auto);
@@ -94,10 +95,10 @@ export const BalancesTabWrapper = styled.div`
 
     .balance {
       color:  ${props => props.light ? '#fff' : "#40BA93"};
-  
+
       @media screen and (max-width: 750px) {
         grid-area: 1 / 2 / 2 / 3;
-        
+
         margin-left: 1.6vw;
 
         font-size: 3.733vw;
@@ -111,25 +112,24 @@ export const BalancesTabWrapper = styled.div`
 
       grid-area: 1 / 1 / 3 / 2;
 
-      & path{
-        &:nth-child(1){
-          fill: ${props => props.light ? '#fff' : "#4F4F4F"}
-        }
-      }
+& path{
+  &:nth-child(1){
+    fill: ${props => props.light ? '#fff' : "#4F4F4F"}
+  }
+}
 
-      & circle{
-        &:nth-child(2){
-          fill: ${props => props.light ? '#40BA93' : "#4F4F4F"}
-        }
-        &:nth-child(3){
-          fill: ${props => props.light ? '#fff' : "#4F4F4F"}
-        }
-        &:nth-child(4){
-          fill: ${props => props.light ? '#BDBDBD' : "#4F4F4F"}
-        }
-       
-        
-      }
+& circle{
+  &:nth-child(2){
+    fill: ${props => props.light ? '#40BA93' : "#4F4F4F"}
+  }
+  &:nth-child(3){
+    fill: ${props => props.light ? '#fff' : "#4F4F4F"}
+  }
+  &:nth-child(4){
+    fill: ${props => props.light ? '#BDBDBD' : "#4F4F4F"}
+  }
+
+}
 
       @media screen and (max-width: 750px) {
         width: 9.067vw;
@@ -139,20 +139,11 @@ export const BalancesTabWrapper = styled.div`
 
     p {
       font-size: 0.8vw;
-
-      @media screen and (max-width: 1024px) {
-        font-size: 1.2vw;
-      }
-
-      @media screen and (max-width: 750px) {
-        font-size: 3.8vw;
-      }
-
       &:not(:first-child) {
         padding: 0 0.3vw;
       }
     }
-    
+
     .balance-arrow-wrapper {
       display: flex;
       align-items: center;
@@ -275,9 +266,9 @@ export const BalanceListItem = styled.li`
   }
 
   img {
-    width: 1.042vw;
-    height: 1.042vw;
-    
+    width: 1vw;
+    height: 1vw;
+
   }
 `
 
@@ -287,10 +278,10 @@ export const BalanceListDesktop = styled.ul`
   height: 100%;
   transition: all .5s ease;
   width:  ${props => props.opened ? "fit-content" : "0"};
-  margin-left: ${props => props.opened ? "20px" : "0"};
+  margin-left: ${props => props.opened ? "1.042vw" : "0"};
   margin-bottom: 0;
   align-items: center;
-  column-gap: 35px;
+  column-gap: 1.823vw;
   color: white;
 
   opacity: ${props => props.opened ? "1" : "0"};
@@ -298,18 +289,18 @@ export const BalanceListDesktop = styled.ul`
   overflow-x: auto;
 
     &::-webkit-scrollbar {
-        height:0px;
+        height: 0vw;
       }
-    
+
     &::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      box-shadow: inset 0 0 0.260vw rgba(0, 0, 0, 0.3);
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background-color: darkgrey;
-      outline: 1px solid slategrey;
+      outline: 0.052vw solid slategrey;
     }
-  
+
   @media screen and (max-width: 750px) {
     display: none;
   }
@@ -318,15 +309,11 @@ export const BalanceListDesktop = styled.ul`
 export const BalanceListItemDesktop = styled.li`
   display: flex;
   align-items: center;
-  column-gap: 5px;
-  padding-right: 30px;
+  column-gap: 0.260vw;
+  padding-right: 1.563vw;
 
   img {
-    max-width:23px;
-    width: 100%;
-    background: ${props => props.light ? "#fff" : "transpered"};
-    border-radius: 50%;
-    padding: 1px;
+    width: 1.198vw;
   }
 
   span {
@@ -335,6 +322,6 @@ export const BalanceListItemDesktop = styled.li`
   }
 
   &:not(:last-child) {
-    border-right:1px solid #4F4F4F;
+    border-right: 0.052vw solid #4F4F4F;
   }
 `
