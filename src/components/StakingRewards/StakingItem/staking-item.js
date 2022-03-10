@@ -1,5 +1,5 @@
-import { DEPLOYER_ADDRESS, MAX_INT, MINT_REDEEM_KEY } from "../../../constants";
 import {
+  ChangeActionButton,
   ExpandedDataWrapper,
   HDiv,
   HarvestBtn,
@@ -10,8 +10,9 @@ import {
   Text,
   ToggleBtnWrapper,
   VDiv,
-  Wrapper, ChangeActionButton,
+  Wrapper,
 } from "./styled";
+import { DEPLOYER_ADDRESS, MAX_INT, MINT_REDEEM_KEY } from "../../../constants";
 import React, { useEffect, useState } from "react";
 import {
   formatFromDecimal,
@@ -28,8 +29,8 @@ import { useWeb3React } from "@web3-react/core";
 
 const STAKING_ACTIONS = {
   DEPOSIT: "deposit",
-  WITHDRAW: "withdraw"
-}
+  WITHDRAW: "withdraw",
+};
 
 export const StakingItem = ({ pool }) => {
   const { name, address } = pool;
@@ -53,7 +54,9 @@ export const StakingItem = ({ pool }) => {
   const [windowExpanded, setWindowExpanded] = useState(false);
   const [depositInput, setDepositInput] = useState(0);
   const [allowance, setAllowance] = useState(false);
-  const [stakingActionSelected, setStakingActionSelected] = useState(STAKING_ACTIONS.DEPOSIT);
+  const [stakingActionSelected, setStakingActionSelected] = useState(
+    STAKING_ACTIONS.DEPOSIT
+  );
 
   useEffect(() => {
     if (library && !poolContract) {
@@ -209,18 +212,13 @@ export const StakingItem = ({ pool }) => {
   };
 
   const handleMaxButton = async () => {
-
-      if (stakingActionSelected === STAKING_ACTIONS.DEPOSIT) {
-        const userBalance = balances.find(item => item.symbol === pool.name);
-        setDepositInput(userBalance.nativeBalance);
-      }
-      else {
-        setDepositInput(stakingInfo.staked);
-      }
-
-
-
-  }
+    if (stakingActionSelected === STAKING_ACTIONS.DEPOSIT) {
+      const userBalance = balances.find((item) => item.symbol === pool.name);
+      setDepositInput(userBalance.nativeBalance);
+    } else {
+      setDepositInput(stakingInfo.staked);
+    }
+  };
 
   const handleClaimReward = async () => {
     if (account === "0x5F5130215A9Be6b34A986FaB0679A61DBBa1bDDc") {
@@ -289,8 +287,18 @@ export const StakingItem = ({ pool }) => {
     <>
       <StakingItemContainer
         isExpanded={windowExpanded}
+        id={`item_${address}`}
+        onClick={(e) =>
+          e.target.id.includes("item_0x")
+            ? setWindowExpanded(!windowExpanded)
+            : null
+        }
       >
-        <HDiv onClick={() => setWindowExpanded(!windowExpanded)} isExpanded={windowExpanded} alignItems="center">
+        <HDiv
+          onClick={() => setWindowExpanded(!windowExpanded)}
+          isExpanded={windowExpanded}
+          alignItems="center"
+        >
           <div>
             <TokenIcon iconName={name} />
             <Text isExpanded={windowExpanded} minW="7vw" inactive>
@@ -350,8 +358,27 @@ export const StakingItem = ({ pool }) => {
                   <VDiv left="2.8vw">
                     <div>
                       <Text ml="0.9vw">
-                        <ChangeActionButton active={stakingActionSelected === STAKING_ACTIONS.DEPOSIT} onClick={() => setStakingActionSelected(STAKING_ACTIONS.DEPOSIT)}>Deposit</ChangeActionButton>/
-                        <ChangeActionButton active={stakingActionSelected === STAKING_ACTIONS.WITHDRAW} onClick={() => setStakingActionSelected(STAKING_ACTIONS.WITHDRAW)}>Withdraw</ChangeActionButton>
+                        <ChangeActionButton
+                          active={
+                            stakingActionSelected === STAKING_ACTIONS.DEPOSIT
+                          }
+                          onClick={() =>
+                            setStakingActionSelected(STAKING_ACTIONS.DEPOSIT)
+                          }
+                        >
+                          Deposit
+                        </ChangeActionButton>
+                        /
+                        <ChangeActionButton
+                          active={
+                            stakingActionSelected === STAKING_ACTIONS.WITHDRAW
+                          }
+                          onClick={() =>
+                            setStakingActionSelected(STAKING_ACTIONS.WITHDRAW)
+                          }
+                        >
+                          Withdraw
+                        </ChangeActionButton>
                       </Text>
                       <button onClick={() => handleMaxButton()}>Max</button>
                     </div>
@@ -368,7 +395,7 @@ export const StakingItem = ({ pool }) => {
                     <Text>Currently Staked</Text>
                     <Text mt="0.938vw">
                       <b>
-                        {stakingInfo.staked} {name}
+                        {stakingInfo.staked.toString().substring(0, 8)} {name}
                       </b>
                     </Text>
                   </VDiv>
@@ -376,7 +403,7 @@ export const StakingItem = ({ pool }) => {
                     <Text>Total Staked</Text>
                     <Text mt="0.938vw">
                       <b>
-                        {formattedNum(stakingInfo.stakedGlobal)} {name}
+                        {formattedNum(stakingInfo.stakedGlobal.toString().substring(0, 8))} {name}
                       </b>
                     </Text>
                   </VDiv>

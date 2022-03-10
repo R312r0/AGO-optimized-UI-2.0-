@@ -31,10 +31,10 @@ export const HDiv = styled.div`
 
 export const IconWrapper = styled.div`
   margin-right: 0.521vw;
-  background: ${(props) =>
+  /* background: ${(props) =>
     props.theme.light
       ? props.withoutWrapper ?? "#F2F2F2"
-      : props.withoutWrapper ?? "#1f1e20"};
+      : props.withoutWrapper ?? "#1f1e20"}; */
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -42,8 +42,8 @@ export const IconWrapper = styled.div`
   height: 2.552vw;
   width: 2.552vw;
   img {
-    height: ${(props) => props.h ?? "1.771vw"};
-    width: ${(props) => props.w ?? "1.771vw"};
+    height: ${(props) => props.h ?? "2.552vw"};
+    width: ${(props) => props.w ?? "2.552vw"};
   }
 `;
 
@@ -71,7 +71,7 @@ export const Text = styled.span`
 
 export const LiquidityPoolsInputContainer = styled.div`
   color: ${(props) =>
-    props.placeholderColor ?? (props.theme.light ? "#333" : "#fff")};
+    props.placeholderColor ?? (props.theme.light ? props.theme.color ? "#fff" : "#333" : "#fff")};
   border: 0.052vw solid;
   border-color: ${(props) =>
     props.theme.light
@@ -125,8 +125,10 @@ export const PieChartContainer = styled.div`
 
 export const BtnWrapper = styled.div`
   transform: matrix(-1, 0, 0, 1, 0, 0);
-  height: 1.510vw;
+  margin-top: 1.2vw;
+  max-height: 1.510vw;
   display: flex;
+  align-items: center;
 
   button:last-child {
     margin-left: 0.5vw;
@@ -136,7 +138,6 @@ export const BtnWrapper = styled.div`
 export const ChartBtn = styled.button`
   border-radius: 1.563vw;
   background: #40ba93;
-  margin-top: 1.2vw;
   height: 1.510vw;
   font-size: 0.729vw;
   width: 5.521vw;

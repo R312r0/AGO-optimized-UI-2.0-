@@ -395,7 +395,7 @@ export const LiquidityPools = () => {
                     <LiquidityPoolsItem
                       earnGovToken={true}
                       pool={item}
-                      color={"green"}
+                      clr={"green"}
                     />
                   ))}
                 </>
@@ -484,7 +484,7 @@ export const LiquidityPools = () => {
               ) : (
                 <>
                   {earnPoolsFormatted.map((item) => (
-                    <LiquidityPoolsItem pool={item} color={"violet"} />
+                    <LiquidityPoolsItem pool={item} clr={"violet"} />
                   ))}
                 </>
               )}

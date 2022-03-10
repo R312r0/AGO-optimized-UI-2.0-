@@ -11,17 +11,18 @@ export const RemoveLiqudityModalContainer = styledMUI(Modal)(() => ({
 }));
 
 export const LiqSlider = styledMUI(Slider)({
-  width: "12.188vw",
+  marginTop: "1.042vw",
+  width: "100%",
   color: "#40BA93",
   height: "0.260vw",
   "& .MuiSlider-track": {
     border: "none",
   },
   "& .MuiSlider-thumb": {
-    height: "0.573vw",
-    width: "0.573vw",
+    height: "1.198vw",
+    width: "1.198vw",
     backgroundColor: "#40BA93",
-    border: "0.104vw solid #fff",
+    // border: "0.104vw solid #fff",
     "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
       boxShadow: "inherit",
     },
@@ -74,7 +75,6 @@ export const CloseBtn = styled.button`
 export const ChartBtn = styled.button`
   border-radius: 1.563vw;
   background: #40ba93;
-  margin-top: 1.2vw;
   height: 1.51vw;
   font-size: 0.729vw;
   width: 5.521vw;
@@ -85,12 +85,19 @@ export const ChartBtn = styled.button`
   }
 `;
 
-export const RemoveLiqudityInfoContainer = styled.div`
-  padding: 1.042vw 2.865vw 1.823vw 2.865vw;
+export const RemoveLiquditySliderContainer = styled.div`
+  padding: 1.042vw 2.865vw 3.75vw 2.865vw;
   border-radius: 2.083vw;
   margin-top: 2.031vw;
   background: ${(props) => (props.theme.light ? "#FBFBFB" : "#1e1e1e")};
-  height: 13.906vw;
+  width: 35.938vw;
+`;
+
+export const RemoveLiqudityDataContainer = styled.div`
+  padding: 1.458vw 2.865vw 1.771vw 2.865vw;
+  border-radius: 2.083vw;
+  margin-top: 1.198vw;
+  background: ${(props) => (props.theme.light ? "#FBFBFB" : "#1e1e1e")};
   width: 35.938vw;
 `;
 
@@ -162,6 +169,23 @@ export const RemoveLiqudityInput = styled.input`
   }
 `;
 
+export const SliderBtn = styled.button`
+  border-radius: 1.563vw;
+  background: ${(props) => (props.theme.light ? "transparent" : "#333")};
+  border: 0.052vw solid;
+  border-color: ${(props) => (props.theme.light ? "#40BA93" : "transparent")};
+  font-size: 0.938vw;
+  height: 1.927vw;
+  width: 5.469vw;
+  color: ${(props) => (props.theme.light ? "#828282" : "#fff")};
+
+  &:hover {
+    background: linear-gradient(112.38deg, #40BA93 27.66%, #9421EE 155.34%);
+    opacity: 0.8;
+    color: #fff;
+  }
+`;
+
 export const RemoveLiquidityBtn = styled.button`
   background: #40ba93;
   color: #fff;
@@ -181,7 +205,7 @@ export const CancelBtn = styled.button`
   color: ${(props) => (props.theme.light ? "#4f4f4f" : "#fff")};
   border-radius: 1.563vw;
   border: 0.052vw solid;
-  border-color: ${(props) => (props.theme.light ? "#E0E0E0" : "#40BA93")};
+  border-color: ${(props) => (props.theme.light ? "#40BA93" : "#40BA93")};
   margin-left: 0.313vw;
   font-size: 0.938vw;
   align-self: center;

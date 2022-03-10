@@ -14,7 +14,18 @@ import { CustomToolTip } from "../../ChartCustomTooltip/chart-custom-tooltip";
 import styled from "styled-components";
 import { useThemeContext } from "../../Layout/layout";
 
-export const Volume = ({ data }) => {
+const VolumeChartWrapper = styled.div`
+margin-top: 2.292vw;
+padding: 1vw;
+font-size: 0.521vw;
+width: 47.833vw;
+height: 12.521vw;
+display: flex;
+align-items: center;
+justify-content: center;
+`;
+
+export const Volume = ({ data, color }) => {
   const { theme } = useThemeContext();
   const block = useRef(null);
 
@@ -33,18 +44,6 @@ export const Volume = ({ data }) => {
     );
   };
 
-  const VolumeChartWrapper = styled.div`
-    margin-top: 2.292vw;
-    padding: 1vw;
-    /* background-color: rosybrown; */
-    font-size: 0.521vw;
-    width: 47.833vw;
-    height: 12.521vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `;
-
   return (
     <VolumeChartWrapper>
       <ResponsiveContainer width={"100%"} height={"100%"}>
@@ -58,12 +57,23 @@ export const Volume = ({ data }) => {
               y2="100%"
               gradientUnits="userSpaceOnUse"
             >
-              <stop offset="0" stopColor="#40BA93" />
+              <stop
+                offset="0"
+                stopColor={theme === "light" ? "#E0E0E0" : "#40BA93"}
+              />
               <stop offset="1" stopColor="rgba(64, 186, 147, 0)" />
             </linearGradient>
             <linearGradient id="colorUvLightTheme" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#40BA93" />
-              <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)" />
+              <stop
+                offset="0"
+                stopColor={theme === "light" ? "#E0E0E0" : "#40BA93"}
+              />
+              <stop
+                offset="1"
+                stopColor={
+                  theme === "light" ? "#fff" : "rgba(64, 186, 147, 0.72)"
+                }
+              />
             </linearGradient>
             <linearGradient
               id="colorUvSecondLightTheme"
@@ -72,8 +82,14 @@ export const Volume = ({ data }) => {
               x2="0"
               y2="1"
             >
-              <stop offset="0" stopColor="#40BA93" />
-              <stop offset="1" stopColor="#114D3A" />
+              <stop
+                offset="0"
+                stopColor={theme === "light" ? "#E0E0E0" : "#40BA93"}
+              />
+              <stop
+                offset="1"
+                stopColor={theme === "light" ? "#fff" : "#114D3A"}
+              />
             </linearGradient>
           </defs>
           <defs>
@@ -85,17 +101,14 @@ export const Volume = ({ data }) => {
               y2="100%"
               gradientUnits="userSpaceOnUse"
             >
-              <stop offset="0" stopColor="#40BA93" />
+              <stop
+                offset="0"
+                stopColor={theme === "light" ? (color !== undefined ? "#fff" : "#828282") : "#40BA93"}
+              />
               <stop offset="1" stopColor="rgba(64, 186, 147, 0.72)" />
             </linearGradient>
           </defs>
-          <CartesianGrid
-            stroke={theme === "light" ? "#66D6B2" : "#3A3C45"}
-            // strokeDasharray="10"
-            // verticalPoints={[75, 200, 325, 450, 575, 700, 825, 950]}
-            // horizontal={false}
-            // vertical
-          />
+          <CartesianGrid stroke={theme === "light" ? "#66D6B2" : "#3A3C45"} />
           <Bar
             dataKey="value"
             radius={20}
@@ -124,14 +137,14 @@ export const Volume = ({ data }) => {
             dataKey="time"
             axisLine={false}
             tickLine={false}
-            stroke={theme === "light" ? "black" : "white"}
+            stroke={theme === "light" ? (color ? "#fff" : "#828282") : "#fff"}
           />
           <YAxis
             // padding={{ bottom: 100 }}
             dataKey="value"
             axisLine={false}
             tickLine={false}
-            stroke={theme === "light" ? "black" : "white"}
+            stroke={theme === "light" ? (color ? "#fff" : "#828282") : "#fff"}
           />
         </BarChart>
       </ResponsiveContainer>

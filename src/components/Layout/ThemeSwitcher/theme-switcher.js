@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-import { Hidden } from '@mui/material';
 import { ThemeSwitcherWrapper } from './styles';
 import {useMediaQuery} from 'react-responsive';
 import { useThemeContext } from '../layout';

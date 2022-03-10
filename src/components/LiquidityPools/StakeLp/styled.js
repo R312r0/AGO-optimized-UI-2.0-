@@ -74,7 +74,7 @@ export const StakeLPInputContainer = styled.div`
 
   input {
     width: 100%;
-    color: ${(props) => (props.theme.light ? "#333" : "#fff")};
+    color: ${(props) => (props.theme.light ? props.theme.color ? "#fff" : "#333" : "#fff")};
 
     ::placeholder {
       color: ${(props) =>

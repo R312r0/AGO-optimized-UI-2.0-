@@ -47,14 +47,14 @@ export const LiquidityPoolsItem = ({
     lpUserBalance,
   },
   earnGovToken,
-  color,
+  clr,
 }) => {
   const { library } = useWeb3React();
   const [windowExpanded, setWindowExpanded] = useState(false);
   const [rewardPerBlockAgo, setRewardPerBlockAgo] = useState(0);
   const { theme } = useThemeContext();
   const tabColor = {
-    color: color,
+    color: clr,
   };
 
   useEffect(() => {
@@ -118,13 +118,17 @@ export const LiquidityPoolsItem = ({
           id={`item_${address}`}
           isExpanded={windowExpanded}
           onClick={(e) =>
-            e.target.id === "item_0x206a734e79fdf5134ef6a0b14d10a170de196717"
+            e.target.id.includes("item_0x")
               ? setWindowExpanded(!windowExpanded)
               : null
           }
         >
           <div style={{ position: "relative" }}>
-            <HDiv alignItems="center">
+            <HDiv
+              alignItems="center"
+              onClick={() => setWindowExpanded(!windowExpanded)}
+              style={{cursor: "pointer"}}
+            >
               <IconWrapper mr="0.417vw">
                 <TokenIcon iconName={token0.symbol} />
               </IconWrapper>
@@ -180,7 +184,7 @@ export const LiquidityPoolsItem = ({
                 <Tabs defaultValue={0}>
                   <TabsList
                     style={{
-                      color: color
+                      color: clr
                         ? "#fff"
                         : theme === "light"
                         ? "#333"
@@ -191,7 +195,7 @@ export const LiquidityPoolsItem = ({
                     <Tab>Volume</Tab>
                     <Tab>Liquidity</Tab>
                     <Tab>Transactions</Tab>
-                    {color ? <Tab>Stake Lp</Tab> : null}
+                    {clr ? <Tab>Stake Lp</Tab> : null}
                   </TabsList>
                   <TabPanel value={0}>
                     <ProvideLiquidity
@@ -205,7 +209,7 @@ export const LiquidityPoolsItem = ({
                   </TabPanel>
                   <TabPanel value={1}>
                     <TabContentWrapper>
-                      <Volume data={volChart} />
+                      <Volume data={volChart} color={clr}/>
                       {renderLiquidityInfo("8.021vw")}
                     </TabContentWrapper>
                   </TabPanel>

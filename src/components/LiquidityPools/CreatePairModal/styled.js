@@ -125,7 +125,12 @@ export const CreatePairModalBtn = styled.button`
   }
 
   &:hover {
-    border-color: ${(props) => (props.theme.light ? "#333" : "#fff")};;
+    border-color: ${(props) => (props.theme.light ? "#C407E3" : "#fff")};
+    color: ${(props) => (props.theme.light ? "#C407E3" : "#fff")};
+    svg {
+      fill: ${(props) => (props.theme.light ? "#C407E3" : "#fff")};
+      stroke: ${(props) => (props.theme.light ? "#C407E3" : "#fff")};
+    }
   }
 `;
 

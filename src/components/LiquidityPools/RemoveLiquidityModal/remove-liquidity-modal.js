@@ -6,11 +6,14 @@ import {
   HDiv,
   IconWrapper,
   LiqSlider,
+  RemoveLiqudityDataContainer,
   RemoveLiqudityInfoContainer,
   RemoveLiqudityInput,
   RemoveLiqudityModalContainer,
   RemoveLiqudityModalContent,
+  RemoveLiquditySliderContainer,
   RemoveLiquidityBtn,
+  SliderBtn,
   Text,
   VDiv,
 } from "./styled";
@@ -120,7 +123,7 @@ export const RemoveLiquidityModal = ({
   };
 
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       <ChartBtn onClick={handleOpen}>Remove</ChartBtn>
       <RemoveLiqudityModalContainer open={open} onClose={handleClose}>
         <RemoveLiqudityModalContent>
@@ -132,44 +135,52 @@ export const RemoveLiquidityModal = ({
               <CloseIcon />
             </CloseBtn>
           </HDiv>
-          <RemoveLiqudityInfoContainer>
+          <RemoveLiquditySliderContainer>
             <HDiv alignItems="center" justifyContent="space-between">
               <Text fontWeight="400">
                 <b>Pair</b>
               </Text>
-              <VDiv alignItems="center">
-                <LiqSlider value={value} onChange={handleChange} />
-                <Text fontSize="0.729vw" bottom="0.8vw">
-                  <b>{value}%</b>
-                </Text>
-              </VDiv>
             </HDiv>
-            <HDiv mt="1.354vw" alignItems="center">
+            <HDiv mt="0.625vw">
+              <Text fontSize="1.875vw">
+                <b>{value}%</b>
+              </Text>
+            </HDiv>
+            <LiqSlider value={value} onChange={handleChange} />
+            <HDiv mt="1.5vw" justifyContent="space-between">
+              <SliderBtn onClick={() => setValue(25)}>25%</SliderBtn>
+              <SliderBtn onClick={() => setValue(50)}>50%</SliderBtn>
+              <SliderBtn onClick={() => setValue(75)}>75%</SliderBtn>
+              <SliderBtn onClick={() => setValue(100)}>Max</SliderBtn>
+            </HDiv>
+          </RemoveLiquditySliderContainer>
+          <RemoveLiqudityDataContainer>
+            <HDiv>
+              <Text minW="22.396vw">
+                <b>155645454</b>
+              </Text>
               <IconWrapper size="1.771vw" mr="0.365vw">
                 <TokenIcon iconName={token0.symbol} />
               </IconWrapper>
-              <Text style={{ background: "" }} minW="13.5vw">
+              <Text>
                 <b>{token0.symbol}</b>
               </Text>
-              <Divider />
-              <IconWrapper size="1.771vw" mr="0.365vw" ml="5.521vw">
+            </HDiv>
+            <HDiv mt="0.885vw">
+              <Text minW="22.396vw">
+                <b>155645454</b>
+              </Text>
+              <IconWrapper size="1.771vw" mr="0.365vw">
                 <TokenIcon iconName={token1.symbol} />
               </IconWrapper>
               <Text>
                 <b>{token1.symbol}</b>
               </Text>
             </HDiv>
-            <HDiv mt="2.135vw">
-              <Text fontSize="0.938vw">
-                <b>LP balance: {lpUserBalance}</b>
-              </Text>
+            <HDiv mt="1.8vw">
+              <Text>LP balance: {lpUserBalance}</Text>
             </HDiv>
-            <RemoveLiqudityInput
-              type={"number"}
-              placeholder="Enter amount to remove liquidity"
-              onChange={(e) => setRemoveValue(e.target.value)}
-            />
-          </RemoveLiqudityInfoContainer>
+          </RemoveLiqudityDataContainer>
           <HDiv mt="2.135vw">
             <RemoveLiquidityBtn
               onClick={() =>
